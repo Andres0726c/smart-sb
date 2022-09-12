@@ -1,0 +1,50 @@
+{
+    "environment": {
+        "releasePath": "dist",
+        "mainPath": "projects"
+    },
+    "s3": {
+        "dev": {
+            "name":"s3-name",
+            "acl": "public-read"
+        },
+        "stage":{
+            "name":"xx-stage",
+            "acl": "public-read"
+        },
+        "prod":{
+            "name":"xx-prod",
+            "acl": "public-read"
+        }
+    },
+    "sites": {
+        "dev":[
+            {
+                "name": "site1",
+                "path": "site1",
+                "build": "site1",
+                "test": "site1"
+            },
+            {
+                "name": "site2",
+                "path": "site2",
+                "build": "site2",
+                "test": "site2"
+            }
+        ]
+    }
+    "cloudfront": {
+        "dev": {
+            "distributionId":"EDFDVBD6EXAMPLE",
+            "invalidationPaths":"/*"
+        },
+        "stage":{
+            "distributionId":"EDFDVBD6EXAMPLE",
+            "invalidationPaths":"/*"
+        },
+        "prod":{
+            "distributionId":"EDFDVBD6EXAMPLE",
+            "invalidationPaths":"/*"
+        }
+    }
+}
