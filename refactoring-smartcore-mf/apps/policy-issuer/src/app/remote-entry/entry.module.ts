@@ -4,11 +4,13 @@ import { RouterModule } from '@angular/router';
 
 import { RemoteEntryComponent } from './entry.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
+import {ButtonModule} from 'primeng/button';
 
 @NgModule({
   declarations: [RemoteEntryComponent, NxWelcomeComponent],
   imports: [
     CommonModule,
+    ButtonModule,
     RouterModule.forChild([
       {
         path: '',
