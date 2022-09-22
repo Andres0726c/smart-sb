@@ -1,13 +1,7 @@
-/*
- * This RemoteEntryModule is imported here to allow TS to find the Module during
- * compilation, allowing it to be included in the built bundle. This is required
- * for the Module Federation Plugin to expose the Module correctly.
- * */
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
+import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,8 +12,8 @@ import { RouterModule } from '@angular/router';
         {
           path: '',
           loadChildren: () =>
-            import('./containers/policy-management/policy-management.module').then(
-              (m) => m.PolicyManagementModule
+            import('./remote-entry/entry.module').then(
+              (m) => m.RemoteEntryModule
             ),
         },
       ],

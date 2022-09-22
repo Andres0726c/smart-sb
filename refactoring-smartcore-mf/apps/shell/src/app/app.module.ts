@@ -16,6 +16,10 @@ import { RouterModule } from '@angular/router';
           loadChildren: () =>
             import('policy-issuer/Module').then((m) => m.RemoteEntryModule),
         },
+        {
+          path: '',
+          component: NxWelcomeComponent,
+        },
       ],
       { initialNavigation: 'enabledBlocking' }
     ),

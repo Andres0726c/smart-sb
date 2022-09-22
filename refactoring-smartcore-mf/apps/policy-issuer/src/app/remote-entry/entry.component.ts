@@ -1,18 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'policy-issuer-entry',
-  template: `<div class="remote-entry">
-    <h2>policy-issuer's Remote Entry Component</h2>
-  </div>`,
-  styles: [
-    `
-      .remote-entry {
-        background-color: #143055;
-        color: white;
-        padding: 5px;
-      }
-    `,
-  ],
+  selector: 'refactoring-smartcore-mf-policy-issuer-entry',
+  template: `<refactoring-smartcore-mf-nx-welcome></refactoring-smartcore-mf-nx-welcome>`,
 })
 export class RemoteEntryComponent {}
