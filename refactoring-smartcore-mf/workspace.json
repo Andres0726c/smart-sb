@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "projects": {
+    "policy-issuer": "apps/policy-issuer",
+    "policy-issuer-e2e": "apps/policy-issuer-e2e",
+    "shell": "apps/shell",
+    "shell-e2e": "apps/shell-e2e"
+  }
+}

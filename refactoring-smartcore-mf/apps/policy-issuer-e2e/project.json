@@ -1,0 +1,27 @@
+{
+  "sourceRoot": "apps/policy-issuer-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/policy-issuer-e2e/cypress.json",
+        "devServerTarget": "policy-issuer:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "policy-issuer:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/policy-issuer-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["policy-issuer"]
+}
