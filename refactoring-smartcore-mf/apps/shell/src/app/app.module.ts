@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
         {
           path: 'policy-issuer',
           loadChildren: () =>
-            import('policy-issuer/Module').then((m) => m.RemoteEntryModule),
+            import('policy-issuer/Module').then((m) => m.PolicyManagementModule),
         },
         {
           path: '',

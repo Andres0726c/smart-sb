@@ -12,8 +12,8 @@ import { AppComponent } from './app.component';
         {
           path: '',
           loadChildren: () =>
-            import('./remote-entry/entry.module').then(
-              (m) => m.RemoteEntryModule
+            import('./containers/policy-management/policy-management.module').then(
+              (m) => m.PolicyManagementModule
             ),
         },
       ],
