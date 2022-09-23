@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
     RouterModule.forRoot(
       [
         {
-          path: 'policy-issuer',
+          path: 'emisor',
           loadChildren: () =>
             import('policy-issuer/Module').then((m) => m.PolicyManagementModule),
         },
