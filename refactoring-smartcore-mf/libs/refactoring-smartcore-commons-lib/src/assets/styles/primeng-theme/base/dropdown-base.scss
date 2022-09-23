@@ -1,0 +1,117 @@
+.lib-dropdown {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .lib-dropdown__label {
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .lib-dropdown__caption {
+    margin-top: 0.125rem;
+    font-size: 0.75rem;
+    color: var(--danger-base);
+    
+    &.lib-dropdown__caption__success {
+      color: var(--success-base);
+    }
+    
+    &.lib-dropdown__caption__danger {
+      color: var(--danger-base);
+    }
+  }
+}
+
+.p-dropdown {
+  border-radius: 0.3125rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.p-dropdown.p-component {
+  cursor: default;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  outline: 0 none;
+  outline-offset: 0;
+}
+
+.p-dropdown.p-dropdown-clearable .p-dropdown-label {
+  padding-right: 1.75rem;
+}
+
+.p-dropdown .p-dropdown-label {
+  border: 0 none;
+}
+
+.p-dropdown .p-dropdown-label:enabled:focus {
+  outline: 0 none;
+  box-shadow: none;
+}
+
+.p-dropdown.p-disabled {
+  opacity: 1;
+}
+
+.p-dropdown .p-dropdown-trigger {
+  padding: 0 1rem;
+  border-top-right-radius: 0.3125rem;
+  border-bottom-right-radius: 0.3125rem;
+}
+
+.p-dropdown .p-dropdown-clear-icon {
+  right: 3rem;
+  cursor: pointer;
+}
+
+.p-dropdown-panel {
+  border: 0 none;
+  border-radius: 0.25rem;
+}
+
+.p-dropdown-panel .p-dropdown-header {
+  padding: 0.625rem;
+  margin: 0;
+}
+
+.p-dropdown-panel .p-dropdown-header .p-dropdown-filter {
+  padding-right: 2.5rem;
+  border-radius: 3.125rem;
+  font-size: 0.875rem;
+}
+
+.p-dropdown-panel .p-dropdown-header .p-dropdown-filter-icon {
+  right: 1rem;
+}
+
+.p-dropdown-panel .p-dropdown-items {
+  padding: 0;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  margin: 0 0.125rem;
+  padding: 0.5rem;
+  border: 0 none;
+  transition: box-shadow 0.2s;
+  border-radius: 0;
+}
+
+.p-dropdown-panel .p-dropdown-items p-dropdownitem:last-child .p-dropdown-item {
+  margin-bottom: 2px;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message {
+  padding: 0.75rem 1.25rem;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item-group {
+  margin: 0;
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+}

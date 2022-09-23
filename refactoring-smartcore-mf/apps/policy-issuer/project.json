@@ -16,13 +16,18 @@
         "inlineStyleLanguage": "scss",
         "assets": [
           "apps/policy-issuer/src/favicon.ico",
-          "apps/policy-issuer/src/assets"
+          "apps/policy-issuer/src/assets",
+          {
+            "input": "libs/refactoring-smartcore-commons-lib/src/assets",
+            "glob": "**/*",
+            "output": "smartcore-commons/assets"
+          }
         ],
         "styles": [
           "apps/policy-issuer/src/styles.scss",
           "node_modules/primeicons/primeicons.css",
           "node_modules/primeng/resources/primeng.min.css",
-          "node_modules/primeng/resources/themes/lara-light-blue/theme.css"
+          "libs/refactoring-smartcore-commons-lib/src/assets/styles/primeng-theme/theme.scss"
         ],
         "scripts": [],
         "customWebpackConfig": {

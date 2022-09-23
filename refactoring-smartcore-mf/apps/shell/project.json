@@ -14,12 +14,20 @@
         "polyfills": "apps/shell/src/polyfills.ts",
         "tsConfig": "apps/shell/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/shell/src/favicon.ico", "apps/shell/src/assets"],
+        "assets": [
+          "apps/shell/src/favicon.ico",
+          "apps/shell/src/assets",
+          {
+            "input": "libs/refactoring-smartcore-commons-lib/src/assets",
+            "glob": "**/*",
+            "output": "smartcore-commons/assets"
+          }
+        ],
         "styles": [
           "apps/shell/src/styles.scss",
           "node_modules/primeicons/primeicons.css",
           "node_modules/primeng/resources/primeng.min.css",
-          "node_modules/primeng/resources/themes/lara-light-blue/theme.css"
+          "libs/refactoring-smartcore-commons-lib/src/assets/styles/primeng-theme/theme.scss"
         ],
         "scripts": [],
         "customWebpackConfig": {
