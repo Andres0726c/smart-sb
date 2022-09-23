@@ -2,6 +2,7 @@
 export default {
   displayName: 'policy-issuer',
   preset: '../../jest.preset.js',
+  collectCoverage: true,
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
@@ -9,6 +10,7 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
+  coverageReporters: ['lcov', 'html', 'text', 'text-summary'],
   coverageDirectory: '../../coverage/apps/policy-issuer',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
