@@ -1,274 +1,34 @@
 {
-  "environment": {
-    "appDir": "ciencuadras",
-    "releasePath": "dist",
-    "dockerImage": "node18-nguniversal",
-    "dockerFileImg": "node18-nguniversal",
-    "imageTag": "latest",
-    "region": "us-east-1"
-  },
-  "cloudfront": {
-    "dev": {
-        "distributionId":"ERKKB0YCC3L27",
-        "invalidationPaths":"/*",
+    "environment": {
+        "releasePath": "dist",
+        "mainPath": "apps"
     },
-    "stage":{
-        "distributionId":"E3IUIFMX5OUK68",
-        "invalidationPaths":"/*",
-    },
-    "pre":{
-        "distributionId":"E3TU9RJGK99UJE",
-        "invalidationPaths":"/*",
-    },
-    "prod":{
-        "distributionId":"EY0A3C4E77MK7",
-        "invalidationPaths":"/*",
+    "s3": {
+        "dev": {
+            "name":"s3-name",
+            "acl": "public-read"
+        },
+        "stage":{
+            "name":"xx-stage",
+            "acl": "public-read"
+        },
+        "prod":{
+            "name":"xx-prod",
+            "acl": "public-read"
+        }
     }
-  },
-  "environments": {
-    "dev": {
-        "name": "/ciencuadras/dev/environment/front/nameFront",
-        "apiLambdasUrl": "/ciencuadras/dev/environment/front/apiLambdasUrlFront",
-        "environmentUrl": "/ciencuadras/dev/environment/front/environmentUrlFront",
-        "apiUrl": "/ciencuadras/dev/environment/front/apiUrlFront",
-        "apiUrlTokenCognito": "/ciencuadras/dev/environment/front/apiUrlTokenCognitoFront",
-        "userCognito": "/ciencuadras/dev/environment/front/userCognitoFront",
-        "passCognito": "/ciencuadras/dev/environment/front/passCognitoFront",
-        "imgBucket": "/ciencuadras/dev/environment/front/imgBucketFront",
-        "imgHandler": "/ciencuadras/dev/environment/front/imgHandlerFront",
-        "urlApiImages": "/ciencuadras/dev/environment/front/urlApiImagesFront",
-        "urlImagesFront": "/ciencuadras/dev/environment/front/urlImagesFront",
-        "urlImagesCloudFront": "/ciencuadras/dev/environment/front/urlImagesCloudFront",
-        "urlImagesAws": "/ciencuadras/dev/environment/front/urlImagesAwsFront",
-        "urlDefaultImage": "/ciencuadras/dev/environment/front/urlDefaultImageFront",
-        "reCaptachaKey": "/ciencuadras/dev/environment/front/reCaptachaKeyFront",
-        "loadingImage": "/ciencuadras/dev/environment/front/loadingImageFront",
-        "googleMapKey": "/ciencuadras/dev/environment/front/googleMapKeyFront",
-        "apiUrlListing": "/ciencuadras/dev/environment/front/apiUrlListingFront",
-        "urlElocuaDavivienda": "/ciencuadras/dev/environment/front/urlElocuaDaviviendaFront",
-        "secretKey": "/ciencuadras/dev/environment/front/secretKeyFront",
-        "secretIv": "/ciencuadras/dev/environment/front/secretIvFront",
-        "urlDaviviendaMovilProd": "/ciencuadras/dev/environment/front/urlDaviviendaMovilProdFront",
-        "urlDaviviendaMovilTest": "/ciencuadras/dev/environment/front/urlDaviviendaMovilTestFront",
-        "urlYoutube": "/ciencuadras/dev/environment/front/urlYoutubeFront",
-        "apiUrlEmail": "/ciencuadras/dev/environment/front/apiUrlEmailFront",
-        "authUser": "/ciencuadras/dev/environment/front/userCognitoFront",
-        "authPass": "/ciencuadras/dev/environment/front/passCognitoFront",
-        "urlShoppingCar": "/ciencuadras/dev/environment/front/urlShoppingCarFront",
-        "urlUserInformation": "/ciencuadras/dev/environment/front/urlUserInformationFront",
-        "googleTagManagerKey": "/ciencuadras/dev/environment/front/googleTagManagerKeyFront",
-        "dataDogAppIdFront":"/ciencuadras/dev/environment/front/dataDogAppIdFront",
-        "dataDogClientTokenFront":"/ciencuadras/dev/environment/front/dataDogClientTokenFront",
-        "dataDogServiceFront":"/ciencuadras/dev/environment/front/dataDogServiceFront",
-        "apiHomeUrlMap":"/ciencuadras/dev/environment/front/apiHomeUrlMap",
-        "apiPredictiveModels":"/ciencuadras/dev/environment/front/apiPredictiveModels",
-    },
-    "stage":{
-        "name": "/ciencuadras/stage/environment/front/nameFront",
-        "apiLambdasUrl": "/ciencuadras/stage/environment/front/apiLambdasUrlFront",
-        "environmentUrl": "/ciencuadras/stage/environment/front/environmentUrlFront",
-        "apiUrl": "/ciencuadras/stage/environment/front/apiUrlFront",
-        "apiUrlTokenCognito": "/ciencuadras/stage/environment/front/apiUrlTokenCognitoFront",
-        "userCognito": "/ciencuadras/stage/environment/front/userCognitoFront",
-        "passCognito": "/ciencuadras/stage/environment/front/passCognitoFront",
-        "imgBucket": "/ciencuadras/stage/environment/front/imgBucketFront",
-        "imgHandler": "/ciencuadras/stage/environment/front/imgHandlerFront",
-        "urlApiImages": "/ciencuadras/stage/environment/front/urlApiImagesFront",
-        "urlImagesFront": "/ciencuadras/stage/environment/front/urlImagesFront",
-        "urlImagesCloudFront": "/ciencuadras/stage/environment/front/urlImagesCloudFront",
-        "urlImagesAws": "/ciencuadras/stage/environment/front/urlImagesAwsFront",
-        "urlDefaultImage": "/ciencuadras/stage/environment/front/urlDefaultImageFront",
-        "reCaptachaKey": "/ciencuadras/stage/environment/front/reCaptachaKeyFront",
-        "loadingImage": "/ciencuadras/stage/environment/front/loadingImageFront",
-        "googleMapKey": "/ciencuadras/stage/environment/front/googleMapKeyFront",
-        "apiUrlListing": "/ciencuadras/stage/environment/front/apiUrlListingFront",
-        "urlElocuaDavivienda": "/ciencuadras/stage/environment/front/urlElocuaDaviviendaFront",
-        "secretKey": "/ciencuadras/stage/environment/front/secretKeyFront",
-        "secretIv": "/ciencuadras/stage/environment/front/secretIvFront",
-        "urlDaviviendaMovilProd": "/ciencuadras/stage/environment/front/urlDaviviendaMovilProdFront",
-        "urlDaviviendaMovilTest": "/ciencuadras/stage/environment/front/urlDaviviendaMovilTestFront",
-        "urlYoutube": "/ciencuadras/stage/environment/front/urlYoutubeFront",
-        "apiUrlEmail": "/ciencuadras/stage/environment/front/apiUrlEmailFront",
-        "authUser": "/ciencuadras/stage/environment/front/userCognitoFront",
-        "authPass": "/ciencuadras/stage/environment/front/passCognitoFront",
-        "urlShoppingCar": "/ciencuadras/stage/environment/front/urlShoppingCarFront",
-        "urlUserInformation": "/ciencuadras/stage/environment/front/urlUserInformationFront",
-        "googleTagManagerKey": "/ciencuadras/stage/environment/front/googleTagManagerKeyFront",
-        "dataDogAppIdFront":"/ciencuadras/stage/environment/front/dataDogAppIdFront",
-        "dataDogClientTokenFront":"/ciencuadras/stage/environment/front/dataDogClientTokenFront",
-        "dataDogServiceFront":"/ciencuadras/stage/environment/front/dataDogServiceFront",
-        "apiHomeUrlMap":"/ciencuadras/stage/environment/front/apiHomeUrlMap",
-        "apiPredictiveModels":"/ciencuadras/dev/environment/front/apiPredictiveModels",
-    },
-    "pre":{
-        "name": "/ciencuadras/pre/environment/front/nameFront",
-        "apiLambdasUrl": "/ciencuadras/pre/environment/front/apiLambdasUrlFront",
-        "environmentUrl": "/ciencuadras/pre/environment/front/environmentUrlFront",
-        "apiUrl": "/ciencuadras/pre/environment/front/apiUrlFront",
-        "apiUrlTokenCognito": "/ciencuadras/pre/environment/front/apiUrlTokenCognitoFront",
-        "userCognito": "/ciencuadras/pre/environment/front/userCognitoFront",
-        "passCognito": "/ciencuadras/pre/environment/front/passCognitoFront",
-        "imgBucket": "/ciencuadras/pre/environment/front/imgBucketFront",
-        "imgHandler": "/ciencuadras/pre/environment/front/imgHandlerFront",
-        "urlApiImages": "/ciencuadras/pre/environment/front/urlApiImagesFront",
-        "urlImagesFront": "/ciencuadras/pre/environment/front/urlImagesFront",
-        "urlImagesCloudFront": "/ciencuadras/pre/environment/front/urlImagesCloudFront",
-        "urlImagesAws": "/ciencuadras/pre/environment/front/urlImagesAwsFront",
-        "urlDefaultImage": "/ciencuadras/pre/environment/front/urlDefaultImageFront",
-        "reCaptachaKey": "/ciencuadras/pre/environment/front/reCaptachaKeyFront",
-        "loadingImage": "/ciencuadras/pre/environment/front/loadingImageFront",
-        "googleMapKey": "/ciencuadras/pre/environment/front/googleMapKeyFront",
-        "apiUrlListing": "/ciencuadras/pre/environment/front/apiUrlListingFront",
-        "urlElocuaDavivienda": "/ciencuadras/pre/environment/front/urlElocuaDaviviendaFront",
-        "secretKey": "/ciencuadras/pre/environment/front/secretKeyFront",
-        "secretIv": "/ciencuadras/pre/environment/front/secretIvFront",
-        "urlDaviviendaMovilProd": "/ciencuadras/pre/environment/front/urlDaviviendaMovilProdFront",
-        "urlDaviviendaMovilTest": "/ciencuadras/pre/environment/front/urlDaviviendaMovilTestFront",
-        "urlYoutube": "/ciencuadras/pre/environment/front/urlYoutubeFront",
-        "apiUrlEmail": "/ciencuadras/pre/environment/front/apiUrlEmailFront",
-        "authUser": "/ciencuadras/pre/environment/front/userCognitoFront",
-        "authPass": "/ciencuadras/pre/environment/front/passCognitoFront",
-        "urlShoppingCar": "/ciencuadras/pre/environment/front/urlShoppingCarFront",
-        "urlUserInformation": "/ciencuadras/pre/environment/front/urlUserInformationFront",
-        "googleTagManagerKey": "/ciencuadras/pre/environment/front/googleTagManagerKeyFront",
-        "dataDogAppIdFront":"/ciencuadras/pre/environment/front/dataDogAppIdFront",
-        "dataDogClientTokenFront":"/ciencuadras/pre/environment/front/dataDogClientTokenFront",
-        "dataDogServiceFront":"/ciencuadras/pre/environment/front/dataDogServiceFront",
-    },
-    "prod":{
-        "name": "/ciencuadras/prod/environment/front/nameFront",
-        "apiLambdasUrl": "/ciencuadras/prod/environment/front/apiLambdasUrlFront",
-        "environmentUrl": "/ciencuadras/prod/environment/front/environmentUrlFront",
-        "apiUrl": "/ciencuadras/prod/environment/front/apiUrlFront",
-        "apiUrlTokenCognito": "/ciencuadras/prod/environment/front/apiUrlTokenCognitoFront",
-        "userCognito": "/ciencuadras/prod/environment/front/userCognitoFront",
-        "passCognito": "/ciencuadras/prod/environment/front/passCognitoFront",
-        "imgBucket": "/ciencuadras/prod/environment/front/imgBucketFront",
-        "imgHandler": "/ciencuadras/prod/environment/front/imgHandlerFront",
-        "urlApiImages": "/ciencuadras/prod/environment/front/urlApiImagesFront",
-        "urlImagesFront": "/ciencuadras/prod/environment/front/urlImagesFront",
-        "urlImagesCloudFront": "/ciencuadras/prod/environment/front/urlImagesCloudFront",
-        "urlImagesAws": "/ciencuadras/prod/environment/front/urlImagesAwsFront",
-        "urlDefaultImage": "/ciencuadras/prod/environment/front/urlDefaultImageFront",
-        "reCaptachaKey": "/ciencuadras/prod/environment/front/reCaptachaKeyFront",
-        "loadingImage": "/ciencuadras/prod/environment/front/loadingImageFront",
-        "googleMapKey": "/ciencuadras/prod/environment/front/googleMapKeyFront",
-        "apiUrlListing": "/ciencuadras/prod/environment/front/apiUrlListingFront",
-        "urlElocuaDavivienda": "/ciencuadras/prod/environment/front/urlElocuaDaviviendaFront",
-        "secretKey": "/ciencuadras/prod/environment/front/secretKeyFront",
-        "secretIv": "/ciencuadras/prod/environment/front/secretIvFront",
-        "urlDaviviendaMovilProd": "/ciencuadras/prod/environment/front/urlDaviviendaMovilProdFront",
-        "urlDaviviendaMovilTest": "/ciencuadras/prod/environment/front/urlDaviviendaMovilTestFront",
-        "urlYoutube": "/ciencuadras/prod/environment/front/urlYoutubeFront",
-        "apiUrlEmail": "/ciencuadras/prod/environment/front/apiUrlEmailFront",
-        "authUser": "/ciencuadras/prod/environment/front/userCognitoFront",
-        "authPass": "/ciencuadras/prod/environment/front/passCognitoFront",
-        "urlShoppingCar": "/ciencuadras/prod/environment/front/urlShoppingCarFront",
-        "urlUserInformation": "/ciencuadras/prod/environment/front/urlUserInformationFront",
-        "googleTagManagerKey": "/ciencuadras/prod/environment/front/googleTagManagerKeyFront",
-        "dataDogAppIdFront":"/ciencuadras/prod/environment/front/dataDogAppIdFront",
-        "dataDogClientTokenFront":"/ciencuadras/prod/environment/front/dataDogClientTokenFront",
-        "dataDogServiceFront":"/ciencuadras/prod/environment/front/dataDogServiceFront",
+    "cloudfront": {
+        "dev": {
+            "distributionId":"EDFDVBD6EXAMPLE",
+            "invalidationPaths":"/*"
+        },
+        "stage":{
+            "distributionId":"EDFDVBD6EXAMPLE",
+            "invalidationPaths":"/*"
+        },
+        "prod":{
+            "distributionId":"EDFDVBD6EXAMPLE",
+            "invalidationPaths":"/*"
+        }
     }
-  },
-  "configuration":{
-    "develop": "dev",
-    "stage": "stage",
-    "pre": "pre",
-    "master": "prod"
-  },
-  "apps": {
-    "dev": {
-      "0": "shell"
-    },
-    "stage": {
-      "0": "shell"
-    },
-    "pre": {
-      "0": "shell"
-    },
-    "prod": {
-      "0": "shell"
-    }
-  },
-  "repositoryUrl": {
-    "dev": {
-      "repository_url": "ciencuadras-npm-dev-virtual"
-    },
-    "stage": {
-      "repository_url": "ciencuadras-npm-stg-virtual"
-    },
-    "pre": {
-      "repository_url": "ciencuadras-npm-stg-virtual"
-    },
-    "prod": {
-      "repository_url": "ciencuadras-npm-prod-virtual"
-    }
-  },
-  "dev": {
-    "cluster": "dev-cluster-ciencuadras",
-    "shell": {
-      "balancerPath": "shell",
-      "taskDefinition":"ciencuadras-dev-mf-shell-tsk",
-      "serviceName": "ciencuadras-dev-node-shell-service",
-      "repositoryUrl": "https://290296201161.dkr.ecr.us-east-1.amazonaws.com",
-      "repositoryImage": "290296201161.dkr.ecr.us-east-1.amazonaws.com/ciencuadras-dev-shell-monorepo-mf"
-    }
-  },
-  "stage": {
-    "cluster": "qa-cluster-ciencuadras",
-    "shell": {
-      "balancerPath": "shell",
-      "taskDefinition":"ciencuadras-stage-mf-shell-tsk",
-      "serviceName": "ciencuadras-stage-node-shell-service",
-      "repositoryUrl": "https://290296201161.dkr.ecr.us-east-1.amazonaws.com",
-      "repositoryImage": "290296201161.dkr.ecr.us-east-1.amazonaws.com/ciencuadras-stage-shell-monorepo-mf"
-    },
-  },
-  "pre": {
-    "cluster": "pre-cluster-ciencuadras",
-    "shell": {
-      "balancerPath": "shell",
-      "taskDefinition":"ciencuadras-pre-mf-shell-tsk",
-      "serviceName": "ciencuadras-pre-node-shell-service",
-      "repositoryUrl": "https://290296201161.dkr.ecr.us-east-1.amazonaws.com",
-      "repositoryImage": "290296201161.dkr.ecr.us-east-1.amazonaws.com/ciencuadras-pre-shell-monorepo-mf"
-    }
-  },
-  "prod": {
-    "cluster": "www-cluster-ciencuadras",
-    "shell": {
-      "balancerPath": "shell",
-      "taskDefinition":"ciencuadras-prod-mf-shell-tsk",
-      "serviceName": "ciencuadras-prod-node-shell-service",
-      "repositoryUrl": "https://290296201161.dkr.ecr.us-east-1.amazonaws.com",
-      "repositoryImage": "290296201161.dkr.ecr.us-east-1.amazonaws.com/ciencuadras-prod-shell-monorepo-mf"
-    }
-  },
-  "arguments": {
-    "dev": {
-      "shell": {
-        "0": "APP_PORT=80",
-        "1": "APP_PATH=dist"
-      }
-    },
-    "stage": {
-      "shell": {
-        "0": "APP_PORT=80",
-        "1": "APP_PATH=dist"
-      }
-    },
-    "pre": {
-      "shell": {
-        "0": "APP_PORT=80",
-        "1": "APP_PATH=dist"
-      }
-    },
-    "prod": {
-      "shell": {
-        "0": "APP_PORT=80",
-        "1": "APP_PATH=dist"
-      }
-    }
-  }
 }
