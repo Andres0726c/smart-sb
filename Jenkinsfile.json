@@ -17,6 +17,16 @@
             "acl": "public-read"
         }
     },
+    "sites": {
+        "dev":[
+            {
+                "name": "shell",
+                "path": "dist",
+                "build": "nx build shell --base-href /apps/shell/",
+                "test": "nx test shell --coverage"
+            }
+        ]
+    },
     "cloudfront": {
         "dev": {
             "distributionId":"E39GV27BDMYVGC",
