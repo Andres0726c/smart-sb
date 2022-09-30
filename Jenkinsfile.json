@@ -16,7 +16,7 @@
             "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         }
-    }
+    },
     "cloudfront": {
         "dev": {
             "distributionId":"E39GV27BDMYVGC",
