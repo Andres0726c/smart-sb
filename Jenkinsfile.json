@@ -21,9 +21,9 @@
         "dev":[
             {
                 "name": "shell",
-                "path": "dist",
-                "build": "nx build shell --base-href /apps/shell/",
-                "test": "nx test shell --coverage"
+                "path": "shell",
+                "build": "shell",
+                "test": "shell"
             }
         ]
     },

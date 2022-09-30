@@ -11,7 +11,7 @@ export class PolicyManagementComponent implements OnInit {
   constructor(public router: Router) { }
 
   ngOnInit(): void {
-    this.router.navigate(['emisor/consulta']);
+    //this.router.navigate(['emisor/consulta']);
   }
 
 }

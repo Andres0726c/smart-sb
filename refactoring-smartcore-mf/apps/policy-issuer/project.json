@@ -27,7 +27,8 @@
           "apps/policy-issuer/src/styles.scss",
           "node_modules/primeicons/primeicons.css",
           "node_modules/primeng/resources/primeng.min.css",
-          "libs/refactoring-smartcore-commons-lib/src/assets/styles/primeng-theme/theme.scss"
+          "libs/refactoring-smartcore-commons-lib/src/assets/styles/primeng-theme/theme.scss",
+          "libs/refactoring-smartcore-commons-lib/src/assets/styles/material-theme/theme.scss"
         ],
         "scripts": [],
         "customWebpackConfig": {

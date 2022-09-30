@@ -12,7 +12,7 @@ import { PolicyManagementComponent } from './policy-management.component';
   ],
   imports: [
     PolicyManagementRoutingModule,
-    CommonModule,
+    CommonModule
   ],
 })
 export class PolicyManagementModule { }

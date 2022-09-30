@@ -3,6 +3,7 @@ export default {
   displayName: 'refactoring-smartcore-commons-lib',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
+  collectCoverage: true,
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -10,6 +11,7 @@ export default {
     },
   },
   coverageDirectory: '../../coverage/libs/refactoring-smartcore-commons-lib',
+  coverageReporters: ['lcov', 'html', 'text', 'text-summary'],
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

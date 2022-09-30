@@ -16,6 +16,8 @@ import { FilterPolicyTopComponent } from './filter-policy-top/filter-policy-top.
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {MenuModule} from 'primeng/menu';
 import { DialogModule } from 'primeng/dialog';
+import { MaterialExampleModule, PrimengExampleModule } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
+import { SliderModule } from 'primeng/slider';
 
 const routes: Routes = [
   {
@@ -40,7 +42,9 @@ const routes: Routes = [
     TableModule,
     OverlayPanelModule,
     MenuModule,
-    DialogModule
+    DialogModule,
+    MaterialExampleModule,
+    PrimengExampleModule
   ],
   exports:[
     ConsultPolicyComponent
