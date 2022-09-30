@@ -5,21 +5,21 @@
     },
     "s3": {
         "dev": {
-            "name":"s3-name",
+            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         },
         "stage":{
-            "name":"xx-stage",
+            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         },
         "prod":{
-            "name":"xx-prod",
+            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         }
     }
     "cloudfront": {
         "dev": {
-            "distributionId":"EDFDVBD6EXAMPLE",
+            "distributionId":"E39GV27BDMYVGC",
             "invalidationPaths":"/*"
         },
         "stage":{
