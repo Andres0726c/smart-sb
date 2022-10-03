@@ -2,7 +2,6 @@ import { ConsultPolicyComponent } from './consult-policy.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { FilterPolicyComponent } from './filter-policy/filter-policy.component';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -38,7 +37,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ConsultPolicyComponent,
-    FilterPolicyComponent,
     FilterPolicyTopComponent,
   ],
   imports: [
