@@ -14,6 +14,11 @@
   background: var(--bg-primary-light);
   color: var(--primary-base);
 }
+//SECONDARY
+.p-tag.p-tag-secondary {
+  background: var(--secondary-base);
+  color: var(--secondary-text-color);
+}
 
 .tag__fill.p-tag.tag-secondary {
   background: var(--secondary-base);
@@ -25,16 +30,25 @@
   /* Variable bg-light en secondary */
   color: var(--secondary-text-color);
 }
-
+//SUCCESS
 .tag__fill.p-tag.tag-success {
   background: var(--success-base);
   color: var(--success-text-color);
 }
 
+.p-tag.p-tag-success {
+  background: var(--success-base);
+  color: var(--success-text-color);
+}
 .tag__outlined.p-tag.tag-success {
   background-color: var(--success-light);
   /* Variable bg-light en success */
   color: var(--success-base);
+}
+//INFO
+.tag__fill.p-tag.tag-info {
+  background: var(--info-base);
+  color: var(--info-text-color);
 }
 
 .tag__fill.p-tag.tag-info {
@@ -47,6 +61,11 @@
   /* Variable bg-light en info */
   color: var(--info-base);
 }
+//WARNING
+.p-tag.p-tag-warning {
+  background: var(--warning-base);
+  color: var(--warning-text-color);
+}
 
 .tag__fill.p-tag.tag-warning {
   background: var(--warning-base);
@@ -57,6 +76,11 @@
   background-color: var(--warning-light);
   /* Variable bg-light en warning */
   color: var(--warning-base);
+}
+//DANGER
+.p-tag.p-tag-danger {
+  background: var(--danger-base);
+  color: var(--danger-text-color);
 }
 
 .tag__fill.p-tag.tag-danger {
