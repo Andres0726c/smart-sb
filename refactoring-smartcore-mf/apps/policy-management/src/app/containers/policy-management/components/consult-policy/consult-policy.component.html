@@ -1,61 +1,138 @@
-<h1>Consulta de polizas</h1>
-<span>Polizas consultadas</span>
-<app-filter-policy></app-filter-policy>
-<app-filter-policy-top></app-filter-policy-top>
-<section class="flex justify-center">
-  <div class="w-4/5">
-    <p-table [columns]="cols" [value]="products" responsiveLayout="scroll">
-      <ng-template pTemplate="header" let-columns>
-        <tr class="border-2 border-gray-500 rounded">
-          <th *ngFor="let col of columns">
-            {{ col.header }}
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr>
-          <td *ngFor="let col of columns">
-            {{ rowData[col.field] }}
-          </td>
-          <td>
-            <button
-              type="button"
-              pButton
-              icon="pi pi-bars"
-              label="Opciones"
-              (click)="selectedPolicy = rowData; menu.toggle($event)"
-            ></button>
-            <p-menu
-              #menu
-              [popup]="true"
-              [model]="items"
-              appendTo="body"
-              (onHide)="
-                !showCancellationDialog ? (selectedPolicy = null) : null
-              "
-            ></p-menu>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-</section>
+<div class="mx-12 mb-12">
+    <h1>Consulta de pólizas</h1>
+    <span>Criterios de búsqueda</span>
+    <div class="flex flex-col justify-center items-center gap-y-4">
+        <!-- <app-filter-policy></app-filter-policy> -->
+       <!--  <app-filter-policy-top (emitSearch)="search($event)" class="w-full"></app-filter-policy-top> -->
+        <app-filter-policy-top (emitSearch)="null" class="w-full"></app-filter-policy-top>
+        <span class="w-full">Resultados de la búsqueda</span>
+        <section class="flex flex-col justify-center">
+            <p-table [columns]="cols" [value]="policies" responsiveLayout="scroll" [rows]="5"
+                [rowsPerPageOptions]="[5,10,15]" [paginator]="true" [alwaysShowPaginator]="false" [lazy]="true"
+                (onLazyLoad)="nextPage($event)" [totalRecords]="totalRecords">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns">
+                            {{col.header}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td>
+                            {{rowData['productName']}}
+                        </td>
+                        <td>
+                            {{rowData['policyNumber']}}
+                        </td>
+                        <td>
+                            {{rowData['holderName']?rowData['holderName']:'-'}}
+                        </td>
 
-<hr />
+                        <td>
+                            {{rowData['inceptionDate'] | date:'medium'}}
+                        </td>
+                        <td>
+                            {{rowData['expirationDate'] | date:'medium'}}
+                        </td>
+                        <td>
+                            <span
+                                class="bagde status-{{rowData['policyStatus'].toString().split('-')}}">{{rowData['policyStatus'].toUpperCase()}}</span>
+                        </td>
+                        <td>
+                            <button type="button" pButton pRipple class="p-button p-button-secondary bg-white hover:"
+                                icon="pi pi-ellipsis-v" (click)="selectedPolicy=rowData; menu.toggle($event)">
+                            </button>
+                            <p-menu #menu [popup]="true" [model]="items" appendTo="body"></p-menu>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">Pólizas no encontradas</td>
+                    </tr>
+                </ng-template>}
 
-<div class="flex items-center gap-x-20 mt-20">
-  <div class="flex items-center gap-x-5">
-    <span>Prueba material: </span>
-    <refactoring-smartcore-mf-material-example></refactoring-smartcore-mf-material-example>
-  </div>
+            </p-table>
 
-  <div class="flex items-center gap-x-5">
-    <span>Prueba primeng: </span>
-    <refactoring-smartcore-mf-primeng-example></refactoring-smartcore-mf-primeng-example>
-  </div>
+        </section>
+    </div>
 </div>
+<!-- Popup Fecha anulación -->
+<p-dialog [(visible)]="showCancellationDialog" styleClass="w-7/12" [modal]="true" [dismissableMask]="true">
 
-<!-- Popups -->
-<p-dialog header="Title" [(visible)]="showCancellationDialog">
-  Hola mundo
+    <ng-template pTemplate="header">
+        <div class="text-primary text-5xl font-bold">
+            Anulación/Cancelación
+        </div>
+    </ng-template>
+    <div class="grid grid-cols-2">
+        <div>
+            <span>Compañía:</span>
+            {{ selectedPolicy?.company }}
+            <p-divider></p-divider>
+        </div>
+
+        <div>
+            <span>Producto:</span>
+            {{ selectedPolicy?.productName }}
+            <p-divider></p-divider>
+        </div>
+
+        <div>
+            <b>Número de póliza:</b>
+            {{ selectedPolicy?.policyNumber }}
+            <p-divider></p-divider>
+        </div>
+
+        <div>
+            <b>Tomador:</b>
+            {{ selectedPolicy?.holderDocument }}
+            <p-divider></p-divider>
+        </div>
+
+        <div>
+            <b>Inicio de póliza:</b>
+            {{ selectedPolicy?.inceptionDate }}
+            <p-divider></p-divider>
+        </div>
+
+        <div>
+            <b>Fin de póliza:</b>
+            {{ selectedPolicy?.expirationDate }}
+            <p-divider></p-divider>
+        </div>
+
+    </div>
+    <form [formGroup]="formDate">
+
+        <div class="grid grid-cols-2  gap-10">
+            <div>
+                <label>Seleccione la fecha de anulación</label>
+                <div class="p-field p-col-12 p-md-4">
+                    <p-calendar formControlName="processDate" (onSelect)="verifyDate()" dateFormat="yy-mm-dd"
+                        [showIcon]="true" appendTo="body" [showTime]="true" hourFormat="24" [showSeconds]="true"
+                        [locale]="es" styleClass="w-full" placeholder="aaaa/mm/dd" mask="9999/99/99">
+                    </p-calendar>
+                </div>
+            </div>
+            <div>
+                <label>Tipo de causa</label>
+                <p-dropdown formControlName="causeType" [options]="causes" optionLabel="type" optionValue="idCause"
+                    [style]="{'width':'100%'}"></p-dropdown>
+            </div>
+
+            <div class="col-span-2">
+                <label>Observación</label>
+                <textarea formControlName="observation" rows="5" cols="30" pInputTextarea class="w-full"></textarea>
+            </div>
+
+            <div class="col-span-2 ml-auto">
+                <p-button label="Anular" [disabled]="disableButton()" (click)="cancelPolicy()"></p-button>
+            </div>
+        </div>
+    </form>
 </p-dialog>
+<div>
+<p-toast>Anulación exitosa</p-toast>
+</div>

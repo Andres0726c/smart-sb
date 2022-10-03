@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false,
+  apiKeyServices:'YkmEA1FYLQ8316jjoU0PR5gGnbLL8sOA7SrVdCly',
+  urlMicroServices:'https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev/emisor/v1/',
 };
 
 /*

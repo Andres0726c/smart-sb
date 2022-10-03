@@ -1,4 +1,3 @@
-import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PolicyManagementComponent } from './policy-management.component';
@@ -9,9 +8,9 @@ describe('PolicyManagementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PolicyManagementComponent],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+      declarations: [ PolicyManagementComponent ]
+    })
+    .compileComponents();
   });
 
   beforeEach(() => {
