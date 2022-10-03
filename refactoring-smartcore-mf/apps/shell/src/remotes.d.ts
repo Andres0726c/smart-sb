@@ -1,1 +1,1 @@
-declare module 'policy-issuer/Module';
+declare module 'policy-management/Module';
