@@ -33,11 +33,11 @@
             "invalidationPaths":"/*"
         },
         "stage":{
-            "distributionId":"EDFDVBD6EXAMPLESTG",
+            "distributionId":"EDFDVBD6EXAMPLE",
             "invalidationPaths":"/*"
         },
         "prod":{
-            "distributionId":"EDFDVBD6EXAMPLEPRD",
+            "distributionId":"EDFDVBD6EXAMPLE",
             "invalidationPaths":"/*"
         }
     }
