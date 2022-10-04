@@ -1,3 +1,4 @@
+import { FilterPolicy } from './../interfaces/consult-policy';
 import { ConsultPolicyService } from './../services/consult-policy.service';
 import { Component, EventEmitter, Output } from '@angular/core';
 import {
@@ -19,7 +20,7 @@ interface fieldDocument {
   styleUrls: ['./filter-policy-top.component.scss'],
 })
 export class FilterPolicyTopComponent {
-  @Output() emitSearch = new EventEmitter<{}>();
+  @Output() emitSearch = new EventEmitter<FilterPolicy>();
 
   formQueryFilter: FormGroup;
 
@@ -32,8 +33,6 @@ export class FilterPolicyTopComponent {
   showMoreFilters: boolean = false;
 
   errorAllForm: boolean = false;
-
-  field1: any;
 
   isRequired: { [key: string]: boolean } = {
     policyNumber: true,
@@ -93,8 +92,8 @@ export class FilterPolicyTopComponent {
     return this.formQueryFilter.get('insuredDocumentNumber') as FormControl;
   }
 
-  get policyNumber(): FormGroup {
-    return this.formQueryFilter.get('policyNumber') as FormGroup;
+  get policyNumber(): FormControl {
+    return this.formQueryFilter.get('policyNumber') as FormControl;
   }
 
   seeMore() {
