@@ -40,3 +40,4 @@ testem.log
 Thumbs.db
 
 .angular
+node_modules
