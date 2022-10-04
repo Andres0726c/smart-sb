@@ -5,7 +5,7 @@ import {
 import { PolicyBrief } from './../../../../core/interfaces/policy';
 import { ConsultPolicyService } from './services/consult-policy.service';
 import { FilterPolicy } from './interfaces/consult-policy';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -14,7 +14,7 @@ import { MessageService } from 'primeng/api';
   selector: 'app-consult-policy',
   templateUrl: './consult-policy.component.html',
   styleUrls: ['./consult-policy.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class ConsultPolicyComponent {
   policies: PolicyBrief[] = [];
@@ -56,9 +56,6 @@ export class ConsultPolicyComponent {
       causeType: fb.control(null, Validators.required),
       observation: fb.control(null, Validators.maxLength(2000)),
     });
-  }
-
-  ngOnInit() {
 
     // this.msgs1 = [
     //   {severity:'success', summary:'Success', detail:'Message Content'},
@@ -203,8 +200,8 @@ export class ConsultPolicyComponent {
         if (res.dataHeader.code && (res.dataHeader.code = 200)) {
           this.policies = res.body;
           this.totalRecords = res.dataHeader.totalRecords;
-        }else{
-          console.log('FALLO EN LA BUSQUEDA')
+        } else {
+          console.log('FALLO EN LA BUSQUEDA');
         }
       },
       error: (error: ResponseErrorDTO) => console.error('error', error),
@@ -263,22 +260,25 @@ export class ConsultPolicyComponent {
   cancelPolicy() {
     console.log('selected Policy', this.selectedPolicy);
     console.log('formDate', this.formDate);
-    
-    if( this.formDate.valid ){
-    this.consultPolicyService.cancelDate(this.selectedPolicy, this.formDate.value)
-      .subscribe( resp => {
-        console.log('respuesta', resp);
-        
-      } );
+
+    if (this.formDate.valid) {
+      this.consultPolicyService
+        .cancelDate(this.selectedPolicy, this.formDate.value)
+        .subscribe((resp) => {
+          console.log('respuesta', resp);
+        });
       this.showCancellationDialog = false;
       return this.showSuccess();
-    }else{
+    } else {
       return false;
     }
-
   }
 
   showSuccess() {
-    this.messageService.add({severity:'success', summary: 'Success', detail: 'Message Content'});
-}
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Message Content',
+    });
+  }
 }
