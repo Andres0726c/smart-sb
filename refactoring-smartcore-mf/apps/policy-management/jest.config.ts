@@ -1,17 +1,17 @@
 /* eslint-disable */
 export default {
-  displayName: 'refactoring-smartcore-commons-lib',
+  displayName: 'policy-management',
   preset: '../../jest.preset.js',
-  setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   collectCoverage: true,
+  setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/libs/refactoring-smartcore-commons-lib',
   coverageReporters: ['lcov', 'html', 'text', 'text-summary'],
+  coverageDirectory: '../../coverage/apps/policy-management',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

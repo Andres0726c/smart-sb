@@ -1,0 +1,61 @@
+<h1>Consulta de polizas</h1>
+<span>Polizas consultadas</span>
+<app-filter-policy></app-filter-policy>
+<app-filter-policy-top></app-filter-policy-top>
+<section class="flex justify-center">
+  <div class="w-4/5">
+    <p-table [columns]="cols" [value]="products" responsiveLayout="scroll">
+      <ng-template pTemplate="header" let-columns>
+        <tr class="border-2 border-gray-500 rounded">
+          <th *ngFor="let col of columns">
+            {{ col.header }}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td *ngFor="let col of columns">
+            {{ rowData[col.field] }}
+          </td>
+          <td>
+            <button
+              type="button"
+              pButton
+              icon="pi pi-bars"
+              label="Opciones"
+              (click)="selectedPolicy = rowData; menu.toggle($event)"
+            ></button>
+            <p-menu
+              #menu
+              [popup]="true"
+              [model]="items"
+              appendTo="body"
+              (onHide)="
+                !showCancellationDialog ? (selectedPolicy = null) : null
+              "
+            ></p-menu>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</section>
+
+<hr />
+
+<div class="flex items-center gap-x-20 mt-20">
+  <div class="flex items-center gap-x-5">
+    <span>Prueba material: </span>
+    <refactoring-smartcore-mf-material-example></refactoring-smartcore-mf-material-example>
+  </div>
+
+  <div class="flex items-center gap-x-5">
+    <span>Prueba primeng: </span>
+    <refactoring-smartcore-mf-primeng-example></refactoring-smartcore-mf-primeng-example>
+  </div>
+</div>
+
+<!-- Popups -->
+<p-dialog header="Title" [(visible)]="showCancellationDialog">
+  Hola mundo
+</p-dialog>
