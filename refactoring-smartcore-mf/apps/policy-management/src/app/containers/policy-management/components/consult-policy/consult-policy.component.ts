@@ -20,6 +20,7 @@ export class ConsultPolicyComponent {
   policies: PolicyBrief[] = [];
   cols: any[] = [];
   filters: FilterPolicy = {
+    idCompany: 3,
     pageNumber: 0,
     pageSize: 5,
     notElements: '0',

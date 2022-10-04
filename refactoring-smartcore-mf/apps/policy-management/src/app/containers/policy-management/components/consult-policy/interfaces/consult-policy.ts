@@ -1,4 +1,5 @@
 export interface FilterPolicy {
+  idCompany: number;
   pageNumber: number;
   pageSize: number;
   notElements: string;
