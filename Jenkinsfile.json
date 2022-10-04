@@ -1,44 +1,48 @@
 {
-    "environment": {
-        "releasePath": "dist",
-        "mainPath": "apps"
+  "environment": {
+    "appDir": "refactoring-smartcore-mf",
+    "releasePath": "dist",
+    "dockerImage": "node18-nguniversal",
+    "dockerFileImg": "node18-nguniversal",
+    "imageTag": "latest",
+    "region": "us-east-1"
+  },
+  "s3": {
+    "dev": {
+      "name": "refactoring-dev-smartcore-web-frontend-mf-monorepo",
+      "acl": "public-read"
     },
-    "s3": {
-        "dev": {
-            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
-            "acl": "public-read"
-        },
-        "stage":{
-            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
-            "acl": "public-read"
-        },
-        "prod":{
-            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
-            "acl": "public-read"
-        }
+    "stage": {
+      "name": "refactoring-dev-smartcore-web-frontend-mf-monorepo",
+      "acl": "public-read"
     },
-    "sites": {
-        "dev":[
-            {
-                "name": "shell",
-                "path": "shell",
-                "build": "shell",
-                "test": "shell"
-            }
-        ]
-    },
-    "cloudfront": {
-        "dev": {
-            "distributionId":"E39GV27BDMYVGC",
-            "invalidationPaths":"/*"
-        },
-        "stage":{
-            "distributionId":"EDFDVBD6EXAMPLE",
-            "invalidationPaths":"/*"
-        },
-        "prod":{
-            "distributionId":"EDFDVBD6EXAMPLE",
-            "invalidationPaths":"/*"
-        }
+    "prod": {
+      "name": "refactoring-dev-smartcore-web-frontend-mf-monorepo",
+      "acl": "public-read"
     }
+  },
+  "sites": {
+    "dev": [
+      {
+        "name": "shell",
+        "path": "shell",
+        "build": "shell",
+        "test": "shell"
+      }
+    ]
+  },
+  "cloudfront": {
+    "dev": {
+      "distributionId": "E39GV27BDMYVGC",
+      "invalidationPaths": "/*"
+    },
+    "stage": {
+      "distributionId": "EDFDVBD6EXAMPLE",
+      "invalidationPaths": "/*"
+    },
+    "prod": {
+      "distributionId": "EDFDVBD6EXAMPLE",
+      "invalidationPaths": "/*"
+    }
+  }
 }
