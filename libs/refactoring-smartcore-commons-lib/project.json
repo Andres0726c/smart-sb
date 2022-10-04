@@ -9,7 +9,7 @@
       "outputs": ["coverage/libs/refactoring-smartcore-commons-lib"],
       "options": {
         "jestConfig": "libs/refactoring-smartcore-commons-lib/jest.config.ts",
-        "passWithNoTests": false
+        "passWithNoTests": true
       }
     },
     "lint": {
