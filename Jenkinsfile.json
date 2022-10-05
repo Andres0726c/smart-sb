@@ -29,7 +29,7 @@
     },
     "cloudfront": {
         "dev": {
-            "distributionId":"E39GV27BDMYVGC",
+            "distributionId":"E1CCWIH2SORIT0",
             "invalidationPaths":"/*"
         },
         "stage":{
