@@ -172,10 +172,6 @@ export class ConsultPolicyComponent {
     };
   }
 
-  doSome() {
-    console.log('policy', this.selectedPolicy);
-  }
-
   search(filters: FilterPolicy) {
     filters.pageNumber = 0;
     this.filters = Object.assign(this.filters, filters);
