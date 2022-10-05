@@ -1,7 +1,7 @@
 {
     "environment": {
-        "releasePath": "dist/apps",
-        "mainPath": "shell"
+        "releasePath": "dist",
+        "mainPath": "apps"
     },
     "s3": {
         "dev": {
@@ -24,6 +24,12 @@
                 "path": "shell",
                 "build": "shell",
                 "test": "shell"
+            },
+            {
+                "name": "policy-management",
+                "path": "policy-management",
+                "build": "policy-management",
+                "test": "policy-management"
             }
         ]
     },
@@ -39,6 +45,17 @@
         "prod":{
             "distributionId":"EDFDVBD6EXAMPLE",
             "invalidationPaths":"/*"
+        }
+    },
+    "apps": {
+        "dev": {
+        "0": "shell"
+        },
+        "stage": {
+        "0": "shell"
+        }
+        "prod": {
+        "0": "shell"
         }
     }
 }
