@@ -1,7 +1,7 @@
 {
     "environment": {
-        "releasePath": "dist/apps",
-        "mainPath": "shell"
+        "releasePath": "dist",
+        "mainPath": "apps"
     },
     "s3": {
         "dev": {
