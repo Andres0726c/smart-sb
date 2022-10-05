@@ -49,13 +49,13 @@
     },
     "apps": {
         "dev": {
-        "0": "shell"
+            "0": "shell"
         },
         "stage": {
-        "0": "shell"
-        }
+            "0": "shell"
+        },
         "prod": {
-        "0": "shell"
+            "0": "shell"
         }
     }
 }
