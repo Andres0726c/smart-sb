@@ -1,33 +1,4 @@
-/* :root {
-  --primary-light: #75298C;
-  --primary-base: #2E0063;
-  --primary-dark: #100039;
-  --primary-focus: #A89FE9;
-  --primary-text-color: #4EB449;
-  
-  --secondary-light: #82E778;
-  --secondary-base: #4EB449;
-  --secondary-dark: #3B8737;
-  --secondary-focus: #EFFCEE;
-  --secondary-text-color: #2E0063;
-
-  --info-light: #CCE5FF;
-  --info-base: #007EFF;
-  --info-dark: #CCC;
-
-  --warning-light: #FFF2C9;
-  --warning-base: #FFC100;
-  --warning-dark: #CCC;
-
-  --success-light: #BAE8C5;
-  --success-base: #28A745;
-  --success-dark: #CCC;
-
-  --error-light: #F7D4D7;
-  --danger-base: #DC3545;
-  --error-dark: #CCC;
-  
-} */
+@import './typography-base.scss';
 
 * {
   box-sizing: border-box;
@@ -6131,7 +6102,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   padding: 0px;
 }
 body {
-  background: #F0F6F3;
+  background: var(--bg-primary-light);
 }
 
 /* SCROLLBAR */

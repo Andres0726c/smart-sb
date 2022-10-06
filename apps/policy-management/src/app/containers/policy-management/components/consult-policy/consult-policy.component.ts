@@ -183,12 +183,14 @@ export class ConsultPolicyComponent {
   }
 
   nextPage(event: LazyLoadEvent) {
-    let page: number = 0;
-    if (event.first && event.rows) {
-      page = Math.floor(event.first / event.rows);
+    if (this.policies.length) {
+      let page: number = 0;
+      if (event.first && event.rows) {
+        page = Math.floor(event.first / event.rows);
+      }
+      this.filters.pageNumber = page;
+      this.consultPolicies(this.filters);
     }
-    this.filters.pageNumber = page;
-    this.consultPolicies(this.filters);
   }
 
   consultPolicies(filters: FilterPolicy) {
@@ -198,7 +200,7 @@ export class ConsultPolicyComponent {
           this.policies = res.body;
           this.totalRecords = res.dataHeader.totalRecords;
         } else {
-          console.log('FALLO EN LA BUSQUEDA');
+          this.policies = [];
         }
       },
       error: (error: ResponseErrorDTO) => console.error('error', error),

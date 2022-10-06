@@ -1,11 +1,7 @@
 import { FilterPolicy } from './../interfaces/consult-policy';
 import { ConsultPolicyService } from './../services/consult-policy.service';
 import { Component, EventEmitter, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Product } from 'apps/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'apps/policy-management/src/app/core/services/product/product.service';
 import { Identification } from '../interfaces/identification';
@@ -40,8 +36,14 @@ export class FilterPolicyTopComponent {
     insuredDocument: true,
   };
 
-  holderFields: fieldDocument = {    type: 'holderdocumentType',  number: 'holderdocumentNumber',  };
-  insuredFields: fieldDocument = {    type: 'insuredDocumentType',    number: 'insuredDocumentNumber',  };
+  holderFields: fieldDocument = {
+    type: 'holderdocumentType',
+    number: 'holderdocumentNumber',
+  };
+  insuredFields: fieldDocument = {
+    type: 'insuredDocumentType',
+    number: 'insuredDocumentNumber',
+  };
 
   constructor(
     public fb: FormBuilder,
@@ -59,7 +61,7 @@ export class FilterPolicyTopComponent {
       idProduct: this.fb.control(''),
       startDate: this.fb.control(''),
     });
-    productService.getAllProducts().subscribe((data) => {
+    productService.getAllProductsByCompany(3).subscribe((data) => {
       this.products = data;
     });
     consultPolicyService.getDocumentType().subscribe((data) => {
@@ -156,5 +158,9 @@ export class FilterPolicyTopComponent {
     for (const field in this.formQueryFilter.controls) {
       this.formQueryFilter.get(field)?.setValue('');
     }
+  }
+
+  onClearField(field: string) {
+    this.formQueryFilter.get(field)?.setValue('');
   }
 }

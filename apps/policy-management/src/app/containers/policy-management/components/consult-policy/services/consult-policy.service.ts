@@ -10,7 +10,6 @@ import { environment } from 'apps/policy-management/src/environments/environment
 @Injectable({
   providedIn: 'root',
 })
-
 export class ConsultPolicyService {
   /* Get data variables */
   private apiUrl: string = environment.urlMicroServices;
@@ -22,16 +21,16 @@ export class ConsultPolicyService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getPolicies = (
+  getPolicies(
     filterPolicy: FilterPolicy
-  ): Observable<any> => {
+  ): Observable<ResponseDTO<PolicyBrief[]>> {
     return this.httpClient.get<ResponseDTO<PolicyBrief[]>>(
       `${this.apiUrl}policy/data?${this.getQueryParams(filterPolicy)}`,
       {
         headers: this.headers,
       }
-    )
-  };
+    );
+  }
 
   getQueryParams = (params: any): string => {
     let parameters: HttpParams = new HttpParams({ fromObject: params });
@@ -46,15 +45,19 @@ export class ConsultPolicyService {
       .pipe(map((data: any) => data.body));
   };
 
-  cancelDate(policy: any, data: any): Observable<PolicyBrief>{
+  cancelDate(policy: any, data: any): Observable<PolicyBrief> {
     const sendData = {
-      "deletionDate": data.processDate ,
-      "startDate": policy.inceptionDate,
-      "endDate": policy.expirationDate,
-      "idPolicy": policy.idPolicy,
-      "idCause": data.causeType,
-      "observation": data.observation
-  }
-    return this.httpClient.post<PolicyBrief>(`${this.apiUrl}policy/deletion`, sendData, {headers: this.headers})
+      deletionDate: data.processDate,
+      startDate: policy.inceptionDate,
+      endDate: policy.expirationDate,
+      idPolicy: policy.idPolicy,
+      idCause: data.causeType,
+      observation: data.observation,
+    };
+    return this.httpClient.post<PolicyBrief>(
+      `${this.apiUrl}policy/deletion`,
+      sendData,
+      { headers: this.headers }
+    );
   }
 }

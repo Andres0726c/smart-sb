@@ -10,7 +10,9 @@ export interface PolicyBrief {
   expirationDate: string;
   policyStatus: string;
   holderDocument: string;
+  holderTypeDocument: string;
   holderName: string;
   insuredDocument: string;
+  insuredTypeDocument: string;
   insuredName: string;
 }

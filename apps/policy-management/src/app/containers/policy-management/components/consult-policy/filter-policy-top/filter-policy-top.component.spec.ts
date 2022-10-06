@@ -19,7 +19,7 @@ describe('FilterPolicyTopComponent', () => {
         {
           provide: ProductService,
           useValue: {
-            getAllProducts: () => of([]),
+            getAllProductsByCompany: () => of([]),
           },
         },
         {
@@ -123,5 +123,16 @@ describe('FilterPolicyTopComponent', () => {
 
   it('clear fields when namme doesnt exist', () => {
     component.clearFields({ type: '', number: '' });
+  });
+
+  it('clear dropdown with x', () => {
+    component.formQueryFilter.get('idProduct')?.setValue('test idProduct');
+    component.onClearField('idProduct');
+    expect(component.formQueryFilter.value.idProduct).toEqual('');
+  });
+
+  it('clear dropdown with field doesnt exist', () => {
+    component.onClearField('noExist');
+    expect(component.formQueryFilter.value.noExist).toEqual(undefined);
   });
 });

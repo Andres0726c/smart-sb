@@ -17,7 +17,7 @@
                     <label>Producto</label>
                     <p-dropdown [options]="products" [styleClass]="'w-full'" formControlName="idProduct"
                         optionLabel="nmName" optionValue="id" appendTo="body"
-                        [showClear]="formQueryFilter.value.idProduct" placeholder="Seleccionar">
+                        [showClear]="formQueryFilter.value.idProduct" placeholder="Seleccionar" (onClear)="onClearField('idProduct')">
                     </p-dropdown>
                     <!-- <p-dropdown [options]="countries" [(ngModel)]="selectedCountry" optionLabel="name" [filter]="true"
                         filterBy="name" [showClear]="true" placeholder="Select a Country">
