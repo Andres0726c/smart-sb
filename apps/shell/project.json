@@ -95,6 +95,14 @@
           "customWebpackConfig": {
             "path": "apps/shell/webpack.prod.config.js"
           }
+        },
+        "local": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
         }
       },
       "defaultConfiguration": "development"
@@ -105,8 +113,14 @@
         "production": {
           "browserTarget": "shell:build:production"
         },
+        "stage": {
+          "browserTarget": "shell:build:stage"
+        },
         "development": {
           "browserTarget": "shell:build:development"
+        },
+        "local": {
+          "browserTarget": "shell:build:local"
         }
       },
       "defaultConfiguration": "development",
