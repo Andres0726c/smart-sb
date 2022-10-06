@@ -1,0 +1,26 @@
+<p-menubar id="menu1" [model]="items">
+  <ng-template pTemplate="start">
+    <a href="#" class="w-15" [routerLink]="'/'">
+      <img src="smartcore-commons/assets/img/bolivar-logo.svg" alt="logo" />
+    </a>
+    <span class="ml-3 text-white">Seguros Bolivar</span>
+  </ng-template>
+  <ng-template pTemplate="end">
+    <div class="header-end text-white">
+      <img class="w-12" src="smartcore-commons/assets/img/user-config.svg" alt="logo" />
+      <div class="user_info">
+        <span><strong> carlos.correa@dreamcodesoft.com </strong></span><br />
+        <span> Rol: TLN </span>
+      </div>
+      <div>
+        <ul class="remote-menu">
+          <li><a routerLink="/">Inicio</a></li>
+        
+          <li><a routerLink="emisor/consulta">Emisor</a></li>
+        </ul>
+      </div>
+      <p-menu #menu [popup]="true" [model]="items2"></p-menu>
+      <button id="button-config" pButton type="button" icon="pi pi-chevron-down" (click)="menu.toggle($event)"></button>
+    </div>
+  </ng-template>
+</p-menubar>

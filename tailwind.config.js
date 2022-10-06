@@ -33,7 +33,10 @@ const customPalettes = {
  * Tailwind configuration
  */
 const config = {
-  content    : ['./apps/**/*.{html,scss,ts}'],
+  content    : [
+    './apps/**/*.{html,scss,ts}',
+    './libs/**/*.{html,scss,ts}'
+  ],
   important  : true,
   theme      : {
       colors: {

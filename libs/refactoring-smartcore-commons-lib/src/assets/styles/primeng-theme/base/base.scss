@@ -1,33 +1,4 @@
-/* :root {
-  --primary-light: #75298C;
-  --primary-base: #2E0063;
-  --primary-dark: #100039;
-  --primary-focus: #A89FE9;
-  --primary-text-color: #4EB449;
-  
-  --secondary-light: #82E778;
-  --secondary-base: #4EB449;
-  --secondary-dark: #3B8737;
-  --secondary-focus: #EFFCEE;
-  --secondary-text-color: #2E0063;
-
-  --info-light: #CCE5FF;
-  --info-base: #007EFF;
-  --info-dark: #CCC;
-
-  --warning-light: #FFF2C9;
-  --warning-base: #FFC100;
-  --warning-dark: #CCC;
-
-  --success-light: #BAE8C5;
-  --success-base: #28A745;
-  --success-dark: #CCC;
-
-  --error-light: #F7D4D7;
-  --danger-base: #DC3545;
-  --error-dark: #CCC;
-  
-} */
+@import './typography-base.scss';
 
 * {
   box-sizing: border-box;
@@ -996,6 +967,7 @@ p-inputswitch.ng-dirty.ng-invalid>.p-inputswitch {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
   appearance: none;
   border-radius: 6px;
+  line-height: normal;
 }
 
 .p-inputtext:enabled:hover {
@@ -1030,7 +1002,12 @@ p-inputswitch.ng-dirty.ng-invalid>.p-inputswitch {
   transition-duration: 0.2s;
 }
 
-.p-float-label input:focus ~ label,.p-float-label input.p-filled ~ label,.p-float-label textarea:focus ~ label,.p-float-label textarea.p-filled ~ label,.p-float-label .p-inputwrapper-focus ~ label,.p-float-label .p-inputwrapper-filled ~ label {
+.p-float-label input:focus~label,
+.p-float-label input.p-filled~label,
+.p-float-label textarea:focus~label,
+.p-float-label textarea.p-filled~label,
+.p-float-label .p-inputwrapper-focus~label,
+.p-float-label .p-inputwrapper-filled~label {
   top: 1px;
   font-size: 0.75rem;
   background: #FFFFFF;
@@ -2016,10 +1993,11 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 
 .p-datatable .p-datatable-thead>tr>th {
   text-align: left;
-  padding: 1rem 1rem;
+  padding: 8px 0px 8px 16px;
   border: 1px solid #dee2e6;
   border-width: 0 0 1px 0;
   font-weight: 700;
+  font-size: 12px;
   color: #343a40;
   background: #f8f9fa;
   transition: box-shadow 0.2s;
@@ -2082,18 +2060,60 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   outline: 0 none;
 }
 
+//ESTILOS TABLA
+.p-datatable {
+  border: 2px solid #EEEEEE;
+  border-radius: 8px 8px 8px 8px;
+  -moz-border-radius: 8px 8px 8px 8px;
+  -webkit-border-radius: 8px 8px 8px 8px;
+}
+
+.p-datatable .p-datatable-thead>tr:first-child th {
+  border-bottom: 1px solid #EEEEEE;
+}
+
+.p-datatable .p-datatable-thead>tr>th:first-child {
+  -moz-border-radius: 8px 0 0 0;
+  -webkit-border-radius: 8px 0 0 0;
+  border-radius: 8px 0 0 0;
+}
+
+.p-datatable .p-datatable-thead>tr>th:last-child {
+  -moz-border-radius: 0 8px 0 0;
+  -webkit-border-radius: 0 8px 0 0;
+  border-radius: 0 8px 0 0;
+}
+
+.p-datatable .p-datatable-tbody>tr:last-child td:first-child {
+  -moz-border-radius: 0 0 0 8px;
+  -webkit-border-radius: 0 0 0 8px;
+  border-radius: 0 0 0 8px;
+}
+
+.p-datatable .p-datatable-tbody>tr:last-child td:last-child {
+  -moz-border-radius: 0 0 8px 0;
+  -webkit-border-radius: 0 0 8px 0;
+  border-radius: 0 0 8px 0;
+}
+
+.p-datatable .p-datatable-tbody>tr>td {
+  border-bottom: 1px solid #EEEEEE;
+  text-align: left;
+  border: 1px solid #dee2e6;
+  border-width: 0 0 1px 0;
+  padding: 0.5rem 1rem;
+  font-size: 12px;
+  line-height: normal;
+}
+
+// FIN ESTILOS TABLA
+
 .p-datatable .p-datatable-tbody>tr {
   background: #ffffff;
   color: #495057;
   transition: box-shadow 0.2s;
 }
 
-.p-datatable .p-datatable-tbody>tr>td {
-  text-align: left;
-  border: 1px solid #dee2e6;
-  border-width: 0 0 1px 0;
-  padding: 1rem 1rem;
-}
 
 .p-datatable .p-datatable-tbody>tr>td .p-row-toggler,
 .p-datatable .p-datatable-tbody>tr>td .p-row-editor-init,
@@ -2995,7 +3015,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .p-paginator .p-dropdown {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
-  height: 3rem;
+  height: 2.5rem;
 }
 
 .p-paginator .p-dropdown .p-dropdown-label {
@@ -6058,3 +6078,70 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 .p-datatable .p-datatable-tbody>tr.p-datatable-dragpoint-bottom>td {
   box-shadow: inset 0 -2px 0 0 var(--primary-base);
 }
+
+.p-chip {
+  background-color: var(--bg-primary-light);
+  border-radius: 16px;
+  padding: 2px 16px;
+}
+
+.p-chip .p-chip-text {
+  color: var(--primary-base);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 120%;
+}
+
+/****  ****/
+
+/** General **/
+* {
+  // font-family: 'Raleway', sans-serif;
+  font-family: 'Roboto Condensed', sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+body {
+  background: var(--bg-primary-light);
+}
+
+/* SCROLLBAR */
+*::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 8px; /* Tamaño del scroll en vertical */
+  height: 8px; /* Tamaño del scroll en horizontal */
+}
+/* Ponemos un color de fondo y redondeamos las esquinas del thumb */
+*::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 4px;
+}
+
+/* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+*::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background: #888888;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Cambiamos el fondo cuando esté en active */
+*::-webkit-scrollbar-thumb:active,
+body::-webkit-scrollbar-thumb:active {
+  background-color: #888888;
+}
+
+/* Ponemos un color de fondo y redondeamos las esquinas del track */
+*::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #d9d9d9;
+}
+
+/* Cambiamos el fondo cuando esté en active o hover */
+*::-webkit-scrollbar-track:hover,
+*::-webkit-scrollbar-track:active,
+body::-webkit-scrollbar-track:hover,
+body::-webkit-scrollbar-track:active {
+  background: #d4d4d4;
+}
+
