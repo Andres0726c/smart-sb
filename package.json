@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
-    "build": "nx build",
+    "build": "npx nx run shell:deploy",
     "test": "nx test",
     "start-watch": "npx nx serve shell --devRemotes=policy-management",
     "postinstall": "ngcc --properties es2020 browser module main"

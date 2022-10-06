@@ -17,6 +17,9 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
+    "deploy": {
+      "dependsOn": ["build"]
+    },
     "test": {
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
     },
