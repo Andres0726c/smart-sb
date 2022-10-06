@@ -1,0 +1,131 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/policy-management/src",
+  "prefix": "refactoring-smartcore-mf",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/policy-management",
+        "index": "apps/policy-management/src/index.html",
+        "main": "apps/policy-management/src/main.ts",
+        "polyfills": "apps/policy-management/src/polyfills.ts",
+        "tsConfig": "apps/policy-management/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/policy-management/src/favicon.ico",
+          "apps/policy-management/src/assets",
+          {
+            "input": "libs/refactoring-smartcore-commons-lib/src/assets",
+            "glob": "**/*",
+            "output": "smartcore-commons/assets"
+          }
+        ],
+        "styles": [
+          "apps/policy-management/src/styles.scss",
+          "node_modules/primeicons/primeicons.css",
+          "node_modules/primeng/resources/primeng.min.css",
+          "libs/refactoring-smartcore-commons-lib/src/assets/styles/primeng-theme/theme.scss",
+          "libs/refactoring-smartcore-commons-lib/src/assets/styles/material-theme/theme.scss"
+        ],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/policy-management/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/policy-management/src/environments/environment.ts",
+              "with": "apps/policy-management/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/policy-management/webpack.prod.config.js"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nrwl/angular:webpack-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "policy-management:build:production"
+        },
+        "development": {
+          "browserTarget": "policy-management:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4201,
+        "publicHost": "http://localhost:4201"
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "policy-management:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/policy-management/**/*.ts",
+          "apps/policy-management/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/policy-management"],
+      "options": {
+        "jestConfig": "apps/policy-management/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "serve-static": {
+      "executor": "@nrwl/angular:file-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "policy-management:build",
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "policy-management:build:development"
+        },
+        "production": {
+          "buildTarget": "policy-management:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

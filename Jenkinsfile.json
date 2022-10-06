@@ -1,41 +1,35 @@
 {
     "environment": {
         "releasePath": "dist",
-        "mainPath": "projects"
+        "mainPath": "apps"
     },
     "s3": {
         "dev": {
-            "name":"s3-name",
+            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         },
         "stage":{
-            "name":"xx-stage",
+            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         },
         "prod":{
-            "name":"xx-prod",
+            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         }
     },
     "sites": {
         "dev":[
             {
-                "name": "site1",
-                "path": "site1",
-                "build": "site1",
-                "test": "site1"
-            },
-            {
-                "name": "site2",
-                "path": "site2",
-                "build": "site2",
-                "test": "site2"
+                "name": "shell",
+                "path": "shell",
+                "build": "shell",
+                "test": "shell"
             }
         ]
-    }
+    },
     "cloudfront": {
         "dev": {
-            "distributionId":"EDFDVBD6EXAMPLE",
+            "distributionId":"E39GV27BDMYVGC",
             "invalidationPaths":"/*"
         },
         "stage":{

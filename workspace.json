@@ -1,0 +1,9 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "policy-management": "apps/policy-management",
+    "refactoring-smartcore-commons-lib": "libs/refactoring-smartcore-commons-lib",
+    "shell": "apps/shell"
+  }
+}
