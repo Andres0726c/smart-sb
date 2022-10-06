@@ -9,3 +9,6 @@ export * from './components/material-example/material-example.component';
 
 export * from './components/primeng-example/primeng-example.module';
 export * from './components/primeng-example/primeng-example.component';
+
+export * from './components/header/header.module';
+export * from './components/header/header.component';

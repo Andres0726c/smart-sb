@@ -2,7 +2,6 @@ import { ConsultPolicyComponent } from './consult-policy.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { FilterPolicyComponent } from './filter-policy/filter-policy.component';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 import { DropdownModule } from 'primeng/dropdown';
@@ -15,12 +14,18 @@ import { TableModule } from 'primeng/table';
 import { FilterPolicyTopComponent } from './filter-policy-top/filter-policy-top.component';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { MenuModule } from 'primeng/menu';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CardModule } from 'primeng/card';
+import { ChipsModule } from 'primeng/chips';
+import { ChipModule } from 'primeng/chip';
+import { PanelModule } from 'primeng/panel';
+import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
-import {
-  MaterialExampleModule,
-  PrimengExampleModule,
-} from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
-import { SliderModule } from 'primeng/slider';
+import {PaginatorModule} from 'primeng/paginator';
+import {InputTextareaModule} from 'primeng/inputtextarea';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
 
 const routes: Routes = [
   {
@@ -32,11 +37,17 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ConsultPolicyComponent,
-    FilterPolicyComponent,
     FilterPolicyTopComponent,
   ],
   imports: [
+    TagModule,
+    PanelModule,
+    ChipModule,
+    ChipsModule,
+    CardModule,
     RouterModule.forChild(routes),
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     ButtonModule,
     SidebarModule,
@@ -50,8 +61,12 @@ const routes: Routes = [
     OverlayPanelModule,
     MenuModule,
     DialogModule,
-    MaterialExampleModule,
-    PrimengExampleModule,
+    FormsModule,
+    PaginatorModule,
+    InputTextareaModule,
+    MessagesModule,
+    MessageModule,
+    ToastModule
   ],
   exports: [ConsultPolicyComponent],
 })
