@@ -1,7 +1,6 @@
 {
     "environment": {
-        "releasePath": "dist",
-        "mainPath": "apps"
+        "releasePath": "dist/browser"
     },
     "s3": {
         "dev": {
@@ -24,12 +23,18 @@
                 "path": "shell",
                 "build": "shell",
                 "test": "shell"
+            },
+            {
+                "name": "policy-management",
+                "path": "policy-management",
+                "build": "policy-management",
+                "test": "policy-management"
             }
         ]
     },
     "cloudfront": {
         "dev": {
-            "distributionId":"E39GV27BDMYVGC",
+            "distributionId":"E1CCWIH2SORIT0",
             "invalidationPaths":"/*"
         },
         "stage":{

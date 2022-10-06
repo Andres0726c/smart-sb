@@ -69,7 +69,7 @@
           "namedChunks": true
         }
       },
-      "defaultConfiguration": "production"
+      "defaultConfiguration": "development"
     },
     "serve": {
       "executor": "@nrwl/angular:module-federation-dev-server",
@@ -106,7 +106,16 @@
         "jestConfig": "apps/shell/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "rm -rf browser && mkdir browser && cp -r ./apps/shell/* browser && cp -r ./apps/policy-management browser",
+        "cwd": "dist"
+      }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": ["policy-management"]
 }
