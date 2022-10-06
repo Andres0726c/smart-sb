@@ -1,0 +1,75 @@
+.title-init {
+  /* Bienvenidos a SmartCore */
+
+  height: 100px;
+
+  /* Heading/🖥 H1 Desktop (h1) */
+
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 42px;
+
+  text-align: center;
+
+  /* Primary/Default */
+
+  color: #016d38;
+}
+.content-card {
+  display: flex;
+  justify-content: space-evenly;
+}
+.card {
+  text-align: center;
+  cursor: pointer;
+}
+.card-disable{
+  text-align: center;
+  cursor: pointer;
+  ::ng-deep .p-card .p-card-body{
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+.title-card {
+  /* Text */
+
+  height: 34px;
+
+  /* Heading/🖥 H1 Desktop (h1) */
+
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 42px;
+  display: flex;
+  align-items: center;
+
+  /* Primary/Default */
+
+  color: #016d38;
+}
+.subtitle-title-card {
+  /* text */
+
+  height: 34px;
+
+  /* Subtitle/🖥 H6 Desktop
+
+Subtitle
+*/
+  font-family: 'Roboto Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+
+  /* Greyscale/Grey 1 */
+
+  color: #333333;
+}
+.img-display{
+    display: flex;
+    justify-content: center;
+}
