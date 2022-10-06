@@ -91,6 +91,7 @@
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true,
+          "outputHashing": "all",
           "customWebpackConfig": {
             "path": "apps/shell/webpack.prod.config.js"
           }
