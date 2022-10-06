@@ -91,12 +91,13 @@
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true,
+          "outputHashing": "all",
           "customWebpackConfig": {
             "path": "apps/policy-management/webpack.prod.config.js"
           }
         }
       },
-      "defaultConfiguration": "production"
+      "defaultConfiguration": "development"
     },
     "serve": {
       "executor": "@nrwl/angular:webpack-server",
