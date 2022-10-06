@@ -1,3 +1,4 @@
+import { ResponseErrorDTO } from '../../../../../core/interfaces/commun/response';
 import { Identification } from './../interfaces/identification';
 import { Observable, tap, map } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -21,9 +22,7 @@ export class ConsultPolicyService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getPolicies(
-    filterPolicy: FilterPolicy
-  ): Observable<ResponseDTO<PolicyBrief[]>> {
+  getPolicies(filterPolicy: FilterPolicy): Observable<any> {
     return this.httpClient.get<ResponseDTO<PolicyBrief[]>>(
       `${this.apiUrl}policy/data?${this.getQueryParams(filterPolicy)}`,
       {

@@ -60,16 +60,44 @@
             "path": "apps/policy-management/webpack.prod.config.js"
           }
         },
+        "stage": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/policy-management/src/environments/environment.ts",
+              "with": "apps/policy-management/src/environments/environment.stage.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/policy-management/webpack.prod.config.js"
+          }
+        },
         "development": {
           "buildOptimizer": false,
           "optimization": false,
           "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
-          "namedChunks": true
+          "namedChunks": true,
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/policy-management/webpack.prod.config.js"
+          }
         }
       },
-      "defaultConfiguration": "production"
+      "defaultConfiguration": "development"
     },
     "serve": {
       "executor": "@nrwl/angular:webpack-server",
