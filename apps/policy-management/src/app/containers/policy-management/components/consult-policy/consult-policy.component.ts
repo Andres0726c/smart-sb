@@ -8,13 +8,15 @@ import { FilterPolicy } from './interfaces/consult-policy';
 import { Component } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
+import { ModalPolicyActionsComponent } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
 
 @Component({
   selector: 'app-consult-policy',
   templateUrl: './consult-policy.component.html',
   styleUrls: ['./consult-policy.component.scss'],
-  providers: [MessageService],
+  providers: [MessageService, DialogService],
 })
 export class ConsultPolicyComponent {
   policies: PolicyBrief[] = [];
@@ -26,8 +28,8 @@ export class ConsultPolicyComponent {
     notElements: '0',
     sortColumn: 'idProduct',
     sortDirection: 'desc',
-    holderdocumentType: '',
-    holderdocumentNumber: '',
+    holderdocumentType: '1',
+    holderdocumentNumber: '1131345121',
     holderName: '',
     insuredDocumentType: '',
     insuredDocumentNumber: '',
@@ -49,6 +51,7 @@ export class ConsultPolicyComponent {
   constructor(
     public consultPolicyService: ConsultPolicyService,
     public fb: FormBuilder,
+    public dialogService: DialogService,
     public messageService: MessageService
   ) {
     this.formDate = fb.group({
@@ -93,8 +96,9 @@ export class ConsultPolicyComponent {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
-          this.showCancellationDialog = true;
+          //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
+          this.showModal();
         },
       },
       { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open', disabled: true },
@@ -118,59 +122,28 @@ export class ConsultPolicyComponent {
         description: 'Por parte del cliente',
       },
     ];
-
-    this.es = {
-      firstDayOfWeek: 1,
-
-      dayNames: [
-        'domingo',
-        'lunes',
-        'martes',
-        'miércoles',
-        'jueves',
-        'viernes',
-        'sábado',
-      ],
-
-      dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
-
-      dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
-
-      monthNames: [
-        'enero',
-        'febrero',
-        'marzo',
-        'abril',
-        'mayo',
-        'junio',
-        'julio',
-        'agosto',
-        'septiembre',
-        'octubre',
-        'noviembre',
-        'diciembre',
-      ],
-
-      monthNamesShort: [
-        'ene',
-        'feb',
-        'mar',
-        'abr',
-        'may',
-        'jun',
-        'jul',
-        'ago',
-        'sep',
-        'oct',
-        'nov',
-        'dic',
-      ],
-
-      today: 'Hoy',
-
-      clear: 'Borrar',
-    };
   }
+
+  showModal() {
+    const ref = this.dialogService.open(ModalPolicyActionsComponent, {
+      data: {
+        process: 'Opcion',
+        policy: this.selectedPolicy
+      },
+      header: 'Proceso',
+      modal: true,
+      dismissableMask: true,
+      width: '60%',
+      contentStyle: {"max-height": "500px", "overflow": "auto"},
+      baseZIndex: 10000
+    });
+
+    ref.onClose.subscribe((res: any) =>{
+        if (res) {
+            console.log('Modal cerrado')
+        }
+    });
+}
 
   search(filters: FilterPolicy) {
     filters.pageNumber = 0;

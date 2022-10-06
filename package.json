@@ -7,7 +7,7 @@
     "build": "npx nx run shell:deploy",
     "test": "nx test",
     "postinstall": "ngcc --properties es2020 browser module main",
-    "start-watch": "npx nx serve shell --devRemotes=policy-management"
+    "start-watch": "npx nx serve shell --devRemotes=policy-management --configuration=local"
   },
   "private": true,
   "devDependencies": {
