@@ -90,7 +90,7 @@ describe('ConsultPolicyComponent', () => {
     };
     jest
       .spyOn(consultPolicyService, 'getPolicies')
-      .mockReturnValue(of(response));
+      .mockReturnValueOnce(of(response));
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual(['test']);
   }));
@@ -110,9 +110,8 @@ describe('ConsultPolicyComponent', () => {
     };
     jest
       .spyOn(consultPolicyService, 'getPolicies')
-      .mockReturnValue(of(response));
+      .mockReturnValueOnce(of(response));
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual([]);
   }));
-
 });
