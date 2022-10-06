@@ -1,6 +1,8 @@
-<ul class="remote-menu">
-  <li><a routerLink="/">Inicio</a></li>
+<div class="absolute inset-0 flex flex-col overflow-hidden" cdkScrollable>
+  <refactoring-smartcore-mf-header></refactoring-smartcore-mf-header>
+  <div class="w-full bg-neutral-200 h-full overflow-y-auto">
+    <router-outlet></router-outlet>
+  </div>
+</div>
 
-  <li><a routerLink="emisor/consulta">Emisor</a></li>
-</ul>
-<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->

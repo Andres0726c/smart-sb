@@ -5,13 +5,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NxWelcomeComponent } from './nx-welcome.component';
 import { RouterModule } from '@angular/router';
-
+import { HeaderModule } from "@refactoring-smartcore-mf/refactoring-smartcore-commons-lib";
 @NgModule({
   declarations: [AppComponent, NxWelcomeComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    HeaderModule,
     RouterModule.forRoot(
       [
         {
