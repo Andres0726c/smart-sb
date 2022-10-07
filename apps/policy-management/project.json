@@ -95,7 +95,16 @@
           "customWebpackConfig": {
             "path": "apps/policy-management/webpack.prod.config.js"
           }
+        },
+        "local": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
         }
+
       },
       "defaultConfiguration": "development"
     },
@@ -105,8 +114,14 @@
         "production": {
           "browserTarget": "policy-management:build:production"
         },
+        "stage": {
+          "browserTarget": "policy-management:build:stage"
+        },
         "development": {
           "browserTarget": "policy-management:build:development"
+        },
+        "local": {
+          "browserTarget": "policy-management:build:local"
         }
       },
       "defaultConfiguration": "development",
@@ -146,11 +161,17 @@
         "port": 4201
       },
       "configurations": {
+        "production": {
+          "buildTarget": "policy-management:build:production"
+        },
+        "stage": {
+          "buildTarget": "policy-management:build:stage"
+        },
         "development": {
           "buildTarget": "policy-management:build:development"
         },
-        "production": {
-          "buildTarget": "policy-management:build:production"
+        "local": {
+          "buildTarget": "policy-management:build:local"
         }
       }
     }
