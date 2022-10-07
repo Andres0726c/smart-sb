@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'apps/policy-management/src/environments/environment';
+import { environment } from 'libs/refactoring-smartcore-commons-lib/src/environments/environment';
 import { map, Observable } from 'rxjs';
 import { ResponseDTO } from '../../interfaces/commun/response';
 import { Product } from '../../interfaces/product/product';
@@ -26,7 +26,7 @@ export class ProductService {
       .pipe(map((data: ResponseDTO<Product[]>) => data.body));
   };
 
-  getAllProductsByCompany = (idCompany:number,pageNumber:number=0, pageSize:number=0): Observable<Product[]> => {
+  getAllProductsByCompany = (idCompany:number,pageNumber:number=0, pageSize:number=100): Observable<Product[]> => {
     return this.httpClient
       .get<any>(`${this.apiUrl}product/findByCompany/${idCompany}/${pageNumber}/${pageSize}`, {
         headers: this.headers,

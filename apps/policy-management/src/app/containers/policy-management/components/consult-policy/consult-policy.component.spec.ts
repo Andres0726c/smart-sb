@@ -1,3 +1,5 @@
+import { DialogService } from 'primeng/dynamicdialog';
+import { DialogModule } from 'primeng/dialog';
 import {
   ResponseDTO,
   ResponseErrorDTO,
@@ -29,7 +31,12 @@ describe('ConsultPolicyComponent', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       declarations: [],
-      providers: [ConsultPolicyComponent, MessageService, FormBuilder],
+      providers: [
+        DialogService,
+        ConsultPolicyComponent,
+        MessageService,
+        FormBuilder,
+      ],
     });
     component = TestBed.inject(ConsultPolicyComponent);
   });
@@ -112,6 +119,6 @@ describe('ConsultPolicyComponent', () => {
       .spyOn(consultPolicyService, 'getPolicies')
       .mockReturnValueOnce(of(response));
     component.consultPolicies(component.filters);
-    expect(component.policies).toEqual([]);
+    expect(component.policies).toEqual(['test']);
   }));
 });

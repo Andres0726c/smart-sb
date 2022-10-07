@@ -24,10 +24,12 @@
 .card {
   text-align: center;
   cursor: pointer;
+  width: 400px;
 }
 .card-disable {
   text-align: center;
   cursor: pointer;
+  width: 400px;
   ::ng-deep .p-card .p-card-body {
     background-color: rgba(0, 0, 0, 0.3);
   }
@@ -53,11 +55,13 @@
 
   padding-top: 40px;
   padding-bottom: 30px;
+
+  justify-content: center;
 }
 .subtitle-title-card {
   /* text */
 
-  height: 34px;
+  height: 33px;
 
   /* Subtitle/🖥 H6 Desktop
 

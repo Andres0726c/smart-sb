@@ -30,7 +30,15 @@ const mockPolicyBrief: PolicyBrief[] = [
   },
 ];
 
-const mockIdentification: Identification[] = [];
+const mockIdentification: Identification[] = [
+  {
+    id: 1,
+    businessCode: 'businessCode',
+    nmName: 'nmName',
+    dsDescription: 'dsDescription',
+    idStatus: 1,
+  },
+];
 describe('ConsultPolicyService', () => {
   let service: ConsultPolicyService;
   let httpController: HttpTestingController;
@@ -72,8 +80,8 @@ describe('ConsultPolicyService', () => {
     });
     const req = httpController.expectOne({
       method: 'GET',
-      url: `${apiUrl}policy/data?${service.getQueryParams(filterPolicy)}`,
+      url: `${apiUrl}identificationtype/findAll`,
     });
-    req.flush(mockPolicyBrief);
+    req.flush(mockIdentification);
   });
 });

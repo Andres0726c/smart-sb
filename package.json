@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "config:env": "ts-node ./libs/refactoring-smartcore-commons-lib/src/utils/setenv.ts",
     "start": "nx serve",
-    "build": "npx nx run shell:deploy",
-    "build:dev": "npx nx run shell:deploy",
+    "build": "npm run config:env -- && npx nx run shell:deploy",
+    "build:dev": "npx nx run shell:deploy --configuration=development",
     "build:stage": "npx nx run shell:deploy --configuration=stage",
-    "test": "nx test",
+    "test": "npm run config:env -- && nx test",
     "postinstall": "ngcc --properties es2020 browser module main",
     "start-watch": "npx nx serve shell --devRemotes=policy-management --configuration=local"
   },
