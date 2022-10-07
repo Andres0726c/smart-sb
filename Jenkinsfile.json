@@ -8,7 +8,7 @@
             "acl": "public-read"
         },
         "stage":{
-            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
+            "name":"refactoring-stage-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         },
         "prod":{
@@ -16,29 +16,13 @@
             "acl": "public-read"
         }
     },
-    "sites": {
-        "dev":[
-            {
-                "name": "shell",
-                "path": "shell",
-                "build": "shell",
-                "test": "shell"
-            },
-            {
-                "name": "policy-management",
-                "path": "policy-management",
-                "build": "policy-management",
-                "test": "policy-management"
-            }
-        ]
-    },
     "cloudfront": {
         "dev": {
             "distributionId":"E1CCWIH2SORIT0",
             "invalidationPaths":"/*"
         },
         "stage":{
-            "distributionId":"EDFDVBD6EXAMPLE",
+            "distributionId":"E2WT09UZ68RGXT",
             "invalidationPaths":"/*"
         },
         "prod":{

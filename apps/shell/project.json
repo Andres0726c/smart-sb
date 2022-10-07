@@ -104,8 +104,7 @@
           "sourceMap": true,
           "namedChunks": true
         }
-      },
-      "defaultConfiguration": "development"
+      }
     },
     "serve": {
       "executor": "@nrwl/angular:module-federation-dev-server",
