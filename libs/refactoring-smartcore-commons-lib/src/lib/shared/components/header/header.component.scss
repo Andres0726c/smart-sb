@@ -6,7 +6,6 @@
 ::ng-deep .p-menubar-start {
   display: flex;
   align-items: center;
-  margin-right: 50px;
 }
 
 .header-end {
@@ -23,27 +22,84 @@
   color: white;
   background-color: transparent;
 }
-::ng-deep #button-config:enabled:hover{
+::ng-deep #button-config:enabled:hover {
   background: transparent;
 }
-::ng-deep #button-config:focus{
+::ng-deep #button-config:focus {
   box-shadow: none;
 }
-::ng-deep #menu1 .p-menubar-root-list .p-menuitem .p-menuitem-link .p-menuitem-text {
+::ng-deep
+  #menu1
+  .p-menubar-root-list
+  .p-menuitem
+  .p-menuitem-link
+  .p-menuitem-text {
   color: #ffffff;
 }
-::ng-deep #menu1 .p-menubar-root-list .p-menuitem .p-menuitem-link .p-menuitem-icon {
+::ng-deep
+  #menu1
+  .p-menubar-root-list
+  .p-menuitem
+  .p-menuitem-link
+  .p-menuitem-icon {
   color: #ffffff;
 }
-::ng-deep #menu1 .p-menubar-root-list .p-menuitem .p-menuitem-link:not(.p-disabled):hover {
+::ng-deep
+  #menu1
+  .p-menubar-root-list
+  .p-menuitem
+  .p-menuitem-link:not(.p-disabled):hover {
   background: transparent;
 }
 ::ng-deep #menu1 .p-menubar-root-list .p-menuitem .p-menuitem-link:focus {
   box-shadow: none;
 }
-::ng-deep #menu1 .p-menubar-root-list .p-menuitem .p-menuitem-link:not(.p-disabled):hover .p-menuitem-text {
+::ng-deep
+  #menu1
+  .p-menubar-root-list
+  .p-menuitem
+  .p-menuitem-link:not(.p-disabled):hover
+  .p-menuitem-text {
   color: #ffffff;
 }
-::ng-deep #menu1 .p-menubar-root-list .p-menuitem .p-menuitem-link:not(.p-disabled):hover .p-menuitem-icon {
+::ng-deep
+  #menu1
+  .p-menubar-root-list
+  .p-menuitem
+  .p-menuitem-link:not(.p-disabled):hover
+  .p-menuitem-icon {
   color: #ffffff;
+}
+.version {
+  background-color: #02d46f;
+  text-align: center;
+  width: 50px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-size: 10px;
+  font-weight: bold;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.title-app {
+  width: 265.41px;
+  left: 108.59px;
+  top: 27.2px;
+  font-weight: 700;
+  font-style: normal;
+  font-weight: bold;
+  font-family: 'Roboto condensed';
+  margin-top: 0px;
+  font-size: 16px;
+  line-height: 19px;
+}
+.main-left-items__items-left-special {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  margin-top: 7px;
+  margin-bottom: 10px;
+  margin-left: 15px;
 }

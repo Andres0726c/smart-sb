@@ -10,7 +10,8 @@ export const environment = {
     userPoolId: 'us-east-1_ZFhpUlx6t',
     userPoolWebClientId: '7hqksg5696uaup6lp4qlcsk1dj',
   },
-  productAutosave:false
+  productAutosave:false,
+  urlParameterizer:'https://d1s6tjcltt5c19.cloudfront.net/'
 };
 
 /*
