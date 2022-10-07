@@ -51,8 +51,8 @@ export class FilterPolicyTopComponent {
     public consultPolicyService: ConsultPolicyService
   ) {
     this.formQueryFilter = this.fb.group({
-      holderdocumentType: this.fb.control(''),
-      holderdocumentNumber: this.fb.control(''),
+      holderdocumentType: this.fb.control(1),
+      holderdocumentNumber: this.fb.control('1131345121'),
       holderName: this.fb.control(''),
       insuredDocumentType: this.fb.control(''),
       insuredDocumentNumber: this.fb.control(''),
