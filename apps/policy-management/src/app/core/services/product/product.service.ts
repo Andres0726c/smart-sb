@@ -26,7 +26,7 @@ export class ProductService {
       .pipe(map((data: ResponseDTO<Product[]>) => data.body));
   };
 
-  getAllProductsByCompany = (idCompany:number,pageNumber:number=0, pageSize:number=0): Observable<Product[]> => {
+  getAllProductsByCompany = (idCompany:number,pageNumber:number=0, pageSize:number=100): Observable<Product[]> => {
     return this.httpClient
       .get<any>(`${this.apiUrl}product/findByCompany/${idCompany}/${pageNumber}/${pageSize}`, {
         headers: this.headers,

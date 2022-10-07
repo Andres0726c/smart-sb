@@ -6,7 +6,7 @@ export interface Product{
     nmName: string,
     dsDescription: string,
     nmHashCode: number,
-    nmContent: ContentProduct
+    nmContent?: ContentProduct
 }
 
 export interface ContentProduct{

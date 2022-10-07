@@ -23,8 +23,8 @@ export class FilterPolicyTopComponent {
   holderValid: boolean = false;
   insuredValid: boolean = false;
 
-  products!: Product[];
-  documentsType!: Identification[];
+  products: Product[] = [];
+  documentsType: Identification[] = [];
 
   showMoreFilters: boolean = false;
 
