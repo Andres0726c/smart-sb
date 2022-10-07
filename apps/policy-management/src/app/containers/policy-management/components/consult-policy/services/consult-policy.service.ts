@@ -6,7 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FilterPolicy } from '../interfaces/consult-policy';
 import { ResponseDTO } from 'apps/policy-management/src/app/core/interfaces/commun/response';
 import { PolicyBrief } from 'apps/policy-management/src/app/core/interfaces/policy';
-import { environment } from 'libs/refactoring-smartcore-commons-lib/src/environments/environment';
+import { environment } from 'apps/policy-management/src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
