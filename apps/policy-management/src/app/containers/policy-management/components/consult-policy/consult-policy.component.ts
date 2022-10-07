@@ -98,7 +98,7 @@ export class ConsultPolicyComponent {
           this.formDate.get('observation')?.disable();
           //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
-          this.showModal();
+          this.showModal('Anular/Cancelar', this.selectedPolicy);
         },
       },
       { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open', disabled: true },
@@ -124,13 +124,13 @@ export class ConsultPolicyComponent {
     ];
   }
 
-  showModal() {
+  showModal(process: string, policy: any) {
     const ref = this.dialogService.open(ModalPolicyActionsComponent, {
       data: {
-        process: 'Opcion',
-        policy: this.selectedPolicy
+        process: process,
+        policy: policy
       },
-      header: 'Proceso',
+      header: process,
       modal: true,
       dismissableMask: true,
       width: '60%',
