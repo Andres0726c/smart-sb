@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
@@ -7,17 +8,21 @@ import { MenuItem } from 'primeng/api';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
-
   items!: MenuItem[];
-
   items2!: MenuItem[];
+
+  userSesion = 'carlos.correa@dreamcodesoft.com';
+  rolSesion = 'TLN';
+  company = 'Seguros Bolívar';
+
+  constructor() {}
 
   ngOnInit() {
     this.items = [
       {
         label: 'Inicio',
         icon: 'pi pi-home',
+        routerLink: '/'
       },
     ];
 
@@ -25,6 +30,7 @@ export class HeaderComponent implements OnInit {
       {
         icon: 'pi pi-sign-in',
         label: 'Cerrar sesión',
+        routerLink: '/'
       },
     ];
   }

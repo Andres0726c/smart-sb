@@ -25,10 +25,10 @@
   text-align: center;
   cursor: pointer;
 }
-.card-disable{
+.card-disable {
   text-align: center;
   cursor: pointer;
-  ::ng-deep .p-card .p-card-body{
+  ::ng-deep .p-card .p-card-body {
     background-color: rgba(0, 0, 0, 0.3);
   }
 }
@@ -50,6 +50,9 @@
   /* Primary/Default */
 
   color: #016d38;
+
+  padding-top: 40px;
+  padding-bottom: 30px;
 }
 .subtitle-title-card {
   /* text */
@@ -69,7 +72,8 @@ Subtitle
 
   color: #333333;
 }
-.img-display{
-    display: flex;
-    justify-content: center;
+.img-display {
+  display: flex;
+  justify-content: center;
+  height: 120px;
 }
