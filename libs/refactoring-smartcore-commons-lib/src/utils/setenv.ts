@@ -41,5 +41,5 @@ writeFile(targetPath, environmentFileContent, (err: any) => {
    if (err) {
       console.log(err);
    }
-   console.log(`Wrote variables to ${targetPath}`);
+   console.log(`Wrote variables to ${targetPath} --environment=${argv.environment}`);
 });
