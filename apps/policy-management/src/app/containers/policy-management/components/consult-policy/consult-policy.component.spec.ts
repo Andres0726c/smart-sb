@@ -112,6 +112,6 @@ describe('ConsultPolicyComponent', () => {
       .spyOn(consultPolicyService, 'getPolicies')
       .mockReturnValueOnce(of(response));
     component.consultPolicies(component.filters);
-    expect(component.policies).toEqual([]);
+    expect(component.policies).toEqual(['test']);
   }));
 });

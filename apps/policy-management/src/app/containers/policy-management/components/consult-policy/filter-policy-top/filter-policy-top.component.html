@@ -11,13 +11,14 @@
                 <div class="w-1/3">
                     <label>Póliza</label>
                     <p-inputMask styleClass="w-full" formControlName="policyNumber" placeholder="12345-67891-23456"
-                        mask="9999999999999999"></p-inputMask>
+                        mask="999999999999999" [required]="isRequired['policyNumber']"></p-inputMask>
                 </div>
                 <div class="w-1/3">
                     <label>Producto</label>
                     <p-dropdown [options]="products" [styleClass]="'w-full'" formControlName="idProduct"
-                        optionLabel="nmName" optionValue="id" appendTo="body"
-                        [showClear]="formQueryFilter.value.idProduct" placeholder="Seleccionar" (onClear)="onClearField('idProduct')">
+                        optionLabel="nmName" optionValue="id" appendTo="body" [filter]="products.length>6"
+                        [showClear]="formQueryFilter.value.idProduct" placeholder="Seleccionar"
+                        (onClear)="onClearField('idProduct')">
                     </p-dropdown>
                     <!-- <p-dropdown [options]="countries" [(ngModel)]="selectedCountry" optionLabel="name" [filter]="true"
                         filterBy="name" [showClear]="true" placeholder="Select a Country">
@@ -52,10 +53,8 @@
                         <label>Identificación</label>
                         <span class="p-input-icon-right w-full">
                             <i class="pi pi-id-card"></i>
-                            <p-inputMask formControlName="holderdocumentNumber" placeholder="Identificación"
-                                mask="9999999999" styleClass="w-full" [required]="isRequired['holderDocument']">
-                            </p-inputMask>
-
+                            <input type="text" pInputText formControlName="holderdocumentNumber" maxlength="30"
+                                placeholder="Identificación" class="w-full" [required]="isRequired['holderDocument']">
                         </span>
                     </div>
                     <div class="w-1/3">
@@ -87,9 +86,9 @@
                         <span>Identificación</span>
                         <span class="p-input-icon-right w-full">
                             <i class="pi pi-id-card"></i>
-                            <p-inputMask formControlName="insuredDocumentNumber" placeholder="Identificación"
-                                mask="9999999999" styleClass="w-full" [required]="isRequired['insuredDocument']">
-                            </p-inputMask>
+                            <input type="text" pInputText formControlName="insuredDocumentNumber" maxlength="30"
+                                placeholder=" Identificación" mask="9999999999" class="w-full"
+                                [required]="isRequired['insuredDocument']">
                         </span>
                         <small></small>
                     </div>
