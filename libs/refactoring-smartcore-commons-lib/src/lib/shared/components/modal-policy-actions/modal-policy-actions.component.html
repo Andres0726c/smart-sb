@@ -1,42 +1,36 @@
-<div>
-    <div class="grid grid-cols-2">
+<div class="py-5">
+    <div class="grid grid-cols-2 gap-y-2">
         <div>
-            <span>Compañía:</span>
+            <span class="text-primary">Compañía:</span>
             {{ config.data.policy.company }}
-            <p-divider></p-divider>
         </div>
 
         <div>
-            <span>Producto:</span>
+            <span class="text-primary">Producto:</span>
             {{ config.data.policy.productName }}
-            <p-divider></p-divider>
         </div>
 
         <div>
-            <b>Número de póliza:</b>
+            <span class="text-primary">Número de póliza:</span>
             {{ config.data.policy.policyNumber }}
-            <p-divider></p-divider>
         </div>
 
         <div>
-            <b>Tomador:</b>
+            <span class="text-primary">Tomador:</span>
             {{ config.data.policy.holderDocument }}
-            <p-divider></p-divider>
         </div>
 
         <div>
-            <b>Inicio de póliza:</b>
+            <span class="text-primary">Inicio de póliza:</span>
             {{ config.data.policy.inceptionDate }}
-            <p-divider></p-divider>
         </div>
 
         <div>
-            <b>Fin de póliza:</b>
+            <span class="text-primary">Fin de póliza:</span>
             {{ config.data.policy.expirationDate }}
-            <p-divider></p-divider>
         </div>
-
     </div>
+    <p-divider></p-divider>
     <form [formGroup]="formProcess">
 
         <div class="grid grid-cols-2  gap-10">

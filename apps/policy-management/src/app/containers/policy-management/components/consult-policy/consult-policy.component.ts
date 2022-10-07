@@ -28,8 +28,8 @@ export class ConsultPolicyComponent {
     notElements: '0',
     sortColumn: 'idProduct',
     sortDirection: 'desc',
-    holderdocumentType: '1',
-    holderdocumentNumber: '1131345121',
+    holderdocumentType: '',
+    holderdocumentNumber: '',
     holderName: '',
     insuredDocumentType: '',
     insuredDocumentNumber: '',
@@ -134,7 +134,7 @@ export class ConsultPolicyComponent {
       modal: true,
       dismissableMask: true,
       width: '60%',
-      contentStyle: {"max-height": "500px", "overflow": "auto"},
+      contentStyle: {"max-height": "600px", "overflow": "auto"},
       baseZIndex: 10000
     });
 
