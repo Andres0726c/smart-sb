@@ -1,0 +1,86 @@
+.p-button {
+  min-width: 6rem;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  justify-content: center;
+  border-radius: 3.125rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.p-button.p-button-rounded {
+  border-radius: 3.125rem;
+}
+
+.p-button.p-button-icon-only {
+  border-radius: 3.125rem;
+  width: 2.5rem;
+  min-width: unset;
+  padding: 0.75rem 0;
+}
+
+.p-button.p-button-icon-only .p-button-icon-left,
+.p-button.p-button-icon-only .p-button-icon-right {
+  margin: 0;
+}
+
+.p-button.p-button-icon-only.p-button-rounded {
+  border-radius: 50%;
+  height: 2.5rem;
+  min-width: unset;
+}
+
+.p-button.p-button-sm {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.75rem;
+  min-width: 4rem;
+}
+
+.p-button.p-button-sm .p-button-icon {
+  font-size: 0.7rem;
+}
+
+.p-button.p-button-lg {
+  font-size: 1rem;
+  padding: 0.75rem 1.25rem;
+  min-width: 5rem;
+}
+
+.p-button.p-button-lg .p-button-icon {
+  font-size: 1rem;
+}
+
+.p-button .p-button-icon-left {
+  margin-right: 0.5rem;
+}
+
+.p-button .p-button-icon-right {
+  margin-left: 0.5rem;
+}
+
+.p-button .p-button-icon-bottom {
+  margin-top: 0.5rem;
+}
+
+.p-button .p-button-icon-top {
+  margin-bottom: 0.5rem;
+}
+
+.p-button-label {
+  font-weight: 700;
+  flex: unset;
+}
+
+.p-button:focus {
+  outline: 0 none;
+  outline-offset: 0;
+}
+
+.p-button.lib-button__quaternary .p-button-label,
+.p-buttonset.lib-button__quaternary > .p-button .p-button-label,
+.p-splitbutton.lib-button__quaternary > .p-button .p-button-label {
+  text-decoration: underline;
+}
+
+.p-button.p-button-text .p-button-label {
+  text-decoration: underline;
+}

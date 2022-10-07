@@ -1,0 +1,83 @@
+.p-dropdown {
+  border: 1px solid #cccccc;
+  background: #ffffff;
+}
+
+.p-dropdown:not(.p-disabled):hover {
+  border-color: var(--primary-base);
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  // box-shadow: 0 0 0 0.2rem var(--primary-focus);
+  box-shadow: 0px 0px 4px var(--primary-focus);
+  border-color: var(--primary-base);
+}
+
+.p-dropdown .p-dropdown-label {
+  background: transparent;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder {
+  color: #999999;
+}
+
+.p-dropdown.p-disabled .p-dropdown-trigger {
+  color: #cccccc;
+}
+
+.p-dropdown .p-dropdown-trigger {
+  background: transparent;
+  color: var(--primary-base);
+}
+
+.p-dropdown .p-dropdown-clear-icon {
+  color: #6c757d;
+}
+
+.p-dropdown-panel {
+  background: #ffffff;
+  color: #495057;
+  box-shadow: 1px 4px 8px rgba(51, 51, 51, 0.16);
+}
+
+.p-dropdown-panel .p-dropdown-header {
+  color: #999999;
+  background: #ffffff;
+}
+
+.p-dropdown-panel .p-dropdown-header .p-dropdown-filter-icon {
+  color: var(--primary-base);
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  color: #666666;
+  background: transparent;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  color: var(--primary-dark);
+  background: var(--bg-primary-light);
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-disabled {
+  color: #cccccc;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item:not(.p-highlight):not(.p-disabled):hover {
+  color: #666666;
+  background: #eeeeee;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message {
+  color: #495057;
+  background: transparent;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item-group {
+  color: #343a40;
+  background: #ffffff;
+}
+
+p-dropdown.ng-dirty.ng-invalid > .p-dropdown {
+  border-color: var(--danger-base);
+}

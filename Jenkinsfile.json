@@ -1,0 +1,33 @@
+{
+    "environment": {
+        "releasePath": "dist/browser"
+    },
+    "s3": {
+        "dev": {
+            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
+            "acl": "public-read"
+        },
+        "stage":{
+            "name":"refactoring-stage-smartcore-web-frontend-mf-monorepo",
+            "acl": "public-read"
+        },
+        "prod":{
+            "name":"refactoring-dev-smartcore-web-frontend-mf-monorepo",
+            "acl": "public-read"
+        }
+    },
+    "cloudfront": {
+        "dev": {
+            "distributionId":"E1CCWIH2SORIT0",
+            "invalidationPaths":"/*"
+        },
+        "stage":{
+            "distributionId":"E2WT09UZ68RGXT",
+            "invalidationPaths":"/*"
+        },
+        "prod":{
+            "distributionId":"EDFDVBD6EXAMPLE",
+            "invalidationPaths":"/*"
+        }
+    }
+}
