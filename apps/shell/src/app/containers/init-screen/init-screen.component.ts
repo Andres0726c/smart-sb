@@ -2,7 +2,7 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'apps/shell/src/environments/environment';
+import { environment } from 'libs/refactoring-smartcore-commons-lib/src/environments/environment';
 
 @Component({
   selector: 'refactoring-smartcore-mf-init-screen',
