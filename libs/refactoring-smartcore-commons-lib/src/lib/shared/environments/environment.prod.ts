@@ -13,6 +13,7 @@ export const environment = {
   },
   productAutosave: false,
   urlParameterizer: 'https://d1p5ro9c86yefs.cloudfront.net/',
+  smartcoreSiteTitle: '(PRD) - Smartcore'
 };
 
 /*
