@@ -48,6 +48,8 @@ export class ConsultPolicyComponent {
   totalRecords: number = 0;
   es: any;
 
+  loading: boolean = false;
+
   constructor(
     public consultPolicyService: ConsultPolicyService,
     public fb: FormBuilder,
@@ -128,22 +130,22 @@ export class ConsultPolicyComponent {
     const ref = this.dialogService.open(ModalPolicyActionsComponent, {
       data: {
         process: process,
-        policy: policy
+        policy: policy,
       },
       header: process,
       modal: true,
       dismissableMask: true,
       width: '60%',
-      contentStyle: {"max-height": "600px", "overflow": "auto"},
-      baseZIndex: 10000
+      contentStyle: { 'max-height': '600px', overflow: 'auto' },
+      baseZIndex: 10000,
     });
 
-    ref.onClose.subscribe((res: any) =>{
-        if (res) {
-            console.log('Modal cerrado')
-        }
+    ref.onClose.subscribe((res: any) => {
+      if (res) {
+        console.log('Modal cerrado');
+      }
     });
-}
+  }
 
   search(filters: FilterPolicy) {
     filters.pageNumber = 0;
@@ -167,6 +169,7 @@ export class ConsultPolicyComponent {
   }
 
   consultPolicies(filters: FilterPolicy) {
+    this.loading = true;
     this.consultPolicyService.getPolicies(filters).subscribe({
       next: (res: ResponseDTO<PolicyBrief[]>) => {
         if (res.dataHeader.code && (res.dataHeader.code = 200)) {
@@ -175,8 +178,12 @@ export class ConsultPolicyComponent {
         } else {
           this.policies = [];
         }
+        this.loading = false;
       },
-      error: (error: ResponseErrorDTO) => console.error('error', error),
+      error: (error: ResponseErrorDTO) => {
+        console.error('error', error);
+        this.loading = false;
+      },
     });
   }
 
