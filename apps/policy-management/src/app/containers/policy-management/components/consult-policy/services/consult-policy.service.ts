@@ -13,14 +13,11 @@ import { environment } from 'apps/policy-management/src/environments/environment
 })
 export class ConsultPolicyService {
   /* Get data variables */
-  //private apiUrl: string = environment.urlMicroServices;
-  private apiUrl: string =
-    'https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/stage/emisor/v1/';
+  private apiUrl: string = environment.urlMicroServices;
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    //'x-api-key': environment.apiKeyServices,
-    'x-api-key': 'UPOrFwRWKC1AJtFfkTYUz69XCWQQ48cBalVJ6A85',
+    'x-api-key': environment.apiKeyServices,
   });
 
   constructor(private httpClient: HttpClient) {}
