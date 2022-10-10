@@ -12,9 +12,9 @@ export class HeaderComponent implements OnInit {
   items!: MenuItem[];
   items2!: MenuItem[];
 
-  userSesion = 'carlos.correa@dreamcodesoft.com';
-  rolSesion = 'TLN';
-  company = 'Seguros Bolívar';
+  userSesion = 'usuario@correo.com';
+  rolSesion = 'ROL';
+  company = 'Compañía';
   flagUrl = true;
 
   constructor(public router: Router) {
