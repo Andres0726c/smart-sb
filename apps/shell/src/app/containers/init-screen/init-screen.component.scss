@@ -19,7 +19,11 @@
 }
 .content-card {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .card {
   text-align: center;
