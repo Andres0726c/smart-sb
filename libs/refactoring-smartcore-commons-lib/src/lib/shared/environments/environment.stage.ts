@@ -12,7 +12,7 @@ export const environment = {
     userPoolWebClientId: '7hqksg5696uaup6lp4qlcsk1dj',
   },
   productAutosave: false,
-  urlParameterizer: 'https://d1p5ro9c86yefs.cloudfront.net/',
+  urlParameterizer: 'https://d1s6tjcltt5c19.cloudfront.net/',
 };
 
 /*
