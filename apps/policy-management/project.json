@@ -105,7 +105,8 @@
           "namedChunks": true
         }
 
-      }
+      },
+      "defaultConfiguration": "production"
     },
     "serve": {
       "executor": "@nrwl/angular:webpack-server",
