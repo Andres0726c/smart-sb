@@ -11,7 +11,8 @@
                 <div class="w-full sm:w-1/3">
                     <label>Póliza</label>
                     <p-inputMask styleClass="w-full" formControlName="policyNumber" placeholder="12345-67891-23456"
-                        mask="999999999999999" [required]="isRequired['policyNumber']"></p-inputMask>
+                        mask="999999999999999" [autoClear]="false" [slotChar]="''" [required]="isRequired['policyNumber']">
+                    </p-inputMask>
                 </div>
                 <div class="w-full sm:w-1/3">
                     <label>Producto</label>
