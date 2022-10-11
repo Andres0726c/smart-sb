@@ -6,7 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./primeng-example.component.scss'],
 })
 export class PrimengExampleComponent implements OnInit {
-  constructor() {}
+  constructor() {
+    //
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //
+  }
 }
