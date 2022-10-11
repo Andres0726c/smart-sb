@@ -8,7 +8,7 @@
       "executor": "@nrwl/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/browser",
+        "outputPath": "dist/apps/shell",
         "index": "apps/shell/src/index.html",
         "main": "apps/shell/src/main.ts",
         "polyfills": "apps/shell/src/polyfills.ts",
@@ -147,6 +147,14 @@
       "options": {
         "jestConfig": "apps/shell/jest.config.ts",
         "passWithNoTests": true
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "rm -rf browser && mkdir browser && cp -r ./apps/shell/* browser && cp -r ./apps/policy-management browser && rm -rf apps",
+        "cwd": "dist"
       }
     }
   },

@@ -5,9 +5,9 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "build:dev": "npx nx run build --configuration=development",
-    "build:stage": "npx nx run build --configuration=stage",
-    "build:prod": "npx nx run build --configuration=production",
+    "build:dev": "npx nx run shell:deploy --configuration=development",
+    "build:stage": "npx nx run shell:deploy --configuration=stage",
+    "build:prod": "npx nx run shell:deploy --configuration=production",
     "test": "nx test",
     "postinstall": "ngcc --properties es2020 browser module main",
     "start-watch": "npx nx serve shell --devRemotes=policy-management --configuration=local"

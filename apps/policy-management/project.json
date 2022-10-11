@@ -8,7 +8,7 @@
       "executor": "@nrwl/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/browser/policy-management",
+        "outputPath": "dist/apps/policy-management",
         "index": "apps/policy-management/src/index.html",
         "main": "apps/policy-management/src/main.ts",
         "polyfills": "apps/policy-management/src/polyfills.ts",
