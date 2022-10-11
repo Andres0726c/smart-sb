@@ -32,15 +32,7 @@
     </div>
     <p-divider></p-divider>
     <form [formGroup]="formProcess">
-
         <div class="grid grid-cols-2  gap-10">
-            <div>
-                <label>Seleccione la fecha de anulación</label>
-                <p-calendar formControlName="processDate" (onSelect)="verifyDate()" dateFormat="yy-mm-dd"
-                    [showIcon]="true" appendTo="body" [showTime]="true" hourFormat="24" [showSeconds]="true"
-                    styleClass="w-full" placeholder="aaaa/mm/dd" mask="9999/99/99">
-                </p-calendar>
-            </div>
             <div>
                 <label>Tipo de causa</label>
                 <p-dropdown formControlName="causeType" [options]="causes" optionLabel="type" optionValue="idCause"
