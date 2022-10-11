@@ -1,13 +1,13 @@
 <div>
     <div class="grid grid-cols-2">
         <div>
-            <span>Compañía:</span>
+            <b>Compañía:</b>
             {{ config.data.policy.company }}
             <p-divider></p-divider>
         </div>
 
         <div>
-            <span>Producto:</span>
+            <b>Producto:</b>
             {{ config.data.policy.productName }}
             <p-divider></p-divider>
         </div>
@@ -43,7 +43,7 @@
             <div>
                 <label>Seleccione la fecha de anulación</label>
                 <div class="p-field p-col-12 p-md-4">
-                    <p-calendar formControlName="processDate" (onSelect)="null" dateFormat="yy-mm-dd"
+                    <p-calendar formControlName="processDate" (onSelect)="verifyDate()" dateFormat="yy-mm-dd"
                         [showIcon]="true" appendTo="body" [showTime]="true" hourFormat="24" [showSeconds]="true"
                         styleClass="w-full" placeholder="aaaa/mm/dd" mask="9999/99/99">
                     </p-calendar>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="col-span-2 ml-auto">
-                <p-button label="Anular" [disabled]="false" (click)="null"></p-button>
+                <p-button label="Anular" [disabled]="disableButton()" (click)="cancelPolicy()"></p-button>
             </div>
         </div>
     </form>
