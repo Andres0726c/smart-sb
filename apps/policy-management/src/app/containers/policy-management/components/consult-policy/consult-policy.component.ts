@@ -260,4 +260,9 @@ export class ConsultPolicyComponent {
       detail: 'Message Content',
     });
   }
+
+  clearSearch() {
+    this.policies = [];
+    this.totalRecords = 0;
+  }
 }

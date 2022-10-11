@@ -2,7 +2,8 @@
     <h1>Consulta de pólizas</h1>
     <span>Criterios de búsqueda</span>
     <div class="flex flex-col justify-center items-center gap-y-4">
-        <app-filter-policy-top (emitSearch)="search($event)" class="w-full"></app-filter-policy-top>
+        <app-filter-policy-top (emitSearch)="search($event)" (emitClear)="clearSearch()" class="w-full">
+        </app-filter-policy-top>
         <!-- <app-filter-policy-top (emitSearch)="null" class="w-full"></app-filter-policy-top> -->
         <span class="w-full">Resultados de la búsqueda</span>
         <section class="flex flex-col justify-center w-full">
