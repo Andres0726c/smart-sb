@@ -1,58 +1,50 @@
-<div>
-    <div class="grid grid-cols-2">
+<div class="py-5">
+    <div class="grid grid-cols-2 gap-y-2">
         <div>
-            <b>Compañía:</b>
+            <span class="text-primary">Compañía:</span>
             {{ config.data.policy.company }}
-            <p-divider></p-divider>
         </div>
 
         <div>
-            <b>Producto:</b>
+            <span class="text-primary">Producto:</span>
             {{ config.data.policy.productName }}
-            <p-divider></p-divider>
         </div>
 
         <div>
-            <b>Número de póliza:</b>
+            <span class="text-primary">Número de póliza:</span>
             {{ config.data.policy.policyNumber }}
-            <p-divider></p-divider>
         </div>
 
         <div>
-            <b>Tomador:</b>
+            <span class="text-primary">Tomador:</span>
             {{ config.data.policy.holderDocument }}
-            <p-divider></p-divider>
         </div>
 
         <div>
-            <b>Inicio de póliza:</b>
+            <span class="text-primary">Inicio de póliza:</span>
             {{ config.data.policy.inceptionDate }}
-            <p-divider></p-divider>
         </div>
 
         <div>
-            <b>Fin de póliza:</b>
+            <span class="text-primary">Fin de póliza:</span>
             {{ config.data.policy.expirationDate }}
-            <p-divider></p-divider>
         </div>
-
     </div>
+    <p-divider></p-divider>
     <form [formGroup]="formProcess">
 
         <div class="grid grid-cols-2  gap-10">
             <div>
                 <label>Seleccione la fecha de anulación</label>
-                <div class="p-field p-col-12 p-md-4">
-                    <p-calendar formControlName="processDate" (onSelect)="verifyDate()" dateFormat="yy-mm-dd"
-                        [showIcon]="true" appendTo="body" [showTime]="true" hourFormat="24" [showSeconds]="true"
-                        styleClass="w-full" placeholder="aaaa/mm/dd" mask="9999/99/99">
-                    </p-calendar>
-                </div>
+                <p-calendar formControlName="processDate" (onSelect)="verifyDate()" dateFormat="yy-mm-dd"
+                    [showIcon]="true" appendTo="body" [showTime]="true" hourFormat="24" [showSeconds]="true"
+                    styleClass="w-full" placeholder="aaaa/mm/dd" mask="9999/99/99">
+                </p-calendar>
             </div>
             <div>
                 <label>Tipo de causa</label>
                 <p-dropdown formControlName="causeType" [options]="causes" optionLabel="type" optionValue="idCause"
-                    [style]="{'width':'100%'}"></p-dropdown>
+                    class="block" [style]="{'width':'100%'}"></p-dropdown>
             </div>
 
             <div class="col-span-2">

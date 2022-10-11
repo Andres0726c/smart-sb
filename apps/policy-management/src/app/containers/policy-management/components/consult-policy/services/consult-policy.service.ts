@@ -1,12 +1,11 @@
-import { ResponseErrorDTO } from '../../../../../core/interfaces/commun/response';
 import { Identification } from './../interfaces/identification';
-import { Observable, tap, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FilterPolicy } from '../interfaces/consult-policy';
 import { ResponseDTO } from 'apps/policy-management/src/app/core/interfaces/commun/response';
 import { PolicyBrief } from 'apps/policy-management/src/app/core/interfaces/policy';
-import { environment } from 'apps/policy-management/src/environments/environment';
+import { environment } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
 
 @Injectable({
   providedIn: 'root',

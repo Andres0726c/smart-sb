@@ -51,8 +51,8 @@
           ],
           "fileReplacements": [
             {
-              "replace": "apps/shell/src/environments/environment.ts",
-              "with": "apps/shell/src/environments/environment.prod.ts"
+              "replace": "libs/refactoring-smartcore-commons-lib/src/lib/shared/environments/environment.ts",
+              "with": "libs/refactoring-smartcore-commons-lib/src/lib/shared/environments/environment.prod.ts"
             }
           ],
           "outputHashing": "all",
@@ -75,8 +75,8 @@
           ],
           "fileReplacements": [
             {
-              "replace": "apps/shell/src/environments/environment.ts",
-              "with": "apps/shell/src/environments/environment.stage.ts"
+              "replace": "libs/refactoring-smartcore-commons-lib/src/lib/shared/environments/environment.ts",
+              "with": "libs/refactoring-smartcore-commons-lib/src/lib/shared/environments/environment.stage.ts"
             }
           ],
           "outputHashing": "all",
@@ -105,7 +105,7 @@
           "namedChunks": true
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "production"
     },
     "serve": {
       "executor": "@nrwl/angular:module-federation-dev-server",
@@ -153,7 +153,7 @@
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
-        "command": "rm -rf browser && mkdir browser && cp -r ./apps/shell/* browser && cp -r ./apps/policy-management browser",
+        "command": "rm -rf browser && mkdir browser && cp -r ./apps/shell/* browser && cp -r ./apps/policy-management browser && rm -rf apps",
         "cwd": "dist"
       }
     }

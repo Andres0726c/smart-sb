@@ -28,8 +28,8 @@ export class ConsultPolicyComponent {
     notElements: '0',
     sortColumn: 'idProduct',
     sortDirection: 'desc',
-    holderdocumentType: '1',
-    holderdocumentNumber: '1131345121',
+    holderdocumentType: '',
+    holderdocumentNumber: '',
     holderName: '',
     insuredDocumentType: '',
     insuredDocumentNumber: '',
@@ -47,6 +47,8 @@ export class ConsultPolicyComponent {
   formDate!: FormGroup;
   totalRecords: number = 0;
   es: any;
+
+  loading: boolean = false;
 
   constructor(
     public consultPolicyService: ConsultPolicyService,
@@ -98,7 +100,7 @@ export class ConsultPolicyComponent {
           this.formDate.get('observation')?.disable();
           //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
-          this.showModal();
+          this.showModal('Anular/Cancelar', this.selectedPolicy);
         },
       },
       { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open', disabled: true },
@@ -124,26 +126,26 @@ export class ConsultPolicyComponent {
     ];
   }
 
-  showModal() {
+  showModal(process: string, policy: any) {
     const ref = this.dialogService.open(ModalPolicyActionsComponent, {
       data: {
-        process: 'Opcion',
-        policy: this.selectedPolicy
+        process: process,
+        policy: policy,
       },
-      header: 'Proceso',
+      header: process,
       modal: true,
       dismissableMask: true,
       width: '60%',
-      contentStyle: {"max-height": "500px", "overflow": "auto"},
-      baseZIndex: 10000
+      contentStyle: { 'max-height': '600px', overflow: 'auto' },
+      baseZIndex: 10000,
     });
 
-    ref.onClose.subscribe((res: any) =>{
-        if (res) {
-            console.log('Modal cerrado')
-        }
+    ref.onClose.subscribe((res: any) => {
+      if (res) {
+        console.log('Modal cerrado');
+      }
     });
-}
+  }
 
   search(filters: FilterPolicy) {
     filters.pageNumber = 0;
@@ -167,6 +169,7 @@ export class ConsultPolicyComponent {
   }
 
   consultPolicies(filters: FilterPolicy) {
+    this.loading = true;
     this.consultPolicyService.getPolicies(filters).subscribe({
       next: (res: ResponseDTO<PolicyBrief[]>) => {
         if (res.dataHeader.code && (res.dataHeader.code = 200)) {
@@ -175,8 +178,12 @@ export class ConsultPolicyComponent {
         } else {
           this.policies = [];
         }
+        this.loading = false;
       },
-      error: (error: ResponseErrorDTO) => console.error('error', error),
+      error: (error: ResponseErrorDTO) => {
+        console.error('error', error);
+        this.loading = false;
+      },
     });
   }
 
@@ -252,5 +259,10 @@ export class ConsultPolicyComponent {
       summary: 'Success',
       detail: 'Message Content',
     });
+  }
+
+  clearSearch() {
+    this.policies = [];
+    this.totalRecords = 0;
   }
 }

@@ -4,8 +4,11 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve",
-    "build": "npx nx run shell:deploy",
-    "test": "nx test",
+    "build": "nx build",
+    "build:dev": "npx nx run shell:deploy --configuration=development",
+    "build:stage": "npx nx run shell:deploy --configuration=stage",
+    "build:prod": "npx nx run shell:deploy --configuration=production",
+    "test": "nx test shell && nx test policy-management",
     "postinstall": "ngcc --properties es2020 browser module main",
     "start-watch": "npx nx serve shell --devRemotes=policy-management --configuration=local"
   },

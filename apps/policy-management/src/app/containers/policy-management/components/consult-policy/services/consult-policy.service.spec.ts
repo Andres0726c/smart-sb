@@ -7,7 +7,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { ConsultPolicyService } from './consult-policy.service';
-import { environment } from 'apps/policy-management/src/environments/environment';
+import { environment } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
 
 const mockPolicyBrief: PolicyBrief[] = [
   {
@@ -30,7 +30,15 @@ const mockPolicyBrief: PolicyBrief[] = [
   },
 ];
 
-const mockIdentification: Identification[] = [];
+const mockIdentification: Identification[] = [
+  {
+    id: 1,
+    businessCode: 'businessCode',
+    nmName: 'nmName',
+    dsDescription: 'dsDescription',
+    idStatus: 1,
+  },
+];
 describe('ConsultPolicyService', () => {
   let service: ConsultPolicyService;
   let httpController: HttpTestingController;
@@ -66,14 +74,15 @@ describe('ConsultPolicyService', () => {
     req.flush(mockPolicyBrief);
   });
 
-  it('getPolicies', () => {
+  it('getDocumentType', () => {
     service.getDocumentType().subscribe((res) => {
       expect(res).toEqual(mockPolicyBrief);
     });
     const req = httpController.expectOne({
       method: 'GET',
-      url: `${apiUrl}policy/data?${service.getQueryParams(filterPolicy)}`,
+      url: `${apiUrl}identificationtype/findAll`,
     });
-    req.flush(mockPolicyBrief);
+    req.flush(mockIdentification);
   });
+
 });
