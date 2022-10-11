@@ -17,7 +17,7 @@ interface fieldDocument {
 })
 export class FilterPolicyTopComponent {
   @Output() emitSearch = new EventEmitter<FilterPolicy>();
-
+  @Output() emitClear = new EventEmitter();
   formQueryFilter: FormGroup;
 
   holderValid: boolean = false;
@@ -158,6 +158,7 @@ export class FilterPolicyTopComponent {
     for (const field in this.formQueryFilter.controls) {
       this.formQueryFilter.get(field)?.setValue('');
     }
+    this.emitClear.emit()
   }
 
   onClearField(field: string) {
