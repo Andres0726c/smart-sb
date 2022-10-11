@@ -24,9 +24,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'shell'`, () => {
+  it(`should have as title 'Smartcore'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('shell');
+    expect(app.title).toEqual('Smartcore');
   });
 });

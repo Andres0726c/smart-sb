@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { environment } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
 
 @Component({
   selector: 'refactoring-smartcore-mf-root',
@@ -6,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'shell';
+  title = 'Smartcore';
+
+  constructor(private titleService: Title) {
+    this.titleService.setTitle(environment.smartcoreSiteTitle);
+  }
 }
