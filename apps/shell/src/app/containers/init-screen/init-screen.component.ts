@@ -11,9 +11,12 @@ import { environment } from '@refactoring-smartcore-mf/refactoring-smartcore-com
 })
 export class InitScreenComponent implements OnInit {
   constructor() {
+    //
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //
+  }
 
   routeParameterizer():void {
     window.location.href=environment.urlParameterizer;
