@@ -16,6 +16,11 @@
             "acl": "public-read"
         }
     },
+    "configuration":{
+      "develop":"dev",
+      "stage":"stage",
+      "master":"production"
+   },
     "cloudfront": {
         "dev": {
             "distributionId":"E1CCWIH2SORIT0",
