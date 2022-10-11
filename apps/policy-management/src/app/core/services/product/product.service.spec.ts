@@ -4,7 +4,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { environment } from 'apps/policy-management/src/environments/environment';
+import { environment } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
 
 import { ProductService } from './product.service';
 
