@@ -51,8 +51,8 @@
           ],
           "fileReplacements": [
             {
-              "replace": "apps/shell/src/environments/environment.ts",
-              "with": "apps/shell/src/environments/environment.prod.ts"
+              "replace": "libs/refactoring-smartcore-commons-lib/src/lib/shared/environments/environment.ts",
+              "with": "libs/refactoring-smartcore-commons-lib/src/lib/shared/environments/environment.prod.ts"
             }
           ],
           "outputHashing": "all",
@@ -75,8 +75,8 @@
           ],
           "fileReplacements": [
             {
-              "replace": "apps/shell/src/environments/environment.ts",
-              "with": "apps/shell/src/environments/environment.stage.ts"
+              "replace": "libs/refactoring-smartcore-commons-lib/src/lib/shared/environments/environment.ts",
+              "with": "libs/refactoring-smartcore-commons-lib/src/lib/shared/environments/environment.stage.ts"
             }
           ],
           "outputHashing": "all",
