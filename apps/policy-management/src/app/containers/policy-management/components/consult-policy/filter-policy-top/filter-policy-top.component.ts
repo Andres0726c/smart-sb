@@ -159,6 +159,7 @@ export class FilterPolicyTopComponent {
       this.formQueryFilter.get(field)?.setValue('');
     }
     this.toggleRequired(false)
+    this.errorAllForm = false;
     this.emitClear.emit()
   }
 
