@@ -1,6 +1,5 @@
-import { ResponseErrorDTO } from '../../../../../core/interfaces/commun/response';
 import { Identification } from './../interfaces/identification';
-import { Observable, tap, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FilterPolicy } from '../interfaces/consult-policy';
