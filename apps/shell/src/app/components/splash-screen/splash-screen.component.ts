@@ -38,10 +38,4 @@ export class SplashScreenComponent implements OnInit {
     }, 1000);
   }
 
-  setSpinnerClass(): string {
-    let spinnerClass = '';
-    spinnerClass += ' lib-progress-indicator__infinite';
-    return spinnerClass;
-  }
-
 }
