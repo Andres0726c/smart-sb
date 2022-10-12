@@ -153,7 +153,7 @@
       "executor": "nx:run-commands",
       "outputs": [],
       "options": {
-        "command": "rm -rf browser && mkdir browser && cp -r ./apps/shell/* browser && cp -r ./apps/policy-management browser",
+        "command": "rm -rf browser && mkdir browser && cp -r ./apps/shell/* browser && cp -r ./apps/policy-management browser && rm -rf apps",
         "cwd": "dist"
       }
     }

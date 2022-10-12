@@ -447,6 +447,9 @@ p-calendar.p-calendar-clearable.p-calendar-w-btn .p-calendar-clear-icon {
   right: 3.75rem;
 }
 
+p-calendar .p-calendar .p-button.p-button-icon-only{
+  padding: 0.5rem 1rem;
+}
 @media screen and (max-width: 769px) {
 
   .p-datepicker table th,
@@ -965,7 +968,6 @@ p-inputswitch.ng-dirty.ng-invalid>.p-inputswitch {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
   appearance: none;
   border-radius: 6px;
-  line-height: normal;
 }
 
 .p-inputtext:enabled:hover {

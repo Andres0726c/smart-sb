@@ -6,7 +6,7 @@ import { Product } from 'apps/policy-management/src/app/core/interfaces/product/
 import { ProductService } from 'apps/policy-management/src/app/core/services/product/product.service';
 import { Identification } from '../interfaces/identification';
 
-interface fieldDocument {
+interface FieldDocument {
   type: string;
   number: string;
 }
@@ -36,11 +36,11 @@ export class FilterPolicyTopComponent {
     insuredDocument: true,
   };
 
-  holderFields: fieldDocument = {
+  holderFields: FieldDocument = {
     type: 'holderdocumentType',
     number: 'holderdocumentNumber',
   };
-  insuredFields: fieldDocument = {
+  insuredFields: FieldDocument = {
     type: 'insuredDocumentType',
     number: 'insuredDocumentNumber',
   };
@@ -69,7 +69,7 @@ export class FilterPolicyTopComponent {
     });
   }
 
-  validateFields(field: fieldDocument): boolean {
+  validateFields(field: FieldDocument): boolean {
     let type: number = this.formQueryFilter.get(field.type)?.value ? 1 : 0;
     let number: number = this.formQueryFilter.get(field.number)?.value ? 1 : 0;
     if (type & number) {
@@ -149,7 +149,7 @@ export class FilterPolicyTopComponent {
     return true;
   }
 
-  clearFields(fields: fieldDocument) {
+  clearFields(fields: FieldDocument) {
     this.formQueryFilter.get(fields.type)?.setValue('');
     this.formQueryFilter.get(fields.number)?.setValue('');
   }
@@ -158,6 +158,7 @@ export class FilterPolicyTopComponent {
     for (const field in this.formQueryFilter.controls) {
       this.formQueryFilter.get(field)?.setValue('');
     }
+    this.toggleRequired(false)
     this.emitClear.emit()
   }
 

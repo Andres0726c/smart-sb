@@ -7,7 +7,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { ConsultPolicyService } from './consult-policy.service';
-import { environment } from 'apps/policy-management/src/environments/environment';
+import { environment } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
 
 const mockPolicyBrief: PolicyBrief[] = [
   {
@@ -74,7 +74,7 @@ describe('ConsultPolicyService', () => {
     req.flush(mockPolicyBrief);
   });
 
-  it('getPolicies', () => {
+  it('getDocumentType', () => {
     service.getDocumentType().subscribe((res) => {
       expect(res).toEqual(mockPolicyBrief);
     });
@@ -84,4 +84,5 @@ describe('ConsultPolicyService', () => {
     });
     req.flush(mockIdentification);
   });
+
 });
