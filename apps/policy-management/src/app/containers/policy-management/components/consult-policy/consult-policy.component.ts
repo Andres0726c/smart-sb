@@ -46,6 +46,7 @@ export class ConsultPolicyComponent {
   cancellationDate!: Date;
   formDate!: FormGroup;
   totalRecords: number = 0;
+  first: number = 0;
   es: any;
 
   loading: boolean = false;
@@ -149,6 +150,8 @@ export class ConsultPolicyComponent {
 
   search(filters: FilterPolicy) {
     filters.pageNumber = 0;
+    this.totalRecords = 0;
+    this.first = 0;
     this.filters = Object.assign(this.filters, filters);
     if (this.filters.startDate) {
       let arrayDate: number[] = this.filters.startDate
@@ -159,7 +162,7 @@ export class ConsultPolicyComponent {
         month: arrayDate[1],
         year: arrayDate[2],
       };
-      let date = new Date(year, month-1, day);
+      let date = new Date(year, month - 1, day, 0);
       this.filters.startDate = date.toISOString();
     }
     this.consultPolicies(this.filters);
