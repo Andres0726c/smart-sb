@@ -158,6 +158,7 @@ export class FilterPolicyTopComponent {
     for (const field in this.formQueryFilter.controls) {
       this.formQueryFilter.get(field)?.setValue('');
     }
+    this.toggleRequired(false)
     this.emitClear.emit()
   }
 
