@@ -151,7 +151,15 @@ export class ConsultPolicyComponent {
     filters.pageNumber = 0;
     this.filters = Object.assign(this.filters, filters);
     if (this.filters.startDate) {
-      let date = new Date(this.filters.startDate);
+      let arrayDate: number[] = this.filters.startDate
+        .split('/')
+        .map((str) => Number(str));
+      const { day, month, year } = {
+        day: arrayDate[0],
+        month: arrayDate[1],
+        year: arrayDate[2],
+      };
+      let date = new Date(year, month-1, day);
       this.filters.startDate = date.toISOString();
     }
     this.consultPolicies(this.filters);
