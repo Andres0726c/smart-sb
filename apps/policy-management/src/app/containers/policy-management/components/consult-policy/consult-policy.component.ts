@@ -183,7 +183,7 @@ export class ConsultPolicyComponent {
     this.loading = true;
     this.consultPolicyService.getPolicies(filters).subscribe({
       next: (res: ResponseDTO<PolicyBrief[]>) => {
-        if (res.dataHeader.code && (res.dataHeader.code = 200)) {
+        if (res.dataHeader.code && (res.dataHeader.code == 200)) {
           this.policies = res.body;
           this.totalRecords = res.dataHeader.totalRecords;
         } else {

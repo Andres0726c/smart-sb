@@ -82,6 +82,12 @@ describe('ConsultPolicyComponent', () => {
     expect(component.filters.pageNumber).toEqual(1);
   });
 
+  it('clearSearch',()=>{
+    component.clearSearch()
+    expect(component.policies).toEqual([])
+    expect(component.totalRecords).toEqual(0)
+  })
+
   it('consult success', fakeAsync(() => {
     const response: ResponseDTO<string[]> = {
       body: ['test'],
@@ -100,11 +106,12 @@ describe('ConsultPolicyComponent', () => {
       .mockReturnValueOnce(of(response));
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual(['test']);
-  }));
+  })); 
+
 
   it('consult error 400', fakeAsync(() => {
     const response: ResponseDTO<string[]> = {
-      body: ['test'],
+      body: [],
       dataHeader: {
         code: 400,
         status: 'OK',
@@ -118,7 +125,9 @@ describe('ConsultPolicyComponent', () => {
     jest
       .spyOn(consultPolicyService, 'getPolicies')
       .mockReturnValueOnce(of(response));
+    
     component.consultPolicies(component.filters);
-    expect(component.policies).toEqual(['test']);
+    expect(component.policies).toEqual([]);
   }));
+  
 });
