@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
 import { filter, Subject, Subscription, take } from 'rxjs';
 
 @Injectable({
@@ -29,5 +29,6 @@ export class SplashScreenService {
       // After the transition is ended the showSplash will be hided
       this.subject.next(false);
     }, 500);
+    
   }
 }

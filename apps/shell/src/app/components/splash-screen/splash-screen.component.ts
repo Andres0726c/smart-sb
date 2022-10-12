@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SplashScreenService } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
+import { SplashScreenService } from '../../services/splash-screen.service';
 
 @Component({
   selector: 'refactoring-smartcore-mf-splash-screen',
@@ -13,6 +13,9 @@ export class SplashScreenComponent implements OnInit {
   // First access the splash is visible
   public showSplash = true;
   readonly ANIMATION_DURATION = 0.4;
+  radius = 21;
+  circumference = 2 * Math.PI * this.radius;
+  strokeDasharray = `0, ${this.circumference}`;
 
   constructor(private splashService: SplashScreenService) { 
     //
@@ -33,6 +36,12 @@ export class SplashScreenComponent implements OnInit {
       // After the transition is ended the showSplash will be hided
       this.showSplash = !this.showSplash;
     }, 1000);
+  }
+
+  setSpinnerClass(): string {
+    let spinnerClass = '';
+    spinnerClass += ' lib-progress-indicator__infinite';
+    return spinnerClass;
   }
 
 }
