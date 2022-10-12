@@ -6,6 +6,9 @@
 
 export * from './environments/environment';
 
+export * from './components/splash-screen/splash-screen.module';
+export * from './components/splash-screen/splash-screen.component';
+
 export * from './components/material-example/material-example.module';
 export * from './components/material-example/material-example.component';
 
@@ -17,3 +20,5 @@ export * from './components/header/header.component';
 
 export * from './components/modal-policy-actions/modal-policy-actions.module';
 export * from './components/modal-policy-actions/modal-policy-actions.component';
+
+export * from './services/splash-screen.service';
