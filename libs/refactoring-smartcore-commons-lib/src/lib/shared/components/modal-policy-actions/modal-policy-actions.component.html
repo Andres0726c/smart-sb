@@ -34,9 +34,16 @@
     <form [formGroup]="formProcess">
         <div class="grid grid-cols-2  gap-10">
             <div>
-                <label>Tipo de causa</label>
-                <p-dropdown formControlName="causeType" [options]="causes" optionLabel="type" optionValue="idCause"
-                    class="block" [style]="{'width':'100%'}"></p-dropdown>
+                <label>Causas</label>
+                <p-dropdown formControlName="causeType" [options]="causes" optionLabel="description" optionValue="id"
+                [filter]="true" filterBy="description" [showClear]="true" placeholder="Seleccione la causa"
+                class="block" [style]="{'width':'100%'}">
+                    <ng-template let-cause pTemplate="item">
+                        <div>
+                            <div>{{cause.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
             </div>
 
             <div class="col-span-2">
