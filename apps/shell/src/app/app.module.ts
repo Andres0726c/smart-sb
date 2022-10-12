@@ -4,19 +4,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
-import { HeaderModule, SplashScreenModule, SplashScreenService } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
+import { HeaderModule } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
 import { InitScreenComponent } from './containers/init-screen/init-screen.component';
 import {CardModule} from 'primeng/card';
+import { CommonModule } from '@angular/common';
+import { SplashScreenComponent } from './components/splash-screen/splash-screen.component';
+import { SplashScreenService } from './services/splash-screen.service';
 
 @NgModule({
-  declarations: [AppComponent, InitScreenComponent],
+  declarations: [AppComponent, SplashScreenComponent, InitScreenComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    CommonModule,
     HttpClientModule,
     HeaderModule,
     CardModule,
-    SplashScreenModule,
     RouterModule.forRoot(
       [
         {
@@ -30,8 +33,7 @@ import {CardModule} from 'primeng/card';
           path: '',
           component: InitScreenComponent,
         },
-      ],
-      { initialNavigation: 'enabledBlocking' }
+      ]
     ),
   ],
   providers: [SplashScreenService],
