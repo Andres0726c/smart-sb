@@ -6,10 +6,10 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { HeaderModule } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
 import { InitScreenComponent } from './containers/init-screen/init-screen.component';
-import {CardModule} from 'primeng/card';
+import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
 import { SplashScreenComponent } from './components/splash-screen/splash-screen.component';
-import { SplashScreenService } from './services/splash-screen.service';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [AppComponent, SplashScreenComponent, InitScreenComponent],
@@ -18,25 +18,11 @@ import { SplashScreenService } from './services/splash-screen.service';
     BrowserAnimationsModule,
     CommonModule,
     HttpClientModule,
+    AppRoutingModule,
     HeaderModule,
     CardModule,
-    RouterModule.forRoot(
-      [
-        {
-          path: 'emisor',
-          loadChildren: () =>
-            import('policy-management/Module').then(
-              (m) => m.PolicyManagementModule
-            ),
-        },
-        {
-          path: '',
-          component: InitScreenComponent,
-        },
-      ]
-    ),
   ],
-  providers: [SplashScreenService],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
