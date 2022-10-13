@@ -52,7 +52,7 @@
             </div>
 
             <div class="col-span-2 ml-auto">
-                <p-button label="Anular" [disabled]="disableButton()" (click)="cancelPolicy()"></p-button>
+                <p-button [label]="config.data.buttonAction" [disabled]="disableButton()" (click)="config.data.buttonAction === 'Cancelar' ? cancelPolicy() : rehabilitatePolicy()"></p-button>
             </div>
         </div>
     </form>

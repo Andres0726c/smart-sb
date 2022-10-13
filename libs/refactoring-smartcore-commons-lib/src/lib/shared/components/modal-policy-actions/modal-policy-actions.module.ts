@@ -7,6 +7,7 @@ import { DropdownModule } from "primeng/dropdown";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { DividerModule } from "primeng/divider";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [ModalPolicyActionsComponent],
@@ -18,7 +19,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DividerModule,
     InputTextareaModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastModule
   ],
   exports: [ModalPolicyActionsComponent],
 })

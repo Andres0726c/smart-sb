@@ -13,7 +13,6 @@ import { ModalPolicyActionsService } from './services/modal-policy-actions.servi
 export class ModalPolicyActionsComponent implements OnInit {
   formProcess: FormGroup;
   causes: any[] = []
-  applicationProcess = '';
 
   selectedPolicy: any = null;
 
@@ -58,14 +57,25 @@ export class ModalPolicyActionsComponent implements OnInit {
 
     if (this.formProcess.valid) {
       this.modalAPService
-        .cancelDate(this.config.data.policy ,this.formProcess.value)
+        .postCancelPolicy(this.config.data.policy ,this.formProcess.value)
         .subscribe((resp) => {
-          console.log('respuesta', resp);
+          console.log('cancelar', resp);
         });
       
       return this.showSuccess();
     } else {
       return false;
+    }
+  }
+
+  rehabilitatePolicy(){
+    if(this.formProcess.valid) {
+      this.modalAPService
+        .postRehabilitation(this.config.data.policy, this.formProcess.value)
+        .subscribe((resp) => {
+          console.log('rehabilitar', resp);
+          
+        })
     }
   }
 

@@ -49,7 +49,6 @@ export class ConsultPolicyComponent {
   es: any;
 
   loading: boolean = false;
-  applicationProcessDisplay = '';
 
   constructor(
     public consultPolicyService: ConsultPolicyService,
@@ -101,7 +100,7 @@ export class ConsultPolicyComponent {
           this.formDate.get('observation')?.disable();
           //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
-          this.showModal('Cancelación', this.selectedPolicy,'Cancelación');
+          this.showModal('Cancelación', this.selectedPolicy, 'Cancelar');
         },
       },
       { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open', disabled: false,
@@ -111,39 +110,26 @@ export class ConsultPolicyComponent {
           this.formDate.get('observation')?.disable();
           //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
-          this.showModal('rehabilitation', this.selectedPolicy, 'Rehabiltación');
+          this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitrar');
         },
       },
       { label: 'Renovar', icon: 'pi pi-fw pi-refresh', disabled: true },
       { label: 'Ver detalle', icon: 'pi pi-fw pi-eye', disabled: true },
     ];
-
-    this.causes = [
-      {
-        type: 'Seleccione',
-        description: null,
-      },
-      {
-        idCause: 1,
-        type: 'Anulación',
-        description: 'Por parte del usuario',
-      },
-      {
-        idCause: 2,
-        type: 'Cancelación',
-        description: 'Por parte del cliente',
-      },
-    ];
   }
 
-  showModal(process: string, policy: any, processDisplay: string) {
+  disabledItem() {
+    return !(process);
+  }
+
+  showModal(process: string, policy: any, buttonAction: any) {
     const ref = this.dialogService.open(ModalPolicyActionsComponent, {
       data: {
-        processDisplay: processDisplay,
         process: process,
         policy: policy,
+        buttonAction: buttonAction
       },
-      header: processDisplay,
+      header: process,
       modal: true,
       dismissableMask: true,
       width: '60%',
@@ -184,7 +170,6 @@ export class ConsultPolicyComponent {
     this.loading = true;
     this.consultPolicyService.getPolicies(filters).subscribe({
       next: (res: ResponseDTO<PolicyBrief[]>) => {
-        console.log('aqui',res.dataHeader.code);
         
         if (res.dataHeader.code && (res.dataHeader.code = 200)) {
           this.policies = res.body;
