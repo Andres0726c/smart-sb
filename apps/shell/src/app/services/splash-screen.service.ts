@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NavigationEnd, RouteConfigLoadEnd, RouteConfigLoadStart, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subject, Subscription, take } from 'rxjs';
 
 @Injectable({
