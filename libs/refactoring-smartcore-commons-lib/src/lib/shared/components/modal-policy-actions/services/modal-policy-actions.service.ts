@@ -27,7 +27,7 @@ export class ModalPolicyActionsService {
       idPolicy: policy.idPolicy,
       idCause: data.causeType,
       observation: data.observation,
-      inmediate: data.inmediate,
+      immediate: data.immediate,
       applicationProcess: data.applicationProcess
     };
     return this.httpClient.post<PolicyBrief>(`${this.apiUrl}policy/deletion`, sendData, { headers: this.headers });

@@ -91,7 +91,7 @@ export class ConsultPolicyComponent {
     this.items = [
       { label: 'Modificar', icon: 'pi pi-fw pi-pencil', disabled: true },
       {
-        label: 'Anular/Cancelar',
+        label: 'Cancelar',
         icon: 'pi pi-fw pi-ban',
         disabled: false,
         command: (event: any, row: any) => {
@@ -103,7 +103,16 @@ export class ConsultPolicyComponent {
           this.showModal('Cancelación', this.selectedPolicy);
         },
       },
-      { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open', disabled: true },
+      { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open', disabled: false,
+        command: (event: any, row: any) => {
+          this.formDate.reset();
+          this.formDate.get('causeType')?.disable();
+          this.formDate.get('observation')?.disable();
+          //this.showCancellationDialog = true;
+          console.log('policy', this.selectedPolicy);
+          this.showModal('rehabilitation', this.selectedPolicy);
+        },
+      },
       { label: 'Renovar', icon: 'pi pi-fw pi-refresh', disabled: true },
       { label: 'Ver detalle', icon: 'pi pi-fw pi-eye', disabled: true },
     ];
@@ -173,6 +182,8 @@ export class ConsultPolicyComponent {
     this.loading = true;
     this.consultPolicyService.getPolicies(filters).subscribe({
       next: (res: ResponseDTO<PolicyBrief[]>) => {
+        console.log('aqui',res.dataHeader.code);
+        
         if (res.dataHeader.code && (res.dataHeader.code = 200)) {
           this.policies = res.body;
           this.totalRecords = res.dataHeader.totalRecords;

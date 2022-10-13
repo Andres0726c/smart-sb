@@ -30,7 +30,7 @@ export class ModalPolicyActionsComponent implements OnInit {
     this.formProcess = fb.group({
       processDate: fb.control(null),
       causeType: fb.control(null, Validators.required),
-      inmediate:fb.control(1),
+      immediate:fb.control(1),
       applicationProcess: fb.control(this.config.data.process),
       observation: fb.control(null, Validators.maxLength(2000))
     });
