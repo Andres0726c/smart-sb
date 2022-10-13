@@ -49,6 +49,7 @@ export class ConsultPolicyComponent {
   es: any;
 
   loading: boolean = false;
+  applicationProcessDisplay = '';
 
   constructor(
     public consultPolicyService: ConsultPolicyService,
@@ -100,7 +101,7 @@ export class ConsultPolicyComponent {
           this.formDate.get('observation')?.disable();
           //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
-          this.showModal('Cancelación', this.selectedPolicy);
+          this.showModal('Cancelación', this.selectedPolicy,'Cancelación');
         },
       },
       { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open', disabled: false,
@@ -110,7 +111,7 @@ export class ConsultPolicyComponent {
           this.formDate.get('observation')?.disable();
           //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
-          this.showModal('rehabilitation', this.selectedPolicy);
+          this.showModal('rehabilitation', this.selectedPolicy, 'Rehabiltación');
         },
       },
       { label: 'Renovar', icon: 'pi pi-fw pi-refresh', disabled: true },
@@ -135,13 +136,14 @@ export class ConsultPolicyComponent {
     ];
   }
 
-  showModal(process: string, policy: any) {
+  showModal(process: string, policy: any, processDisplay: string) {
     const ref = this.dialogService.open(ModalPolicyActionsComponent, {
       data: {
+        processDisplay: processDisplay,
         process: process,
         policy: policy,
       },
-      header: process,
+      header: processDisplay,
       modal: true,
       dismissableMask: true,
       width: '60%',
