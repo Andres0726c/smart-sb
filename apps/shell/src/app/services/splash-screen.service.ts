@@ -29,5 +29,6 @@ export class SplashScreenService {
       // After the transition is ended the showSplash will be hided
       this.subject.next(false);
     }, 500);
+    
   }
 }

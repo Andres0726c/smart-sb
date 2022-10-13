@@ -4,37 +4,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
-import { HeaderModule, SplashScreenModule, SplashScreenService } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
+import { HeaderModule } from '@refactoring-smartcore-mf/refactoring-smartcore-commons-lib';
 import { InitScreenComponent } from './containers/init-screen/init-screen.component';
-import {CardModule} from 'primeng/card';
+import { CardModule } from 'primeng/card';
+import { CommonModule } from '@angular/common';
+import { SplashScreenComponent } from './components/splash-screen/splash-screen.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
-  declarations: [AppComponent, InitScreenComponent],
+  declarations: [AppComponent, SplashScreenComponent, InitScreenComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    CommonModule,
     HttpClientModule,
+    AppRoutingModule,
     HeaderModule,
     CardModule,
-    SplashScreenModule,
-    RouterModule.forRoot(
-      [
-        {
-          path: 'emisor',
-          loadChildren: () =>
-            import('policy-management/Module').then(
-              (m) => m.PolicyManagementModule
-            ),
-        },
-        {
-          path: '',
-          component: InitScreenComponent,
-        },
-      ],
-      { initialNavigation: 'enabledBlocking' }
-    ),
   ],
-  providers: [SplashScreenService],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
