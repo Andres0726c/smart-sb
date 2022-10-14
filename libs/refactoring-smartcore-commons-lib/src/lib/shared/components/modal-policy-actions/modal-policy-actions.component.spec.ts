@@ -22,11 +22,15 @@ describe('ModalPolicyActionsComponent', () => {
       providers: [
         ModalPolicyActionsComponent,
         DynamicDialogRef,
-        DynamicDialogConfig,
+
         FormBuilder,
         ModalPolicyActionsComponent,
         DialogService,
         MessageService,
+        {
+          provide: DynamicDialogConfig,
+          useValue: { data: { policy: {}, process: 'Anular/Cancelar' } },
+        },
       ],
       imports: [HttpClientModule],
     });
@@ -35,5 +39,18 @@ describe('ModalPolicyActionsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('ngOnInit', () => {
+    component.ngOnInit();
+    expect(component.getCauses).toBeCalledTimes(1);
+  });
+
+  it('disableButton', () => {
+    expect(component.disableButton()).toBeTruthy();
+  });
+
+  it('showSuccess', () => {
+    expect(component.showSuccess()).toBeTruthy();
   });
 });
