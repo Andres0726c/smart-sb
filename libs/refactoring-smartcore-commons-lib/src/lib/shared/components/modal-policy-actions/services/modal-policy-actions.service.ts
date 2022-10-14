@@ -42,7 +42,7 @@ export class ModalPolicyActionsService {
 
     const sendData = {
       idPolicy: policy.idPolicy,
-      idCause: data.idCause,
+      idCause: data.causeType,
       observation: data.observation
     }
     return this.httpClient.post<any>(`${this.apiUrl}policy/rehabilitation`, sendData, {headers: this.headers});
