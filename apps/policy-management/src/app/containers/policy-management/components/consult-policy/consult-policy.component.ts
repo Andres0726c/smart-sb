@@ -100,7 +100,7 @@ export class ConsultPolicyComponent {
           this.formDate.get('observation')?.disable();
           //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
-          this.showModal('Cancelación', this.selectedPolicy, 'Cancelar');
+          this.showModal('Cancelación', this.selectedPolicy, 'Cancela Póliza');
         },
       },
       { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open', disabled: false,
@@ -183,13 +183,6 @@ export class ConsultPolicyComponent {
         console.error('error', error);
         this.loading = false;
       },
-    });
-  }
-  showSuccess() {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Message Content',
     });
   }
 

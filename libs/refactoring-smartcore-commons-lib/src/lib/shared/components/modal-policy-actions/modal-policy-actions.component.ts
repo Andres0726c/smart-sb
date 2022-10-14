@@ -61,7 +61,7 @@ export class ModalPolicyActionsComponent implements OnInit {
         .subscribe((resp) => {
           console.log('cancelar', resp);
         });
-      
+      // this.ref.close()
       return this.showSuccess();
     } else {
       return false;
