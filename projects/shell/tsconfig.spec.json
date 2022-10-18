@@ -4,11 +4,9 @@
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
     "types": [
-      "jest",
-      "node"
+      "jest"
     ],
-    "emitDecoratorMetadata": true,
-    "allowJs": true
+    "module": "CommonJs"
   },
   "files": [
     "src/polyfills.ts"
