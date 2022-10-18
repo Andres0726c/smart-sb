@@ -8,6 +8,7 @@ module.exports = {
     globalSetup: 'jest-preset-angular/global-setup',
     modulePathIgnorePatterns: ['<rootDir>/dist'],
     moduleNameMapper: {
-      'commons-lib': '<rootDir>/dist/commons-lib/index.d.ts'
-    }
+      'commons-lib': '<rootDir>/dist/commons-lib/index.d.ts',
+      "uuid": require.resolve('uuid')
+    },
 };

@@ -12,8 +12,8 @@ const routes: Routes = [
     path: 'autenticacion',
     loadChildren: () =>
       loadRemoteModule({
-        type: 'module',
-        remoteEntry: 'http://localhost:4201/remoteEntry.js',
+        type: 'manifest',
+        remoteName: 'auth',
         exposedModule: './Module'
       }).then(m => m.MainModule)
   },

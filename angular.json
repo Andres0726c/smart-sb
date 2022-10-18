@@ -57,7 +57,8 @@
               "paho-mqtt",
               "js-cookie",
               "@aws-amplify/ui",
-              "cookie"
+              "cookie",
+              "events"
             ],
             "extraWebpackConfig": "projects/shell/webpack.config.js",
             "commonChunk": false
@@ -80,6 +81,10 @@
                 {
                   "replace": "projects/shell/src/environments/environment.ts",
                   "with": "projects/shell/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/shell/src/assets/mf.manifest.json",
+                  "with": "projects/shell/src/assets/mf.manifest.prod.json"
                 }
               ],
               "outputHashing": "all",

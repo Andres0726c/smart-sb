@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Auth } from 'aws-amplify';
 import { of } from 'rxjs';
-import { ProductService } from 'src/app/services/product.service';
 import { CognitoService } from './cognito.service';
 
 class DialogMock {
@@ -19,13 +18,11 @@ class DialogMock {
 
 describe('CognitoService', () => {
   let service: CognitoService;
-  let productService: ProductService;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
       providers: [
-        ProductService,
         FormBuilder,
         {
           provide: Router,
@@ -38,13 +35,11 @@ describe('CognitoService', () => {
         {
           provide: MatDialog,
           useValue: new DialogMock()
-        },
-        ProductService
+        }
       ]
 
     });
     service = TestBed.inject(CognitoService);
-    productService = TestBed.inject(ProductService);
   });
 
   it('should be created', () => {
@@ -90,13 +85,11 @@ describe('CognitoService', () => {
     expect(service.expirationCounter(0)).toBeUndefined();
   });
 
-  it('expirationCounter1', fakeAsync(() => {
-    service.productService.initialParameters.get('productName')?.setValue(['productName']);
-    const spy=jest.spyOn(productService,'saveProduct').mockImplementation();
+  /*it('expirationCounter1', fakeAsync(() => {
      service.expirationCounter(200);
      tick(200);
-    expect(spy).toBeCalled();
-  }));
+      expect(spy).toBeCalled();
+  }));*/
 
   it('setUserCompany', async () => {
     Auth.currentAuthenticatedUser = async () => {
