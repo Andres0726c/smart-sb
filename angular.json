@@ -124,7 +124,6 @@
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
-            "configPath": "./jest.config.js"
           }
         }
       }
@@ -222,7 +221,6 @@
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
-            "configPath": "./jest.config.js"
           }
         }
       }
@@ -251,7 +249,6 @@
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
-            "tsConfig": "./jest.config.js"
           }
         }
       }
