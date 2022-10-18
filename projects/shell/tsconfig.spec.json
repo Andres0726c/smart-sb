@@ -5,8 +5,7 @@
     "outDir": "../../out-tsc/spec",
     "types": [
       "jest"
-    ],
-    "module": "CommonJs"
+    ]
   },
   "files": [
     "src/polyfills.ts"
