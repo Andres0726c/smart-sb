@@ -9,7 +9,7 @@
         <section class="flex flex-col justify-center w-full">
             <p-table [columns]="cols" [value]="policies" responsiveLayout="scroll" [rows]="5" [rowsPerPageOptions]="[5]"
                 [paginator]="true" [alwaysShowPaginator]="false" [lazy]="true" (onLazyLoad)="nextPage($event)"
-                [totalRecords]="totalRecords" [loading]="loading">
+                [totalRecords]="totalRecords" [loading]="loading" [(first)]="first">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
                         <th *ngFor="let col of columns">
