@@ -64,8 +64,8 @@
             <span *ngIf="message.severity === 'success'" style="border: 3px solid var(--success-base);" class="line-border"></span>
             <span *ngIf="message.severity === 'error'" style="border: 3px solid var(--danger-base);" class="line-border"></span>
             <div class="flex flex-column text-center">
-                <i *ngIf="message.severity === 'success'" class="fas fa-check-circle"></i>
-                <i *ngIf="message.severity === 'error'" class="fas fa-times-circle"></i>
+                <em *ngIf="message.severity === 'success'" class="fas fa-check-circle"></em>
+                <em *ngIf="message.severity === 'error'" class="fas fa-times-circle"></em>
             </div>
             <div class="text-center" style="margin-left: 8px;">
                 <h5 *ngIf="message.severity === 'success'" style="margin-left: -40px;">{{message.summary}}</h5>
