@@ -108,7 +108,6 @@ export class ConsultPolicyComponent {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
-          //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
           this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitrar');
         },

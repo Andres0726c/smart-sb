@@ -4,7 +4,6 @@ import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dy
 import { MessageService } from 'primeng/api';
 import { ConsultPolicyService } from '../../../../../../../apps/policy-management/src/app/containers/policy-management/components/consult-policy/services/consult-policy.service';
 import { ModalPolicyActionsService } from './services/modal-policy-actions.service';
-import { title } from 'process';
 
 
 
@@ -60,16 +59,20 @@ export class ModalPolicyActionsComponent implements OnInit {
     if (this.formProcess.valid) {
       this.modalAPService
         .postCancelPolicy(this.config.data.policy ,this.formProcess.value)
-        .subscribe((resp) => {
-          this.ref.close(true)
-          return this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
-        }, (error) => {
-          console.log('error',error.error.dataHeader.status);
-          
-
-          this.messageError = true;
-          return this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
-        });
+        .subscribe((resp: any) => {
+          if(resp.dataHeader.code != 500){
+            this.ref.close(true)
+            return this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
+          } else  {
+              this.messageError = true;
+              return this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
+          }
+        }, 
+        // (error) => {        
+        //   this.messageError = true;
+        //   return this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
+        // }
+        );
     }
   }
 
@@ -77,13 +80,20 @@ export class ModalPolicyActionsComponent implements OnInit {
     if(this.formProcess.valid) {
       this.modalAPService
         .postRehabilitation(this.config.data.policy, this.formProcess.value)
-        .subscribe((resp) => {
-          this.ref.close(true)
-          return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');         
-        }, (error) => {          
-          this.messageError = true;
-          return this.showSuccess('error', 'Error al rehabilitar', error.error.dataHeader.status);
-        });
+        .subscribe((resp: any) => {
+          if(resp.dataHeader.code != 500){
+            this.ref.close(true)
+            return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');     
+          } else {
+              this.messageError = true;
+              return this.showSuccess('error', 'Error al rehabilitar', resp.dataHeader.status);
+          }  
+        },
+        //  (error) => {          
+        //   this.messageError = true;
+        //   return this.showSuccess('error', 'Error al rehabilitar', error.error.dataHeader.status);
+        // }
+        );
     }
   }
 
