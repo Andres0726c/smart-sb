@@ -7,6 +7,15 @@ module.exports = {
     transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
     globalSetup: 'jest-preset-angular/global-setup',
     modulePathIgnorePatterns: ['<rootDir>/dist'],
+    coveragePathIgnorePatterns: [
+      "node_modules",
+      "test-config",
+      "interfaces",
+      "jestGlobalMocks.ts",
+      ".module.ts",
+      ".mock.ts",
+      "<rootDir>/projects/commons-lib",
+    ],
     moduleNameMapper: {
       '^commons-lib': '<rootDir>/projects/commons-lib/src/public-api.ts',
       "uuid": require.resolve('uuid')
