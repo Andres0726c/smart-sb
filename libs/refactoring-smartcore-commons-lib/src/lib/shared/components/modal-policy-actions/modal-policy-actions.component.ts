@@ -46,9 +46,7 @@ export class ModalPolicyActionsComponent implements OnInit {
 
   getCauses(applicationProcess: string){
     this.modalAPService.getCauses(applicationProcess)
-    .subscribe( causes => {
-      console.log('causas', causes);
-      
+    .subscribe( causes => {      
       this.causes = causes.body;
       } )
     }
@@ -63,14 +61,14 @@ export class ModalPolicyActionsComponent implements OnInit {
       this.modalAPService
         .postCancelPolicy(this.config.data.policy ,this.formProcess.value)
         .subscribe((resp) => {
-          console.log('cancelar', resp);
           this.ref.close(true)
-          return this.showSuccess('success', ' Cancelación Exitosa', 'La póliza ha sido cancelada');
+          return this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
         }, (error) => {
-          console.log('Error',error.error.dataHeader.errorList[0].errorDescription);
+          console.log('error',error.error.dataHeader.status);
           
+
           this.messageError = true;
-          return this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.errorList[0].errorDescription);
+          return this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
         });
     }
   }
@@ -80,14 +78,11 @@ export class ModalPolicyActionsComponent implements OnInit {
       this.modalAPService
         .postRehabilitation(this.config.data.policy, this.formProcess.value)
         .subscribe((resp) => {
-          console.log('rehabilitar', resp);
           this.ref.close(true)
           return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');         
-        }, (error) => {
-          console.log('Error',error.error.dataHeader.errorList[0].errorDescription);
-          
+        }, (error) => {          
           this.messageError = true;
-          return this.showSuccess('error', 'Error al rehabilitar', error.error.dataHeader.errorList[0].errorDescription);
+          return this.showSuccess('error', 'Error al rehabilitar', error.error.dataHeader.status);
         });
     }
   }

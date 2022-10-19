@@ -51,6 +51,18 @@ describe('ModalPolicyActionsComponent', () => {
   });
 
   it('showSuccess', () => {
-    expect(component.showSuccess()).toBeTruthy();
+    expect(component.showSuccess('succes', 'Cancelación exitosa', 'Se ha cancelado la póliza')).toBeDefined();
   });
+  it('getCauses', () => {
+    expect(component.getCauses('succes')).toBeUndefined();
+  });
+
+  it('Cancel Policy', () => {
+    expect(component.cancelPolicy()).toBeUndefined();
+  })
+
+  it('Rehabilitate Policy', () => {
+    expect(component.rehabilitatePolicy()).toBeUndefined();
+  })
+
 });
