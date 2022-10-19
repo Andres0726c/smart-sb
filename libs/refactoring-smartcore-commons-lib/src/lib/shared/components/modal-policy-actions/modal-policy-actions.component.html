@@ -17,7 +17,7 @@
 
         <div>
             <span class="text-primary">Tomador:</span>
-            {{ config.data.policy.holderDocument }}
+            {{ config.data.policy.holderName }}
         </div>
 
         <div>
@@ -32,19 +32,18 @@
     </div>
     <p-divider></p-divider>
     <form [formGroup]="formProcess">
-
         <div class="grid grid-cols-2  gap-10">
             <div>
-                <label>Seleccione la fecha de anulación</label>
-                <p-calendar formControlName="processDate" (onSelect)="null" dateFormat="yy-mm-dd" [showIcon]="true"
-                    appendTo="body" [showTime]="true" hourFormat="24" [showSeconds]="true" styleClass="w-full"
-                    placeholder="aaaa/mm/dd" mask="9999/99/99">
-                </p-calendar>
-            </div>
-            <div>
-                <label>Tipo de causa</label>
-                <p-dropdown formControlName="causeType" [options]="causes" optionLabel="type" optionValue="idCause"
-                    class="block" [style]="{'width':'100%'}"></p-dropdown>
+                <label>Causa</label>
+                <p-dropdown formControlName="causeType" [options]="causes" optionLabel="description" optionValue="id"
+                [filter]="true" filterBy="description" [showClear]="true" placeholder="Seleccione la causa"
+                class="block" [style]="{'width':'100%'}">
+                    <ng-template let-cause pTemplate="item">
+                        <div>
+                            <div>{{cause.name}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
             </div>
 
             <div class="col-span-2">
@@ -53,7 +52,7 @@
             </div>
 
             <div class="col-span-2 ml-auto">
-                <p-button label="Anular" [disabled]="false" (click)="null"></p-button>
+                <p-button [label]="config.data.buttonAction" [disabled]="disableButton()" (click)="config.data.buttonAction === 'Cancelar Póliza' ? cancelPolicy() : rehabilitatePolicy()"></p-button>
             </div>
         </div>
     </form>

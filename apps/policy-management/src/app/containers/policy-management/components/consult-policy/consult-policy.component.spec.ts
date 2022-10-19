@@ -47,10 +47,10 @@ describe('ConsultPolicyComponent', () => {
 
   it('search with start date', () => {
     let filters: FilterPolicy = component.filters;
-    filters.startDate = '30/12/2022';
+    filters.startDate = '12/30/2022';
 
     component.search(filters);
-    expect(component.filters.startDate).toEqual('2022-12-30T05:00:00.000Z');
+    expect(component.filters.startDate).toEqual('2022-12-30T00:00:00.000Z');
   });
 
   it('nextPage', () => {
