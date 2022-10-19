@@ -4,14 +4,6 @@ import { Auth, Amplify } from 'aws-amplify';
 import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 
-export interface IUser {
-  email: string;
-  password: string;
-  showPassword: boolean;
-  code: string;
-  name: string;
-}
-
 @Injectable({
   providedIn: 'root',
 })
