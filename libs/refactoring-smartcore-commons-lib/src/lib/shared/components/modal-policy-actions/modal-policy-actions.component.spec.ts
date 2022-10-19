@@ -42,8 +42,9 @@ describe('ModalPolicyActionsComponent', () => {
   });
 
   it('ngOnInit', () => {
-    component.ngOnInit();
-    expect(component.getCauses).toBeCalledTimes(1);
+    const fixtureAux = TestBed.createComponent(ModalPolicyActionsComponent);
+    const componentAux = fixtureAux.componentInstance;
+    expect(componentAux.ngOnInit()).toBeUndefined();
   });
 
   it('disableButton', () => {
@@ -51,7 +52,7 @@ describe('ModalPolicyActionsComponent', () => {
   });
 
   it('showSuccess', () => {
-    expect(component.showSuccess('succes', 'Cancelación exitosa', 'Se ha cancelado la póliza')).toBeDefined();
+    expect(component.showSuccess('succes', 'Cancelación exitosa', 'Se ha cancelado la póliza'));
   });
   it('getCauses', () => {
     expect(component.getCauses('succes')).toBeUndefined();
