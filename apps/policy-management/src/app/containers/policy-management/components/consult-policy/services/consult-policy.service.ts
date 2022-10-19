@@ -43,19 +43,4 @@ export class ConsultPolicyService {
       .pipe(map((data: any) => data.body));
   };
 
-  cancelDate(policy: any, data: any): Observable<PolicyBrief> {
-    const sendData = {
-      deletionDate: data.processDate,
-      startDate: policy.inceptionDate,
-      endDate: policy.expirationDate,
-      idPolicy: policy.idPolicy,
-      idCause: data.causeType,
-      observation: data.observation,
-    };
-    return this.httpClient.post<PolicyBrief>(
-      `${this.apiUrl}policy/deletion`,
-      sendData,
-      { headers: this.headers }
-    );
-  }
 }

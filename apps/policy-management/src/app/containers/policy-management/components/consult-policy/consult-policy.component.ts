@@ -90,48 +90,61 @@ export class ConsultPolicyComponent {
     ];
 
     this.items = [
-      { label: 'Modificar', icon: 'pi pi-fw pi-pencil', disabled: true },
+      { label: 'Modificar', icon: 'pi pi-fw pi-pencil' },
       {
-        label: 'Anular/Cancelar',
+        label: 'Cancelar',
         icon: 'pi pi-fw pi-ban',
-        disabled: false,
         command: (event: any, row: any) => {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
           //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
-          this.showModal('Anular/Cancelar', this.selectedPolicy);
+          this.showModal('Cancelación', this.selectedPolicy, 'Cancelar Póliza');
         },
       },
-      { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open', disabled: true },
-      { label: 'Renovar', icon: 'pi pi-fw pi-refresh', disabled: true },
-      { label: 'Ver detalle', icon: 'pi pi-fw pi-eye', disabled: true },
-    ];
-
-    this.causes = [
-      {
-        type: 'Seleccione',
-        description: null,
+      { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open',
+        command: (event: any, row: any) => {
+          this.formDate.reset();
+          this.formDate.get('causeType')?.disable();
+          this.formDate.get('observation')?.disable();
+          //this.showCancellationDialog = true;
+          console.log('policy', this.selectedPolicy);
+          this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitrar');
+        },
       },
-      {
-        idCause: 1,
-        type: 'Anulación',
-        description: 'Por parte del usuario',
-      },
-      {
-        idCause: 2,
-        type: 'Cancelación',
-        description: 'Por parte del cliente',
-      },
+      { label: 'Renovar', icon: 'pi pi-fw pi-refresh' },
+      { label: 'Ver detalle', icon: 'pi pi-fw pi-eye' },
     ];
   }
 
-  showModal(process: string, policy: any) {
+  disabledItem(status: string) {
+    switch(status) {
+      case 'Activa':
+        this.items[0].visible = true;
+        this.items[1].visible = true;
+        this.items[2].visible = false;
+        this.items[3].visible = true;
+        this.items[4].visible = true;
+        break;
+
+      case 'Cancelada':
+        this.items[0].visible = false;
+        this.items[1].visible = false;
+        this.items[2].visible = true;
+        this.items[3].visible = false;
+        this.items[4].visible = true;
+        break;
+    }
+    this.items[0].visible = false;
+  }
+
+  showModal(process: string, policy: any, buttonAction: any) {
     const ref = this.dialogService.open(ModalPolicyActionsComponent, {
       data: {
         process: process,
         policy: policy,
+        buttonAction: buttonAction
       },
       header: process,
       modal: true,
@@ -141,9 +154,10 @@ export class ConsultPolicyComponent {
       baseZIndex: 10000,
     });
 
-    ref.onClose.subscribe((res: any) => {
+    ref.onClose.subscribe((res: boolean) => {
       if (res) {
         console.log('Modal cerrado');
+        this.consultPolicies(this.filters);
       }
     });
   }
@@ -183,7 +197,8 @@ export class ConsultPolicyComponent {
     this.loading = true;
     this.consultPolicyService.getPolicies(filters).subscribe({
       next: (res: ResponseDTO<PolicyBrief[]>) => {
-        if (res.dataHeader.code && (res.dataHeader.code == 200)) {
+        
+        if (res.dataHeader.code && (res.dataHeader.code = 200)) {
           this.policies = res.body;
           this.totalRecords = res.dataHeader.totalRecords;
         } else {
@@ -195,80 +210,6 @@ export class ConsultPolicyComponent {
         console.error('error', error);
         this.loading = false;
       },
-    });
-  }
-
-  verifyDate() {
-    const date = new Date(
-      this.formDate.get('processDate')?.value
-    ).toISOString();
-    const inceptionDate = new Date(
-      this.selectedPolicy?.inceptionDate
-    ).toISOString();
-    const expirationDate = new Date(
-      this.selectedPolicy?.expirationDate
-    ).toISOString();
-    console.log('fecha actual', date);
-    console.log('inceptionDate', inceptionDate);
-    console.log('expirationDate', expirationDate);
-
-    if (
-      this.formDate.get('processDate')?.value &&
-      date >= inceptionDate &&
-      date <= expirationDate
-    ) {
-      this.formDate.get('causeType')?.enable();
-      this.formDate.get('observation')?.enable();
-    } else {
-      this.formDate.get('causeType')?.disable();
-      this.formDate.get('observation')?.disable();
-    }
-  }
-
-  disableButton() {
-    if (this.selectedPolicy) {
-      const date = new Date(
-        this.formDate.get('processDate')?.value
-      ).toISOString();
-      const inceptionDate = new Date(
-        this.selectedPolicy?.inceptionDate
-      ).toISOString();
-      const expirationDate = new Date(
-        this.selectedPolicy?.expirationDate
-      ).toISOString();
-      return !(
-        this.formDate.valid &&
-        this.formDate.get('processDate')?.value &&
-        date >= inceptionDate &&
-        date <= expirationDate
-      );
-    } else {
-      return true;
-    }
-  }
-
-  cancelPolicy() {
-    console.log('selected Policy', this.selectedPolicy);
-    console.log('formDate', this.formDate);
-
-    if (this.formDate.valid) {
-      this.consultPolicyService
-        .cancelDate(this.selectedPolicy, this.formDate.value)
-        .subscribe((resp) => {
-          console.log('respuesta', resp);
-        });
-      this.showCancellationDialog = false;
-      return this.showSuccess();
-    } else {
-      return false;
-    }
-  }
-
-  showSuccess() {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Message Content',
     });
   }
 
