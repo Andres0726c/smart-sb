@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PolicyBrief } from 'apps/policy-management/src/app/core/interfaces/policy';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { CancelPolicy } from '../../../../../../../../apps/policy-management/src/app/containers/policy-management/components/consult-policy/interfaces/cancel-policy';
