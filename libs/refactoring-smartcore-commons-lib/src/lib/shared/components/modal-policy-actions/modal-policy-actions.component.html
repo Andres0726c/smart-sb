@@ -17,7 +17,7 @@
 
         <div>
             <span class="text-primary">Tomador:</span>
-            {{ config.data.policy.holderDocument }}
+            {{ config.data.policy.holderName }}
         </div>
 
         <div>
@@ -52,7 +52,7 @@
             </div>
 
             <div class="col-span-2 ml-auto">
-                <p-button [label]="config.data.buttonAction" [disabled]="disableButton()" (click)="config.data.buttonAction === 'Cancelar' ? cancelPolicy() : rehabilitatePolicy()"></p-button>
+                <p-button [label]="config.data.buttonAction" [disabled]="disableButton()" (click)="config.data.buttonAction === 'Cancelar Póliza' ? cancelPolicy() : rehabilitatePolicy()"></p-button>
             </div>
         </div>
     </form>

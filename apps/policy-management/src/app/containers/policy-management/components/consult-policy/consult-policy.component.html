@@ -41,7 +41,7 @@
                         </td>
                         <td>
                             <button type="button" pButton pRipple class="p-button p-button-secondary bg-white hover:"
-                                icon="pi pi-ellipsis-v" (click)="selectedPolicy=rowData; menu.toggle($event)">
+                                icon="pi pi-ellipsis-v" (click)="selectedPolicy=rowData; menu.toggle($event); disabledItem(rowData.policyStatus)">
                             </button>
                             <p-menu #menu [popup]="true" [model]="items" appendTo="body"></p-menu>
                         </td>
@@ -58,3 +58,18 @@
         </section>
     </div>
 </div>
+<p-toast position="bottom-right">
+    <ng-template let-message pTemplate="message">
+        <div class="flex flex-column alert-description" style="flex: 1">
+            <span class="line-border"></span>
+            <div class="flex flex-column text-center">
+                <i *ngIf="message.severity === 'success'" class="fas fa-check-circle"></i>
+                <i *ngIf="message.severity === 'error'" class="fas fa-times-circle"></i>
+            </div>
+            <div class="text-center" style="margin-left: 8px;">
+                <h5 style="margin-bottom: 8px;">{{message.summary}}</h5>
+                <p>{{message.detail}}</p>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>

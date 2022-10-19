@@ -89,21 +89,20 @@ export class ConsultPolicyComponent {
     ];
 
     this.items = [
-      { label: 'Modificar', icon: 'pi pi-fw pi-pencil', disabled: true },
+      { label: 'Modificar', icon: 'pi pi-fw pi-pencil' },
       {
         label: 'Cancelar',
         icon: 'pi pi-fw pi-ban',
-        disabled: false,
         command: (event: any, row: any) => {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
           //this.showCancellationDialog = true;
           console.log('policy', this.selectedPolicy);
-          this.showModal('Cancelación', this.selectedPolicy, 'Cancela Póliza');
+          this.showModal('Cancelación', this.selectedPolicy, 'Cancelar Póliza');
         },
       },
-      { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open', disabled: false,
+      { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open',
         command: (event: any, row: any) => {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
@@ -113,13 +112,30 @@ export class ConsultPolicyComponent {
           this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitrar');
         },
       },
-      { label: 'Renovar', icon: 'pi pi-fw pi-refresh', disabled: true },
-      { label: 'Ver detalle', icon: 'pi pi-fw pi-eye', disabled: true },
+      { label: 'Renovar', icon: 'pi pi-fw pi-refresh' },
+      { label: 'Ver detalle', icon: 'pi pi-fw pi-eye' },
     ];
   }
 
-  disabledItem() {
-    return !(process);
+  disabledItem(status: string) {
+    switch(status) {
+      case 'Activa':
+        this.items[0].visible = true;
+        this.items[1].visible = true;
+        this.items[2].visible = false;
+        this.items[3].visible = true;
+        this.items[4].visible = true;
+        break;
+
+      case 'Cancelada':
+        this.items[0].visible = false;
+        this.items[1].visible = false;
+        this.items[2].visible = true;
+        this.items[3].visible = false;
+        this.items[4].visible = true;
+        break;
+    }
+    this.items[0].visible = false;
   }
 
   showModal(process: string, policy: any, buttonAction: any) {
@@ -137,11 +153,11 @@ export class ConsultPolicyComponent {
       baseZIndex: 10000,
     });
 
-    ref.onClose.subscribe((res: any) => {
+    ref.onClose.subscribe((res: boolean) => {
       if (res) {
         console.log('Modal cerrado');
+        this.consultPolicies(this.filters);
       }
-      this.consultPolicies(this.filters);
     });
   }
 

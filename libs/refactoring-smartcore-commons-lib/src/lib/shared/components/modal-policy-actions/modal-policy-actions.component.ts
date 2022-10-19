@@ -4,6 +4,9 @@ import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dy
 import { MessageService } from 'primeng/api';
 import { ConsultPolicyService } from '../../../../../../../apps/policy-management/src/app/containers/policy-management/components/consult-policy/services/consult-policy.service';
 import { ModalPolicyActionsService } from './services/modal-policy-actions.service';
+import { title } from 'process';
+
+
 
 @Component({
   selector: 'refactoring-smartcore-mf-modal-policy-actions',
@@ -13,6 +16,7 @@ import { ModalPolicyActionsService } from './services/modal-policy-actions.servi
 export class ModalPolicyActionsComponent implements OnInit {
   formProcess: FormGroup;
   causes: any[] = []
+  messageError = false;
 
   selectedPolicy: any = null;
 
@@ -60,11 +64,14 @@ export class ModalPolicyActionsComponent implements OnInit {
         .postCancelPolicy(this.config.data.policy ,this.formProcess.value)
         .subscribe((resp) => {
           console.log('cancelar', resp);
+          this.ref.close(true)
+          return this.showSuccess('success', ' Cancelación Exitosa', 'La póliza ha sido cancelada');
+        }, (error) => {
+          console.log('Error',error.error.dataHeader.errorList[0].errorDescription);
+          
+          this.messageError = true;
+          return this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.errorList[0].errorDescription);
         });
-      // this.ref.close()
-      return this.showSuccess();
-    } else {
-      return false;
     }
   }
 
@@ -74,16 +81,22 @@ export class ModalPolicyActionsComponent implements OnInit {
         .postRehabilitation(this.config.data.policy, this.formProcess.value)
         .subscribe((resp) => {
           console.log('rehabilitar', resp);
+          this.ref.close(true)
+          return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');         
+        }, (error) => {
+          console.log('Error',error.error.dataHeader.errorList[0].errorDescription);
           
-        })
+          this.messageError = true;
+          return this.showSuccess('error', 'Error al rehabilitar', error.error.dataHeader.errorList[0].errorDescription);
+        });
     }
   }
 
-  showSuccess() {
+  showSuccess(status: string, title: string, msg: string) {
     this.messageService.add({
-      severity: 'success',
-      summary: 'Anulación exitosa',
-      detail: 'Se ha anulado la póliza',
+      severity: status,
+      summary: title,
+      detail: msg
     });
   }
 }
