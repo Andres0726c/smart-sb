@@ -3,16 +3,21 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  remote: true,
   production: false,
   apiKeyServices: 'UPOrFwRWKC1AJtFfkTYUz69XCWQQ48cBalVJ6A85',
+  urlParameterizerMS: 'https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev/parametrizador/v1/',
   urlMicroServices: 'https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/stage/emisor/v1/',
   cognito: {
-    userPoolId: 'us-east-1_ZFhpUlx6t',
-    userPoolWebClientId: '7hqksg5696uaup6lp4qlcsk1dj',
+    userPoolId: 'us-east-1_XXXM3luFv',
+    userPoolWebClientId: '1oklgg9mvl2ivba130lag310e0',
   },
   productAutosave: false,
   urlParameterizer: 'https://d1p5ro9c86yefs.cloudfront.net/',
-  smartcoreSiteTitle: '(STG) - Smartcore'
+  smartcoreSiteTitle: '(STG) - Smartcore',
+  mfManifest: {
+    "auth": "./auth/remoteEntry.js"
+  }
 };
 
 /*

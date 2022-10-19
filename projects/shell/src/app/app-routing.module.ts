@@ -1,6 +1,7 @@
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { environment } from 'commons-lib';
 import { InitScreenComponent } from './containers/init-screen/init-screen.component';
 
 const routes: Routes = [
@@ -12,8 +13,8 @@ const routes: Routes = [
     path: 'autenticacion',
     loadChildren: () =>
       loadRemoteModule({
-        type: 'manifest',
-        remoteName: 'auth',
+        type: 'module',
+        remoteEntry: environment.mfManifest.auth,
         exposedModule: './Module'
       }).then(m => m.MainModule)
   },

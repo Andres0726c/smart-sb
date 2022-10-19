@@ -17,7 +17,7 @@
         "build": {
           "builder": "ngx-build-plus:browser",
           "options": {
-            "outputPath": "dist/shell",
+            "outputPath": "dist/browser",
             "index": "projects/shell/src/index.html",
             "main": "projects/shell/src/main.ts",
             "polyfills": "projects/shell/src/polyfills.ts",
@@ -79,12 +79,30 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "projects/shell/src/environments/environment.ts",
-                  "with": "projects/shell/src/environments/environment.prod.ts"
+                  "replace": "projects/commons-lib/src/lib/environments/environment.ts",
+                  "with": "projects/commons-lib/src/lib/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "extraWebpackConfig": "projects/shell/webpack.prod.config.js"
+            },
+            "stage": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
                 },
                 {
-                  "replace": "projects/shell/src/assets/mf.manifest.json",
-                  "with": "projects/shell/src/assets/mf.manifest.prod.json"
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/commons-lib/src/lib/environments/environment.ts",
+                  "with": "projects/commons-lib/src/lib/environments/environment.stage.ts"
                 }
               ],
               "outputHashing": "all",
@@ -105,6 +123,10 @@
           "builder": "ngx-build-plus:dev-server",
           "configurations": {
             "production": {
+              "browserTarget": "shell:build:production",
+              "extraWebpackConfig": "projects/shell/webpack.prod.config.js"
+            },
+            "stage": {
               "browserTarget": "shell:build:production",
               "extraWebpackConfig": "projects/shell/webpack.prod.config.js"
             },
@@ -148,7 +170,7 @@
         "build": {
           "builder": "ngx-build-plus:browser",
           "options": {
-            "outputPath": "dist/auth",
+            "outputPath": "dist/browser/auth",
             "index": "projects/auth/src/index.html",
             "main": "projects/auth/src/main.ts",
             "polyfills": "projects/auth/src/polyfills.ts",
@@ -162,6 +184,26 @@
               "projects/auth/src/styles.scss"
             ],
             "scripts": [],
+            "allowedCommonJsDependencies": [
+              "uuid",
+              "lodash",
+              "url",
+              "buffer",
+              "ulid",
+              "camelcase-keys",
+              "@aws-crypto",
+              "@aws-crypto/sha256-js",
+              "@aws-crypto/sha256-browser",
+              "@aws-crypto/crc32",
+              "fast-xml-parser",
+              "crypto-js",
+              "isomorphic-unfetch",
+              "paho-mqtt",
+              "js-cookie",
+              "@aws-amplify/ui",
+              "cookie",
+              "events"
+            ],
             "extraWebpackConfig": "projects/auth/webpack.config.js",
             "commonChunk": false
           },
@@ -181,8 +223,30 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "projects/auth/src/environments/environment.ts",
-                  "with": "projects/auth/src/environments/environment.prod.ts"
+                  "replace": "projects/commons-lib/src/lib/environments/environment.ts",
+                  "with": "projects/commons-lib/src/lib/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "extraWebpackConfig": "projects/auth/webpack.prod.config.js"
+            },
+            "stage": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/commons-lib/src/lib/environments/environment.ts",
+                  "with": "projects/commons-lib/src/lib/environments/environment.stage.ts"
                 }
               ],
               "outputHashing": "all",
@@ -204,6 +268,10 @@
           "configurations": {
             "production": {
               "browserTarget": "auth:build:production",
+              "extraWebpackConfig": "projects/auth/webpack.prod.config.js"
+            },
+            "stage": {
+              "browserTarget": "auth:build:stage",
               "extraWebpackConfig": "projects/auth/webpack.prod.config.js"
             },
             "development": {
@@ -245,6 +313,9 @@
           },
           "configurations": {
             "production": {
+              "tsConfig": "projects/commons-lib/tsconfig.lib.prod.json"
+            },
+            "stage": {
               "tsConfig": "projects/commons-lib/tsconfig.lib.prod.json"
             },
             "development": {

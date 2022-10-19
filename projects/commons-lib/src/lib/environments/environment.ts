@@ -13,7 +13,13 @@ export const environment = {
   },
   productAutosave: false,
   urlParameterizer: 'https://d1s6tjcltt5c19.cloudfront.net/',
-  smartcoreSiteTitle: '(DEV) - Smartcore'
+  smartcoreSiteTitle: '(DEV) - Smartcore',
+  mfManifest: {
+    "auth": "http://localhost:4201/remoteEntry.js"
+  },
+  /*mfManifest: {
+    "auth": "./auth/remoteEntry.js"
+  }*/
 };
 
 /*
