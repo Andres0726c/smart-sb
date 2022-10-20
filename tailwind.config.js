@@ -34,7 +34,7 @@ const customPalettes = {
  */
 const config = {
   content    : [
-    './apps/**/*.{html,scss,ts}',
+    './projects/**/*.{html,scss,ts}',
     './libs/**/*.{html,scss,ts}'
   ],
   important  : true,

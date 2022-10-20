@@ -1,0 +1,77 @@
+<div class="mx-1 sm:mx-12 sm:mb-12">
+    <h1>Consulta de pólizas</h1>
+    <span>Criterios de búsqueda</span>
+    <div class="flex flex-col justify-center items-center gap-y-4">
+        <app-filter-policy-top (emitSearch)="search($event)" (emitClear)="clearSearch()" class="w-full">
+        </app-filter-policy-top>
+        <!-- <app-filter-policy-top (emitSearch)="null" class="w-full"></app-filter-policy-top> -->
+        <span class="w-full">Resultados de la búsqueda</span>
+        <section class="flex flex-col justify-center w-full">
+            <p-table [columns]="cols" [value]="policies" responsiveLayout="scroll" [rows]="5" [rowsPerPageOptions]="[5]"
+                [paginator]="true" [alwaysShowPaginator]="false" [lazy]="true" (onLazyLoad)="nextPage($event)"
+                [totalRecords]="totalRecords" [loading]="loading" [(first)]="first">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns">
+                            {{col.header}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td>
+                            {{rowData['productName']}}
+                        </td>
+                        <td>
+                            {{rowData['policyNumber']}}
+                        </td>
+                        <td>
+                            {{rowData['holderName']?rowData['holderName']:'-'}}
+                        </td>
+
+                        <td>
+                            {{rowData['inceptionDate'] | date:'medium'}}
+                        </td>
+                        <td>
+                            {{rowData['expirationDate'] | date:'medium'}}
+                        </td>
+                        <td>
+                            <span
+                                class="bagde status-{{rowData['policyStatus'].toString().split('-')}}">{{rowData['policyStatus'].toUpperCase()}}</span>
+                        </td>
+                        <td>
+                            <button type="button" pButton pRipple class="p-button p-button-secondary bg-white hover:"
+                                icon="pi pi-ellipsis-v" (click)="selectedPolicy=rowData; menu.toggle($event); disabledItem(rowData.policyStatus)">
+                            </button>
+                            <p-menu #menu [popup]="true" [model]="items" appendTo="body"></p-menu>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">Pólizas no encontradas</td>
+                    </tr>
+                </ng-template>}
+
+            </p-table>
+
+        </section>
+    </div>
+</div>
+<p-toast position="bottom-right">
+    <ng-template let-message pTemplate="message">
+        <div class="flex flex-column alert-description" style="flex: 1">
+            <span *ngIf="message.severity === 'success'" style="border: 3px solid var(--success-base);" class="line-border"></span>
+            <span *ngIf="message.severity === 'error'" style="border: 3px solid var(--danger-base);" class="line-border"></span>
+            <div class="flex flex-column text-center">
+                <em *ngIf="message.severity === 'success'" class="fas fa-check-circle"></em>
+                <em *ngIf="message.severity === 'error'" class="fas fa-times-circle"></em>
+            </div>
+            <div class="text-center" style="margin-left: 8px;">
+                <h5 *ngIf="message.severity === 'success'" style="margin-left: -40px;">{{message.summary}}</h5>
+                <h5 *ngIf="message.severity === 'error'" style="margin-left: -150px;">{{message.summary}}</h5>
+                <p>{{message.detail}}</p>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
