@@ -14,13 +14,22 @@ const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: environment.mfManifest.auth,
+        remoteEntry: environment.mfManifest['auth'],
         exposedModule: './Module'
       }).then(m => m.MainModule)
   },
+  /*{
+    path: 'gestion-polizas',
+    loadChildren: () =>
+      loadRemoteModule({
+        type: 'module',
+        remoteEntry: environment.mfManifest['policy-management'],
+        exposedModule: './Module'
+      }).then(m => m.PolcyManagement)
+  },*/
   {
     path: '**',
-    redirectTo: 'autenticacion',
+    redirectTo: 'inicio',
     pathMatch: 'full'
   }
 ];

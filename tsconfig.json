@@ -14,7 +14,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "esModuleInterop" : true,
+    "esModuleInterop": true,
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "declaration": false,

@@ -6,8 +6,8 @@ export const environment = {
   remote: true,
   production: false,
   apiKeyServices: 'UPOrFwRWKC1AJtFfkTYUz69XCWQQ48cBalVJ6A85',
-  urlParameterizerMS: 'https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev/parametrizador/v1/',
-  urlMicroServices: 'https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/stage/emisor/v1/',
+  urlParameterizerMS: 'https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/emisor/emisor/v1/',
+  urlPolicyIssuerMS: 'https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/stage/emisor/v1/',
   cognito: {
     userPoolId: 'us-east-1_XXXM3luFv',
     userPoolWebClientId: '1oklgg9mvl2ivba130lag310e0',
@@ -16,7 +16,8 @@ export const environment = {
   urlParameterizer: 'https://d1p5ro9c86yefs.cloudfront.net/',
   smartcoreSiteTitle: '(PRD) - Smartcore',
   mfManifest: {
-    "auth": "./auth/remoteEntry.js"
+    "auth": "./auth/remoteEntry.js",
+    "policy-management": "./policy-management/remoteEntry.js"
   }
 };
 
