@@ -38,8 +38,6 @@ export class LoginComponent implements OnInit {
   }
 
   logIn() {
-    console.log('login', this.formData)
-    console.log('hasError', this.formData.get('email')?.hasError('required'))
     this.isLoading = true;
     this.cognitoService.signIn(this.formData.get('email')?.value, this.formData.get('password')?.value)
       .then(async user => {
@@ -118,12 +116,14 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * Determina si el valor ingresado en campo de la instacia form tiene error de validaci\u00f3n.
-   * @param formControlName identificador del input con el valor a validar.
-   * @param errorName       identificador del error que se despliega.
-   * @returns TRUE si hay error en la validaci\u00f3n, FALSE en caso contrario.
+   * Sí el usuario presiona la tecla Enter se redireccionará hacia el método de login
+   * @param event evento que contiene informacion de la tecla presionada
+   * @returns si se presiona cualquier tecla diferente a ENTER, devuelve void, de lo contrario redirecciona a la función de login
    */
-  public hasError(formControlName: string, errorName: string) {
-    return this.formData.controls[formControlName].hasError(errorName);
+   public hasEnterKey(event:any) {
+    event.stopImmediatePropagation();
+    if (event.keyCode === 13 || event.key === "Enter") {
+      this.logIn();
+    }
   }
 }

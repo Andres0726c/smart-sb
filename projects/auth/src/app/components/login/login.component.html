@@ -12,7 +12,7 @@
                 <label>Usuario</label>
                 <span class="p-input-icon-right flex flex-col">
                     <i class="pi pi-user"></i>
-                    <input type="email" pInputText formControlName="email" class="block text-base" placeholder="usuario" class="w-full" required>
+                    <input type="email" pInputText formControlName="email" (keydown)="hasEnterKey($event)" class="block text-base" placeholder="usuario" class="w-full" required>
                 </span>
                 <div *ngIf="formData.get('email')?.touched || formData.get('email')?.dirty">
                     <small class="p-error block" *ngIf="formData.get('email')?.hasError('pattern')">Ingrese un correo electrónico.</small>
@@ -21,7 +21,7 @@
             </div>
             <div>
                 <label>Contraseña</label>
-                <p-password [toggleMask]="true" formControlName="password" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
+                <p-password [toggleMask]="true" formControlName="password" (keydown)="hasEnterKey($event)" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
                 <small class="p-error block" *ngIf="formData.get('password')?.hasError('required')&&(formData.get('password')?.touched || formData.get('password')?.dirty)">Ingrese su contraseña.</small>
             </div>
         </div>
