@@ -98,8 +98,6 @@ export class ConsultPolicyComponent {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
-          //this.showCancellationDialog = true;
-          console.log('policy', this.selectedPolicy);
           this.showModal('Cancelación', this.selectedPolicy, 'Cancelar Póliza');
         },
       },
@@ -108,7 +106,6 @@ export class ConsultPolicyComponent {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
-          console.log('policy', this.selectedPolicy);
           this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitrar');
         },
       },
@@ -155,7 +152,6 @@ export class ConsultPolicyComponent {
 
     ref.onClose.subscribe((res: boolean) => {
       if (res) {
-        console.log('Modal cerrado');
         this.consultPolicies(this.filters);
       }
     });

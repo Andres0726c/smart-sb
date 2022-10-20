@@ -28,7 +28,6 @@ export class ModalPolicyActionsComponent implements OnInit {
     public dialogService: DialogService,
     public messageService: MessageService
   ) {
-    console.log('config', config)
     this.formProcess = fb.group({
       processDate: fb.control(null),
       causeType: fb.control(null, Validators.required),
@@ -39,7 +38,7 @@ export class ModalPolicyActionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(''); 
+    //console.log(''); 
     this.getCauses(this.config.data.process); 
   }
 
@@ -62,10 +61,10 @@ export class ModalPolicyActionsComponent implements OnInit {
         .subscribe((resp: any) => {
           if(resp.dataHeader.code != 500){
             this.ref.close(true)
-            return this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
+            // return this.showSuccess('success', 'Cancelación exitosa', 'La póliza ha sido cancelada');
           } else  {
               this.messageError = true;
-              return this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
+              return this.showSuccess('error', 'Cancelación presentó fallas', resp.dataHeader.status);
           }
         }, 
         // (error) => {        
@@ -83,10 +82,10 @@ export class ModalPolicyActionsComponent implements OnInit {
         .subscribe((resp: any) => {
           if(resp.dataHeader.code != 500){
             this.ref.close(true)
-            return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');     
+            // return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');     
           } else {
               this.messageError = true;
-              return this.showSuccess('error', 'Error al rehabilitar', resp.dataHeader.status);
+              return this.showSuccess('error', 'Rehabilitación presentó fallas', resp.dataHeader.status);
           }  
         },
         //  (error) => {          
