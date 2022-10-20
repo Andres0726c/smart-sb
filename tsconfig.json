@@ -4,7 +4,7 @@
     "baseUrl": "./",
     "paths": {
       "commons-lib": [
-        "projects/commons-lib/src/public-api.ts"
+        "libs/commons-lib/src/public-api.ts"
       ]
     },
     "outDir": "./dist/out-tsc",
