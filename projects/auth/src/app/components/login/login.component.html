@@ -11,7 +11,7 @@
             <div>
                 <label>Usuario</label>
                 <span class="p-input-icon-right flex flex-col">
-                    <!-- <i class="pi pi-user"></i> -->
+                    <i class="pi pi-user"></i>
                     <input type="email" pInputText formControlName="email" (keydown)="hasEnterKey($event)" class="block text-base" placeholder="usuario" class="w-full" required>
                 </span>
                 <div *ngIf="formData.get('email')?.touched || formData.get('email')?.dirty">
