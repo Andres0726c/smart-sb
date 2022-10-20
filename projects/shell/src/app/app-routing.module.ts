@@ -18,15 +18,15 @@ const routes: Routes = [
         exposedModule: './Module'
       }).then(m => m.MainModule)
   },
-  /*{
+  {
     path: 'gestion-polizas',
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
         remoteEntry: environment.mfManifest['policy-management'],
         exposedModule: './Module'
-      }).then(m => m.PolcyManagement)
-  },*/
+      }).then(m => m.PolicyManagementModule)
+  },
   {
     path: '**',
     redirectTo: 'inicio',

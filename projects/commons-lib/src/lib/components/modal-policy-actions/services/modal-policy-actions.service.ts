@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CancelPolicy } from 'projects/policy-management/src/app/containers/policy-management/components/consult-policy/interfaces/cancel-policy';
 import { Observable } from 'rxjs';
-import { environment } from 'commons-lib';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

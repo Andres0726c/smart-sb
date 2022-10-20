@@ -21,5 +21,5 @@ export * from './lib/components/primeng-example/primeng-example.component';
 export * from './lib/components/header/header.module';
 export * from './lib/components/header/header.component';
 
-/*export * from './lib/components/modal-policy-actions/modal-policy-actions.module';
-export * from './lib/components/modal-policy-actions/modal-policy-actions.component';*/
+export * from './lib/components/modal-policy-actions/modal-policy-actions.module';
+export * from './lib/components/modal-policy-actions/modal-policy-actions.component';

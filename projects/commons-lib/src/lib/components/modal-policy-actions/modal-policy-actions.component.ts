@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsService } from './services/modal-policy-actions.service';
-import { ConsultPolicyService } from 'projects/policy-management/src/app/containers/policy-management/components/consult-policy/services/consult-policy.service';
 
 @Component({
   selector: 'modal-policy-actions',
@@ -21,7 +20,6 @@ export class ModalPolicyActionsComponent implements OnInit {
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     public fb: FormBuilder,
-    public consultPolicyService: ConsultPolicyService, //revisar este service, posible dependencia circular
     public modalAPService: ModalPolicyActionsService,
     public dialogService: DialogService,
     public messageService: MessageService
