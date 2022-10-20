@@ -14,14 +14,14 @@ export const environment = {
   productAutosave: false,
   urlParameterizer: 'https://d1s6tjcltt5c19.cloudfront.net/',
   smartcoreSiteTitle: '(DEV) - Smartcore',
-  mfManifest: {
+  /*mfManifest: {
     "auth": "http://localhost:4201/remoteEntry.js",
     "policy-management": "http://localhost:4202/remoteEntry.js",
-  },
-  /*mfManifest: {
+  },*/
+  mfManifest: {
     "auth": "./auth/remoteEntry.js",
     "policy-management": "./policy-management/remoteEntry.js"
-  }*/
+  }
 };
 
 /*

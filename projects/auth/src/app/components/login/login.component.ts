@@ -92,7 +92,7 @@ export class LoginComponent implements OnInit {
   selectCompany() {
     console.log('data', this.formCompany)
   }
-
+  
   async setCompany(company: any) {
     this.showCompanySelection = false;
     this.isLoading = true;

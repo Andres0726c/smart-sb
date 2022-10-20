@@ -15,6 +15,7 @@
     "build:dev": "ng build shell --configuration=development && ng build auth --configuration=development && ng build policy-management --configuration=development",
     "build:stage": "ng build shell --configuration=stage && ng build auth --configuration=stage && ng build policy-management --configuration=stage",
     "build:prod": "ng build shell --configuration=production && ng build auth --configuration=production && ng build policy-management --configuration=production",
+    "build:all": "concurrently \"ng build shell --configuration=development\" \"ng build auth --configuration=development\" \"build policy-management --configuration=development\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js"
