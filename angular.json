@@ -346,7 +346,7 @@
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
-						"outputPath": "dist/policy-management",
+						"outputPath": "dist/browser/policy-management",
 						"index": "projects/policy-management/src/index.html",
 						"main": "projects/policy-management/src/main.ts",
 						"polyfills": "projects/policy-management/src/polyfills.ts",
@@ -360,6 +360,26 @@
 							"projects/policy-management/src/styles.scss"
 						],
 						"scripts": [],
+						"allowedCommonJsDependencies": [
+							"uuid",
+							"lodash",
+							"url",
+							"buffer",
+							"ulid",
+							"camelcase-keys",
+							"@aws-crypto",
+							"@aws-crypto/sha256-js",
+							"@aws-crypto/sha256-browser",
+							"@aws-crypto/crc32",
+							"fast-xml-parser",
+							"crypto-js",
+							"isomorphic-unfetch",
+							"paho-mqtt",
+							"js-cookie",
+							"@aws-amplify/ui",
+							"cookie",
+							"events"
+						],
 						"extraWebpackConfig": "projects/policy-management/webpack.config.js",
 						"commonChunk": false
 					},
@@ -379,8 +399,30 @@
 							],
 							"fileReplacements": [
 								{
-									"replace": "projects/policy-management/src/environments/environment.ts",
-									"with": "projects/policy-management/src/environments/environment.prod.ts"
+									"replace": "projects/commons-lib/src/lib/environments/environment.ts",
+									"with": "projects/commons-lib/src/lib/environments/environment.prod.ts"
+								}
+							],
+							"outputHashing": "all",
+							"extraWebpackConfig": "projects/policy-management/webpack.prod.config.js"
+						},
+						"stage": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kb",
+									"maximumError": "1mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "2kb",
+									"maximumError": "4kb"
+								}
+							],
+							"fileReplacements": [
+								{
+									"replace": "projects/commons-lib/src/lib/environments/environment.ts",
+									"with": "projects/commons-lib/src/lib/environments/environment.stage.ts"
 								}
 							],
 							"outputHashing": "all",
@@ -402,6 +444,10 @@
 					"configurations": {
 						"production": {
 							"browserTarget": "policy-management:build:production",
+							"extraWebpackConfig": "projects/policy-management/webpack.prod.config.js"
+						},
+						"stage": {
+							"browserTarget": "policy-management:build:stage",
 							"extraWebpackConfig": "projects/policy-management/webpack.prod.config.js"
 						},
 						"development": {
