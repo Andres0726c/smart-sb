@@ -117,22 +117,21 @@ export class ConsultPolicyComponent {
   disabledItem(status: string) {
     switch(status) {
       case 'Activa':
-        this.items[0].visible = true;
-        this.items[1].visible = true;
-        this.items[2].visible = false;
-        this.items[3].visible = true;
-        this.items[4].visible = true;
+        this.items[0].disabled = false;
+        this.items[1].disabled = false;
+        this.items[2].disabled = true;
+        this.items[3].disabled = false;
+        this.items[4].disabled = false;
         break;
 
       case 'Cancelada':
-        this.items[0].visible = false;
-        this.items[1].visible = false;
-        this.items[2].visible = true;
-        this.items[3].visible = false;
-        this.items[4].visible = true;
+        this.items[0].disabled = true;
+        this.items[1].disabled = true;
+        this.items[2].disabled = false;
+        this.items[3].disabled = true;
+        this.items[4].disabled = false;
         break;
     }
-    this.items[0].visible = false;
   }
 
   showModal(process: string, policy: any, buttonAction: any) {
