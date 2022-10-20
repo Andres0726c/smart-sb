@@ -48,7 +48,7 @@ export class ModalPolicyActionsComponent implements OnInit {
       } )
     }
 
-  disableButton() {
+  disableButton() { //esta función se puede eliminar
       return !(this.formProcess.valid)
     } 
 
@@ -81,7 +81,7 @@ export class ModalPolicyActionsComponent implements OnInit {
         .subscribe((resp: any) => {
           if(resp.dataHeader.code != 500){
             this.ref.close(true)
-            return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');     
+            return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');   //revisar estos retornos y el envío de post
           } else {
               this.messageError = true;
               return this.showSuccess('error', 'Error al rehabilitar', resp.dataHeader.status);
