@@ -1,19 +1,28 @@
 <div class="flex h-full justify-center items-center">
     <form [formGroup]="formData" class="flex flex-col bg-white rounded-xl shadow-xl p-7 items-center w-[400px]">
         <img src="smartcore-commons/assets/img/sign-in-logo.svg" alt="sign-in-logo" width="162" height="68">
-        <div class="text-primary font-bold text-6xl">Bienvenido</div>
-        <div class="text-neutral-600 font-bold text-3xl">Ingrese sus credenciales</div>
-        <div class="flex flex-col gap-5 mt-10 mb-10 w-full">
+        <div class="text-primary font-bold text-5xl">Bienvenido</div>
+        <div class="text-neutral-600 font-bold text-2xl">Ingrese sus credenciales</div>
+        <div class="flex flex-col gap-5 my-8 w-full">
+            <div class="container-alert" *ngIf = "!isDataValid">
+                <em class="pi pi-info-circle"></em>
+                Los datos ingresados no son válidos
+            </div>
             <div>
                 <label>Usuario</label>
                 <span class="p-input-icon-right flex flex-col">
-                    <!--<i class="pi pi-user"></i>-->
-                    <input type="text" pInputText formControlName="email" class="block text-base" placeholder="usuario" [style]="{'width':'100%'}" required>
+                    <i class="pi pi-user"></i>
+                    <input type="email" pInputText formControlName="email" (keydown)="hasEnterKey($event)" class="block text-base" placeholder="usuario" class="w-full" required>
                 </span>
+                <div *ngIf="formData.get('email')?.touched || formData.get('email')?.dirty">
+                    <small class="p-error block" *ngIf="formData.get('email')?.hasError('pattern')">Ingrese un correo electrónico.</small>
+                    <small class="p-error block" *ngIf="formData.get('email')?.hasError('required')">Ingrese un correo valido.</small>
+                </div>
             </div>
             <div>
                 <label>Contraseña</label>
-                <p-password [toggleMask]="true" formControlName="password" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
+                <p-password [toggleMask]="true" formControlName="password" (keydown)="hasEnterKey($event)" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
+                <small class="p-error block" *ngIf="formData.get('password')?.hasError('required')&&(formData.get('password')?.touched || formData.get('password')?.dirty)">Ingrese su contraseña.</small>
             </div>
         </div>
         <div class="py-3">
@@ -57,4 +66,3 @@
         <p-button (click)="setCompany(formCompany.get('company')?.value)" label="Aceptar" styleClass="p-button" [disabled]="!formCompany.valid"></p-button>
     </div>
 </p-dialog>
-
