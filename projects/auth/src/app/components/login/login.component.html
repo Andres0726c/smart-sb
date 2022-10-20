@@ -1,0 +1,60 @@
+<div class="flex h-full justify-center items-center">
+    <form [formGroup]="formData" class="flex flex-col bg-white rounded-xl shadow-xl p-7 items-center w-[400px]">
+        <img src="smartcore-commons/assets/img/sign-in-logo.svg" alt="sign-in-logo" width="162" height="68">
+        <div class="text-primary font-bold text-6xl">Bienvenido</div>
+        <div class="text-neutral-600 font-bold text-3xl">Ingrese sus credenciales</div>
+        <div class="flex flex-col gap-5 mt-10 mb-10 w-full">
+            <div>
+                <label>Usuario</label>
+                <span class="p-input-icon-right flex flex-col">
+                    <i class="pi pi-user"></i>
+                    <input type="text" pInputText formControlName="email" class="block text-base" placeholder="usuario" [style]="{'width':'100%'}" required>
+                </span>
+            </div>
+            <div>
+                <label>Contraseña</label>
+                <p-password [toggleMask]="true" formControlName="password" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
+            </div>
+        </div>
+        <div class="py-3">
+            <p-button *ngIf="!isLoading" (click)="logIn()" label="Iniciar sesión" styleClass="p-button"></p-button>
+            <div *ngIf="isLoading" class="p-progress-spinner lib-progress-indicator__infinite" [style]="{width: '50px', height: '50px'}">
+                <svg
+                    class="p-progress-spinner-svg"
+                    viewBox="25 25 50 50"
+                    [style.animation-duration]="'.5s'"
+                >
+                    <defs>
+                        <linearGradient id="gradient" x1="0%" y1="20%" x2="50%" y2="150%">
+                            <stop offset="25%" stop-color="#6FD940"></stop>
+                            <stop offset="45%" stop-color="#DBDC11"></stop>
+                        </linearGradient>
+                    </defs>
+                    <circle
+                        stroke="url(#gradient)"
+                        class="p-progress-spinner-circle"
+                        cx="50"
+                        cy="50"
+                        [attr.r]="21"
+                        fill="none"
+                        [attr.stroke-width]="6"
+                        stroke-miterlimit="10"
+                    />
+                </svg>
+            </div>
+        </div>
+    </form>
+</div>
+
+<p-dialog header="Compañía" [(visible)]="showCompanySelection" [modal]="true" [draggable]="false" [closable]="false" styleClass="w-[440px]">
+    <div class="flex justify-center mt-5 mb-3">
+        Seleccione la compañía a la que desea ingresar
+    </div>
+    <form [formGroup]="formCompany">
+        <p-dropdown [options]="companies" formControlName="company" optionLabel="businessName" class="block" placeholder="Seleccione la compañía" styleClass="w-full" appendTo="body"></p-dropdown>
+    </form>
+    <div class="flex justify-center pt-5 pb-3">
+        <p-button (click)="setCompany(formCompany.get('company')?.value)" label="Aceptar" styleClass="p-button" [disabled]="!formCompany.valid"></p-button>
+    </div>
+</p-dialog>
+
