@@ -21,7 +21,7 @@ export class ModalPolicyActionsComponent implements OnInit {
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     public fb: FormBuilder,
-    public consultPolicyService: ConsultPolicyService,
+    public consultPolicyService: ConsultPolicyService, //revisar este service, posible dependencia circular
     public modalAPService: ModalPolicyActionsService,
     public dialogService: DialogService,
     public messageService: MessageService
