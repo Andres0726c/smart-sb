@@ -13,15 +13,16 @@
                 <span class="p-input-icon-right flex flex-col">
                     <i class="pi pi-user"></i>
                     <input type="email" pInputText formControlName="email" class="block text-base" placeholder="usuario" class="w-full" required>
-                    
                 </span>
-                <small class="p-error block" *ngIf="hasError('email', 'required')">Ingrese un correo valido.</small>
-                    <small class="p-error block" *ngIf="hasError('email', 'pattern')">Ingrese un correo electrónico.</small>
+                <div *ngIf="formData.get('email')?.touched || formData.get('email')?.dirty">
+                    <small class="p-error block" *ngIf="formData.get('email')?.hasError('pattern')">Ingrese un correo electrónico.</small>
+                    <small class="p-error block" *ngIf="formData.get('email')?.hasError('required')">Ingrese un correo valido.</small>
+                </div>
             </div>
             <div>
                 <label>Contraseña</label>
                 <p-password [toggleMask]="true" formControlName="password" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
-                <small class="p-error block" *ngIf="hasError('password', 'required')">Ingrese su contraseña.</small>
+                <small class="p-error block" *ngIf="formData.get('password')?.hasError('required')&&(formData.get('password')?.touched || formData.get('password')?.dirty)">Ingrese su contraseña.</small>
             </div>
         </div>
         <div class="py-3">

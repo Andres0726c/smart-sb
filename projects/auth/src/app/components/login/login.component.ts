@@ -38,6 +38,8 @@ export class LoginComponent implements OnInit {
   }
 
   logIn() {
+    console.log('login', this.formData)
+    console.log('hasError', this.formData.get('email')?.hasError('required'))
     this.isLoading = true;
     this.cognitoService.signIn(this.formData.get('email')?.value, this.formData.get('password')?.value)
       .then(async user => {
