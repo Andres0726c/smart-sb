@@ -27,7 +27,7 @@
 							"projects/shell/src/favicon.ico",
 							"projects/shell/src/assets",
 							{
-								"input": "projects/commons-lib/src/lib/assets",
+								"input": "libs/commons-lib/src/lib/assets",
 								"glob": "**/*",
 								"output": "smartcore-commons/assets"
 							}
@@ -36,8 +36,8 @@
 							"projects/shell/src/styles.scss",
 							"node_modules/primeicons/primeicons.css",
 							"node_modules/primeng/resources/primeng.min.css",
-							"projects/commons-lib/src/lib/assets/styles/primeng-theme/theme.scss",
-							"projects/commons-lib/src/lib/assets/styles/material-theme/theme.scss"
+							"libs/commons-lib/src/lib/assets/styles/primeng-theme/theme.scss",
+							"libs/commons-lib/src/lib/assets/styles/material-theme/theme.scss"
 						],
 						"scripts": [],
 						"allowedCommonJsDependencies": [
@@ -79,8 +79,8 @@
 							],
 							"fileReplacements": [
 								{
-									"replace": "projects/commons-lib/src/lib/environments/environment.ts",
-									"with": "projects/commons-lib/src/lib/environments/environment.prod.ts"
+									"replace": "libs/commons-lib/src/lib/environments/environment.ts",
+									"with": "libs/commons-lib/src/lib/environments/environment.prod.ts"
 								}
 							],
 							"outputHashing": "all",
@@ -101,8 +101,8 @@
 							],
 							"fileReplacements": [
 								{
-									"replace": "projects/commons-lib/src/lib/environments/environment.ts",
-									"with": "projects/commons-lib/src/lib/environments/environment.stage.ts"
+									"replace": "libs/commons-lib/src/lib/environments/environment.ts",
+									"with": "libs/commons-lib/src/lib/environments/environment.stage.ts"
 								}
 							],
 							"outputHashing": "all",
@@ -223,8 +223,8 @@
 							],
 							"fileReplacements": [
 								{
-									"replace": "projects/commons-lib/src/lib/environments/environment.ts",
-									"with": "projects/commons-lib/src/lib/environments/environment.prod.ts"
+									"replace": "libs/commons-lib/src/lib/environments/environment.ts",
+									"with": "libs/commons-lib/src/lib/environments/environment.prod.ts"
 								}
 							],
 							"outputHashing": "all",
@@ -245,8 +245,8 @@
 							],
 							"fileReplacements": [
 								{
-									"replace": "projects/commons-lib/src/lib/environments/environment.ts",
-									"with": "projects/commons-lib/src/lib/environments/environment.stage.ts"
+									"replace": "libs/commons-lib/src/lib/environments/environment.ts",
+									"with": "libs/commons-lib/src/lib/environments/environment.stage.ts"
 								}
 							],
 							"outputHashing": "all",
@@ -291,38 +291,6 @@
 						"browserTarget": "auth:build",
 						"extraWebpackConfig": "projects/auth/webpack.config.js"
 					}
-				},
-				"test": {
-					"builder": "@angular-builders/jest:run",
-					"options": {
-						"configPath": "./jest.config.js"
-					}
-				}
-			}
-		},
-		"commons-lib": {
-			"projectType": "library",
-			"root": "projects/commons-lib",
-			"sourceRoot": "projects/commons-lib/src",
-			"prefix": "lib",
-			"architect": {
-				"build": {
-					"builder": "@angular-devkit/build-angular:ng-packagr",
-					"options": {
-						"project": "projects/commons-lib/ng-package.json"
-					},
-					"configurations": {
-						"production": {
-							"tsConfig": "projects/commons-lib/tsconfig.lib.prod.json"
-						},
-						"stage": {
-							"tsConfig": "projects/commons-lib/tsconfig.lib.prod.json"
-						},
-						"development": {
-							"tsConfig": "projects/commons-lib/tsconfig.lib.json"
-						}
-					},
-					"defaultConfiguration": "production"
 				},
 				"test": {
 					"builder": "@angular-builders/jest:run",
@@ -399,8 +367,8 @@
 							],
 							"fileReplacements": [
 								{
-									"replace": "projects/commons-lib/src/lib/environments/environment.ts",
-									"with": "projects/commons-lib/src/lib/environments/environment.prod.ts"
+									"replace": "libs/commons-lib/src/lib/environments/environment.ts",
+									"with": "libs/commons-lib/src/lib/environments/environment.prod.ts"
 								}
 							],
 							"outputHashing": "all",
@@ -421,8 +389,8 @@
 							],
 							"fileReplacements": [
 								{
-									"replace": "projects/commons-lib/src/lib/environments/environment.ts",
-									"with": "projects/commons-lib/src/lib/environments/environment.stage.ts"
+									"replace": "libs/commons-lib/src/lib/environments/environment.ts",
+									"with": "libs/commons-lib/src/lib/environments/environment.stage.ts"
 								}
 							],
 							"outputHashing": "all",
@@ -467,6 +435,38 @@
 						"browserTarget": "policy-management:build",
 						"extraWebpackConfig": "projects/policy-management/webpack.config.js"
 					}
+				},
+				"test": {
+					"builder": "@angular-builders/jest:run",
+					"options": {
+						"configPath": "./jest.config.js"
+					}
+				}
+			}
+		},
+		"commons-lib": {
+			"projectType": "library",
+			"root": "libs/commons-lib",
+			"sourceRoot": "libs/commons-lib/src",
+			"prefix": "lib",
+			"architect": {
+				"build": {
+					"builder": "@angular-devkit/build-angular:ng-packagr",
+					"options": {
+						"project": "libs/commons-lib/ng-package.json"
+					},
+					"configurations": {
+						"production": {
+							"tsConfig": "libs/commons-lib/tsconfig.lib.prod.json"
+						},
+						"stage": {
+							"tsConfig": "libs/commons-lib/tsconfig.lib.prod.json"
+						},
+						"development": {
+							"tsConfig": "libs/commons-lib/tsconfig.lib.json"
+						}
+					},
+					"defaultConfiguration": "production"
 				},
 				"test": {
 					"builder": "@angular-builders/jest:run",

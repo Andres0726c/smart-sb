@@ -14,10 +14,10 @@ module.exports = {
       'jestGlobalMocks.ts',
       '.module.ts',
       '.mock.ts',
-      '<rootDir>/projects/commons-lib',
+      '<rootDir>/libs/commons-lib',
     ],
     moduleNameMapper: {
-      '^commons-lib': '<rootDir>/projects/commons-lib/src/public-api.ts',
+      '^commons-lib': '<rootDir>/libs/commons-lib/src/public-api.ts',
       'uuid': require.resolve('uuid')
     }
 };
