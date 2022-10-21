@@ -4,6 +4,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { environment } from 'commons-lib';
 import { InitScreenComponent } from './containers/init-screen/init-screen.component';
 
+let mfManifest = {
+  "auth": "./auth/remoteEntry.js",
+  "policy-management": "./policy-management/remoteEntry.js"
+};
+
+if (!environment.remote) {
+  mfManifest = {
+    "auth": "http://localhost:4201/remoteEntry.js",
+    "policy-management": "http://localhost:4202/remoteEntry.js",
+  }
+}
+
 const routes: Routes = [
   {
     path: 'inicio',
@@ -14,7 +26,7 @@ const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: environment.mfManifest['auth'],
+        remoteEntry: mfManifest['auth'],
         exposedModule: './Module'
       }).then(m => m.MainModule)
   },
@@ -23,7 +35,7 @@ const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: environment.mfManifest['policy-management'],
+        remoteEntry: mfManifest['policy-management'],
         exposedModule: './Module'
       }).then(m => m.PolicyManagementModule)
   },

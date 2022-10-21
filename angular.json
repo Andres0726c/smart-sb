@@ -114,6 +114,21 @@
 							"vendorChunk": true,
 							"extractLicenses": false,
 							"sourceMap": true,
+							"namedChunks": true,
+							"fileReplacements": [
+								{
+									"replace": "libs/commons-lib/src/lib/environments/environment.ts",
+									"with": "libs/commons-lib/src/lib/environments/environment.dev.ts"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"local": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
 							"namedChunks": true
 						}
 					},
@@ -127,14 +142,17 @@
 							"extraWebpackConfig": "projects/shell/webpack.prod.config.js"
 						},
 						"stage": {
-							"browserTarget": "shell:build:production",
+							"browserTarget": "shell:build:stage",
 							"extraWebpackConfig": "projects/shell/webpack.prod.config.js"
 						},
 						"development": {
 							"browserTarget": "shell:build:development"
+						},
+						"local": {
+							"browserTarget": "shell:build:local"
 						}
 					},
-					"defaultConfiguration": "development",
+					"defaultConfiguration": "local",
 					"options": {
 						"port": 4200,
 						"publicHost": "http://localhost:4200",
@@ -258,6 +276,21 @@
 							"vendorChunk": true,
 							"extractLicenses": false,
 							"sourceMap": true,
+							"namedChunks": true,
+							"fileReplacements": [
+								{
+									"replace": "libs/commons-lib/src/lib/environments/environment.ts",
+									"with": "libs/commons-lib/src/lib/environments/environment.dev.ts"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"local": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
 							"namedChunks": true
 						}
 					},
@@ -276,9 +309,12 @@
 						},
 						"development": {
 							"browserTarget": "auth:build:development"
+						},
+						"local": {
+							"browserTarget": "auth:build:local"
 						}
 					},
-					"defaultConfiguration": "development",
+					"defaultConfiguration": "local",
 					"options": {
 						"port": 4201,
 						"publicHost": "http://localhost:4201",
@@ -402,6 +438,21 @@
 							"vendorChunk": true,
 							"extractLicenses": false,
 							"sourceMap": true,
+							"namedChunks": true,
+							"fileReplacements": [
+								{
+									"replace": "libs/commons-lib/src/lib/environments/environment.ts",
+									"with": "libs/commons-lib/src/lib/environments/environment.dev.ts"
+								}
+							],
+							"outputHashing": "all"
+						},
+						"local": {
+							"buildOptimizer": false,
+							"optimization": false,
+							"vendorChunk": true,
+							"extractLicenses": false,
+							"sourceMap": true,
 							"namedChunks": true
 						}
 					},
@@ -420,9 +471,12 @@
 						},
 						"development": {
 							"browserTarget": "policy-management:build:development"
+						},
+						"local": {
+							"browserTarget": "policy-management:build:local"
 						}
 					},
-					"defaultConfiguration": "development",
+					"defaultConfiguration": "local",
 					"options": {
 						"port": 4202,
 						"publicHost": "http://localhost:4202",
