@@ -6,7 +6,7 @@ export const environment = {
   remote: true,
   production: false,
   apiKeyServices: 'UPOrFwRWKC1AJtFfkTYUz69XCWQQ48cBalVJ6A85',
-  urlParameterizerMS: 'https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/parametrizador/v1/',
+  urlParameterizerMS: 'https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/stage/parametrizador/v1/',
   urlPolicyIssuerMS: 'https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/stage/emisor/v1/',
   cognito: {
     userPoolId: 'us-east-1_XXXM3luFv',

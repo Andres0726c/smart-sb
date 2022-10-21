@@ -7,6 +7,10 @@ export * from './lib/commons-lib.module';
 // Environments
 export * from './lib/environments/environment';
 
+// Guards
+export * from './lib/guard/auth.guard';
+export * from './lib/guard/login.guard';
+
 // Services
 export * from './lib/services/cognito.service'
 export * from './lib/services/api-requests.service'
@@ -20,6 +24,3 @@ export * from './lib/components/primeng-example/primeng-example.component';
 
 export * from './lib/components/header/header.module';
 export * from './lib/components/header/header.component';
-
-export * from './lib/components/modal-policy-actions/modal-policy-actions.module';
-export * from './lib/components/modal-policy-actions/modal-policy-actions.component';
