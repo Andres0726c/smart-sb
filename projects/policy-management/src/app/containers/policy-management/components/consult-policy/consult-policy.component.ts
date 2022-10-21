@@ -10,7 +10,7 @@ import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
-import { ModalPolicyActionsComponent } from 'commons-lib';
+import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
 
 @Component({
   selector: 'app-consult-policy',
