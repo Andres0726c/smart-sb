@@ -1,6 +1,6 @@
 # RefactoringSmartcoreMf
 
-Este proyescto ha sido generado con [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
+Este proyecto ha sido generado con [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
 
 ## Instalación
 
