@@ -1,10 +1,14 @@
 # RefactoringSmartcoreMf
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
+Este proyescto ha sido generado con [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
 
-## Development server
+## Instalación
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Ejecute `npm install` para la instalación de las dependencias necesarias para la ejecución.
+
+## Ejecución local
+
+Ejecute `npm run start:all` para la ejecución local. Navegue a `http://localhost:4200/`. La aplicación se recargará automaticamente si genera cambios sobre los archivos fuente.
 
 ## Code scaffolding
 
