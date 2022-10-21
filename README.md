@@ -2,6 +2,8 @@
 
 Este proyecto ha sido generado con [Angular CLI](https://github.com/angular/angular-cli) version 14.2.6.
 
+La carga dinámica se realiza bajo el plugin **_Module Federation_** de [Angular Architects](https://www.angulararchitects.io/en/aktuelles/dynamic-module-federation-with-angular/)
+
 ## Instalación
 
 Ejecute `npm install` para la instalación de las dependencias necesarias para la ejecución.
