@@ -14,7 +14,7 @@ Ejecute `npm run start:all` para la ejecución local. Navegue a `http://localhos
 
 Ejecute `ng test` para ejecutar las pruebas unitarias usando [Jest](https://jestjs.io/).
 
-Puede ejecutar `ng test <app_name>` para realizar una ejecución infividual, por ejemplo `ng test shell`
+Puede ejecutar `ng test <app_name>` para realizar una ejecución individual, por ejemplo `ng test shell`
 
 ## Code scaffolding
 
