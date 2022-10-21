@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  remote: false,
+  remote: true,
   production: false,
   apiKeyServices: 'YkmEA1FYLQ8316jjoU0PR5gGnbLL8sOA7SrVdCly',
   urlParameterizerMS: 'https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev/parametrizador/v1/',
@@ -14,7 +14,7 @@ export const environment = {
   },
   productAutosave: false,
   urlParameterizer: 'https://d1s6tjcltt5c19.cloudfront.net/',
-  smartcoreSiteTitle: 'Smartcore'
+  smartcoreSiteTitle: '(DEV) - Smartcore'
 };
 
 /*
