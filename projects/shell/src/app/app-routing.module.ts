@@ -39,7 +39,7 @@ const routes: Routes = [
         type: 'module',
         remoteEntry: mfManifest['policy-management'],
         exposedModule: './Module'
-      }).then(m => m.PolicyManagementModule),
+      }).then(m => m.MainModule),
     canActivate: [AuthGuard]
   },
   {

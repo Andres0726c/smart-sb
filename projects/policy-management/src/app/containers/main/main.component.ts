@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: `<router-outlet></router-outlet>`,
   //styleUrls: ['./policy-management.component.scss']
 })
-export class PolicyManagementComponent implements OnInit {
+export class MainComponent implements OnInit {
 
   constructor() {
     //

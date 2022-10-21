@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PolicyManagementComponent } from './policy-management.component';
+import { MainComponent } from './main.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: PolicyManagementComponent,
+        component: MainComponent,
         children: [
             {
                 path: 'consulta',
@@ -22,4 +22,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PolicyManagementRoutingModule { }
+export class MainRoutingModule { }
