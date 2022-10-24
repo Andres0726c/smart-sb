@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-    font-family: Roboto condensed;
+@layer base {
+    html, body, * {
+        font-family: Roboto condensed;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
 }

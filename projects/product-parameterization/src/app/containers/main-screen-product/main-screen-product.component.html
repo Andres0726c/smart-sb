@@ -1,0 +1,48 @@
+<div class="content">
+  <h1 class="tittle"> Parametrizador de productos de seguros</h1>
+  <div class="cards-body">
+    <mat-card class="main-card main-crd text-center" (click)="openNewProductDialog()" data-qa-id="sc-rpmf-card_open_create_product">
+      <img alt="add" mat-card-md-image src="smartcore-commons/assets/img/add.png" class="img">
+
+      <mat-card-content style="text-align: center;">
+        <h1 class="subtittle">Crear producto</h1>
+        <p class="paragraph">
+          Permite crear un producto desde cero
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="main-card main-crd" (click)="openEditProductDialog('copy')"  data-qa-id="sc-rpmf-card_open_copy_product">
+      <img alt="layers" mat-card-md-image src="smartcore-commons/assets/img/layers.png" class="img">
+
+      <mat-card-content>
+        <h1 class="subtittle">Copiar producto</h1>
+        <p class="paragraph">
+          Permite crear un producto a partir de uno existente
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="main-card main-crd" (click)="openEditProductDialog('edit')" data-qa-id="sc-rpmf-card_open_edit_product">
+      <img  alt="edit" mat-card-md-image src="smartcore-commons/assets/img/edit.png" class="img">
+      <mat-card-content>
+        <h1 class="subtittle" >Actualizar producto</h1>
+        <p class="paragraph" >
+          Permite actualizar un producto existente
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="cards-body">
+    <mat-card class="main-card main-crd" (click)="openModalCompany()" data-qa-id="sc-rpmf-card_open_basic_configuration" disabled>
+      <img alt="info" mat-card-md-image src="smartcore-commons/assets/img/info.png" class="img">
+      <mat-card-content>
+        <h1 class="subtittle">Crear información básica</h1>
+        <p class="paragraph">
+          Permite crear los datos base para la parametización
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

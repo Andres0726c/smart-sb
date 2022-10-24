@@ -5,7 +5,22 @@ import { MainComponent } from './main.component';
 const routes: Routes = [
   {
     path: '',
-    component: MainComponent
+    component: MainComponent,
+    children: [
+      {
+        path: 'menu-productos', 
+        loadChildren: () => import('../../containers/main-screen-product/main-screen-product.module').then(m => m.MainScreenProductModule),
+      },
+      /*{
+        path: 'parametrizador-producto',
+        loadChildren: () => import('../../containers/products-management/screen-management/screen-management.module').then(m => m.ScreenManagementModule),
+      },*/
+      {
+        path: '**',
+        redirectTo: 'menu-productos',
+        pathMatch: 'full'
+      },
+    ]
   }
 ];
 
