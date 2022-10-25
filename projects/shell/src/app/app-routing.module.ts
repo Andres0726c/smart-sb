@@ -1,7 +1,7 @@
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { environment } from 'commons-lib';
+import { AuthGuard, environment, LoginGuard } from 'commons-lib';
 import { InitScreenComponent } from './containers/init-screen/init-screen.component';
 
 let mfManifest = {
@@ -19,7 +19,8 @@ if (!environment.remote) {
 const routes: Routes = [
   {
     path: 'inicio',
-    component: InitScreenComponent
+    component: InitScreenComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'autenticacion',
@@ -28,7 +29,8 @@ const routes: Routes = [
         type: 'module',
         remoteEntry: mfManifest['auth'],
         exposedModule: './Module'
-      }).then(m => m.MainModule)
+      }).then(m => m.MainModule),
+    canActivate: [LoginGuard]
   },
   {
     path: 'gestion-polizas',
@@ -37,17 +39,18 @@ const routes: Routes = [
         type: 'module',
         remoteEntry: mfManifest['policy-management'],
         exposedModule: './Module'
-      }).then(m => m.PolicyManagementModule)
+      }).then(m => m.PolicyManagementModule),
+    canActivate: [AuthGuard]
   },
   {
     path: '**',
-    redirectTo: 'inicio',
+    redirectTo: 'autenticacion',
     pathMatch: 'full'
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
