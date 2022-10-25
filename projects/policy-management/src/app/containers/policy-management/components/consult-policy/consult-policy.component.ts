@@ -11,6 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
+import { ModalRenewalComponent } from 'projects/policy-management/src/app/shared/components/modal-renewal/modal-renewal.component';
 
 @Component({
   selector: 'app-consult-policy',
@@ -109,7 +110,11 @@ export class ConsultPolicyComponent {
           this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitrar');
         },
       },
-      { label: 'Renovar', icon: 'pi pi-fw pi-refresh' },
+      { label: 'Renovar', icon: 'pi pi-fw pi-refresh',
+        command: (event: any, row: any) => {
+          this.showModalRenewal('Renovación', this.selectedPolicy, 'Renovar');
+        }
+      },
       { label: 'Ver detalle', icon: 'pi pi-fw pi-eye' },
     ];
   }
@@ -203,5 +208,27 @@ export class ConsultPolicyComponent {
   clearSearch() {
     this.policies = [];
     this.totalRecords = 0;
+  }
+
+  showModalRenewal(process: string, policy: any, buttonAction: any){
+    const ref = this.dialogService.open(ModalRenewalComponent, {
+      data: {
+        process: process,
+        policy: policy,
+        buttonAction: buttonAction
+      },
+      header: process,
+      modal: true,
+      dismissableMask: true,
+      width: '80%',
+      contentStyle: { 'max-height': '600px', overflow: 'auto' },
+      baseZIndex: 10000,
+    });
+
+    ref.onClose.subscribe((res: boolean) => {
+      if (res) {
+        this.consultPolicies(this.filters);
+      }
+    });
   }
 }
