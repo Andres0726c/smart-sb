@@ -11,11 +11,11 @@ import {
 } from '@angular/forms';
 
 import { Router } from '@angular/router';
-import { ProductService } from 'src/app/services/product.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ModalEditProductService } from '../modal-edit-product/services/modal-edit-product.service';
+import { ProductService } from '../../services/product.service';
 
 
 class DialogMock {

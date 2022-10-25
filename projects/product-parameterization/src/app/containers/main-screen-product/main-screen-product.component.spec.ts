@@ -5,9 +5,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ProductService } from 'src/app/services/product.service';
 import { MainScreenProductComponent } from './main-screen-product.component';
 import { of } from 'rxjs';
+import { ProductService } from '../../services/product.service';
 class toastMock {
   openFromComponent() {} 
 }

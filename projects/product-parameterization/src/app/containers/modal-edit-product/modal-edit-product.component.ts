@@ -68,7 +68,6 @@ export class ModalEditProductComponent implements OnInit {
     this.cognitoService.getUser()
       .then((value) => {
         this.idCompany = JSON.parse(value.attributes['custom:sessionInformation']).id;
-        console.log(this.idCompany);
         this.getDataInsuranceLine();
       })
   }
@@ -138,7 +137,7 @@ export class ModalEditProductComponent implements OnInit {
     
 
     this.onNoClick();
-    this.router.navigate(['parametrizador-producto/parametros-generales']);
+    this.router.navigate(['productos/parametros-generales']);
 
   }
   

@@ -9,7 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { ProductService } from 'src/app/services/product.service';
+import { ProductService } from '../../services/product.service';
 import { ModalCreateProductComponent } from '../modal-create-product/modal-create-product.component';
 
 import { ModalEditProductComponent } from './modal-edit-product.component';
