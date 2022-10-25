@@ -1,0 +1,165 @@
+$font-size          : 1rem;
+$fontFamilyHeading  : 'Roboto Condensed';
+$fontPrimary        : 'Roboto Condensed';  //'Open Sans', sans-serif;
+
+$primaryBase        : #016D38!default; //$primary-brand(OLD)
+$primaryLight       : #02D46F !default; //$primary-brand-light(OLD)
+$primaryDark        : #005833 !default; //$primary-brand-dark(OLD)
+$titleSubtitle      : #000 !default;
+
+// Secondary colors
+$secondaryBase      : #FFDC5D !default; //$tertiary-brand(OLD)
+$secondaryLight     : #C9AB2A !default; //tertiary-brand-light(OLD)
+$secondaryDark      : #FFF078 !default; //$tertiary-brand-dark(OLD)
+
+$tertiaryBase       : #FFAA00 !default;
+
+// Complementary Colors
+$complementaryOne   : #5AD3E8 !default; //$secondary-brand-medium(OLD)
+$complementaryTwo   : #006A9B !default; //$secondary-brand(OLD)
+$complementaryThree : #00273D !default; //$secondary-brand-dark(OLD)
+
+// Alerts Colors
+$alertsSuccess      : #28A745 !default;
+$alertsError        : #DC3545 !default;
+$alertsWarning      : #FFC100 !default;
+$alertsInfo         : #007EFF !default;
+
+// Bg Alerts Colors
+$bgAlertDanger       :#F7D4D7 !default;
+
+// Controls Colors
+$control01          : #0075C8 !default;
+$control01-dark     : #0056B3 !default;
+
+//Green
+$green-1 : #128C31!default;
+$green-2 : #0d6122!default;
+$green-3 : #014A26!default;
+$green-4 : #E5F0EB!default;
+$greenBG:  #F0F6F3!default;
+
+// GrayScale Colors
+$grayscaleWhite    : #ffffff !default;
+$grayscaleLevel-1  : #333333 !default; 
+$grayscaleLevel-2  : #666666 !default;
+$grayscaleLevel-3  : #999999 !default;
+$grayscaleLevel-4  : #CCCCCC !default;
+$grayscaleLevel-5  : #EEEEEE !default;
+$grayscaleLevel-6  : #FBFBFB !default;
+$grayscaleLevel-7  : #4A4A4A !default; 
+$grayscaleBase     : #000000 !default;
+$grayscaleBlack    : #1B1B1B !default;
+$grayDisabled    : #e9e6e6 !default;
+// Border Colors
+$borderColor-1     : #ced4da !default;
+$borderColor-2     : #999999 !default;
+
+//Focus
+$primary-focus     : rebeccapurple;
+
+
+// ========================================================================== 
+// COLORS : Eje.: background: color( primary, light ); 
+// ========================================================================== 
+$colors: (
+   primary: (
+      base     : $primaryBase,
+      light    : $primaryLight,
+      dark     : $primaryDark
+   ),
+   secondary: (
+      base     : $secondaryBase,
+      light    : $secondaryLight,
+      dark     : $secondaryDark
+   ),
+   tertiary: (
+      base     : $tertiaryBase
+   ),
+   complementary: (
+      one      : $complementaryOne,
+      two      : $complementaryTwo, 
+      three    : $complementaryThree
+   ),
+   alerts: (
+      success  : $alertsSuccess,
+      error    : $alertsError,
+      warning  : $alertsWarning,
+      info     : $alertsInfo
+   ),  
+   controls:( 
+      base     : $control01,
+      dark     : $control01-dark,
+   ),
+   grayscale: (
+      white    : $grayscaleWhite,
+      gray-1   : $grayscaleLevel-1,
+      gray-2   : $grayscaleLevel-2, 
+      gray-3   : $grayscaleLevel-3, 
+      gray-4   : $grayscaleLevel-4,
+      gray-5   : $grayscaleLevel-5, 
+      gray-6   : $grayscaleLevel-6,
+      gray-7   : $grayscaleLevel-7,   
+      base     : $grayscaleBase,
+      black    : $grayscaleBlack
+   ),
+   green:(
+      green-1  : $green-1,
+      green-2  : $green-2,
+      green-3  : $green-3,
+      green-bg : $greenBG
+   ),
+   border:(
+      color-1  : $borderColor-1,
+      color-2  : $borderColor-2, 
+   )
+);
+
+// ==========================================================================
+// SPACING : Eje.: padding: map-get($sizes, "tiny");
+// ==========================================================================
+$sizes: (
+   none   : 0,
+   xtiny  : .25rem,   // 4px
+   tiny   : .5rem,   // 8px
+   xsmall : .75rem,  // 12px
+   small  : .875rem, // 14px
+   base   : 1rem,    // 16px
+   thumb  : 1.125rem,// 18px
+   mid    : 1.25rem, // 20px
+   half   : 1.5rem,  // 24px
+   medium : 2rem,    // 32px
+   large  : 3rem,    // 48px
+   xlarge : 3.5rem,  // 56px
+   huge   : 4rem     // 64px
+);
+
+// ==========================================================================
+// WEIGHT : Eje.: font-weight: map-get($weights, "regular");
+// ==========================================================================
+$weights: (
+   thin     : 100,
+   xlight   : 200,
+   light    : 300,
+   regular  : 400,
+   medium   : 500,
+   semibold : 600,
+   bold     : 700,
+   xbold    : 800,
+   black    : 900
+);
+
+// ==========================================================================
+// Breakpoints
+// ==========================================================================
+$breakpoints: (
+   sm  : 600px,
+   md  : 960px,
+   lg  : 1280px,
+   xl  : 1920px, 
+);
+
+// ========================================================================== 
+// Alignment 
+// ========================================================================== 
+$alignment: left, center, right, justify;

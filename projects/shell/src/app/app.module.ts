@@ -8,6 +8,8 @@ import { CardModule } from 'primeng/card';
 import { SplashScreenComponent } from './components/splash-screen/splash-screen.component';
 import { InitScreenComponent } from './containers/init-screen/init-screen.component';
 import { HeaderModule } from 'commons-lib';
+import { FormBuilder } from '@angular/forms';
+import { SharedModule } from 'projects/product-parameterization/src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,12 +20,15 @@ import { HeaderModule } from 'commons-lib';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    SharedModule,
     HttpClientModule,
     CardModule,
     HeaderModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    FormBuilder
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

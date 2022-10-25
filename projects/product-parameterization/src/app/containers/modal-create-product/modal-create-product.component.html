@@ -1,0 +1,80 @@
+<div class="modal-container">
+<div class="content-close" (click)="onNoClick()" data-qa-id="sc-rpmf-btn-close">
+  <em class="fal fa-times fa-2x text-close"></em>
+</div>
+
+<div>
+  <h1 mat-dialog-title class="tittle">{{ data.name === "copy" ? "Copiar" : "Crear nuevo" }} producto</h1>
+
+  <span class="subtitle">Ingrese la informaci&oacute;n inicial para el nuevo producto</span>
+</div>
+<!-- <div  style="display: flex; flex-direction:column; align-items:center" data-qa-id="sc-rpmf-modal-create-product">
+  <span class="comercial-label">Nombre del producto</span>
+    
+    <mat-form-field appearance="outline" class="fields">
+
+      <input matInput type="text" formControlName="name" id="name" data-qa-id="sc-rpmf-input-name">
+      <mat-error class="text-error" *ngIf="hasError('name', 'required')">El campo nombre del producto es obligatorio</mat-error>
+      <mat-error class="text-error" *ngIf="hasError('name', 'maxlength')">La longitud ingresada no es válida, recuerde que este debe ser mínimo de 4 y máximo de 60</mat-error>
+      <mat-error class="text-error" *ngIf="hasError('name', 'minlength')">La longitud ingresada no es válida, recuerde que este debe ser mínimo de 4 y máximo de 60</mat-error>
+      <mat-error class="text-error" *ngIf="hasError('name', 'pattern')">El campo nombre del producto solo recibe letras</mat-error>
+    </mat-form-field>
+</div> -->
+ <div  data-qa-id="sc-rpmf-modal-create-product">
+  <form [formGroup]="formData" autocomplete="off" novalidate (ngSubmit)="validProduct(formData.value)" class="container">
+
+    <!-- <div class="containerFields"> -->
+
+    <div class="fields">
+      <span class="comercial-label">Nombre del producto</span>
+    
+      <mat-form-field appearance="outline">
+
+        <input matInput type="text" formControlName="name" id="name" data-qa-id="sc-rpmf-input-name">
+        <mat-error class="text-error" *ngIf="hasError('name', 'required')">El campo nombre del producto es obligatorio</mat-error>
+        <mat-error class="text-error" *ngIf="hasError('name', 'maxlength') || hasError('name', 'minlength')">La longitud ingresada no es válida, recuerde que este debe ser mínimo de 4 y máximo de 60</mat-error>
+        <mat-error class="text-error" *ngIf="hasError('name', 'pattern')">El campo nombre del producto solo recibe letras</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="fields">
+      <span class="comercial-label">Nombre comercial</span>
+    
+      <mat-form-field appearance="outline" >
+
+        <input matInput type="text" formControlName="comercialName" id="comercialName" data-qa-id="sc-rpmf-input-comercialname">
+        <mat-error class="text-error" *ngIf="hasError('comercialName', 'required')">El campo nombre comercial es obligatorio</mat-error>
+        <mat-error class="text-error" *ngIf="hasError('comercialName', 'maxlength') || hasError('comercialName', 'minlength')">La longitud ingresada no es válida, recuerde que este debe ser mínimo de 4 y máximo de 200</mat-error>
+        <mat-error class="text-error" *ngIf="hasError('comercialName', 'pattern')">El campo nombre comercial solo recibe letras</mat-error>
+      </mat-form-field>
+    </div>
+    
+    <div class="fields">
+      <span class="comercial-label">Código de negocio</span>
+   
+      <mat-form-field appearance="outline">
+
+        <input matInput type="text" formControlName="businessCode" id="businessCode" data-qa-id="sc-rpmf-input-businessCode">
+        <mat-error class="text-error" *ngIf="hasError('businessCode', 'required')">El campo código de negocio es obligatorio</mat-error>
+        <mat-error class="text-error" *ngIf="hasError('businessCode', 'maxlength') || hasError('businessCode', 'minlength')">La longitud ingresada no es válida, recuerde que este debe ser mínimo de 4 y máximo de 30</mat-error>
+        <mat-error class="text-error" *ngIf="hasError('businessCode', 'pattern')">El código de negocio es invalido</mat-error>
+      </mat-form-field>
+    </div>
+    
+  <!-- </div> -->
+  </form>
+</div> 
+<div mat-dialog-actions class="buttons" *ngIf="!isLoading">
+  <button mat-dialog-close class="close" (click)="modalCopy()" data-qa-id="sc-rpmf-btn-close" mat-button>Cerrar</button>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <button [disabled]="!formData.valid" (click)="validProduct(data)" mat-flat-button class="primary"
+  data-qa-id="sc-rpmf-btn-create-product">Aceptar</button>
+</div>
+<div mat-dialog-actions class="buttons" *ngIf="isLoading">
+  <mat-progress-spinner
+    diameter="24" 
+    color="primary"
+    mode="indeterminate">
+  </mat-progress-spinner>
+</div>
+</div>

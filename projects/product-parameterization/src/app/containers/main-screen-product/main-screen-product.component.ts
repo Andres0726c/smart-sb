@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-//import { ProductService } from 'src/app/services/product.service';
+import { ProductService } from '../../services/product.service';
+import { ModalCreateProductComponent } from '../modal-create-product/modal-create-product.component';
+import { ModalEditProductComponent } from '../modal-edit-product/modal-edit-product.component';
 
 /*import { ModalCreateProductComponent } from '../modal-create-product/modal-create-product.component';
 import { ModalEditProductComponent } from '../modal-edit-product/modal-edit-product.component';
@@ -18,21 +20,21 @@ export class MainScreenProductComponent implements OnInit {
   comercialName: string = "";
   trade: string = "";
 
-  constructor(public dialog: MatDialog, /*public productService: ProductService*/) { }
+  constructor(public dialog: MatDialog, public productService: ProductService) { }
 
   ngOnInit(): void {
     /* Initialize product data */
-    //this.productService.initializeData();
+    this.productService.initializeData();
   }
 
   /**
    * Function to open modal for create product
    */
   openNewProductDialog(): void {
-    /*this.dialog.open(ModalCreateProductComponent, {
+    this.dialog.open(ModalCreateProductComponent, {
       width: '578px', height: '580px', panelClass: 'modal',
       data: { name: this.name, comercialName: this.comercialName }
-    });*/
+    });
     
   }
 
@@ -40,10 +42,10 @@ export class MainScreenProductComponent implements OnInit {
    * Function to open modal for edit product
    */
   openEditProductDialog(process: string): void {
-    /*this.dialog.open(ModalEditProductComponent, {
+    this.dialog.open(ModalEditProductComponent, {
       width: '578px', panelClass: 'modal',
       data: { name: this.name, trade: this.trade, processType: process }
-    });*/
+    });
     
   }
 

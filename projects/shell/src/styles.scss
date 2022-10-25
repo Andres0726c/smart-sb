@@ -3,10 +3,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/variables";
+@import "../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/mixins";
+
+/* General styles */
 @layer base {
     html, body, * {
         font-family: Roboto condensed;
+        font-size: 14px;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale
     }
+
+    
 }

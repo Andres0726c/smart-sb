@@ -36,6 +36,7 @@
     "@angular/router": "^14.2.0",
     "aws-amplify": "^4.3.39",
     "concurrently": "^7.4.0",
+    "ngx-currency": "^2.5.3",
     "primeicons": "^6.0.1",
     "primeng": "^14.1.2",
     "rxjs": "~7.5.0",

@@ -1,0 +1,294 @@
+//eliminar apariencia por defecto del navegador
+@mixin appearance ($value){
+	-webkit-appearance: ($value);
+	-moz-appearance: ($value);
+	-ms-appearance: ($value);
+	-o-appearance: ($value);
+	appearance: ($value);
+}
+
+// ==========================================================================
+// Anchos minimos (min-width) : @include mq-min(sm) {}
+// ==========================================================================
+
+@mixin mq-min($breakpoint) {
+   @if map-has-key($breakpoints, $breakpoint) {
+      $breakpoint-value: map-get($breakpoints, $breakpoint);
+      @media (min-width: $breakpoint-value) {
+         @content;
+      }
+   } @else {
+      @warn 'Invalid breakpoint: #{$breakpoint}.';  
+   }
+}
+
+// ==========================================================================
+// Anchos maximos (max-width) : @include mq-max(sm) {}
+// ==========================================================================
+
+@mixin mq-max($breakpoint) {
+   @if map-has-key($breakpoints, $breakpoint) {
+      $breakpoint-value: map-get($breakpoints, $breakpoint);
+      @media (max-width: ($breakpoint-value - 1)) {
+         @content;
+      }
+   } @else {
+      @warn 'Invalid breakpoint: #{$breakpoint}.';
+   }
+}
+
+// ==========================================================================
+// Anchos maximos / minimos (max-width and min-width) : @include mq-between(sm, md) {}
+// ==========================================================================
+
+@mixin mq-between($lower, $upper) { 
+   @if map-has-key($breakpoints, $lower) and map-has-key($breakpoints, $upper) {
+      $lower-breakpoint: map-get($breakpoints, $lower);
+      $upper-breakpoint: map-get($breakpoints, $upper);
+         @media (min-width: $lower-breakpoint) and (max-width: ($upper-breakpoint - 1)) {
+         @content;
+         }
+      } @else {
+         @if (map-has-key($breakpoints, $lower) == false) {
+         @warn 'Your lower breakpoint was invalid: #{$lower}.';
+      }
+      @if (map-has-key($breakpoints, $upper) == false) {
+         @warn 'Your upper breakpoint was invalid: #{$upper}.';
+      }
+   }
+}
+
+// ==========================================================================
+// Mixins para la generación de los botones : @include button( ... );
+// ==========================================================================
+
+@mixin button($bg, $color: #ffffff ) { 
+   background: $bg;
+   color: $color;
+   &:hover {
+     background: darken($bg, 7%);
+     transition: all 0.2s ease;
+     text-decoration: none;
+   }
+   &:focus {
+      outline: 0;
+      box-shadow: 0 0 0 0.15rem rgba(color( primary, base ), 0.25);
+      text-decoration: none;
+   }
+   &:active {
+     background: darken($bg, 10%);
+   } 
+   &.disabled, 
+   &:disabled {
+      opacity: .55;
+      color: color( grayscale, gray-5 );
+      background: color( grayscale, gray-3 );
+      box-shadow: none;
+      cursor: auto;
+      &:hover {
+         background: color( grayscale, gray-3 );
+      }
+      &:focus {
+         box-shadow: none;
+      }
+   }
+}
+
+// ==========================================================================
+// Mixins para la generación de los spaciados ( margins y paddings )
+// ==========================================================================
+
+@mixin list-spacing($type, $direction, $className) {
+   @each $name, $size in $sizes {
+      @if $direction == all {
+         #{$className}-#{$name} { 
+            #{$type}: $size;
+         }
+      } 
+      @else if $direction == top {
+         #{$className}-#{$name} { 
+            #{$type}-top: $size;
+         }
+      } 
+      @else if $direction == bottom {
+            #{$className}-#{$name} { 
+            #{$type}-bottom: $size;
+         }
+      } 
+      @else if $direction == right {
+         #{$className}-#{$name}{ 
+            #{$type}-right: $size;
+         }
+      } 
+      @else if $direction == left {
+         #{$className}-#{$name}{ 
+            #{$type}-left: $size;
+         }
+      } 
+      @else if $direction == axis-y {
+         #{$className}-#{$name}{ 
+            #{$type}-top: $size;
+            #{$type}-bottom: $size;
+         }
+      } 
+      @else if $direction == axis-x {
+         #{$className}-#{$name}{ 
+            #{$type}-left: $size;
+            #{$type}-right: $size;
+         }
+      }
+   }
+}
+
+// ==========================================================================
+// Mixins para la generación de los colores de los textos y backgrounds
+// ==========================================================================
+
+@mixin color-modifiers($attribute: 'background', $property: 'color') {
+   @each $name, $color in $colors {
+      &-#{$name} {
+         @each $tone, $hex in $color {
+            &-#{$tone} {
+            #{$property}: $hex;
+            }
+         }
+      }
+   }
+}
+
+// ==========================================================================
+// Mixins para los alerts y snackbars
+// ==========================================================================
+@mixin alert-modifiers() {
+   @each $name, $color in map-get($colors, alerts) {
+      .alert-bg-#{$name} {
+         color: darken($color, 28%);
+         background: lighten($color, 40%);
+         border-color: lighten($color, 20%);
+         @if $name == info {
+            &.whit-icon {
+               padding: .9rem 1.55rem .9rem 3.1rem;
+               &::before {
+                  content: '\e912';
+                  color : $color;
+                }
+            }
+         }
+         @if $name == error {
+            &.whit-icon {
+               padding: .9rem 1.55rem .9rem 3.1rem;
+               &::before {
+                  content: '\e902';
+                  color : $color;
+                }
+            }
+         }
+         @if $name == warning {
+            &.whit-icon {
+               padding: .9rem 1.55rem .9rem 3.1rem;
+               &::before {
+                  content: '\e913';
+                  color : $color;
+                }
+            }
+         }
+         @if $name == success {
+            &.whit-icon {
+               padding: .9rem 1.55rem .9rem 3.1rem;
+               &::before {
+                  content: '\e914';
+                  color : $color;
+                }
+            }
+         }
+         [class*="close"]{
+            color: $color;
+         }
+      }
+      .snackbar-bg-#{$name} {
+         color: darken($color, 28%);
+         background: lighten($color, 40%);
+         border-color: lighten($color, 39%);
+      }
+   }
+}
+
+// ==========================================================================
+// Mixins para la generación de los splits de colores con base 80%
+// ==========================================================================
+
+@mixin color-split($attribute: 'background', $property: 'color') {
+   @each $name, $color in $colors {
+      &-#{$name} {
+         @if($name == primary or $name == secondary){
+            @each $tone, $hex in $color {
+               &-#{$tone} {
+                  @if($tone == base){
+                     @for $i from 0 through 9 {
+                        &-#{$i} {
+                           @if $i == 0{
+                              #{$property}: shade($hex,80%);
+                           }@else if $i == 1{
+                              #{$property}: shade($hex,64%);
+                           }@else if $i == 2{
+                              #{$property}: shade($hex,48%);
+                           }@else if $i == 3{
+                              #{$property}: shade($hex,32%);
+                           }@else if $i == 4{
+                              #{$property}: shade($hex,16%);
+                           }@else if $i == 5{
+                              #{$property}: tint($hex,16%);
+                           }@else if $i == 6{
+                              #{$property}: tint($hex,32%);
+                           }@else if $i == 7{
+                              #{$property}: tint($hex,48%);
+                           }@else if $i == 8{
+                              #{$property}: tint($hex,64%);
+                           }@else if $i == 9{
+                              #{$property}: tint($hex,80%);
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}
+
+// ==========================================================================
+// Mixins BEM selectors (Block, Element, Modifier)
+// ==========================================================================
+
+// Ej.: @include e(title) {}
+@mixin e($element) {
+	&__#{$element} {
+    @content;
+  }
+}
+
+// Ej.: @include m(primary) {}
+@mixin m($modifier) {
+  &--#{$modifier} {
+    @content;
+  }
+}
+
+// Funcion que define los colores del sistema basado en el mapa de colores establecido en las variables
+@function color($color, $tone){
+   @if map-has-key($colors, $color){
+      $color: map-get($colors, $color);
+      @if map-has-key($color, $tone){
+         $tone: map-get($color, $tone);
+            @return $tone;
+      }
+   }
+}
+// Funciones para general los splits de color mezclando una parte de blanco + color base + porcentaje.
+@function tint($color, $percentage) {
+   @return mix(white, $color, $percentage);
+ }
+ @function shade($color, $percentage) {
+   @return mix(black, $color, $percentage);
+ }

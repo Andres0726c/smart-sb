@@ -10,6 +10,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 //import { ModalCompanyModule } from '../modal-company/modal-company.module';
 import { AngularMaterialModule } from '../../material.module';
 import { SharedModule } from '../../shared/shared.module';
+import { ModalAlertModule } from '../../shared/modal-alert/modal-alert.module';
+import { FormBuilder } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalEditProductModule } from '../modal-edit-product/modal-edit-product.module';
+import { ModalCreateProductModule } from '../modal-create-product/modal-create-product.module';
 
 const routes: Route[] = [
   {
@@ -25,8 +30,8 @@ const routes: Route[] = [
     CommonModule,
     AngularMaterialModule,
     //HeaderModule,
-    //ModalCreateProductModule,
-    //ModalEditProductModule,
+    ModalCreateProductModule,
+    ModalEditProductModule,
     //ToastMessageModule,
     SharedModule,
     //ModalCompanyModule

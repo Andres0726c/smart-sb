@@ -1,0 +1,59 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+@import "../../../assets/styles/config/buttons";
+@import "../../../assets/styles/config/icons";
+
+.container {
+  &__icon_close {
+    color: $primaryBase;
+    font-size: 20px;
+    text-align: right;
+    .icon_close {
+      cursor: pointer;
+    }
+  }
+  &__message {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 24px;
+    row-gap: 32px;
+  }
+}
+.icon {
+  font-size: 64px;
+  text-align: center;
+}
+
+.text {
+  font-family: Roboto Condensed;
+  max-width: 400px;
+  text-align: center;
+  &_message {
+    font-weight: 700;
+    font-size: 20px;
+    color: $titleSubtitle;
+    line-height: 23px;
+  }
+  &_submessage {
+    font-weight: 400;
+    font-size: 16px;
+    color: $alertsError;
+    line-height: 22px;
+  }
+  &_text {
+    font-weight: 400;
+    font-weight: bold;
+    font-size: 18px;
+    color: $alertsError; 
+    line-height: 22px;
+  }
+}
+
+.container__buttons {
+  display: flex;
+  justify-content: center;
+  column-gap: 24px;
+  .button {
+    width: 125px;
+  }
+}
