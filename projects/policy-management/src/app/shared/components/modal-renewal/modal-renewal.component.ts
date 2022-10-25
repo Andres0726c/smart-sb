@@ -10,6 +10,7 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 })
 export class ModalRenewalComponent implements OnInit {
   val:string = '';
+  policy: any;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -19,5 +20,8 @@ export class ModalRenewalComponent implements OnInit {
     public messageService: MessageService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.policy = this.config.data.policy;
+    console.log('polixy', this.policy)
+  }
 }

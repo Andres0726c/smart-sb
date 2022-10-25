@@ -102,7 +102,8 @@ export class ConsultPolicyComponent {
           this.showModal('Cancelación', this.selectedPolicy, 'Cancelar Póliza');
         },
       },
-      { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open',
+      {
+        label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open',
         command: (event: any, row: any) => {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
@@ -110,17 +111,23 @@ export class ConsultPolicyComponent {
           this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitrar');
         },
       },
-      { label: 'Renovar', icon: 'pi pi-fw pi-refresh',
+      {
+        label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
           this.showModalRenewal('Renovación', this.selectedPolicy, 'Renovar');
         }
       },
-      { label: 'Ver detalle', icon: 'pi pi-fw pi-eye' },
+      {
+        label: 'Ver detalle', icon: 'pi pi-fw pi-eye',
+        command: (event: any, row: any) => {
+          this.showModalRenewal('Consulta detalle', this.selectedPolicy, 'Renovar');
+        }
+      },
     ];
   }
 
   disabledItem(status: string) {
-    switch(status) {
+    switch (status) {
       case 'Activa':
         this.items[0].disabled = false;
         this.items[1].disabled = false;
@@ -210,7 +217,7 @@ export class ConsultPolicyComponent {
     this.totalRecords = 0;
   }
 
-  showModalRenewal(process: string, policy: any, buttonAction: any){
+  showModalRenewal(process: string, policy: any, buttonAction: any) {
     const ref = this.dialogService.open(ModalRenewalComponent, {
       data: {
         process: process,
