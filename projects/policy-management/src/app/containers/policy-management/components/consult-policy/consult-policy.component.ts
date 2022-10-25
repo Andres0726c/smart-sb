@@ -204,24 +204,32 @@ export class ConsultPolicyComponent {
   }
 
   showModalRenewal(process: string, policy: any, buttonAction: any) {
-    const ref = this.dialogService.open(ModalRenewalComponent, {
-      data: {
-        process: process,
-        policy: policy,
-        buttonAction: buttonAction
-      },
-      header: process,
-      modal: true,
-      dismissableMask: true,
-      width: '80%',
-      contentStyle: { 'max-height': '600px', overflow: 'auto' },
-      baseZIndex: 10000,
-    });
+    let policyRes;
+    this.consultPolicyService.getPolicyById(policy.idPolicy).subscribe({
+      next: (res) => {
+        if (res.dataHeader.code && (res.dataHeader.code = 200)) {
+          policyRes = res.body;
+          this.totalRecords = res.dataHeader.totalRecords;
 
-    ref.onClose.subscribe((res: boolean) => {
-      if (res) {
-        this.consultPolicies(this.filters);
-      }
+          const ref = this.dialogService.open(ModalRenewalComponent, {
+            data: {
+              process: process,
+              policy: policyRes,
+              buttonAction: buttonAction
+            },
+            header: process,
+            modal: true,
+            dismissableMask: true,
+            width: '80%',
+            contentStyle: { 'max-height': '600px', overflow: 'auto' },
+            baseZIndex: 10000,
+          });
+
+        } 
+      },
+      error: (error: ResponseErrorDTO) => {
+        console.error('error', error);
+      },
     });
   }
 
