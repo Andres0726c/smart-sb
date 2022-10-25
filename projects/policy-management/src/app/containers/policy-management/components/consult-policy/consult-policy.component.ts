@@ -12,6 +12,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
 import { ModalRenewalComponent } from 'projects/policy-management/src/app/shared/components/modal-renewal/modal-renewal.component';
+import { PolicyDetailsComponent } from './policy-details/policy-details.component';
 
 @Component({
   selector: 'app-consult-policy',
@@ -65,21 +66,6 @@ export class ConsultPolicyComponent {
       observation: fb.control(null, Validators.maxLength(2000)),
     });
 
-    // this.msgs1 = [
-    //   {severity:'success', summary:'Success', detail:'Message Content'},
-    // ];
-
-    // this.selectedPolicy = {
-    //   inceptionDate: '01/10/2022',
-    //   expirationDate: '05/10/2022',
-    //   idPolicy: 1,
-    // }
-    // this.formDate.get('processDate')?.setValue('04/10/2022')
-    // this.formDate.get('idCause')?.setValue(1)
-    // this.formDate.get('causeType')?.setValue('Anulación')
-    // this.formDate.get('observation')?.setValue('anulado por el cliente')
-    // this.cancelPolicy();
-
     this.cols = [
       { header: 'Producto' },
       { header: 'Póliza' },
@@ -120,7 +106,7 @@ export class ConsultPolicyComponent {
       {
         label: 'Ver detalle', icon: 'pi pi-fw pi-eye',
         command: (event: any, row: any) => {
-          this.showModalRenewal('Consulta detalle', this.selectedPolicy, 'Renovar');
+          this.showModalConsulDetails();
         }
       },
     ];
@@ -237,5 +223,18 @@ export class ConsultPolicyComponent {
         this.consultPolicies(this.filters);
       }
     });
+  }
+
+  showModalConsulDetails(){
+    const ref = this.dialogService.open(PolicyDetailsComponent,{
+      data: {
+        idPolicy: this.selectedPolicy.idPolicy
+      },
+      header: 'Consulta detalle',
+      modal: true,
+      dismissableMask: true,
+      contentStyle: { 'max-height': '600px', overflow: 'auto' },
+      baseZIndex: 10000,
+    })
   }
 }

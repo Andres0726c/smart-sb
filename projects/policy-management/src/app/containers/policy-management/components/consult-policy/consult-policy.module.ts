@@ -28,6 +28,7 @@ import {MessageModule} from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { ModalPolicyActionsModule } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.module';
 import { ModalRenewalModule } from 'projects/policy-management/src/app/shared/components/modal-renewal/modal-renewal.module';
+import { PolicyDetailsModule } from './policy-details/policy-details.module';
 
 const routes: Routes = [
   {
@@ -70,7 +71,7 @@ const routes: Routes = [
     MessageModule,
     ToastModule,
     ModalPolicyActionsModule,
-    ModalRenewalModule
+    ModalRenewalModule,
   ],
   exports: [ConsultPolicyComponent],
 })
