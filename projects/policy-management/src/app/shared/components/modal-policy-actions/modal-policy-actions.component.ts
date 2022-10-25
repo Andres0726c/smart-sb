@@ -56,18 +56,18 @@ export class ModalPolicyActionsComponent implements OnInit {
       this.modalAPService
         .postCancelPolicy(this.config.data.policy ,this.formProcess.value)
         .subscribe((resp: any) => {
-          if(resp.dataHeader.code != 500)
+          if(resp.dataHeader.code != 500){
             this.ref.close(true)
             // return this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
-          // } else  {
-          //     this.messageError = true;
-          //     return this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
-          // }
+          } else  {
+              this.messageError = true;
+              return this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
+          }
         }, 
-        (error) => {        
-          this.messageError = true;
-          return this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
-        }
+        // (error) => {        
+        //   this.messageError = true;
+        //   return this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
+        // }
         );
     }
   }
