@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
-import { ModalRenewalComponent } from 'projects/policy-management/src/app/shared/components/modal-renewal/modal-renewal.component';
+import { ModalRenewalComponent } from 'projects/policy-management/src/app/containers/policy-management/components/consult-policy/modal-renewal/modal-renewal.component';
 
 @Component({
   selector: 'app-consult-policy',

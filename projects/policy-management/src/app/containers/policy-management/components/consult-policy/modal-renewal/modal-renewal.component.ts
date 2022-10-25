@@ -24,4 +24,8 @@ export class ModalRenewalComponent implements OnInit {
     this.policy = this.config.data.policy;
     console.log('polixy', this.policy)
   }
+
+  cancelRenewal(){
+    this.ref.close();
+  }
 }
