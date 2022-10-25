@@ -10,6 +10,9 @@ import { InitScreenComponent } from './containers/init-screen/init-screen.compon
 import { HeaderModule } from 'commons-lib';
 import { FormBuilder } from '@angular/forms';
 import { SharedModule } from 'projects/product-parameterization/src/app/shared/shared.module';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { getPaginatorIntl } from '../assets/lang/paginator-intl';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ import { SharedModule } from 'projects/product-parameterization/src/app/shared/s
     AppRoutingModule
   ],
   providers: [
-    FormBuilder
+    FormBuilder,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500, horizontalPosition:'right', verticalPosition:'bottom' } },
+    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() },
   ],
   bootstrap: [AppComponent]
 })

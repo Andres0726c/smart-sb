@@ -137,7 +137,7 @@ export class ModalEditProductComponent implements OnInit {
     
 
     this.onNoClick();
-    this.router.navigate(['productos/parametros-generales']);
+    this.router.navigate(['productos/parametrizador/parametros-generales']);
 
   }
   

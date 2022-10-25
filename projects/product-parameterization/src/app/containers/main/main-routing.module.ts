@@ -11,10 +11,10 @@ const routes: Routes = [
         path: 'menu-productos', 
         loadChildren: () => import('../../containers/main-screen-product/main-screen-product.module').then(m => m.MainScreenProductModule),
       },
-      /*{
-        path: 'parametrizador-producto',
+      {
+        path: 'parametrizador',
         loadChildren: () => import('../../containers/products-management/screen-management/screen-management.module').then(m => m.ScreenManagementModule),
-      },*/
+      },
       {
         path: '**',
         redirectTo: 'menu-productos',

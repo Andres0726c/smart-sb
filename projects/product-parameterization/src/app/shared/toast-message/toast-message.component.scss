@@ -1,0 +1,84 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+
+.container {
+  display: flex;
+  font-family: Roboto Condensed;
+  color: $grayscaleBlack;
+  &__rectangule {
+    width: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+  }
+  &__toast {
+    width: 418px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+    padding: 16px 16px 16px 8px;
+    .msg {
+      padding-left: 32px;
+    }
+  }
+}
+.container__header {
+  display: flex;
+  gap: 8px;
+  font-size: 18px;
+  span {
+    font-weight: bold;
+    font-size: 14px;
+    width: 100%;
+  }
+}
+.icon-close {
+  color: $grayscaleBlack;
+  cursor: pointer;
+}
+.icon-status {
+  margin: 0 3px;
+}
+.rectangule {
+  width: 6px;
+  height: 60px;
+  border-radius: 8px;
+}
+.success .rectangule {
+  background-color: $alertsSuccess;
+}
+.success .icon-status {
+  color: $alertsSuccess;
+}
+
+.error .rectangule {
+  background-color: $alertsError;
+}
+.error .icon-status {
+  color: $alertsError;
+}
+
+.info .rectangule {
+  background-color: $alertsInfo;
+}
+.info .icon-status {
+  color: $alertsInfo;
+}
+
+.warning .rectangule {
+  background-color: $alertsWarning;
+}
+.warning .icon-status {
+  color: $alertsWarning;
+}
+
+//Overwrite styles to container at snackbar notification
+::ng-deep .mat-snack-bar-container {
+  max-width: 440px !important;
+  background: white;
+  border-radius: 8px;
+  padding: 0px;
+  box-shadow: 1px 4px 4px rgba(51, 51, 51, 0.04),
+    1px 1px 8px rgba(51, 51, 51, 0.16);
+}

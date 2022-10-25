@@ -106,7 +106,7 @@ export class ModalCreateProductComponent implements OnInit {
     }
     this.service.initialParameters.get('company')?.setValue(this.company);
     this.onNoClick();
-    this.router.navigate(['parametrizador-producto/parametros-generales']);
+    this.router.navigate(['productos/parametrizador/parametros-generales']);
       
     
     }

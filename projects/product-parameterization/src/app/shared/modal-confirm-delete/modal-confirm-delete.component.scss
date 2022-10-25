@@ -1,6 +1,5 @@
 @import "../../../assets/styles/config/variables";
 @import "../../../assets/styles/config/mixins";
-@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
 
 .container {
   &__icon_close {
@@ -18,10 +17,9 @@
     row-gap: 32px;
   }
 }
-.icon {
+.icon_delete {
   font-size: 64px;
   text-align: center;
-  line-height: 0px;
 }
 
 .text {
@@ -38,13 +36,6 @@
     font-weight: 400;
     font-size: 16px;
     color: $alertsError;
-    line-height: 22px;
-  }
-  &_text {
-    font-weight: 400;
-    font-weight: bold;
-    font-size: 18px;
-    color: $alertsError; 
     line-height: 22px;
   }
 }
