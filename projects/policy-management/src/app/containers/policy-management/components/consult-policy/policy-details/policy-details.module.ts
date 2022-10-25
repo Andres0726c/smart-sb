@@ -4,7 +4,7 @@ import { PolicyDetailsComponent } from './policy-details.component';
 import { DividerModule } from 'primeng/divider';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
-
+import { ButtonModule } from 'primeng/button';
 @NgModule({
   declarations: [
     PolicyDetailsComponent
@@ -13,7 +13,8 @@ import { InputTextModule } from 'primeng/inputtext';
     CommonModule,
     DividerModule,
     InputNumberModule,
-    InputTextModule
+    InputTextModule,
+    ButtonModule
   ],
   exports: []
 })

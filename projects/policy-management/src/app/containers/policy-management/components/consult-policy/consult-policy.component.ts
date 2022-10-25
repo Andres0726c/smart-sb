@@ -233,6 +233,7 @@ export class ConsultPolicyComponent {
       header: 'Consulta detalle',
       modal: true,
       dismissableMask: true,
+      width: '80%',
       contentStyle: { 'max-height': '600px', overflow: 'auto' },
       baseZIndex: 10000,
     })
