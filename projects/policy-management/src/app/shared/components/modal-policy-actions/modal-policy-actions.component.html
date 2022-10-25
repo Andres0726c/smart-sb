@@ -44,6 +44,25 @@
                         </div>
                     </ng-template>
                 </p-dropdown>
+
+            </div>
+
+            <div>
+                <label>Seleccione la fecha de anulación</label>
+                <p-calendar formControlName="processDate" (onSelect)="verifyDate()" dateFormat="yy-mm-dd"
+                    [showIcon]="true" appendTo="body" [showTime]="true" hourFormat="24" [showSeconds]="true"
+                    styleClass="w-full" placeholder="aaaa/mm/dd" mask="9999/99/99">
+                </p-calendar>
+            </div>
+
+            <div *ngIf="config.data.process === 'Cancelación'">
+                <label>Valor total prima</label>
+                <input type="text" pInputText [disabled]="fieldDisabled" class="w-full"/>
+            </div>
+
+            <div *ngIf="config.data.process === 'Cancelación'">
+                <label>Valor a devolver al cliente</label>
+                <input type="text" pInputText [disabled]="fieldDisabled" class="w-full"/>
             </div>
 
             <div class="col-span-2">
@@ -52,7 +71,7 @@
             </div>
 
             <div class="col-span-2 ml-auto">
-                <p-button [label]="config.data.buttonAction" [disabled]="disableButton()" (click)="config.data.buttonAction === 'Cancelar Póliza' ? cancelPolicy() : rehabilitatePolicy()"></p-button>
+                <p-button [label]="config.data.buttonAction" [disabled]="!(this.formProcess.valid)" (click)="config.data.buttonAction === 'Cancelar Póliza' ? cancelPolicy() : rehabilitatePolicy()"></p-button>
             </div>
         </div>
     </form>

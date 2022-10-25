@@ -13,8 +13,8 @@ export class ModalPolicyActionsComponent implements OnInit {
   formProcess: FormGroup;
   causes: any[] = []
   messageError = false;
+  fieldDisabled: boolean = true;
 
-  selectedPolicy: any = null;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -46,28 +46,24 @@ export class ModalPolicyActionsComponent implements OnInit {
       } )
     }
 
-  disableButton() { //esta función se puede eliminar
-      return !(this.formProcess.valid)
-    } 
-
   cancelPolicy() {
 
     if (this.formProcess.valid) {
       this.modalAPService
         .postCancelPolicy(this.config.data.policy ,this.formProcess.value)
         .subscribe((resp: any) => {
-          if(resp.dataHeader.code != 500){
+          if(resp.dataHeader.code != 500)
             this.ref.close(true)
             // return this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
-          } else  {
-              this.messageError = true;
-              return this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
-          }
+          // } else  {
+          //     this.messageError = true;
+          //     return this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
+          // }
         }, 
-        // (error) => {        
-        //   this.messageError = true;
-        //   return this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
-        // }
+        (error) => {        
+          this.messageError = true;
+          return this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
+        }
         );
     }
   }
@@ -77,19 +73,42 @@ export class ModalPolicyActionsComponent implements OnInit {
       this.modalAPService
         .postRehabilitation(this.config.data.policy, this.formProcess.value)
         .subscribe((resp: any) => {
-          if(resp.dataHeader.code != 500){
+          if(resp.dataHeader.code != 500)
             this.ref.close(true)
             // return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');   //revisar estos retornos y el envío de post
-          } else {
-              this.messageError = true;
-              return this.showSuccess('error', 'Error al rehabilitar', resp.dataHeader.status);
-          }  
+          // } else {
+          //     this.messageError = true;
+          //     return this.showSuccess('error', 'Error al rehabilitar', resp.dataHeader.status);
+          // }  
         },
-        //  (error) => {          
-        //   this.messageError = true;
-        //   return this.showSuccess('error', 'Error al rehabilitar', error.error.dataHeader.status);
-        // }
+         (error) => {          
+          this.messageError = true;
+          return this.showSuccess('error', 'Error al rehabilitar', error.error.dataHeader.status);
+        }
         );
+    }
+  }
+
+    verifyDate() {
+    const date = new Date(
+      this.formProcess.get('processDate')?.value
+    ).toISOString();
+    const inceptionDate = new Date(
+      this.config.data.policy.inceptionDate
+    ).toISOString();
+    const expirationDate = new Date(
+      this.config.data.policy.expirationDate
+    ).toISOString();
+    console.log('fecha actual', date);
+    console.log('inceptionDate', inceptionDate);
+    console.log('expirationDate', expirationDate);
+
+    if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
+      this.formProcess.get('causeType')?.enable();
+      this.formProcess.get('observation')?.enable();
+    } else {
+      this.formProcess.get('causeType')?.disable();
+      this.formProcess.get('observation')?.disable();
     }
   }
 
