@@ -15,4 +15,26 @@ export interface PolicyBrief {
   insuredDocument: string;
   insuredTypeDocument: string;
   insuredName: string;
+  complementaryData: ComplementaryDataPet;
+  payment: Payment;
+  servicePlan: ServicePlan;
+
 }
+
+export interface ComplementaryDataPet {
+  petType: string,
+  petName: string,
+  petAge: string,
+  petBrand: string
+}
+
+export interface Payment{
+  method: string,
+}
+
+export interface ServicePlan{
+  name: string;
+  description: string;
+  value: number
+}
+
