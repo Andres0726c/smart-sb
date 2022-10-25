@@ -30,6 +30,15 @@ export class ConsultPolicyService {
     );
   }
 
+  getPolicyById(idPolicy:number){
+    return this.httpClient.get<ResponseDTO<PolicyBrief>>(
+      `${this.apiUrl}policy/findById?idPolicy=${idPolicy}`,
+      {
+        headers: this.headers,
+      }
+    )
+  }
+
   getQueryParams = (params: any): string => {
     let parameters: HttpParams = new HttpParams({ fromObject: params });
     return parameters.toString();
