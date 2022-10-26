@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductService } from '../../../services/product.service';
 
@@ -6,7 +6,7 @@ import { ProductService } from '../../../services/product.service';
   selector: 'app-screen-management',
   templateUrl: './screen-management.component.html',
 })
-export class ScreenManagementComponent implements OnInit {
+export class ScreenManagementComponent {
   @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
     if (
       (Object.keys(this.productService.productBk).length > 0 && !this.productService.noProductChanges(this.productService.productBk, this.productService.getProductObject()))
@@ -20,7 +20,7 @@ export class ScreenManagementComponent implements OnInit {
   constructor(
     private productService: ProductService,
     public dialog: MatDialog
-  ) {}
-
-  ngOnInit(): void {}
+  ) {
+    //
+  }
 }

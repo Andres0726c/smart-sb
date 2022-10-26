@@ -17,25 +17,25 @@ import { ModalAlertComponent } from '../shared/modal-alert/modal-alert.component
 export class ProductService {
   ramo: string = '';
   productBk = {};
-  coverages: FormArray<any> = new FormArray<any>([]);
-  policyData: FormArray<any> = new FormArray<any>([]);
-  clauses: FormArray<any> = new FormArray<any>([]);
-  riskTypes: FormArray<any> = new FormArray<any>([]);
-  servicePlans: FormArray<any> = new FormArray<any>([]);
+  coverages: any = new FormArray<any>([]);
+  policyData: any = new FormArray<any>([]);
+  clauses: any = new FormArray<any>([]);
+  riskTypes: any = new FormArray<any>([]);
+  servicePlans: any = new FormArray<any>([]);
   accumulation: FormGroup = new FormGroup({});
   initialParameters: FormGroup = new FormGroup({});
   showAccumulationError: boolean = false;
-  taxesCategories: FormArray<any> = new FormArray<any>([]);
-  technicalControls: FormArray<any> = new FormArray<any>([]);
+  taxesCategories: any = new FormArray<any>([]);
+  technicalControls: any = new FormArray<any>([]);
   private _isEnabledSaved: boolean = true;
   _isCreateProduct:boolean = true;
   saving = false;
   companyId:string="";
-  claimReservation: FormArray<any> = new FormArray<any>([]);
-  conceptReservation: FormArray<any> = new FormArray<any>([]);
-  claimTechnicalControls: FormArray<any> = new FormArray<any>([]);
-  claimData: FormArray<any> = new FormArray<any>([]);
-  modificationTypes: FormArray<any> = new FormArray<any>([]);
+  claimReservation: any = new FormArray<any>([]);
+  conceptReservation: any = new FormArray<any>([]);
+  claimTechnicalControls: any = new FormArray<any>([]);
+  claimData: any = new FormArray<any>([]);
+  modificationTypes: any = new FormArray<any>([]);
 
   defaultArrays = [
     'selectedProcess',
@@ -187,32 +187,32 @@ export class ProductService {
   /**
    * Function that returns controls for coverages formArray
    */
-  get coveragesControls(): FormArray<any> {
+  get coveragesControls(): any {
     return this.coverages;
   }
 
   /**
    * Function that returns controls for service plans formArray
    */
-  get servicePlansControls(): FormArray<any> {
+  get servicePlansControls(): any {
     return this.servicePlans;
   }
 
   /**
    * Function that returns controls for risk types formArray
    */
-  get riskTypesControls(): FormArray<any> {
+  get riskTypesControls(): any {
     return this.riskTypes;
   }
 
   /**
    * Function that returns controls for taxes categories formArray
    */
-  get taxesCategoriesControls(): FormArray<any> {
+  get taxesCategoriesControls(): any {
     return this.taxesCategories;
   }
 
-  get conceptReservationControls(): FormArray<any> {
+  get conceptReservationControls(): any {
     return this.conceptReservation;
   }
   /**
@@ -392,8 +392,8 @@ export class ProductService {
       }
       if (this.coverages.length > 0) {
         for (const coverage of this.coverages.controls) {
-          let complementaryData: FormArray<any> = (<FormArray>coverage.get('complementaryData'));
-          let payRollData: FormArray<any> = (<FormArray>coverage.get('payRollData'));
+          let complementaryData: any = (<FormArray>coverage.get('complementaryData'));
+          let payRollData: any = (<FormArray>coverage.get('payRollData'));
           
           if (complementaryData.length > 0 && !(<FormGroup>complementaryData.controls[0]).contains('code')){
             (<FormGroup>complementaryData.controls[0]).addControl('code', this.fb.control('datos_basicos'));
@@ -419,7 +419,7 @@ export class ProductService {
       }
       if (this.riskTypes.length > 0) {
         for (const riskType of this.riskTypes.controls) {
-          let riskTypes: FormArray<any> = (<FormArray>riskType.get('complementaryData'));
+          let riskTypes: any = (<FormArray>riskType.get('complementaryData'));
           if (riskTypes.length > 0 && !(<FormGroup>riskTypes.controls[0]).contains('code')){
             (<FormGroup>riskTypes.controls[0]).addControl('code', this.fb.control('datos_basicos'));
           }
@@ -432,7 +432,7 @@ export class ProductService {
 
       if (this.modificationTypes.length > 0) {
         for (const modificationType of this.modificationTypes.controls) {
-          let modificationTypes: FormArray<any> = (<FormArray>modificationType.get('visibleNonModificableData'));
+          let modificationTypes: any = (<FormArray>modificationType.get('visibleNonModificableData'));
           if (modificationTypes.length > 0 && !(<FormGroup>modificationTypes.controls[0]).contains('code')) {
             (<FormGroup>modificationTypes.controls[0]).addControl('code', this.fb.control('datos_basicos'));
           }
@@ -595,7 +595,7 @@ export class ProductService {
  {
     if(environment.productAutosave)
     {
-      let formArrayList: FormArray<any>[] = [this.coverages, this.policyData, this.clauses, this.riskTypes, this.servicePlans, this.taxesCategories, this.technicalControls, this.conceptReservation, this.claimData, this.claimTechnicalControls, this.modificationTypes];
+      let formArrayList: any[] = [this.coverages, this.policyData, this.clauses, this.riskTypes, this.servicePlans, this.taxesCategories, this.technicalControls, this.conceptReservation, this.claimData, this.claimTechnicalControls, this.modificationTypes];
       let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters];
          this.registerFormEvent(formArrayList);
          this.registerFormEvent(formGroupList);

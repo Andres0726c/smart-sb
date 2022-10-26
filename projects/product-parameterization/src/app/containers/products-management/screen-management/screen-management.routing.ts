@@ -10,11 +10,11 @@ export const screenManagementRoutes: Route[] = [
                 path: 'parametros-generales',
                 loadChildren: () => import('../../../containers/initial-parameters/initial-parameters.module').then(m => m.InitialParametersModule)
             },
-            /*{
+            {
                 path: 'datos-poliza',
-                loadChildren: () => import('src/app/containers/policy-data/policy-data.module').then(m => m.PolicyDataModule)
+                loadChildren: () => import('../../../containers/policy-data/policy-data.module').then(m => m.PolicyDataModule)
             },
-            { 
+            /*{ 
                 path: 'coberturas', 
                 loadChildren: () => import('src/app/containers/coverages/coverages.module').then(m => m.CoveragesModule)
             },

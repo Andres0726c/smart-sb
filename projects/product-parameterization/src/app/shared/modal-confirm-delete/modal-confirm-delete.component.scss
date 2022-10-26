@@ -1,5 +1,6 @@
 @import "../../../assets/styles/config/variables";
 @import "../../../assets/styles/config/mixins";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
 
 .container {
   &__icon_close {
@@ -20,6 +21,7 @@
 .icon_delete {
   font-size: 64px;
   text-align: center;
+  line-height: 0px;
 }
 
 .text {
@@ -31,6 +33,7 @@
     font-size: 20px;
     color: $titleSubtitle;
     line-height: 23px;
+    margin: 0 0 16px;
   }
   &_submessage {
     font-weight: 400;

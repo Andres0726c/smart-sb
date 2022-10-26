@@ -4,9 +4,9 @@ import { ScreenManagementComponent } from './screen-management.component';
 import { NavigationStart, Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule } from '@angular/forms';
-import { ProductService } from 'src/app/services/product.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
+import { ProductService } from '../../../services/product.service';
 
 class MockService {
   public accumulation = new FormGroup({
@@ -75,13 +75,5 @@ describe('ScreenManagementComponent', () => {
   
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('ngOnInit', () => {
-    service.accumulation = new FormGroup({
-      accumulationType: new FormControl(1),
-      coverages: new FormArray([])
-    });
-    expect(component.ngOnInit()).toBeUndefined();
   });
 });

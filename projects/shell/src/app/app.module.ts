@@ -13,6 +13,7 @@ import { SharedModule } from 'projects/product-parameterization/src/app/shared/s
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getPaginatorIntl } from '../assets/lang/paginator-intl';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { getPaginatorIntl } from '../assets/lang/paginator-intl';
   providers: [
     FormBuilder,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500, horizontalPosition:'right', verticalPosition:'bottom' } },
-    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() },
+    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() }
   ],
   bootstrap: [AppComponent]
 })

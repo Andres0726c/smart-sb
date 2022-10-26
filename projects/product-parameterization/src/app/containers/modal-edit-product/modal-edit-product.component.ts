@@ -65,17 +65,13 @@ export class ModalEditProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.cognitoService.getUser()
-      .then((value) => {
-        this.idCompany = JSON.parse(value.attributes['custom:sessionInformation']).id;
-        this.getDataInsuranceLine();
-      })
+    this.getDataInsuranceLine();
   }
 
   getDataInsuranceLine = async (id: string = '3', serviceData: string = '') => {
     this.isLoading = true;
     try {
-      let res = await lastValueFrom(this.initialDataEditProduct.getDataEdit('insuranceLine/findByCompany', String(this.idCompany)));
+      let res = await lastValueFrom(this.initialDataEditProduct.getDataEdit('insuranceLine/findByCompany', this.service.companyId));
       if (res.dataHeader.hasErrors === false) {
         this.ramo = res.body;
       }

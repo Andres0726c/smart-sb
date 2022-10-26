@@ -1,0 +1,326 @@
+<mat-card *ngIf="isLoading || flagServiceError" class="card-loading-container">
+    <mat-card-content>
+        <div *ngIf="isLoading" class="card-loading-content">
+            <mat-progress-spinner color="primary" mode="indeterminate">
+            </mat-progress-spinner>
+        </div>
+        <div *ngIf="flagServiceError" class="card-loading-error">
+            Ha ocurrido un error cargando los datos necesarios
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<div class="content" *ngIf="!isLoading && !flagServiceError">
+    <div class="container-titles" *ngIf="title">
+        <div class="content_title" *ngIf="title || subtitle">
+            <div>
+                <h3 class="title" *ngIf="title">{{ title }}</h3>
+                <h4 class="subtitle" *ngIf="subtitle">{{ subtitle }}</h4>
+            </div>
+        </div>
+        <div class="add-div-btn"
+            *ngIf="complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && getGroupArrayById(1).length > 0)">
+            <button mat-raised-button color="accent" class="bt" data-qa-id="sc-rpmf-btn_open_dialog_complementary_data"
+                (click)="openDialogPolicyData('complementaryDataControls')">
+                <em class="fal fa-plus-circle icon-button-add"></em>
+                Añadir datos
+            </button>
+        </div>
+
+    </div>
+
+    <div class="container-complementary-data">
+        <div class="container-fields">
+            <div class="form container-titles" *ngIf="!title && subtitle && complementaryDataControls.length > 0">
+                <div
+                    *ngIf="complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && getGroupArrayById(1).length > 0)">
+                    <span class="subtitle-child" *ngIf="subtitle">{{ subtitle }}</span>
+                </div>
+                <div class="add-div-btn"
+                    *ngIf="complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && getGroupArrayById(1).length > 0)">
+                    <button *ngIf="!modifyData" mat-raised-button color="accent" class="bt"
+                        data-qa-id="sc-rpmf-btn_open_dialog_complementary_data"
+                        (click)="openDialogPolicyData('complementaryDataControls')">
+                        <em class="fal fa-plus-circle icon-button-add"></em>
+                        Añadir dato
+                    </button>
+                    <button *ngIf="modifyData" mat-raised-button color="accent" class="bt"
+                        data-qa-id="sc-rpmf-btn_open_dialog_complementary_data"
+                        (click)="openDialogEmissionData('emissionData')">
+                        <em class="fal fa-plus-circle icon-button-add"></em>
+                        Añadir dato
+                    </button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <button mat-raised-button color="accent" class="bt bt-complementary btDelete" *ngIf="selectedField?.get('shouldDelete')?.value && modifyData"
+                      (click)="removeComplementaryData()" data-qa-id="sc-rpmf-btn_remove_complementary_data">
+                        <em class="far fa-minus-circle bt-icon "></em>
+                        Eliminar dato
+                    </button>
+
+                </div>
+            </div>
+
+            <mat-accordion class="form"
+                *ngIf="complementaryDataControls.length === 1 && getGroupArrayById(1).length === 0">
+                <mat-expansion-panel [expanded]="true" [hideToggle]="true">
+                    <app-no-data-screen [data]="complementaryData" [emptyText]="emptyText" [emptySubText]="emptySubText"
+                        [ShowButton]="!modifyData"
+                        (action)="openDialogPolicyData('complementaryDataControls')">
+                    </app-no-data-screen>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <!-- Datos con grupos dinámicos -->
+            <ng-container
+                *ngIf="complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && getGroupArrayById(1).length > 0)">
+                <ng-container *ngFor="let group of complementaryDataControls.controls">
+                    <mat-accordion class="form" *ngIf="true">
+                        <mat-expansion-panel [expanded]="getFieldsFormArray(group.get('fields')).controls.length > 0" hideToggle>
+                            <mat-expansion-panel-header class="expansion-header"
+                                [ngClass]="{'panel-header-editing': group.value.isEditing}">
+                                <mat-panel-title class="font-expansion-title">
+                                    <span *ngIf="group.value.isEditing">
+                                        <form class="form-edit-title" [formGroup]="formGroupTitle">
+                                            <mat-label class="label-input-title" *ngIf="false">Nombre del grupo: </mat-label>
+                                            <span class="options-button">
+                                                <mat-form-field appearance="outline" class="input input-title" (click)="$event.stopPropagation()">
+                                                    <input #groupNameInput matInput type="text" data-qa-id="sc-rpmf-input_productName"
+                                                        autocomplete="off"
+                                                        class="font-expansion-title input-title-field"
+                                                        formControlName="groupTitle"
+                                                        placeholder="Ingrese el nombre del grupo"
+                                                        [errorStateMatcher]="matcher"
+                                                        (keydown.space)="$event.stopImmediatePropagation()"
+                                                        (keydown.enter)="$event.stopImmediatePropagation(); finishGroupEdit($event, group)" 
+                                                        (blur)="finishGroupEdit($event, group)">
+                                                    <mat-error class="input-title-error-message">{{ errorMessageName }}</mat-error>
+                                                </mat-form-field>
+                                            </span>
+                                        </form>
+                                    </span>
+                                    <span *ngIf="!group.value.isEditing">
+                                        {{ group.value.name }}
+                                    </span>
+                                    <span class="options-button" *ngIf="!modifyData && !group.value.isEditing">
+                                        <button mat-icon-button [matMenuTriggerFor]="groupOptionsMenu" (click)="$event.stopPropagation();" aria-label="Opciones del grupo" class="btn-group-options">
+                                            <em class="fal fa-ellipsis-h-alt icon-group-options"></em>
+                                        </button>
+                                          <mat-menu #groupOptionsMenu="matMenu">
+                                            <div class="options-menu-title">Opciones</div>
+                                            <button mat-menu-item (click)="startGroupEdit(group)">
+                                                <span class="options-menu-item-label">Editar título del grupo</span>
+                                                <em class="fal fa-pen item-edit-icon"></em>
+                                            </button>
+                                            <button mat-menu-item [disabled]="group.value.code === 'datos_basicos'" (click)="removeGroup(group)">
+                                                <span class="options-menu-item-label">Eliminar grupo</span>
+                                                <em class="fal fa-trash" [ngClass]="group.value.code != 'datos_basicos' ? 'item-delete-icon' : 'item-delete-icon-disabled'"></em>
+                                            </button>
+                                        </mat-menu>
+                                    </span>
+                                </mat-panel-title>
+                                <mat-panel-description *ngIf="getFieldsFormArray(group.get('fields')).controls.length > 0">
+                                    <span class="mat-expansion-indicator"></span>
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+
+                            <app-no-data-screen *ngIf="this.complementaryDataControls.length===0"
+                                [emptyText]="emptyText" [emptySubText]="emptySubText"
+                                (action)="openDialogPolicyData('complementaryDataControls')">
+                            </app-no-data-screen>
+
+                            <div *ngIf="this.complementaryDataControls.length > 0">
+                                <!-- Se pintan los datos -->
+                                <div class="container-elements" cdkDropListGroup>
+                                    <div *ngFor="let item of getFieldsFormArray(group.get('fields')).controls; let i=index"
+                                        class="width-column" [ngSwitch]="item.value.dataTypeGui">
+                                        <div cdkDropList cdkDropListOrientation="horizontal"
+                                            [cdkDropListData]="{item:item,index:i}"
+                                            (cdkDropListDropped)="drop($event, getFieldsFormArray(group.get('fields')))">
+                                            <div [ngClass]="item.value.id === selectedField.value.id ? 'field-selected' : 'field'"
+                                                cdkDrag>
+                                                <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+                                                <div>
+                                                    <div class="field-title">
+                                                        <div>
+                                                            <mat-label>{{item.value.label }} </mat-label>
+
+                                                            <em *ngIf="!modifyData && isConfigured(item)"
+                                                                class="fas fa-check primary-icon"></em>
+                                                        </div>
+                                                        <div class="drag-handle" cdkDragHandle>
+                                                            <em class="fas fa-arrows"></em>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'input-ft'" class="input"
+                                                        (click)="selectComplementaryData(item)"
+                                                        data-qa-id="sc-rpmf-btn_select_input">
+                                                        <mat-form-field appearance="outline">
+                                                            <input matInput [type]="item.value.dataTypeName"
+                                                                autocomplete="off" readonly="true">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngSwitchCase="'List box'" class="input">
+                                                        <mat-form-field appearance="outline"
+                                                            (click)="selectComplementaryData(item)"
+                                                            data-qa-id="sc-rpmf-btn_select_list">
+                                                            <mat-select readonly="true"></mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngSwitchCase="'Calendar'" class="input">
+                                                        <mat-form-field appearance="outline"
+                                                            (click)="selectComplementaryData(item)"
+                                                            data-qa-id="sc-rpmf-btn_select_calendar">
+                                                            <mat-select readonly="true"></mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngSwitchCase="'datepicker-ft'">
+                                                        <mat-form-field appearance="outline"
+                                                            (click)="selectComplementaryData(item)"
+                                                            data-qa-id="sc-rpmf-btn_select_datepicker">
+                                                            <input matInput [matDatepicker]="picker" readonly="true">
+                                                            <mat-datepicker-toggle matSuffix [for]="picker">
+                                                            </mat-datepicker-toggle>
+                                                            <mat-datepicker #picker></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngSwitchDefault class="input"
+                                                        (click)="selectComplementaryData(item)"
+                                                        data-qa-id="sc-rpmf-btn_select_default">
+                                                        <mat-form-field appearance="outline">
+                                                            <input matInput type="text" autocomplete="off"
+                                                                readonly="true">
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </ng-container>
+                
+                <ng-container *ngIf="!modifyData">
+                    <mat-accordion class="form panel-add-group" *ngIf="true">
+                        <mat-expansion-panel [expanded]="false" hideToggle>
+                            <mat-expansion-panel-header class="expansion-header">
+                                <mat-panel-title class="font-expansion-title">
+                                    <span class="options-button">
+                                        <button mat-icon-button (click)="$event.stopPropagation(); addNewGroup()" aria-label="Agregar nuevo grupo" class="button-add-group">
+                                            <em class="fal fa-plus-circle icon-add-group"></em>
+                                        </button>
+                                    </span>
+                                    Añadir grupo
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </ng-container>
+            </ng-container>
+
+            <!-- Datos complementarios 
+            -->
+        </div>
+        <!-- Panel de propiedades -->
+        <form [ngClass]="title ? 'container-box' : 'container-box-shared'" [formGroup]="selectedField"
+            *ngIf="this.selectedField?.get('id') && !modifyData">
+            <h5 class="title"> Propiedades </h5>
+            <div class="container-name-variable">
+                <div class="name-variable">{{ selectedField.value.label }}</div>
+            </div>
+            <section class="input input-prop">
+                <mat-label>Regla de inicialización:</mat-label>
+                <mat-form-field class="example-chip-list" appearance="outline" (click)="openModalInitializeRule()"
+                    data-qa-id="sc-rpmf-btn_open_initialize_rule_modal">
+                    <mat-chip-list #chipListInitializeRule aria-label="Regla de inicialización"
+                        formArrayName="initializeRule" class="chip-list">
+                        <mat-chip *ngFor="let ri of selectedField?.get('initializeRule')?.value"
+                            (removed)="removeInitializeRule()" class="chip">
+                            <div class="ellipsis">
+                                {{ri.name}}
+                            </div>
+                            <button matChipRemove data-qa-id="sc-rpmf-btn_remove_initialize_rule">
+                                <em class="fal fa-times-circle chip__icon"></em>
+                            </button>
+                        </mat-chip>
+                    </mat-chip-list>
+                    <span class="mat-chip-placeholder"
+                        *ngIf="selectedField?.get('initializeRule')?.value.length === 0">Seleccionar</span>
+                    <em class="fas fa-caret-down custom-icon"></em>
+                </mat-form-field>
+            </section>
+
+            <section class="input input-prop">
+                <mat-label>Regla de validación:</mat-label>
+                <mat-form-field class="example-chip-list" appearance="outline" (click)="openModalValidateRule()"
+                    data-qa-id="sc-rpmf-btn_open_validate_rule_modal">
+                    <mat-chip-list aria-label="Regla de validación" formArrayName="validateRule" class="chip-list">
+                        <mat-chip *ngFor="let rv of selectedField?.get('validateRule')?.value"
+                            (removed)="removeValidateRule()" class="chip">
+                            <div class="ellipsis">
+                                {{rv.name}}
+                            </div>
+                            <button matChipRemove data-qa-id="sc-rpmf-btn_remove_validate_rule">
+                                <em class="fal fa-times-circle chip__icon"></em>
+                            </button>
+                        </mat-chip>
+                    </mat-chip-list>
+                    <span class="mat-chip-placeholder"
+                        *ngIf="selectedField?.get('validateRule')?.value.length === 0">Seleccionar</span>
+                    <em class="fas fa-caret-down custom-icon"></em>
+                </mat-form-field>
+            </section>
+
+            <section class="input input-prop">
+                <mat-label>Depende de:</mat-label>
+                <mat-form-field appearance="outline">
+                    <mat-select placeholder="Seleccionar" formControlName="dependency"
+                        (selectionChange)="associateReference($event.value)" data-qa-id="sc-rpmf-select_dependency">
+                        <mat-option>Seleccionar</mat-option>
+                        <mat-option *ngFor="let cd of dependsArray" [value]="cd.id ">
+                            <span>
+                                {{cd.label }}
+                            </span>
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="">Seleccione el Estado del Producto.</mat-error>
+                </mat-form-field>
+            </section>
+            <section class="container-sliders-toggle">
+                <mat-slide-toggle class="example-margin" formControlName="required"
+                    data-qa-id="sc-rpmf-toggle_required">
+                    Obligatorio
+                </mat-slide-toggle>
+                <mat-slide-toggle class="example-margin" formControlName="editable"
+                    data-qa-id="sc-rpmf-toggle_editable">
+                    Modificable
+                </mat-slide-toggle>
+                <mat-slide-toggle class="example-margin" formControlName="visible" data-qa-id="sc-rpmf-toggle_visible">
+                    Visible
+                </mat-slide-toggle>
+            </section>
+            <section class="input input-prop" *ngIf="getGroupArrayById(this.selectedField.get('fieldGroup')?.value).length > 1">
+                <mat-label>Grupo</mat-label>
+                <mat-form-field appearance="outline">
+                    <mat-select placeholder="Seleccionar" formControlName="fieldGroup"
+                        (selectionChange)="associateGroup($event.value)" data-qa-id="sc-rpmf-select_group">
+                        <mat-option *ngFor="let cdc of complementaryDataControls.controls" [value]="cdc.value.id">
+                            <span>
+                                {{cdc.value.name }}
+                            </span>
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="">Seleccione el grupo</mat-error>
+                </mat-form-field>
+            </section>
+            <div class="container-bt" *ngIf="selectedField?.get('shouldDelete')?.value && getGroupArrayById(this.selectedField.get('fieldGroup')?.value).length > 1">
+                <button mat-raised-button color="accent" class="bt bt-complementary" (click)="removeComplementaryData()"
+                    data-qa-id="sc-rpmf-btn_remove_complementary_data">
+                    <em class="far fa-minus-circle bt-icon"></em>
+                    Eliminar dato
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
