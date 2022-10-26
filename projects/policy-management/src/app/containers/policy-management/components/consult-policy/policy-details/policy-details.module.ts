@@ -5,6 +5,11 @@ import { DividerModule } from 'primeng/divider';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
+import { ToastModule } from 'primeng/toast';
 @NgModule({
   declarations: [
     PolicyDetailsComponent
@@ -14,7 +19,12 @@ import { ButtonModule } from 'primeng/button';
     DividerModule,
     InputNumberModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    FormsModule,
+    ProgressSpinnerModule,
+    MessageModule,
+    MessagesModule,
+    ToastModule
   ],
   exports: []
 })

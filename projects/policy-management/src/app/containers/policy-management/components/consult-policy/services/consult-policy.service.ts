@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { FilterPolicy } from '../interfaces/consult-policy';
 import { environment } from 'commons-lib';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
-import { PolicyBrief } from 'projects/policy-management/src/app/core/interfaces/policy';
+import { Policy, PolicyBrief } from 'projects/policy-management/src/app/core/interfaces/policy';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +31,7 @@ export class ConsultPolicyService {
   }
 
   getPolicyById(idPolicy:number){
-    return this.httpClient.get<ResponseDTO<PolicyBrief>>(
+    return this.httpClient.get<ResponseDTO<Policy>>(
       `${this.apiUrl}policy/${idPolicy}`,
       {
         headers: this.headers,

@@ -6,7 +6,7 @@ import {
   DynamicDialogConfig,
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
-import { PolicyBrief } from 'projects/policy-management/src/app/core/interfaces/policy';
+import { Policy } from 'projects/policy-management/src/app/core/interfaces/policy';
 import { ConsultPolicyService } from '../services/consult-policy.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { ConsultPolicyService } from '../services/consult-policy.service';
 })
 export class ModalRenewalComponent implements OnInit {
   val: string = '';
-  policy!: PolicyBrief
+  policy!: Policy
 
   constructor(
     public ref: DynamicDialogRef,
