@@ -17,7 +17,10 @@ export class PolicyDetailsComponent implements OnInit {
     this.consultPolicyService.getPolicyById(this.config.data.idPolicy).subscribe({
       next: (res)=>this.policy = res.body,
       error: (err)=> err,
-    })
+    });
+
+    console.log('sub', this.policy);
+    
   }
 
 }

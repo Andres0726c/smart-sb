@@ -32,7 +32,7 @@ export class ConsultPolicyService {
 
   getPolicyById(idPolicy:number){
     return this.httpClient.get<ResponseDTO<PolicyBrief>>(
-      `${this.apiUrl}policy/findById?idPolicy=${idPolicy}`,
+      `${this.apiUrl}policy/${idPolicy}`,
       {
         headers: this.headers,
       }

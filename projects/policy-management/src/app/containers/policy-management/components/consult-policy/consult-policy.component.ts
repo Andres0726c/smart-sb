@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
-import { ModalRenewalComponent } from 'projects/policy-management/src/app/shared/components/modal-renewal/modal-renewal.component';
+import { ModalRenewalComponent } from 'projects/policy-management/src/app/containers/policy-management/components/consult-policy/modal-renewal/modal-renewal.component';
 import { PolicyDetailsComponent } from './policy-details/policy-details.component';
 
 @Component({
@@ -204,24 +204,32 @@ export class ConsultPolicyComponent {
   }
 
   showModalRenewal(process: string, policy: any, buttonAction: any) {
-    const ref = this.dialogService.open(ModalRenewalComponent, {
-      data: {
-        process: process,
-        policy: policy,
-        buttonAction: buttonAction
-      },
-      header: process,
-      modal: true,
-      dismissableMask: true,
-      width: '80%',
-      contentStyle: { 'max-height': '600px', overflow: 'auto' },
-      baseZIndex: 10000,
-    });
+    let policyRes;
+    this.consultPolicyService.getPolicyById(policy.idPolicy).subscribe({
+      next: (res) => {
+        if (res.dataHeader.code && (res.dataHeader.code = 200)) {
+          policyRes = res.body;
+          this.totalRecords = res.dataHeader.totalRecords;
 
-    ref.onClose.subscribe((res: boolean) => {
-      if (res) {
-        this.consultPolicies(this.filters);
-      }
+          const ref = this.dialogService.open(ModalRenewalComponent, {
+            data: {
+              process: process,
+              policy: policyRes,
+              buttonAction: buttonAction
+            },
+            header: process,
+            modal: true,
+            dismissableMask: true,
+            width: '80%',
+            contentStyle: { 'max-height': '600px', overflow: 'auto' },
+            baseZIndex: 10000,
+          });
+
+        } 
+      },
+      error: (error: ResponseErrorDTO) => {
+        console.error('error', error);
+      },
     });
   }
 

@@ -42,7 +42,13 @@
   <section class="w-full flex flex-col sm:flex-row gap-x-4 h-24">
     <div class="w-full sm:w-1/3">
       <label>Tipo de pago</label>
-      <input type="text" pInputText class="w-full" readonly value="Contado" />
+      <input
+        type="text"
+        pInputText
+        class="w-full"
+        readonly
+        value="Tipo de pago"
+      />
     </div>
     <div class="w-full sm:w-1/3">
       <label>Valor pago</label>
@@ -51,7 +57,7 @@
         styleClass="w-full"
         inputStyleClass="w-full"
         [readonly]="true"
-        [(ngModel)]="val"
+        value="0"
         placeholder="Valor pago"
         mode="currency"
         currency="COP"
@@ -60,7 +66,13 @@
     </div>
     <div class="w-full sm:w-1/3">
       <label>Medio de pago</label>
-      <input type="text" pInputText class="w-full" readonly value="Efectivo" />
+      <input
+        type="text"
+        pInputText
+        class="w-full"
+        readonly
+        [value]="policy.payment.method"
+      />
     </div>
   </section>
   <section class="w-full flex flex-col sm:flex-row gap-x-4 h-24">
@@ -72,7 +84,7 @@
           pInputText
           class="w-full"
           readonly
-          value="2023/10/23"
+          value="Proximo pago y renovación"
         />
         <i class="pi pi-calendar"></i>
       </span>
@@ -85,7 +97,7 @@
           pInputText
           class="w-full"
           readonly
-          [value]="policy.inceptionDate | date: 'medium'"
+          value="Fecha y hora"
         />
         <i class="pi pi-calendar"></i>
       </span>
@@ -97,7 +109,7 @@
         pInputText
         readonly
         class="w-full"
-        value="Plan adquirido"
+        [value]="policy.servicePlan.name"
       />
     </div>
   </section>
@@ -109,19 +121,37 @@
   <section class="w-full flex flex-col sm:flex-row gap-x-4 h-24">
     <div class="w-full sm:w-1/3">
       <label>Tipo</label>
-      <input type="text" pInputText class="w-full" value="Tipo" readonly />
+      <input
+        type="text"
+        pInputText
+        class="w-full"
+        [value]="policy.complementaryData.petType"
+        readonly
+      />
     </div>
     <div class="w-full sm:w-1/3">
       <label>Nombre</label>
-      <input type="text" pInputText readonly class="w-full" value="Nombre" />
+      <input
+        type="text"
+        pInputText
+        readonly
+        class="w-full"
+        [value]="policy.complementaryData.petName"
+      />
     </div>
     <div class="w-full sm:w-1/3">
       <label>Edad</label>
-      <input type="text" pInputText class="w-full" value="Edad" readonly />
+      <input
+        type="text"
+        pInputText
+        class="w-full"
+        [value]="policy.complementaryData.petAge"
+        readonly
+      />
     </div>
     <div class="w-full sm:w-1/3">
       <label>Raza</label>
-      <input type="text" pInputText class="w-full" value="Raza" readonly />
+      <input type="text" pInputText class="w-full" [value]="policy.complementaryData.petBrand" readonly />
     </div>
   </section>
   <p-divider align="left" type="dashed" styleClass="my-2">
@@ -146,7 +176,7 @@
         type="text"
         pInputText
         class="w-full"
-        value="Medio de pago"
+        [value]="policy.payment.method"
         readonly
       />
     </div>
@@ -162,4 +192,14 @@
     </div>
   </section>
   <p-divider></p-divider>
+  <div class="flex justify-center space-x-4">
+    <button
+      pButton
+      type="submit"
+      label="Cancelar"
+      class="p-button p-button-secondary min-w-max"
+      (click)="cancelRenewal()"
+    ></button>
+    <button pButton type="submit" label="Renovar" class="min-w-max"></button>
+  </div>
 </div>
