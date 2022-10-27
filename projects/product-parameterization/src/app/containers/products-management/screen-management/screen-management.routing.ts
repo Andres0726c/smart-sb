@@ -18,13 +18,13 @@ export const screenManagementRoutes: Route[] = [
                 path: 'coberturas', 
                 loadChildren: () => import('../../../containers/coverages/coverages.module').then(m => m.CoveragesModule)
             },
+            { 
+                path: 'planes-servicio', 
+                loadChildren: () => import('../../../containers/service-plans/service-plans.module').then(m => m.ServicePlansModule)
+            },
             /*{ 
                 path: 'tipos-riesgo', 
                 loadChildren: () => import('src/app/containers/risk-types/risk-types.module').then(m => m.RiskTypesModule)
-            },
-            { 
-                path: 'planes-servicio', 
-                loadChildren: () => import('src/app/containers/service-plans/service-plans.module').then(m => m.ServicePlansModule)
             },
             { 
                 path: 'clausula', 

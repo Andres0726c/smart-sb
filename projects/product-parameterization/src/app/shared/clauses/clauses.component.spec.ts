@@ -5,9 +5,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClausesComponent } from './clauses.component';
-import { Clauses } from 'src/app/core/model/Clauses.model';
-import { ProductService } from 'src/app/services/product.service';
 import { HttpClientModule } from '@angular/common/http';
+import { Clauses } from '../../core/model/Clauses.model';
+import { ProductService } from '../../services/product.service';
 
 class dialogMock {
   open() {
