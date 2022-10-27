@@ -17,19 +17,16 @@ export class PolicyDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.consultPolicyService.getPolicyById(this.config.data.idPolicy).subscribe({
       next: (res) => {
-        if (res.dataHeader.code && (res.dataHeader.code = 200)) {
+        if (res.body) {
           this.policy = res.body
-
+          
         } else {
 
-        } 
+        }
         this.isLoading = false
       },
       error: (err) => this.isLoading = false,
     });
-
-    console.log('sub', this.policy);
-
   }
 
 }

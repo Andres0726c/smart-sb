@@ -242,7 +242,7 @@ export class ConsultPolicyComponent {
       modal: true,
       dismissableMask: true,
       width: '80%',
-      contentStyle: { 'max-height': '600px', overflow: 'auto' },
+      contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px'},
       baseZIndex: 10000,
     })
   }
