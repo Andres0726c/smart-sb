@@ -1,0 +1,28 @@
+<section class="input select-multiple" >
+    <mat-form-field appearance="outline">
+        <mat-select [formControl]="selectedOptions" multiple (openedChange) ="reset()" placeholder="{{Placeholder}}">
+            <mat-select-trigger style="display: flex; cursor: default">
+                <div *ngIf="selectedOptions.value.length > 0" class="chip-select">
+                    {{selectedOptions.value? selectedOptions.value[0] : ''}}
+                    <button (click)="removeOption()">
+                        <em class="fal fa-times-circle chip-select__icon"></em>
+                    </button>
+                </div>
+                    <span *ngIf="selectedOptions.value?.length > 1" class="dots">...</span>
+                <div *ngIf="selectedOptions.value?.length > 1" class="chip-select chip-select-count">
+                    {{selectedOptions.value.length - 1}}
+                </div>
+            </mat-select-trigger>
+            <div class="filter_input input">
+                <mat-form-field appearance="outline" (keyup)="applyFilter()">
+                    <input matInput placeholder="Buscar" [(ngModel)] = "fieldSearch" />
+                    <em matSuffix class="far fa-search fa-lg icon"></em>
+                </mat-form-field>
+            </div>
+            <mat-option *ngIf ="fieldSearch == ''" (click)="masterToggle()" [class]="selectedOptions.value.length ==  dataOptions.length ? 'checked' : ''" class="option-all">Todos</mat-option>
+            <mat-option *ngFor="let option of listOptions" [value]="option" (click) = "selectOption(option)">{{option}}</mat-option>
+            <div *ngIf = "listOptions.length == 0"> No se encuentran resultados</div>
+        </mat-select>
+        <!-- <em matSuffix class="fal fa-angle-down" style="font-size: 32px;"></em> -->
+    </mat-form-field>
+</section>

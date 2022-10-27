@@ -30,6 +30,10 @@ export const screenManagementRoutes: Route[] = [
                 path: 'categoria-impuestos',
                 loadChildren: () => import('../../../containers/tax-category/tax-category.module').then(m => m.TaxCategoryModule)
             },
+            {
+                path: 'control-tecnico', 
+                loadChildren: () => import('../../../containers/technical-control/technical-control.module').then(m => m.TechnicalControlModule)
+            },
             /*{ 
                 path: 'clausula', 
                 loadChildren: () => import('src/app/containers/clauses-product/clauses-product.module').then(m => m.ClausesProductModule)
@@ -37,10 +41,6 @@ export const screenManagementRoutes: Route[] = [
             { 
                 path: 'cumulos', 
                 loadChildren: () => import('src/app/containers/accumulation/accumulation.module').then(m => m.AccumulationModule)
-            },
-            {
-                path: 'control-tecnico', 
-                loadChildren: () => import('src/app/containers/technical-control/technical-control.module').then(m => m.TechnicalControlModule)
             },
             {
                 path: 'reserva-reclamacion',
