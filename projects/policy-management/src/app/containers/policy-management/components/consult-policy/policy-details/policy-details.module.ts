@@ -16,13 +16,8 @@ import { ToastModule } from 'primeng/toast';
   ],
   imports: [
     CommonModule,
-    DividerModule,
-    InputNumberModule,
-    InputTextModule,
     ButtonModule,
-    FormsModule,
     ProgressSpinnerModule,
-    MessageModule,
     MessagesModule,
     ToastModule
   ],

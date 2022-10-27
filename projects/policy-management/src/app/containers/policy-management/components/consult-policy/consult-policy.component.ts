@@ -105,7 +105,7 @@ export class ConsultPolicyComponent {
       },
       {
         label: 'Ver detalle', icon: 'pi pi-fw pi-eye',
-        command: (event: any, row: any) => {
+        command: () => {
           this.showModalConsulDetails();
         }
       },
@@ -238,10 +238,11 @@ export class ConsultPolicyComponent {
       data: {
         idPolicy: this.selectedPolicy.idPolicy
       },
-      header: 'Consulta detalle',
+      header: 'Consulta detalle póliza',
       modal: true,
       dismissableMask: true,
-      width: '80%',
+      width: '100%',
+      styleClass:'w-full sm:w-4/5 md:w-3/5',
       contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px'},
       baseZIndex: 10000,
     })
