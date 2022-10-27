@@ -38,11 +38,11 @@ export const screenManagementRoutes: Route[] = [
                 path: 'clausula', 
                 loadChildren: () => import('../../../containers/clauses-product/clauses-product.module').then(m => m.ClausesProductModule)
             },
-            /*{ 
+            { 
                 path: 'cumulos', 
-                loadChildren: () => import('src/app/containers/accumulation/accumulation.module').then(m => m.AccumulationModule)
+                loadChildren: () => import('../../../containers/accumulation/accumulation.module').then(m => m.AccumulationModule)
             },
-            {
+            /*{
                 path: 'reserva-reclamacion',
                 loadChildren: () => import('src/app/containers/claim-reservation-concept/claim-reservation-concept.module').then(m => m.ClaimReservationConceptModule)
             },
