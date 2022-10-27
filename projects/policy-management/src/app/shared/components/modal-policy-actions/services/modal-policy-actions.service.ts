@@ -20,6 +20,9 @@ export class ModalPolicyActionsService {
   constructor(private httpClient: HttpClient) { }
 
   postCancelPolicy(policy: any, data: any): Observable<CancelPolicy> {
+    console.log('policy', policy);
+    console.log('data', data);
+    
     const sendData = {
       deletionDate: data.processDate,
       startDate: policy.inceptionDate,
