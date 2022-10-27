@@ -14,11 +14,11 @@ export const screenManagementRoutes: Route[] = [
                 path: 'datos-poliza',
                 loadChildren: () => import('../../../containers/policy-data/policy-data.module').then(m => m.PolicyDataModule)
             },
-            /*{ 
-                path: 'coberturas', 
-                loadChildren: () => import('src/app/containers/coverages/coverages.module').then(m => m.CoveragesModule)
-            },
             { 
+                path: 'coberturas', 
+                loadChildren: () => import('../../../containers/coverages/coverages.module').then(m => m.CoveragesModule)
+            },
+            /*{ 
                 path: 'tipos-riesgo', 
                 loadChildren: () => import('src/app/containers/risk-types/risk-types.module').then(m => m.RiskTypesModule)
             },

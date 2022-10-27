@@ -1,0 +1,472 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+.content {
+
+  justify-content: center;
+  flex-direction: column;
+  background: $grayscaleLevel-5;
+
+  .content_title {
+    display: flex;
+    /* align-content: space-between; */
+    /* flex-wrap: wrap; */
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 20px 20px 0px;
+  }
+
+  .title {
+    font-family: Roboto Condensed !important;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 35.16px;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+  }
+
+  .subtitle {
+    font-family: Roboto Condensed !important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 19.92px;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    color: #223354;
+  }
+}
+
+.chip {
+  width: 100%;
+  height: 20px;
+  background-color: $greenBG;
+  color: $primaryBase;
+  padding: 0 6px !important;
+  min-height: 20px;
+  font-family: Roboto Condensed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .chip__icon {
+    color: $primaryBase;
+    height: 12px;
+    width: 12px;
+    font-size: 12px;
+    margin-right: 4px;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    width: 12px;
+    opacity: 1;
+
+    .chip__icon {
+      margin-right: 0px;
+    }
+  }
+}
+
+.example-chip-list {
+  width: 100%;
+  font-family: 9px;
+  line-height: 3;
+
+  mat-error {
+    line-height: 1;
+  }
+}
+
+.chip-list-input {
+  max-width: 10px;
+  font-size: 8px;
+}
+
+.option-mat {
+  display: none;
+}
+
+.form {
+  margin-left: 20px;
+  margin-right: 10px;
+  width: 100%;
+}
+
+.expansion-header,
+.expansion-header:hover,
+.expansion-header.mat-expanded {
+  background: $greenBG !important;
+}
+
+.font-expansion-title {
+  font-family: "Roboto Condensed" !important;
+  font-style: normal;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 25px;
+}
+
+.div-button {
+  position: relative;
+  margin-top: 10px;
+
+  .bt {
+    font-weight: bold;
+    height: 40px;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: $primaryBase;
+    border-radius: 50px;
+  }
+
+}
+
+.icon-button-add {
+  color: $primaryBase;
+  font-size: 20px;
+  margin-right: 10px;
+
+  @include mq-max(md) {
+    margin-right: 5px;
+  }
+}
+
+.disabled-pointer {
+  pointer-events: none;
+}
+
+::ng-deep .mat-expansion-indicator::after {
+  color: $primaryBase;
+}
+
+.container-elements {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  max-height: 600px;
+  min-height: 218px;
+  overflow: auto;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.width-column {
+  width: 50%;
+  padding: 5px 15px;
+}
+
+.container-box {
+  display: flex;
+  flex-direction: column;
+  font-family: Roboto Condensed;
+  border: 1px solid $grayscaleLevel-4;
+  box-sizing: border-box;
+  width: 286px;
+  padding: 16px 16px;
+
+  // position: fixed;
+  .title {
+    text-align: center;
+    font-family: Roboto Condensed;
+    color: $primaryBase;
+    font-weight: 700;
+    font-size: 24px;
+    justify-content: center;
+    margin-left: 0px;
+  }
+
+  .container-sliders-toggle {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    padding-bottom: 24px;
+  }
+}
+
+.container-name-variable {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  padding: 16px 0 32px 0;
+
+  .name-variable {
+    width: max-content;
+    padding: 0 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $grayscaleWhite;
+    background-color: $grayscaleLevel-3;
+    border-radius: 5px;
+    height: 40px;
+    text-align: center;
+  }
+}
+
+.container-bt {
+  display: flex;
+  justify-content: center;
+
+  .bt-icon {
+    font-size: 24px;
+    font-weight: 100;
+  }
+}
+
+.position-accordion {
+  display: flex;
+  width: calc(100vw - 682px);
+}
+
+.position-accordion-empty {
+  display: flex;
+  width: 100%
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px $grayscaleLevel-4;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $grayscaleLevel-3;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $grayscaleLevel-3;
+}
+
+.div-container-form {
+  background: $grayscaleWhite;
+
+  column-gap: 5%;
+  padding: 24px 32px;
+
+  &__left {
+    width: 70%;
+
+    @include mq-max(md) {
+      width: 50%;
+    }
+  }
+
+  &__right {
+    padding-top: 85px;
+
+    flex-direction: column;
+    align-items: center;
+    row-gap: 56px;
+    width: 30%;
+    max-width: 270px;
+
+    @include mq-max(md) {
+      width: 50%;
+    }
+  }
+}
+
+tr.mat-header-row.cdk-header-row.ng-star-inserted {
+  background: $grayscaleLevel-6;
+  border-radius: 8px;
+  border: 1px solid $grayscaleLevel-4;
+}
+
+th.mat-header-cell {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 120%;
+  color: $grayscaleBase;
+  padding: 10px;
+  font-family: Roboto condensed !important;
+}
+
+.no-elements {
+  text-align: center;
+  margin: 20px;
+  color: gray;
+
+}
+
+td.mat-cell {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 120%;
+  color: $grayscaleLevel-2;
+  border-bottom-color: transparent;
+  padding: 10px;
+  font-family: Roboto condensed !important;
+}
+
+.search_input {
+  max-width: 300px;
+  width: 252px;
+
+  input {
+    padding-left: 10px;
+    font-size: 15px;
+  }
+}
+
+.icon-search {
+  color: $primaryBase;
+  position: absolute;
+  top: -20px;
+  right: 5px;
+}
+
+.content_search {
+  margin-top: 10px !important;
+  width: 100%;
+  margin-top: 24px;
+  font-family: Roboto condensed !important;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: auto;
+  justify-content: space-between;
+
+  .bt {
+    color: $primaryBase;
+  }
+
+}
+
+::ng-deep {
+  .content_search .mat-form-field-outline-start {
+    border-radius: 28px 0 0 28px !important;
+    min-width: 28px !important;
+  }
+}
+
+::ng-deep .content_search .mat-form-field-outline-end {
+  border-radius: 0 28px 28px 0 !important;
+}
+
+::ng-deep .mat-paginator-range-actions {
+  margin: auto;
+}
+
+.container-elements {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  max-height: 600px;
+  min-height: 218px;
+  overflow: auto;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+::ng-deep .mat-raised-button {
+  // width: 142px ;
+  margin-top: 10px;
+}
+
+::ng-deep .fa-eye:before {
+  color: rgba(40, 167, 69, 1);
+}
+
+.tittle {
+  width: 100%;
+  color: $primaryBase;
+  top: 89px;
+  left: 8px;
+  font-family: Roboto Condensed;
+  font-weight: bold;
+  font-size: 36px;
+  text-align: left;
+}
+
+.subtittle {
+  width: 526px;
+  color: $titleSubtitle;
+  font-family: Roboto Condensed;
+  font-weight: normal;
+  font-size: 16px;
+  text-align: left;
+  margin-top: -10px;
+}
+
+.text-clause {
+  width: 541px !important;
+  height: 138px !important;
+  color: rgba(102, 102, 102, 1);
+}
+
+
+.close {
+  background-color: white;
+  color: $primaryBase;
+  border-radius: 25px;
+  width: 130px;
+  border: 1px solid $primaryBase;
+  margin-left: 200px;
+  font-family: Roboto Condensed;
+  font-weight: bold;
+  height: 40px;
+}
+
+.detail {
+  width: 541px !important;
+  height: 138px !important;
+  color: rgba(102, 102, 102, 1);
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  overflow: auto;
+  text-align: justify;
+  font-family: Roboto Condensed;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.fields2 {
+  padding: 6px, 8px, 8px, 16px;
+  text-align: left;
+  margin-top: -10px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Roboto Condensed;
+
+}
+
+.text-close {
+  color: $primaryBase;
+  cursor: pointer;
+}
+
+.content-close {
+  display: flex;
+  float: right;
+}
+
+.title-clause {
+  height: 30.6px;
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  color: #223354;
+}

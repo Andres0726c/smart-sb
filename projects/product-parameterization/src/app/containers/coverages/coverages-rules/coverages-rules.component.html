@@ -1,0 +1,109 @@
+
+<div class="div-content-chips">
+  
+    <div class="container-chips">
+
+      <!-- Regla de selección -->
+      <section class="input">
+
+        <span class="title">Reglas</span>
+        
+        <br>
+
+        <mat-label>Regla de selección</mat-label>
+        
+          <mat-form-field class="example-chip-list" appearance="outline" (click)="openDialogCoverageRules('ruleSelectionControls')" placeholder="Regla de selección"  data-qa-id="sc-rpmf-btn_rules_selection">
+          
+            <mat-chip-list #chipListSelection aria-label="Regla de selección" class="chip-list">
+            
+              <mat-chip *ngFor="let rs of ruleSelectionControls.value" (removed)="remove(rs,'selectionRule')" class="chip">
+              
+                <div class="ellipsis">
+                  {{rs.name}}
+                </div>
+              
+                <button matChipRemove data-qa-id="sc-rpmf-btn_delete_coverages_rules_selection">
+                
+                  <em class="fal fa-times-circle chip__icon"></em>
+                
+                </button>
+              
+              </mat-chip>
+              
+            </mat-chip-list>
+            
+            <span class="mat-chip-placeholder" *ngIf="ruleSelectionControls.value.length === 0">Seleccionar</span>
+            
+            <em class="fas fa-caret-down custom-icon"></em>
+          
+          </mat-form-field>
+        
+        </section>
+
+      <!-- Regla de inicialización -->
+      <section class="input">
+
+        <mat-label>Regla de inicialización</mat-label>
+        
+          <mat-form-field class="example-chip-list" appearance="outline" (click)="openDialogCoverageRules('ruleInitializeControls')" placeholder="Regla de inicialización"  data-qa-id="sc-rpmf-btn_rules_initialization">
+          
+            <mat-chip-list #chipListInitialize aria-label="Regla de inicialización" class="chip-list">
+            
+              <mat-chip *ngFor="let ri of ruleInitializeControls.value" (removed)="remove(ri,'initializeRule')" class="chip">
+              
+                <div class="ellipsis">
+                  {{ri.name}}
+                </div>
+              
+                <button matChipRemove data-qa-id="sc-rpmf-btn_delete_coverages_rules_initialization">
+                
+                  <em class="fal fa-times-circle chip__icon"></em>
+                
+                </button>
+              
+              </mat-chip>
+              
+            </mat-chip-list>
+            
+            <span class="mat-chip-placeholder" *ngIf="ruleInitializeControls.value.length === 0">Seleccionar</span>
+            
+            <em class="fas fa-caret-down custom-icon"></em>
+          
+          </mat-form-field>
+        
+        </section>
+
+      <!-- Regla de valicaión -->
+      <section class="input">
+
+        <mat-label>Regla de validación</mat-label>
+        
+          <mat-form-field class="example-chip-list" appearance="outline" (click)="openDialogCoverageRules('ruleValidationControls')" placeholder="Regla de validación" data-qa-id="sc-rpmf-btn_rules_validate">
+          
+            <mat-chip-list #chipListValidate aria-label="Regla de valicaión" class="chip-list">
+            
+              <mat-chip *ngFor="let rv of ruleValidationControls.value" (removed)="remove(rv,'validateRule')" class="chip">
+              
+                <div class="ellipsis">
+                  {{rv.name}}
+                </div>
+              
+                <button matChipRemove data-qa-id="sc-rpmf-btn_delete_coverages_rules_validation">
+                
+                  <em class="fal fa-times-circle chip__icon"></em>
+                
+                </button>
+              
+              </mat-chip>
+              
+            </mat-chip-list>
+            
+            <span class="mat-chip-placeholder" *ngIf="ruleValidationControls.value.length === 0">Seleccionar</span>
+            
+            <em class="fas fa-caret-down custom-icon"></em>
+          
+          </mat-form-field>
+        
+        </section>
+    </div>
+</div>

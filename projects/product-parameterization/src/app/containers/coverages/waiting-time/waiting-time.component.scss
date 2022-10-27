@@ -1,0 +1,43 @@
+@import "../../../../assets/styles/config/variables";
+@import "../../../../assets/styles/config/mixins";
+@import "../../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+.content{
+    margin-top: 24px;
+}
+.card-waiting-time{
+    background: $grayscaleWhite;
+    border: 1px solid $grayscaleLevel-5;
+    border-radius: 8px;
+}
+.header-waiting-time{
+    background: $greenBG;
+    opacity: 0.9;
+    border-radius: 4px 4px 0px 0px;
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    &_title{
+        font-family: "Roboto Condensed" !important;
+        font-style: normal;
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 25px;
+        color: $grayscaleBlack;
+        margin-right: 24px;
+        
+    }
+}
+
+.form-waiting-time{
+    margin: 24px;
+    display: flex;
+    justify-content: space-around;
+    column-gap: 24px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
