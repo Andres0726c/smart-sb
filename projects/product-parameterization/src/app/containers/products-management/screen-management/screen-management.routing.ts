@@ -22,11 +22,15 @@ export const screenManagementRoutes: Route[] = [
                 path: 'planes-servicio', 
                 loadChildren: () => import('../../../containers/service-plans/service-plans.module').then(m => m.ServicePlansModule)
             },
-            /*{ 
-                path: 'tipos-riesgo', 
-                loadChildren: () => import('src/app/containers/risk-types/risk-types.module').then(m => m.RiskTypesModule)
-            },
             { 
+                path: 'tipos-riesgo', 
+                loadChildren: () => import('../../../containers/risk-types/risk-types.module').then(m => m.RiskTypesModule)
+            },
+            {
+                path: 'categoria-impuestos',
+                loadChildren: () => import('../../../containers/tax-category/tax-category.module').then(m => m.TaxCategoryModule)
+            },
+            /*{ 
                 path: 'clausula', 
                 loadChildren: () => import('src/app/containers/clauses-product/clauses-product.module').then(m => m.ClausesProductModule)
             },
@@ -37,10 +41,6 @@ export const screenManagementRoutes: Route[] = [
             {
                 path: 'control-tecnico', 
                 loadChildren: () => import('src/app/containers/technical-control/technical-control.module').then(m => m.TechnicalControlModule)
-            },
-            {
-                path: 'categoria-impuestos',
-                loadChildren: () => import('src/app/containers/tax-category/tax-category.module').then(m => m.TaxCategoryModule)
             },
             {
                 path: 'reserva-reclamacion',

@@ -1,0 +1,69 @@
+<div>
+<app-no-data-screen
+    [data]="productService.riskTypes"
+    [layoutType]="'full'"
+    [emptyTitle]="'Tipos de riesgo'"
+    [emptySubTitle]="'Especifique y defina los tipos de riesgo'"
+    [emptyText]="'Sin tipos de riesgo'"
+    [emptySubText]="'No se ha asociado ningún tipo de riesgo al producto'"
+    (action)="openToAdd()">
+</app-no-data-screen>
+
+  <div class="container-boxes" *ngIf="productService.riskTypes.length>0">
+    <section class="container-tree">
+      <div class="container-tree__header">
+        <span class="container-tree__header__title">Tipos de riesgo</span>
+        <button mat-button class="bt bt-primary" (click)="openToAdd()" data-qa-id="sc-rpmf-btn_add_risk_types">
+          <em class="fal fa-plus-circle icon-button-add"></em> Añadir
+        </button>
+      </div>
+      <mat-tree class="tree" [dataSource]="dataSource" [treeControl]="treeControl">
+        <!-- This is the tree node template for leaf nodes -->
+        <mat-tree-node *matTreeNodeDef="let node" class="level-two">
+          <span class="title-node">{{node.name}}</span>
+          <div class="node-counter" (click)="quantityItems(node)">{{quantityItems(node)}}</div>
+        </mat-tree-node>
+        <!-- This is the tree node template for expandable nodes -->
+          <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding class="level-one">
+          <div>
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+              <mat-icon class="icon-arrow-tree">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            <span class="title-node" [class]="classToRiskTypeSelected(node)? 'title-node-selected':''"
+              (click)="viewRiskType(node)">{{node.name}}</span>
+          </div>
+          <em class="fal fa-trash icon-delete"  (click)="viewRiskType(node);removeRiskType(node)"></em>
+        </mat-tree-node>
+      </mat-tree>
+    </section>
+    <form class="container-details-coverage" [formGroup]="selectedRiskType" *ngIf="selectedRiskType?.get('id')">
+      <div class="container-details-coverage__header">
+        <h5 class="container-details-coverage__title">{{selectedRiskType.value.name}}</h5>
+        <span class="container-details-coverage__subtitle">{{selectedRiskType.value.description}}</span>
+      </div>
+      <mat-tab-group #tabGroup mat-stretch-tabs class="tabs">
+        <mat-tab label="Datos del riesgo">
+          <app-complementary-data #complementaryDataComponent
+            [applicationLevel]="'Tipo de riesgo'" 
+            [subtitle]="'Datos del Riesgo'"
+            [groupName]="'Datos básicos'"
+            [emptyText]="'Sin datos del riesgo'"
+            [emptySubText]="'No se ha asociado ningún dato para el tipo de riesgo'"
+            [successAddItemMsg]="'Los datos complementarios fueron asociados correctamente.'"
+            [removeItemMsg]="'¿Está seguro de querer desasociar el dato del riesgo seleccionado?'"
+            [titleModalCompData]="'Seleccionar datos del riesgo'"
+            [subtitleModalCompData]="'Seleccione los datos del tipo de riesgo que desea asociar'"
+            [complementaryData]="selectedRiskType?.get('complementaryData')">
+          </app-complementary-data>
+        </mat-tab>
+        <mat-tab label="Planes comerciales">
+         <app-commercial-plan #commercialPlanComponent [CommertialPlan]="selectedRiskType?.get('businessPlans')">
+          </app-commercial-plan>      
+          <!--  -->
+        </mat-tab>         
+      </mat-tab-group>
+    </form>
+  </div>
+</div>
