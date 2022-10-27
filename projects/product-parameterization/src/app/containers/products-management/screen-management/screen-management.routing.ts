@@ -34,11 +34,11 @@ export const screenManagementRoutes: Route[] = [
                 path: 'control-tecnico', 
                 loadChildren: () => import('../../../containers/technical-control/technical-control.module').then(m => m.TechnicalControlModule)
             },
-            /*{ 
-                path: 'clausula', 
-                loadChildren: () => import('src/app/containers/clauses-product/clauses-product.module').then(m => m.ClausesProductModule)
-            },
             { 
+                path: 'clausula', 
+                loadChildren: () => import('../../../containers/clauses-product/clauses-product.module').then(m => m.ClausesProductModule)
+            },
+            /*{ 
                 path: 'cumulos', 
                 loadChildren: () => import('src/app/containers/accumulation/accumulation.module').then(m => m.AccumulationModule)
             },
