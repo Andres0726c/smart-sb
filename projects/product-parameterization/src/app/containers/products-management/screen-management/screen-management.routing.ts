@@ -57,11 +57,11 @@ export const screenManagementRoutes: Route[] = [
                 path: 'reserva-reclamacion',
                 loadChildren: () => import('../../../containers/claim-reservation-concept/claim-reservation-concept.module').then(m => m.ClaimReservationConceptModule)
             },
-            /*{
-                path: 'reserva-liquidacion',
-                loadChildren: () => import('src/app/containers/claim-liquidation-concept/claim-liquidation-concept.module').then(m => m.ClaimLiquidationConceptModule)
-            },
             {
+                path: 'reserva-liquidacion',
+                loadChildren: () => import('../../../containers/claim-liquidation-concept/claim-liquidation-concept.module').then(m => m.ClaimLiquidationConceptModule)
+            },
+            /*{
                 path: 'control-tecnico-reclamacion',
                 loadChildren: () => import('src/app/containers/claim-technical-control/claim-technical-control.module').then(m => m.ClaimTechnicalControlModule)
             },
