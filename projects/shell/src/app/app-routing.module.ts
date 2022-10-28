@@ -2,6 +2,7 @@ import { loadRemoteModule } from '@angular-architects/module-federation';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard, environment, LoginGuard } from 'commons-lib';
+import { AuthGuardParameterizer } from 'projects/product-parameterization/src/app/guard/auth.guard';
 import { InitScreenComponent } from './containers/init-screen/init-screen.component';
 
 let mfManifest = {

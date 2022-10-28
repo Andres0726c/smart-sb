@@ -123,6 +123,10 @@ describe('RulesWizardComponent', () => {
     expect(component.setFieldValue(obj, valueArray)).toBeDefined();
   });
 
+  it('transformContextData', () => {
+    expect(component.transformContextData([{code:"prdct", description:"Producto"}])).toBeDefined();
+  });
+
   it('SortData', () => {
     component.rulesModal = search.filter(
       (item: SearchModal) => item.code === 'typeCurrencyControls'
@@ -163,8 +167,14 @@ describe('RulesWizardComponent', () => {
       component.sortData({ active: '{"displayValue": "description", "dbColumnName": "description"}', direction: 'asc' })
     ).toBeDefined();
 
+    component.rulesModal.remotePaginator = true;
+
     expect(
       component.sortData({ active: '{"displayValue": "id", "dbColumnName": "id"}', direction: 'asc' })
+    ).toBeDefined();
+
+    expect(
+      component.sortData({ active: '{"displayValue": "id", "dbColumnName": "id"}', direction: '' })
     ).toBeDefined();
   });
 
@@ -218,6 +228,7 @@ describe('RulesWizardComponent', () => {
       code: 'typeCurrencyControls',
       list: [obj],
       columns: [],
+      contextData: [{code:"prdct", description:"Producto"}]
     };
 
     component.dataList = [
@@ -281,6 +292,7 @@ describe('RulesWizardComponent', () => {
       list: [obj],
       columns: [],
       parameter: '1',
+      contextData: [{code:"prdct", description:"Producto"}]
     };
 
     let res: any = {
@@ -334,6 +346,7 @@ describe('RulesWizardComponent', () => {
       columns: [],
       parameter: '1',
       data: [obj],
+      contextData: [{code:"prdct", description:"Producto"}]
     };
 
     expect(component.loadData('0', 0, 0,'0','0')).toBeDefined();
@@ -362,6 +375,7 @@ describe('RulesWizardComponent', () => {
       subtitle: 'subtitle',
       multiSelect: true,
       parameter: '1',
+      contextData: [{code:"prdct", description:"Producto"}]
     };
 
     expect(component.ngOnInit()).toBeDefined();
@@ -374,4 +388,19 @@ describe('RulesWizardComponent', () => {
 
     expect(component.ngOnInit()).toBeDefined();
   });
+
+  it('setParameters', () => {
+
+    component.fields = new FormArray([
+      new FormGroup({
+        rule: new FormControl("idProduct"),
+        campo: new FormControl('MONEDA'),
+      })
+    ]);
+
+    component.stepParameters = [{name: "idProduct",type: "number",value: ""}]
+    expect(component.setParameters({code:"prdct", description:"Producto", businessCode:"prdct"},"idProduct")).toBeUndefined();
+
+  });
+
 });

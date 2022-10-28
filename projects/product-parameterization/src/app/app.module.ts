@@ -7,6 +7,7 @@ import { getPaginatorIntl } from '../assets/lang/paginator-intl';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProductService } from './services/product.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { AppComponent } from './app.component';
   providers: [
     FormBuilder,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500, horizontalPosition:'right', verticalPosition:'bottom' } },
-    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() },
+    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() }
   ],
   bootstrap: [AppComponent]
 })

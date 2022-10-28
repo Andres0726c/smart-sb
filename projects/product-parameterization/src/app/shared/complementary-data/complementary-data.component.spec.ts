@@ -203,6 +203,35 @@ describe('ComplementaryDataComponent', () => {
     expect(component.loadData()).toBeDefined();
   });
 
+  it('loadContextData OK', async () => {
+    let res: any = {
+      body: [
+        {
+          code: "prdct",
+          description: 'Producto',
+        },
+      ]
+    };
+
+    jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadContextData()).toBeDefined();
+
+    res = {
+      body: [
+        {
+          code: "prdct",
+          description: 'Producto',
+        },
+      ]
+    };
+
+    jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadContextData()).toBeDefined();
+
+    jest.spyOn(productService, 'getApiData').mockImplementation(() => { throw new Error('error'); });
+    expect(component.loadContextData()).toBeDefined();
+  });
+
   it('openDialog openDialogPolicyData', () => {
     expect(
       component.openDialogPolicyData('complementaryDataControls')
@@ -591,7 +620,8 @@ describe('ComplementaryDataComponent', () => {
       [],
       [],
       false,
-      {}
+      {},
+      []
     )).toBeDefined();
   });
 });

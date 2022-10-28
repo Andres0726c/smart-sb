@@ -10,6 +10,7 @@ import { ElementTableSearch } from '../../../core/model/ElementTableSearch.model
 import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
+import { O } from '@angular/cdk/keycodes';
 
 
 export interface SearchParameters {
@@ -21,7 +22,8 @@ export interface SearchParameters {
   title?:string;
   subtitle?:string;
   multiSelect?: boolean;
-  complementaryData?:any
+  complementaryData?: any;
+  contextData?: any;
 }
 
 @Component({
@@ -58,6 +60,7 @@ export class RulesWizardComponent implements OnInit {
   ParametersForm:FormGroup;
   fields: any = new FormArray([]);
   rule: any = [];
+  contextData: any = [];
 
   constructor(
     public dialog: MatDialog,
@@ -119,12 +122,27 @@ export class RulesWizardComponent implements OnInit {
       // seteamos el selection model
       this.ruleSelection = new SelectionModel<ElementTableSearch>(this.rulesModal.multiSelect, []);
 
+      this.contextData = this.transformContextData(this.data.contextData);
+
       // llamamos a la carga de datos
-      await this.loadData('0', this.currentRulesPage, this.rulesPageSize,this.sortColumns,this.sortingDirection)
+      await this.loadData('0', this.currentRulesPage, this.rulesPageSize,this.sortColumns,this.sortingDirection);
+
     } catch (error) {
       this.flagError = true;
       console.log('Hubo un error:', error);
     }
+  }
+
+  transformContextData(dataList:any[]){
+    //se agrega la propiedad businessCode al arreglo del dominio
+    dataList.forEach(obj =>{
+      obj.businessCode = obj.code;
+      // or via brackets
+      // obj['total'] = 2;
+      return obj;
+    });
+
+    return dataList;
   }
 
   ngAfterViewInit() {

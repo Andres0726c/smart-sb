@@ -21,6 +21,7 @@ export class ModalAlertComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log("");
   }
 
 }

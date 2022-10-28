@@ -1,10 +1,12 @@
 import { Route } from "@angular/router";
+import { AuthGuardParameterizer } from "../../../guard/auth.guard";
 import { ScreenManagementComponent } from "./screen-management.component";
 
 export const screenManagementRoutes: Route[] = [
     {
         path: '',
         component: ScreenManagementComponent,
+        canActivateChild: [AuthGuardParameterizer],
         children: [
             /* Emisión */
             {

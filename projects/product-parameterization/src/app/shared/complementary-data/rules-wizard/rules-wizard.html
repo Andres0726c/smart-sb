@@ -154,6 +154,10 @@
                         {{parameter.name }}
                       </mat-option>
                     </div>
+                    <!--Datos de contexto-->
+                    <mat-option (click)="setParameters(parameter, item.name)" *ngFor="let parameter of contextData" [value]="parameter.code">
+                      {{parameter.description }}
+                    </mat-option>
                   </mat-select>
                   <mat-error *ngIf="ParametersForm.get('parameters')?.errors?.['required']">Seleccione el un valor para el parámetro.</mat-error>
                 </mat-form-field>

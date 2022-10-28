@@ -38,6 +38,7 @@ export class ComplementaryDataComponent implements OnInit {
   selectedGroup = new FormGroup({});
   dependsArray: FieldArray[] = [];
   essentialData: any = [];
+  contextData: any = [];
   isLoading = false;
   flagServiceError = false;
 
@@ -67,10 +68,12 @@ export class ComplementaryDataComponent implements OnInit {
 
   ngAfterViewInit() {
     this.loadData();
+    this.loadContextData();
   }
 
   ngOnChanges() {
     this.loadData();
+    this.loadContextData();
   }
 
   async loadData() {
@@ -106,6 +109,20 @@ export class ComplementaryDataComponent implements OnInit {
     }
 
     this.setEssentialData(this.essentialData);
+  }
+
+  async loadContextData() {
+    try {
+      let res: any
+      res = await lastValueFrom(this.productService.getApiData(`domainList/DATOS_CONTEXTO`));
+
+      this.contextData = res.body.nmValueList;
+      //se filtra los datos de contexto dependiendo del nivel de aplicación
+      this.contextData =  this.contextData.filter( (data:any) => data.applctnLvl.includes(this.applicationLevel) || data.applctnLvl.includes("*") )
+
+    } catch (error) {
+      this.flagServiceError = true;
+    }
   }
 
   setEssentialData(data: any[]) {
@@ -239,11 +256,12 @@ export class ComplementaryDataComponent implements OnInit {
     list: ElementTableSearch[],
     columns: any[],
     multiSelect: boolean,
-    complementaryData:any
+    complementaryData: any,
+    contextData: any
   ) {
 
     const dialogRef = this.dialog.open(RulesWizardComponent, {
-      data: { code, columns: columns, list, multiSelect: multiSelect, complementaryData:complementaryData },
+      data: { code, columns: columns, list, multiSelect: multiSelect, complementaryData:complementaryData, contextData: contextData },
       panelClass: 'custom-dialog-container',
       disableClose: true
     });
@@ -526,7 +544,8 @@ export class ComplementaryDataComponent implements OnInit {
       this.selectedField.get('initializeRule')?.value,
       columns,
       false,
-      this.complementaryData
+      this.complementaryData,
+      this.contextData
     ).subscribe((response: any) => {
       if (response) {
         let element: ElementTableSearch = {
@@ -569,7 +588,8 @@ export class ComplementaryDataComponent implements OnInit {
       this.selectedField.get('validateRule')?.value,
       columns,
       false,
-      this.complementaryData
+      this.complementaryData,
+      this.contextData
     )
     .subscribe((response: any) => {
       if (response) {
@@ -613,6 +633,7 @@ export class ComplementaryDataComponent implements OnInit {
     this.complementaryData = new FormArray([], [Validators.required]);
     this.selectedField = new FormGroup({});
     this.loadData();
+    this.loadContextData();
   }
 
   getFieldsFormArray(form: any) {
