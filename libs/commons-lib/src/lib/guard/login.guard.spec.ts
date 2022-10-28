@@ -39,7 +39,7 @@ describe('LoginGuard', () => {
       providers: [
         FormBuilder,
         {
-          provide: FormArray,
+          provide: FormArray<any>,
           useValue: {},
         },
         {

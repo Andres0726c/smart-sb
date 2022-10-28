@@ -1,0 +1,317 @@
+@import "../../../../assets/styles/config/variables";
+@import "../../../../assets/styles/config/mixins";
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-family: Roboto condensed !important;
+}
+.content_title {
+  width: 100%;
+}
+.title {
+  color: $primaryBase;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 36px;
+  font-family: Roboto condensed !important;
+  margin: 0 0 16px;
+}
+
+.subtitle {
+  color: $titleSubtitle;
+  font-size: 16px;
+  line-height: 100%;
+  font-family: Roboto condensed !important;
+  margin: 0 0 16px;
+}
+.content-close {
+  display: flex;
+  float: right;
+}
+.text-close {
+  color: $primaryBase;
+  cursor: pointer;
+}
+.container_form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+.input {
+  display: flex;
+  .name-plan{
+    width: 283px;
+  }
+  .desc-plan{
+    height: 163px;
+    overflow-y: auto;
+    resize: none;
+  }
+  margin-bottom: 10px;
+}
+.next-back-button {
+  width: 109px;
+  height: 40px;
+  background: #d9ede4;
+  border-radius: 50px;
+  color: $primaryBase;
+  cursor: pointer;
+}
+.coverages-actions {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  .coverages-add {
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+    span {
+      padding-right: 30px;
+    }
+  }
+  .coverages-search {
+    width: 100%;
+    text-align: right;
+  }
+}
+.button-add {
+  width: 120px;
+  height: 40px;
+  background: $secondaryBase;
+  color: $primaryBase;
+  border-radius: 50px;
+  font-family: "Roboto Condensed";
+  cursor: pointer;
+}
+td.mat-cell {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 120%;
+  color: $grayscaleLevel-2;
+  border-bottom-color: transparent;
+  padding: 10px;
+  font-family: Roboto condensed !important;
+}
+th.mat-header-cell {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 120%;
+  color: $grayscaleBase;
+  padding: 10px;
+  font-family: Roboto condensed !important;
+}
+tr.mat-header-row.cdk-header-row.ng-star-inserted {
+  background: $grayscaleLevel-6;
+  border-radius: 8px;
+}
+.no-elements {
+  text-align: center;
+  margin: 0 0 40px 0;
+  color: #DC3545;
+  font-family: "Roboto Condensed";
+}
+.title-coverage {
+  height: 30.6px;
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  color: #223354;
+}
+.content_search {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  font-family: Roboto condensed !important;
+}
+
+::ng-deep {
+  .content_search .mat-form-field-outline-start {
+    border-radius: 28px 0 0 28px !important;
+    min-width: 28px !important;
+  }
+}
+::ng-deep .content_search .mat-form-field-outline-end {
+  border-radius: 0 28px 28px 0 !important;
+}
+.search_input {
+  input {
+    padding-left: 10px;
+    font-size: 15px;
+  }
+}
+.actions--button{
+  display: flex;
+}
+.button-actions-step1{
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 20px;
+}
+.button-actions{
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+.content-stepper{
+  width: 100%;
+}
+
+.text-error {
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-size: 12px;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px $grayscaleLevel-4;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $grayscaleLevel-3;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $grayscaleLevel-3;
+}
+
+.bt {
+  font-weight: bold;
+  height: 40px;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  color: $primaryBase;
+  border-radius: 50px;
+}
+
+// Sobreescribiendo estilos del stepper
+//  Tamaño de la bola
+::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header .mat-step-icon{
+  width: 62px;
+  height: 62px;
+}
+// borde de la bolita
+::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header .mat-step-icon{
+  background-clip: content-box;
+  border: 2px solid $grayscaleLevel-4;
+  padding: 4px;
+}
+::ng-deep .mat-step-header.mat-accent .mat-step-icon-selected{
+  border: 2px solid $secondaryBase !important;
+}
+
+::ng-deep .mat-step-header .mat-step-icon{
+  background-color: $grayscaleWhite;
+}
+
+// ::ng-deep .mat-step-header.mat-accent .mat-step-icon-state-edit{
+//   background-color: $primaryBase;
+// }
+
+::ng-deep .mat-step-header.mat-accent .mat-step-icon-state-done{
+  background-color: $primaryBase;
+  color: $grayscaleWhite;
+  border: 2px solid transparent !important;
+}
+
+// Texto de la bolita
+::ng-deep .mat-step-header.mat-accent .mat-step-icon-selected{
+  color: $primaryBase !important;
+}
+::ng-deep .mat-step-header.mat-accent .mat-step-icon{
+  color: $grayscaleLevel-4;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+//Posición de la linea central del stepper
+::ng-deep .mat-stepper-label-position-bottom .mat-stepper-horizontal-line{
+  top: 50px;
+}
+::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header{
+  &::before, &::after{
+    top: 50px;
+  }
+}
+::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header{
+  &:not(:first-child)::before, &:not(:last-child)::after{
+    width: calc(50% - 30px) !important;
+  }
+}
+// Texto del label del stepper
+::ng-deep .mat-stepper-horizontal{
+  font-family: Roboto Condensed;
+}
+
+::ng-deep .mat-dialog-container .rules-content {
+  min-width: 700px;
+  max-width: 700px;
+  min-height: 88vh;
+  max-height: 88vh;
+}
+
+.colums-table{
+  text-align:center
+}
+
+.flex-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  &--small {
+    height: 10px;
+    margin-bottom: -10px;
+  }
+
+  &--flex-end {
+    justify-content: flex-end;
+  }
+
+  &--space-beetwen {
+    justify-content: space-between;
+  }
+}
+
+.is-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-msg {
+  padding-left: 3px;
+  color: #666666;
+}
+
+.fields-container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.parameters-title {
+  font-family: 'Roboto Condensed';
+  font-weight: 700;
+  font-size: 32px;
+  color: #223354;
+  margin-bottom: 22px;
+}

@@ -1,0 +1,62 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+
+.custom-dialog-container .mat-dialog-container {
+    height: auto;
+}
+
+.container-dialog-company .mat-dialog-container {
+    padding: 10px;
+}
+
+.backdropBackground {
+    background-color: #eeeeee !important;
+    opacity: 1 !important;
+}
+
+.mat-dialog-title {
+    margin: 0 0 14px !important;
+}
+
+// overwrite the frame for styling border
+::ng-deep .mat-checkbox-frame {
+    border-color: $primaryBase !important;
+}
+
+// override material paginator
+::ng-deep .mat-paginator {
+    .mat-paginator-navigation-first,
+    .mat-paginator-navigation-previous,
+    .mat-paginator-navigation-next,
+    .mat-paginator-navigation-last {
+        color: $primaryBase;
+    }
+
+    .mat-paginator-container {
+        justify-content: center !important;
+    }
+
+    .mat-paginator-navigation-first {
+        order: 1;
+    }
+
+    .mat-paginator-navigation-previous {
+        order: 2;
+    }
+
+    .mat-paginator-range-label {
+        order: 3;
+    }
+
+    .mat-paginator-page-size.ng-star-inserted {
+        order: 4;
+    }
+
+    .mat-paginator-navigation-next {
+        order: 5;
+    }
+
+    .mat-paginator-navigation-last {
+        order: 6;
+    }
+}

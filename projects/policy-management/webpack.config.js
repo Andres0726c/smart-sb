@@ -5,7 +5,7 @@ module.exports = withModuleFederationPlugin({
   name: 'policy-management',
 
   exposes: {
-    './Module': './projects/policy-management/src/app/containers/policy-management/policy-management.module.ts',
+    './Module': './projects/policy-management/src/app/containers/main/main.module.ts',
   },
 
   shared: {

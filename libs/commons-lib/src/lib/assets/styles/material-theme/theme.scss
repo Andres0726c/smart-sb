@@ -82,3 +82,5 @@ $my-theme: mat.define-light-theme((
 
 // include the custom theme object into the angular material theme
 @include mat.all-component-themes($my-theme);
+
+@import "../material-theme/config/icons"

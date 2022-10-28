@@ -3,6 +3,20 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-    font-family: Roboto condensed;
+@import "../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/variables";
+@import "../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/mixins";
+
+/* General styles */
+@layer base {
+    * {
+        font-family: Roboto condensed;
+    }
+
+    html, body {
+        font-size: 14px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
+
+    
 }
