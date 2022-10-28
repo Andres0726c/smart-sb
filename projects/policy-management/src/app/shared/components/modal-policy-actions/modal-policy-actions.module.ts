@@ -9,6 +9,7 @@ import { DividerModule } from "primeng/divider";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [ModalPolicyActionsComponent],
@@ -22,7 +23,8 @@ import { InputTextModule } from 'primeng/inputtext';
     FormsModule,
     ReactiveFormsModule,
     ToastModule,
-    InputTextModule
+    InputTextModule,
+    InputNumberModule
   ]
 })
 export class ModalPolicyActionsModule {}

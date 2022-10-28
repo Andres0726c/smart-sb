@@ -50,7 +50,7 @@
             <div *ngIf="config.data.process === 'Cancelación'">
                 <label>Seleccione la fecha de anulación</label>
                 <span class="p-input-icon-right w-full">
-                    <p-calendar formControlName="processDate" (onSelect) = "verifyDate()" [showTime]="true" hourFormat="24" [showSeconds]="true" dateFormat="yy-mm-dd" appendTo="body" styleClass="w-full" placeholder="aaaa-mm-dd"></p-calendar>
+                    <p-calendar formControlName="processDate" (onSelect) = "verifyDate()"  dateFormat="yy-mm-dd" appendTo="body" styleClass="w-full" placeholder="aaaa-mm-dd" [showTime]="true" hourFormat="24" [showSeconds]="true"></p-calendar>
                     <i class="pi pi-calendar"></i> 
                 </span>
             </div>
@@ -64,13 +64,25 @@
 
             <div *ngIf="config.data.process === 'Cancelación'">
                 <label>Valor total prima</label>
-                <input type="text" pInputText [disabled]="fieldDisabled" class="w-full"/>
+                <input type="text" pInputText [disabled]="true" class="w-full"/>
             </div>
 
             <div *ngIf="config.data.process === 'Cancelación'">
                 <label>Valor a devolver al cliente</label>
-                <input type="text" pInputText [disabled]="fieldDisabled" class="w-full"/>
+                <input type="text" pInputText [disabled]="true" class="w-full"/>
             </div>
+
+            <!-- <div *ngIf="config.data.process === 'Cancelación'">
+                <label>Valor total prima</label>
+                <p-inputNumber mode="currency" currency="USD" locale="en-US" [readonly]="true" class="w-full">
+                </p-inputNumber>
+            </div> -->
+
+            <!-- <div *ngIf="config.data.process === 'Cancelación'">
+                <label>Valor a devolver al cliente</label>
+                <p-inputNumber mode="currency" currency="USD" locale="en-US" [readonly]="true" class="w-full">
+                </p-inputNumber>
+            </div> -->
 
             <div class="col-span-2">
                 <label>Observación</label>
