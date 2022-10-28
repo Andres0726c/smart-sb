@@ -61,14 +61,15 @@ export const screenManagementRoutes: Route[] = [
                 path: 'reserva-liquidacion',
                 loadChildren: () => import('../../../containers/claim-liquidation-concept/claim-liquidation-concept.module').then(m => m.ClaimLiquidationConceptModule)
             },
+            {                
+                path: 'datos-reclamacion',
+                loadChildren: () => import('../../../containers/claim-data/claim-data.module').then(m => m.ClaimDataModule)
+            },
             /*{
                 path: 'control-tecnico-reclamacion',
                 loadChildren: () => import('src/app/containers/claim-technical-control/claim-technical-control.module').then(m => m.ClaimTechnicalControlModule)
             },
-            {                
-                path: 'datos-reclamacion',
-                loadChildren: () => import('src/app/containers/claim-data/claim-data.module').then(m => m.ClaimDataModule)
-            },
+            
 
             */
         ]
