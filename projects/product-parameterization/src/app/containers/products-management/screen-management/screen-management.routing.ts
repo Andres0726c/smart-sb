@@ -65,13 +65,10 @@ export const screenManagementRoutes: Route[] = [
                 path: 'datos-reclamacion',
                 loadChildren: () => import('../../../containers/claim-data/claim-data.module').then(m => m.ClaimDataModule)
             },
-            /*{
+            {
                 path: 'control-tecnico-reclamacion',
-                loadChildren: () => import('src/app/containers/claim-technical-control/claim-technical-control.module').then(m => m.ClaimTechnicalControlModule)
-            },
-            
-
-            */
+                loadChildren: () => import('../../../containers/claim-technical-control/claim-technical-control.module').then(m => m.ClaimTechnicalControlModule)
+            }
         ]
     }
 ];
