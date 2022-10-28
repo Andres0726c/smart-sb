@@ -350,7 +350,7 @@
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
-						"outputPath": "dist/product-parameterization",
+						"outputPath": "dist/browser/product-parameterization",
 						"index": "projects/product-parameterization/src/index.html",
 						"main": "projects/product-parameterization/src/main.ts",
 						"polyfills": "projects/product-parameterization/src/polyfills.ts",
