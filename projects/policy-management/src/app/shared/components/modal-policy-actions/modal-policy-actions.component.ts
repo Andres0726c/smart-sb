@@ -121,6 +121,27 @@ console.log('processValue', this.formProcess.value);
       this.formProcess.get('observation')?.disable();
     }
   }
+  disableButton() {
+    if (this.config.data.policy) {
+      const date = new Date(
+        this.formProcess.get('processDate')?.value
+      ).toISOString();
+      const inceptionDate = new Date(
+        this.config.data.policy?.inceptionDate
+      ).toISOString();
+      const expirationDate = new Date(
+        this.config.data.policy?.expirationDate
+      ).toISOString();
+      return !(
+        this.formProcess.valid &&
+        this.formProcess.get('processDate')?.value &&
+        date >= inceptionDate &&
+        date <= expirationDate
+      );
+    } else {
+      return true;
+    }
+  }
 
   showSuccess(status: string, title: string, msg: string) {
     this.messageService.add({

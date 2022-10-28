@@ -90,7 +90,7 @@
             </div>
 
             <div class="col-span-2 ml-auto">
-                <p-button [label]="config.data.buttonAction" [disabled]="!(formProcess.valid)" (click)="config.data.buttonAction === 'Cancelar Póliza' ? cancelPolicy() : rehabilitatePolicy()"></p-button>
+                <p-button [label]="config.data.buttonAction" [disabled]="config.data.process === 'Cancelación' ? disableButton() : !(formProcess.valid)" (click)="config.data.buttonAction === 'Cancelar Póliza' ? cancelPolicy() : rehabilitatePolicy()"></p-button>
             </div>
         </div>
     </form>
