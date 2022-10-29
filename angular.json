@@ -430,7 +430,7 @@
 								}
 							],
 							"outputHashing": "all",
-							"extraWebpackConfig": "projects/policy-management/webpack.prod.config.js"
+							"extraWebpackConfig": "projects/product-parameterization/webpack.prod.config.js"
 						},
 						"development": {
 							"buildOptimizer": false,
