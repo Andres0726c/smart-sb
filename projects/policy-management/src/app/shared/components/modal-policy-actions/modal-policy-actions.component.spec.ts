@@ -8,7 +8,7 @@ import {
 import { ModalPolicyActionsComponent } from './modal-policy-actions.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
-import { ConsultPolicyService } from 'projects/policy-management/src/app/containers/policy-management/components/consult-policy/services/consult-policy.service';
+import { ConsultPolicyService } from '../../../containers/main/components/consult-policy/services/consult-policy.service';
 
 describe('ModalPolicyActionsComponent', () => {
   let component: ModalPolicyActionsComponent;

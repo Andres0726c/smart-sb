@@ -5,8 +5,8 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./containers/policy-management/policy-management.module').then(
-        (m) => m.PolicyManagementModule
+      import('./containers/main/main.module').then(
+        (m) => m.MainModule
       ),
   },
 ];

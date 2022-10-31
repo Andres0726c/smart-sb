@@ -59,7 +59,7 @@ describe('AuthGuard', () => {
       providers: [
         FormBuilder,
         {
-          provide: FormArray,
+          provide: FormArray<any>,
           useValue: {},
         },
         {

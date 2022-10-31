@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'commons-lib';
-import { CancelPolicy } from 'projects/policy-management/src/app/containers/policy-management/components/consult-policy/interfaces/cancel-policy';
+import { CancelPolicy } from 'projects/policy-management/src/app/containers/main/components/consult-policy/interfaces/cancel-policy';
 import { Observable } from 'rxjs';
 
 @Injectable({

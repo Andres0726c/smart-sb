@@ -1,0 +1,59 @@
+<div class="content">
+    <form class="card-waiting-time" [formGroup]="formWaitingTime">
+        <div class="header-waiting-time">
+            <span class="header-waiting-time_title">Carencia</span> 
+            <mat-checkbox  formControlName = "waitingTime" (change)="isTouchedForm(formWaitingTime, $event.checked)" color ="primary" data-qa-id="sc-rpmf-check_waiting-time"></mat-checkbox>
+        </div>
+        <div class="form-waiting-time">
+            <section class="input">
+                <mat-label>Cantidad</mat-label>
+                <mat-form-field appearance="outline">
+                <input matInput formControlName="quantity" (keyup)="changeInputNumber(formWaitingTime, 'quantity')" autocomplete="off" data-qa-id="sc-rpmf-input_waiting-time_quantity">
+                <mat-error *ngIf="formWaitingTime.get('quantity')?.errors?.['required']">Ingrese la cantidad del periodo de carencia.</mat-error>
+                <mat-error *ngIf="formWaitingTime.get('period')?.value === 'anio' && (formWaitingTime.get('quantity')?.errors?.['max']?.max === 1 || formWaitingTime.get('quantity')?.errors?.['min']?.min === 1)">El periodo de carencia debe ser igual a 1 año.</mat-error>
+                <mat-error *ngIf="formWaitingTime.get('period')?.value === 'mes' && (formWaitingTime.get('quantity')?.errors?.['max']?.max === 6 || formWaitingTime.get('quantity')?.errors?.['min']?.min === 1)">El periodo de carencia debe ser mayor a 0 y menor o igual a 6 meses.</mat-error>
+                <mat-error *ngIf="formWaitingTime.get('period')?.value === 'dia' && (formWaitingTime.get('quantity')?.errors?.['max']?.max === 180 || formWaitingTime.get('quantity')?.errors?.['min']?.min === 1)">El periodo de carencia debe ser mayor a 0 y menor o igual a 180 días.</mat-error>
+                </mat-form-field>
+            </section>
+            <section class="input">
+                <mat-label>Periodo</mat-label>
+                <mat-form-field appearance="outline">
+                <mat-select placeholder="Seleccionar" formControlName="period" (selectionChange)="setValidators(formWaitingTime, 'quantity')" data-qa-id="sc-rpmf-select_waiting-time">
+                    <mat-option *ngFor="let period of waitingTimePeriod" [value]="period.code">
+                        {{period.description}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formWaitingTime.value.waitingTime">Seleccione el periodo de carencia.</mat-error>
+                </mat-form-field>
+            </section>
+        </div>
+    </form>
+    <div></div>
+    <form class="card-waiting-time" [formGroup]="formEvents">
+        <div class="header-waiting-time">
+            <span class="header-waiting-time_title">Eventos</span> 
+            <mat-checkbox  formControlName = "events" (change)="isTouchedForm(formEvents, $event.checked)" color ="primary" data-qa-id="sc-rpmf-check_waiting-time"></mat-checkbox>
+        </div>
+        <div class="form-waiting-time">
+            <section class="input">
+                <mat-label>Cantidad</mat-label>
+                <mat-form-field appearance="outline">
+                <input matInput formControlName="quantityEvents" (keyup)="changeInputNumber(formEvents, 'quantityEvents')" autocomplete="off" data-qa-id="sc-rpmf-input_waiting-time_quantity">
+                <mat-error *ngIf="formEvents.get('quantityEvents')?.errors?.['required']">Ingrese la cantidad del periodo de eventos.</mat-error>
+                <mat-error *ngIf="formEvents.get('quantityEvents')?.errors?.['max']?.max === 999 || formEvents.get('quantityEvents')?.errors?.['min']?.min === 1">El periodo de eventos debe ser mayor a 0 y menor o igual a 999.</mat-error>
+                </mat-form-field>
+            </section>
+            <section class="input">
+                <mat-label>Periodo</mat-label>
+                <mat-form-field appearance="outline">
+                <mat-select placeholder="Seleccionar" formControlName="periodEvents" data-qa-id="sc-rpmf-select_waiting-time">
+                    <mat-option *ngFor="let period of eventsPeriod" [value]="period.code">
+                        {{period.description}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="formEvents.value.events">Seleccione el periodo de los eventos.</mat-error>
+                </mat-form-field>
+            </section>
+        </div>
+    </form>
+</div>

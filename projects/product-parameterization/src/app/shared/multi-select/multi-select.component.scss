@@ -1,0 +1,110 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+.chip-select {
+  height: 28px !important;
+  max-width: max-content;
+  background-color: $greenBG !important;
+  color: $primaryBase !important;
+  padding: 0 6px !important;
+  font-family: "Roboto Condensed";
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+  border-radius: 50px;
+  &-count{
+    column-gap: 0px;
+  }
+  &__icon {
+    color: $primaryBase;
+    height: 12px;
+    width: 12px;
+    font-size: 12px;
+    margin-right: 4px;
+    cursor: pointer;
+  }
+}
+
+.select-multiple ::ng-deep .mat-chip.mat-standard-chip {
+  min-height: 28px;
+  .mat-chip-remove{
+    opacity: 1;
+  }
+}
+
+.dots {
+  margin: 0px 5px;
+  font-family: Roboto Condensed;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 180%;
+  color: $primaryBase;
+}
+
+//overwrite heigth mat option
+::ng-deep .mat-select-panel .mat-option{
+  height: 36px !important;
+  font-size: 12px;
+  color: $grayscaleLevel-2;
+}
+//chequear allSelect sin añadirlo al formControl del select
+.checked {
+  &::ng-deep .mat-pseudo-checkbox {
+    background-color: $primaryBase;
+    border-color: transparent;
+    &::after {
+      top: 2.4px;
+      left: 1px;
+      width: 8px;
+      height: 3px;
+      border-left: 2px solid currentColor;
+      transform: rotate(-45deg);
+      opacity: 1;
+      box-sizing: content-box;
+    }
+  }
+}
+
+.option-all{
+  font-weight: 700;
+}
+
+.icon {
+  color: $primaryBase;
+  margin-right: 5px;
+}
+
+// .select-multiple .mat-select-arrow {
+//   border-left: unset !important;
+//   border-right: unset !important;
+// }
+
+.filter_input ::ng-deep .mat-form-field-outline-start {
+    border-radius: 28px 0 0 28px !important;
+    min-width: 28px !important;
+  }
+.filter_input ::ng-deep .mat-form-field-outline-end {
+  border-radius: 0 28px 28px 0 !important;
+}
+
+.filter_input{
+  padding: 8px 8px 4px 8px;
+  input{
+    padding-left: 10px;
+    font-size: 15px;
+  }
+}
+
+.filter_input ::ng-deep  .mat-form-field-wrapper{
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.select-multiple ::ng-deep .mat-form-field-infix{
+  display: flex !important;
+  align-items: center !important;  
+}
+

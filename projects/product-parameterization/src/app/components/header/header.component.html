@@ -1,0 +1,97 @@
+<header class="main-header">
+    <nav class="main-header__nav">
+
+        <div class="main-left-items">
+            <a href="#" class="logo-link" [routerLink]="'/inicio'">
+                <img class="logo-header" src="smartcore-commons/assets/img/bolivar-logo.svg" alt="logo">
+            </a>
+            <div class="main-left-items__items-left-special">
+                <p class="version">1.0</p>
+                <span class="policy-composer"><strong>Parametrizador de producto</strong></span>
+                <span class="company-title">Compañía: {{ company }}</span>
+            </div>
+            
+            <div class="main-left-items__menu-items-left">
+                <button class="text-header" mat-button (click) ="goToHome()" *ngIf="showOptions" data-qa-id="sc-rpmf-btn_menu_productos">
+                    <em id="home-icon" class="fal fa-home text-icon"></em><strong>Inicio</strong>
+                </button>
+            </div>
+
+            <div class="main-left-items__menu-items-left" *ngIf="false">
+                <button class="text-header" mat-button [matMenuTriggerFor]="projectsMenu" *ngIf="showOptions">
+                    <em class="far fa-th-large text-icon"></em><strong>Proyectos</strong><em class="far fa-angle-down arrow-icon"></em>
+                </button>
+                <mat-menu #projectsMenu="matMenu">
+                    <button mat-menu-item>Project 1</button>
+                    <button mat-menu-item>Project 2</button>
+                </mat-menu>
+            </div>
+
+            <div class="main-left-items__menu-items-left" *ngIf="false">
+                <button class="text-header" mat-button [matMenuTriggerFor]="deployMenu" *ngIf="showOptions">
+                    <em class="far fa-cloud-upload text-icon"></em><strong>Despliegues</strong><em class="far fa-angle-down arrow-icon"></em>
+                </button>
+                <mat-menu #deployMenu="matMenu">
+                    <button mat-menu-item>Dev Stage</button>
+                    <button mat-menu-item>Test Stage</button>
+                    <button mat-menu-item>Prod Stage</button>
+                </mat-menu>
+            </div>
+
+        </div>
+    
+        <div class="main-header__nav__middle-items margin-item" *ngIf="showOptions && router.url !== '/menu-productos'">
+            <div class="div-saving" *ngIf="service.saving">
+                <mat-progress-spinner
+                    diameter="16" 
+                    color="primary"
+                    mode="indeterminate">
+                </mat-progress-spinner>
+                Guardando...
+            </div>
+            <button mat-raised-button [disabled]="!service.enableSaveButton()" (click)="saveProduct(true)" *ngIf="!service.saving" data-qa-id="sc-rpmf-btn-saveproduct">
+                <em class="primary-icon fas fa-save text-[22px]"></em>
+            </button>
+            <button mat-raised-button (click)="exportProduct()" [disabled]="service.enableSaveButton()" *ngIf="!service.saving" data-qa-id="sc-rpmf-btn-exportproduct">
+                <em class="fas fa-file-export primary-icon"></em>
+            </button>
+            <!-- TO-DO implementación ctrl+z -->
+            <!-- <button mat-raised-button disabled><em class="fas fa-undo color-icon"></em></button>
+            <button mat-raised-button disabled><em class="fas fa-redo color-icon"></em></button> -->
+            <button mat-raised-button *ngIf="false"><em class="fas fa-search color-icon"></em></button>
+            <button mat-raised-button *ngIf="false"><em class="fas fa-bell color-icon"></em></button>
+            <button mat-raised-button *ngIf="false"><em class="fas fa-cog color-icon"></em></button>
+        </div>
+
+        <div class="main-header__nav-user-info margin-item" *ngIf="closing">
+            <i class="fas fa-user-cog fa-3x avatar-img"></i>
+            <div class="nav-user-info__text-user-info">
+                <span><strong> Cerrando sesión... </strong></span><br/>
+                <div class="div-spinner">
+                    <div class="logout-spinner">
+                        <mat-progress-spinner
+                            diameter="16" 
+                            mode="indeterminate">
+                        </mat-progress-spinner>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-header__nav-user-info margin-item" *ngIf="!closing">
+            <!-- <img class="avatar-img" src="../../../assets/img/img_avatar.png" alt="avatar"> -->
+            <i class="fas fa-user-cog fa-3x avatar-img"></i>
+            <div class="nav-user-info__text-user-info">
+                <span><strong> {{ userName }} </strong></span><br/>
+                <span> Rol: {{ role }} </span>
+            </div>
+            <button mat-button [matMenuTriggerFor]="userMenu" class="menu-items-left" data-qa-id="sc-rpmf-btn-usermenu">
+                <em class="far fa-angle-down arrow-icon"></em>
+            </button>
+            <mat-menu #userMenu="matMenu">
+                <button mat-menu-item (click)="signOut()" *ngIf="isAuthenticated" data-qa-id="sc-rpmf-btn-close-session"><em class="fas fa-sign-out text-icon"></em>Cerrar sesión</button>
+            </mat-menu>
+        </div>
+    
+    </nav>
+</header>

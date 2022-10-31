@@ -1,0 +1,134 @@
+@import './variables';
+@import './mixins';
+html,
+body {
+    height: 100%;
+}
+
+html {
+    background: $grayscaleWhite;
+    color: $grayscaleBase;
+}
+
+body {
+    margin: 0;
+    line-height: 1.5;
+    font-family: $fontPrimary;
+    font-size: 16px;
+    /**font fallback */
+    font-size: $font-size;
+    /* Base pixel size */
+    display: flex;
+    flex-direction: column;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    
+
+}
+
+* {
+     font-family: Roboto condensed;
+}
+
+article,
+aside,
+audio,
+canvas,
+figcaption,
+figure,
+figure img,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+video {
+    display: block;
+}
+
+picture {
+    display: block;
+    position: relative;
+}
+
+picture,
+img {
+    line-height: 0;
+}
+
+p {
+    margin: 0;
+}
+
+ol,
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: $fontFamilyHeading;
+}
+
+:focus {
+    outline: 1px dashed $primary-focus;
+    outline-offset: 1px;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: "Roboto condensed";
+    font-size: 100%;
+    line-height: 1.15;
+    margin: 0;
+}
+
+button,
+input {
+    overflow: visible;
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+    -webkit-appearance: button;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+#survicate-box{
+    z-index: 2;
+}
+
+// overwrite the frame for styling border
+::ng-deep .mat-checkbox-frame {
+    border-color: $primaryBase !important;
+}
