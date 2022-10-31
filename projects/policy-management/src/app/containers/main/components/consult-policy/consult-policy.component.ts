@@ -11,6 +11,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
+import { ModalRenewalComponent } from 'projects/policy-management/src/app/containers/main/components/consult-policy/modal-renewal/modal-renewal.component';
+import { PolicyDetailsComponent } from './policy-details/policy-details.component';
 
 @Component({
   selector: 'app-consult-policy',
@@ -64,21 +66,6 @@ export class ConsultPolicyComponent {
       observation: fb.control(null, Validators.maxLength(2000)),
     });
 
-    // this.msgs1 = [
-    //   {severity:'success', summary:'Success', detail:'Message Content'},
-    // ];
-
-    // this.selectedPolicy = {
-    //   inceptionDate: '01/10/2022',
-    //   expirationDate: '05/10/2022',
-    //   idPolicy: 1,
-    // }
-    // this.formDate.get('processDate')?.setValue('04/10/2022')
-    // this.formDate.get('idCause')?.setValue(1)
-    // this.formDate.get('causeType')?.setValue('Anulación')
-    // this.formDate.get('observation')?.setValue('anulado por el cliente')
-    // this.cancelPolicy();
-
     this.cols = [
       { header: 'Producto' },
       { header: 'Póliza' },
@@ -101,7 +88,8 @@ export class ConsultPolicyComponent {
           this.showModal('Cancelación', this.selectedPolicy, 'Cancelar Póliza');
         },
       },
-      { label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open',
+      {
+        label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open',
         command: (event: any, row: any) => {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
@@ -109,13 +97,23 @@ export class ConsultPolicyComponent {
           this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitrar');
         },
       },
-      { label: 'Renovar', icon: 'pi pi-fw pi-refresh' },
-      { label: 'Ver detalle', icon: 'pi pi-fw pi-eye' },
+      {
+        label: 'Renovar', icon: 'pi pi-fw pi-refresh',
+        command: (event: any, row: any) => {
+          //this.showModalRenewal('Renovación', this.selectedPolicy, 'Renovar');
+        }
+      },
+      {
+        label: 'Ver detalle', icon: 'pi pi-fw pi-eye',
+        command: () => {
+          this.showModalConsulDetails();
+        }
+      },
     ];
   }
 
   disabledItem(status: string) {
-    switch(status) {
+    switch (status) {
       case 'Activa':
         this.items[0].disabled = false;
         this.items[1].disabled = false;
@@ -203,5 +201,50 @@ export class ConsultPolicyComponent {
   clearSearch() {
     this.policies = [];
     this.totalRecords = 0;
+  }
+
+  // showModalRenewal(process: string, policy: any, buttonAction: any) {
+  //   let policyRes;
+  //   this.consultPolicyService.getPolicyById(policy.idPolicy).subscribe({
+  //     next: (res) => {
+  //       if (res.dataHeader.code && (res.dataHeader.code = 200)) {
+  //         policyRes = res.body;
+  //         this.totalRecords = res.dataHeader.totalRecords;
+
+  //         const ref = this.dialogService.open(ModalRenewalComponent, {
+  //           data: {
+  //             process: process,
+  //             policy: policyRes,
+  //             buttonAction: buttonAction
+  //           },
+  //           header: process,
+  //           modal: true,
+  //           dismissableMask: true,
+  //           width: '80%',
+  //           contentStyle: { 'max-height': '600px', overflow: 'auto' },
+  //           baseZIndex: 10000,
+  //         });
+
+  //       } 
+  //     },
+  //     error: (error: ResponseErrorDTO) => {
+  //       console.error('error', error);
+  //     },
+  //   });
+  // }
+
+  showModalConsulDetails(){
+    this.dialogService.open(PolicyDetailsComponent,{
+      data: {
+        idPolicy: this.selectedPolicy.idPolicy
+      },
+      header: 'Consulta detalle póliza',
+      modal: true,
+      dismissableMask: true,
+      width: '100%',
+      styleClass:'w-full sm:w-4/5 md:w-3/5',
+      contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px'},
+      baseZIndex: 10000,
+    })
   }
 }

@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main.component';
 
 describe('PolicyManagementComponent', () => {
@@ -7,10 +9,11 @@ describe('PolicyManagementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MainComponent ]
+      declarations: [MainComponent],
+      imports: [MainRoutingModule, RouterTestingModule]
     })
-    .compileComponents();
-  });
+      .compileComponents();
+  })
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MainComponent);
