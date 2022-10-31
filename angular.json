@@ -68,13 +68,13 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								}
 							],
 							"fileReplacements": [
@@ -90,13 +90,13 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								}
 							],
 							"fileReplacements": [
@@ -230,13 +230,13 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								}
 							],
 							"fileReplacements": [
@@ -252,13 +252,13 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								}
 							],
 							"fileReplacements": [
@@ -392,19 +392,19 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								}
 							],
 							"fileReplacements": [
 								{
-									"replace": "projects/product-parameterization/src/environments/environment.ts",
-									"with": "projects/product-parameterization/src/environments/environment.prod.ts"
+									"replace": "libs/commons-lib/src/lib/environments/environment.ts",
+									"with": "libs/commons-lib/src/lib/environments/environment.prod.ts"
 								}
 							],
 							"outputHashing": "all",
@@ -414,13 +414,13 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								}
 							],
 							"fileReplacements": [
@@ -430,7 +430,7 @@
 								}
 							],
 							"outputHashing": "all",
-							"extraWebpackConfig": "projects/policy-management/webpack.prod.config.js"
+							"extraWebpackConfig": "projects/product-parameterization/webpack.prod.config.js"
 						},
 						"development": {
 							"buildOptimizer": false,
@@ -554,13 +554,13 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								}
 							],
 							"fileReplacements": [
@@ -576,13 +576,13 @@
 							"budgets": [
 								{
 									"type": "initial",
-									"maximumWarning": "500kb",
-									"maximumError": "1mb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "2mb",
+									"maximumError": "6mb"
 								}
 							],
 							"fileReplacements": [
