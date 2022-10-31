@@ -1,0 +1,33 @@
+
+@import 'variables';
+@import "mixins";
+.bt{
+  border-radius: 50px !important;
+  max-width: 320px;
+  font-weight: bold;
+  font-size: 14px;
+  font-family: Roboto Condensed;
+  line-height: 20px;
+  height: 40px;
+  justify-content: center;
+  display: flex !important;
+  align-items: center;
+  text-align: center;
+  &-primary {
+    background-color: $secondaryBase;
+    color: $primaryBase;
+  }
+  &-secondary {
+    border: 1px solid $primaryBase !important;
+    background-color: white !important;
+    color: $primaryBase;
+  }
+  &-complementary {
+    border: 1px solid $alertsError !important;
+    background-color: $grayscaleWhite !important;
+    color: $alertsError;
+  }
+}
+.bt ::ng-deep .mat-button-focus-overlay{
+  background: none;
+}

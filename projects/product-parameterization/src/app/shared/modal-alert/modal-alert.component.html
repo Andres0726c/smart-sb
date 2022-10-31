@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="container__icon_close">
+      <em class="icon_close fal fa-times" [mat-dialog-close]="false"></em>
+    </div>
+    <div class="container__message">
+      <em class="icon picto-alert"></em>
+      <div class="text">
+        <h5 class="text text_message">{{ data.message }}</h5>
+        <h5 *ngIf="data.complementary_message" class="text text_message">{{ data.complementary_message }}</h5>
+        <span class="text text_submessage">{{data.subMessage}}</span>
+        <span class="text text_text" [innerHTML]="data.text"></span>
+      </div>
+      <div class="container__buttons">
+        <button mat-button class="bt bt-primary button" [mat-dialog-close]="true" data-qa-id="sc-rpmf-btn_confirm">Aceptar</button>
+      </div>
+    </div>
+  </div>

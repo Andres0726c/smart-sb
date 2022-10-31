@@ -56,7 +56,7 @@ export class ModalPolicyActionsComponent implements OnInit {
         .subscribe((resp: any) => {
           if(resp.dataHeader.code != 500){
             this.ref.close(true)
-            return this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
+            // return this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
           } else  {
               this.messageError = true;
               return this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
@@ -77,7 +77,7 @@ export class ModalPolicyActionsComponent implements OnInit {
         .subscribe((resp: any) => {
           if(resp.dataHeader.code != 500){
             this.ref.close(true)
-            return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');   //revisar estos retornos y el envío de post
+            // return this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');   //revisar estos retornos y el envío de post
           } else {
               this.messageError = true;
               return this.showSuccess('error', 'Error al rehabilitar', resp.dataHeader.status);

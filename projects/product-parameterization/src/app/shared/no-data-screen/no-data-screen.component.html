@@ -1,0 +1,19 @@
+<div class="content_title" *ngIf="layoutType === 'full'">
+  <h3 class="title">{{ emptyTitle }}</h3>
+  <h4 class="subtitle">{{ emptySubTitle }}</h4>
+</div>
+<div [ngClass]="{
+              'container-expansion-panel-full':layoutType === 'full',
+              'container-expansion-panel-child':layoutType === 'child'
+      }"
+      *ngIf="serviceDataControls.value.length === 0 || (serviceDataControls.value[0]?.fields != undefined && serviceDataControls.value[0]?.fields.length === 0)">
+    <img src="smartcore-commons/assets/img/computer-document.png" alt="smartcore-commons/assets/img/computer-document.png" />
+    <p class="font-empty-title-data">{{ emptyText }}</p>
+    <p class="font-empty-desc-data">{{ emptySubText }}</p>
+    <div class="div-button">
+      <button mat-button class="bt bt-primary" *ngIf="ShowButton" (click)="shootAction()" data-qa-id="sc-rpmf-btn_add-element">
+        <em class="fal fa-plus-circle icon-button-add"></em>
+        Añadir
+      </button>
+    </div>
+</div>

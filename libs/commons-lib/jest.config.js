@@ -12,6 +12,7 @@ module.exports = {
       'test-config',
       'interfaces',
       'jestGlobalMocks.ts',
+      ".html",
       '.module.ts',
       '.mock.ts',
       '<rootDir>/projects/auth',

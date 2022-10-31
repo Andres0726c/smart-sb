@@ -1,0 +1,13 @@
+<div class="container" [ngClass]="status[data.status].class">
+  <div class="container__rectangule">
+    <div class="rectangule"></div>
+  </div>
+  <div class="container__toast">
+    <div class="container__header">
+      <em class="fas icon-status" [ngClass]="status[data.status].icon"></em>
+      <span>{{ data.title }}</span>
+      <em class="fal fa-times icon-close" (click)="dismiss()"></em>
+    </div>
+    <span class="msg">{{ data.msg }}</span>
+  </div>
+</div>

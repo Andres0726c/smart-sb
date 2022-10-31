@@ -1,0 +1,290 @@
+<div class="" style="width: 100%">
+  <div class="content-close" (click)="closeWizard()">
+    <mat-icon class="text-close">close</mat-icon>
+  </div>
+  <br>
+  <div class="content_title">
+    <h3 class="title">
+      {{ data.action === "create" ? "Creación de" : "Modificar" }} plan comercial
+    </h3>
+    <span class="subtitle">
+      Configure los planes de servicio y coberturas para el plan comercial {{ data.action === "create" ? "" : "creado" }}
+    </span>
+  </div>
+  <div class="content">
+    <mat-stepper
+      class="content-stepper"
+      linear
+      labelPosition="bottom"
+      color="accent"
+      #stepper
+    >
+
+      <ng-template matStepperIcon="edit">
+        <span>{{stepper.selectedIndex + 1}}</span>
+      </ng-template>
+      <mat-step [stepControl]="FormCommercialPlan" required>
+        <form [formGroup]="FormCommercialPlan" autocomplete="off">
+          <ng-template matStepLabel>Información básica</ng-template>
+          <div class="container_form">
+            <div class="input flex flex-col">
+              <mat-label>Nombre del plan comercial *</mat-label>
+              <mat-form-field class="name-plan" appearance="outline">
+                <input matInput  placeholder="Escriba el nombre" formControlName="name" data-qa-id="sc-rpmf-input_name_risk_types_commertial_plan_wizard"/>
+                <mat-error>{{errorMessageName}}</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="input flex flex-col">
+              <mat-label>Descripción *</mat-label>
+              <mat-form-field appearance="outline">
+                <textarea
+                  matInput
+                  placeholder="Escriba su descripción"
+                  formControlName="description"
+                  class="desc-plan"
+                  data-qa-id="sc-rpmf-textarea_description_risk_types_commertial_plan_wizard"
+                ></textarea>
+                <mat-error>{{errorMessageDesc}}</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          </form>
+        </mat-step>
+
+      <mat-step >
+        <form  class="content_search">
+          <ng-template matStepLabel>Coberturas</ng-template>
+          <div class="coverages-actions">
+            <div class="coverages-add">
+              <span class="title-coverage">Coberturas</span>
+              <button
+                mat-button
+                type="button"
+                class="button-add-coverages"
+                (click)="openDialogCoverages('commertialPlanCoverages')"
+                data-qa-id="sc-rpmf-btn_add_coverage_risk_types_commertial_plan_wizard"
+              >
+                <em class="fal fa-plus-circle text-lg mr-2"></em>Añadir
+              </button>
+            </div>
+            <div class="coverages-search">
+              <mat-form-field appearance="outline" class="search_input">
+                <input
+                  matInput
+                  (keyup)="applyFilter($event)"
+                  placeholder="Buscar"
+                  data-qa-id="sc-rpmf-input_search_coverages_risk_types_commertial_plan_wizard"
+                />
+                <mat-icon matSuffix class="icon-search">search</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+           <div class="no-elements" *ngIf="dataSource.data.length === 0">
+            No se han asociado coberturas al plan comercial
+          </div>
+          <table
+            mat-table
+            *ngIf="dataSource.data.length > 0"
+            [dataSource]="dataSource"
+          >
+            <caption></caption>
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <td mat-cell *matCellDef="let element">{{ productService.getCoverageById(element.id).name }}</td>
+            </ng-container>
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Descripción</th>
+              <td mat-cell *matCellDef="let element">
+                {{ productService.getCoverageById(element.id).description }}
+              </td>
+            </ng-container>
+            <!--Required Column-->
+            <ng-container matColumnDef="required">
+              <th mat-header-cell *matHeaderCellDef class="colums-table" >Obligatorio</th>
+              <td mat-cell *matCellDef="let element" class="colums-table">
+                <mat-checkbox
+                [checked] = 'element.required'
+                (change)="requeridForm(element,$event.checked)"
+                  color="primary"
+                ></mat-checkbox>
+              </td>
+            </ng-container>
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="colums-table">Acciones</th>
+              <td mat-cell *matCellDef="let element" style="display: flex; justify-content: center;">
+                <button
+                  mat-icon-button
+                  type="button"
+                  color="warn"
+                  (click)="deleteCoverage(element)"
+                  data-qa-id="sc-rpmf-btn_delete_coverage_risk_types_commertial_plan_wizard"
+                >
+                  <em class="fal fa-trash text-xl"></em>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="colsCoverages"></tr>
+            <tr mat-row *matRowDef="let row; columns: colsCoverages"></tr>
+          </table>
+          <mat-paginator
+          #paginator
+          [hidePageSize]="true"
+          [pageSize]="5"
+        ></mat-paginator>
+        </form>
+      </mat-step>
+      <mat-step  required>
+        <form class="content_search">
+          <ng-template matStepLabel>Planes de servicio</ng-template>
+          <div class="coverages-actions">
+            <div class="coverages-add">
+              <span class="title-coverage">Planes de servicio</span>
+              <button
+                mat-button
+                type="button"
+                class="button-add-coverages"
+                (click)="openModalPlans('servicePlansControls')"
+                data-qa-id="sc-rpmf-btn_add_service_plan_risk_types_commertial_plan_wizard"
+              >
+                <em class="fal fa-plus-circle text-lg mr-2"></em>Añadir
+              </button>
+            </div>
+            <div class="coverages-search">
+              <mat-form-field appearance="outline" class="search_input">
+                <input
+                  matInput
+                  (keyup)="applyFilterServicePlan($event)"
+                  placeholder="Buscar"
+                  data-qa-id="sc-rpmf-input_search_service_plan_risk_types_commertial_plan_wizard"
+                />
+                <mat-icon matSuffix class="icon-search">search</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+           <div class="no-elements" *ngIf="dataSourceServicePlan.data.length === 0">
+            No se han asociado planes de servicio al plan comercial
+          </div>
+          <table
+            mat-table
+            #servicePlansTable
+            [dataSource]="dataSourceServicePlan"
+            class="w-full"
+            *ngIf="dataSourceServicePlan.data.length > 0"
+          >
+            <caption></caption>
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <td mat-cell *matCellDef="let element">{{ productService.getServicePlanById(element.id).name }}</td>
+            </ng-container>
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Descripción</th>
+              <td mat-cell *matCellDef="let element">
+                {{ productService.getServicePlanById(element.id).description }}
+              </td>
+            </ng-container>
+            <!-- requerid Column -->
+            <ng-container matColumnDef="requerid">
+              <th mat-header-cell *matHeaderCellDef class="colums-table">Obligatorio</th>
+              <td mat-cell *matCellDef="let element" class="colums-table">
+                <mat-checkbox
+                [checked]="element.required"
+                (change)="requeridForm(element, $event.checked)"
+                color="primary"
+                ></mat-checkbox>
+              </td>
+            </ng-container>
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="colums-table">Acciones</th>
+              <td mat-cell *matCellDef="let element" style="display: flex; justify-content: center;">
+                <button
+                  mat-icon-button
+                  type="button"
+                  color="warn"
+                  (click)="deleteServicePlan(element)"
+                  data-qa-id="sc-rpmf-btn_delete_service_plan_risk_types_commertial_plan_wizard"
+                >
+                  <em class="fal fa-trash text-xl"></em>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="colsServicePlans"></tr>
+            <tr mat-row *matRowDef="let row; columns: colsServicePlans"></tr>
+          </table>
+          <mat-paginator
+          #paginatorServicePlan
+          [hidePageSize]="true"
+          [pageSize]="5"
+        ></mat-paginator>
+        </form>
+      </mat-step>
+    </mat-stepper>
+  </div>
+  <mat-dialog-actions
+    [ngClass]="{
+      'button-actions-step1': stepper.selectedIndex === 0,
+      'button-actions': stepper.selectedIndex > 0
+    }"
+  >
+    <button
+      mat-button
+      type="button"
+      class="next-back-button"
+      (click)="stepper.previous()"
+      *ngIf="stepper.selectedIndex > 0"
+      data-qa-id="sc-rpmf-btn_go_back_risk_types_commertial_plan_wizard"
+    >
+      <em class="fas fa-angle-left"></em>
+      Volver
+    </button>
+
+    <button
+      mat-button
+      type="button"
+      class="next-back-button"
+      (click)="
+        stepper.selectedIndex === 2
+          ? formStep3.get('coverages')?.markAsTouched()
+          : '';
+        stepper.next()
+      "
+      *ngIf="stepper.selectedIndex < 2"
+      data-qa-id="sc-rpmf-btn_next_risk_types_commertial_plan_wizard"
+    >
+      Siguiente
+      <em class="fas fa-angle-right"></em>
+    </button>
+
+    <button
+      mat-button
+      type="button"
+      class="next-back-button"
+      [mat-dialog-close]="createCommertialPlan()"
+      *ngIf="stepper.selectedIndex ===2"
+      data-qa-id="sc-rpmf-btn_to_accept_risk_types_commertial_plan_wizard"
+    >
+      Aceptar
+    </button>
+  </mat-dialog-actions>
+</div>
+<ng-template #dcCommertialPlanModal let-data>
+  <mat-dialog-content>
+    <div class="text-right">
+      <button mat-icon-button (click)="dcCommertialPlanDialogRef.close()" data-qa-id="sc-rpmf-btn_dialog_ref_risk_types_commertial_plan_wizard">
+        <em class="fas fa-times text-primary text-lg"></em>
+      </button>
+    </div>
+    <div class="text-center mt-5 mb-10">
+      <em class="fad fa-exclamation-triangle unlink-icon"></em>
+    </div>
+    <p class="text-center font-bold">¿Seguro que quieres salir sin guardar?</p>
+    <p class="text-center mb-10">
+      Se descartará la configuración realizada para el plan comercial.
+    </p>
+  </mat-dialog-content>
+</ng-template>
