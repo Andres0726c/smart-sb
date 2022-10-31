@@ -17,7 +17,7 @@
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
-						"outputPath": "dist/browser",
+						"outputPath": "dist/apps/shell",
 						"index": "projects/shell/src/index.html",
 						"main": "projects/shell/src/main.ts",
 						"polyfills": "projects/shell/src/polyfills.ts",
@@ -188,7 +188,7 @@
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
-						"outputPath": "dist/browser/auth",
+						"outputPath": "dist/apps/auth",
 						"index": "projects/auth/src/index.html",
 						"main": "projects/auth/src/main.ts",
 						"polyfills": "projects/auth/src/polyfills.ts",
@@ -350,7 +350,7 @@
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
-						"outputPath": "dist/browser/product-parameterization",
+						"outputPath": "dist/apps/product-parameterization",
 						"index": "projects/product-parameterization/src/index.html",
 						"main": "projects/product-parameterization/src/main.ts",
 						"polyfills": "projects/product-parameterization/src/polyfills.ts",
@@ -512,7 +512,7 @@
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
-						"outputPath": "dist/browser/policy-management",
+						"outputPath": "dist/apps/policy-management",
 						"index": "projects/policy-management/src/index.html",
 						"main": "projects/policy-management/src/main.ts",
 						"polyfills": "projects/policy-management/src/polyfills.ts",
