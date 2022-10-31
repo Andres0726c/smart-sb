@@ -7,17 +7,17 @@ describe('ModalRenewalComponent', () => {
   let fixture: ComponentFixture<ModalRenewalComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ ModalRenewalComponent ]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(ModalRenewalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    TestBed.configureTestingModule({
+      declarations: [],
+      providers: [
+        ModalRenewalComponent,
+      ],
+    });
+    component = TestBed.inject(ModalRenewalComponent);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

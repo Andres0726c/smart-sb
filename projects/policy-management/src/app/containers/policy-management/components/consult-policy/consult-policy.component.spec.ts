@@ -1,5 +1,4 @@
-import { DialogService } from 'primeng/dynamicdialog';
-import { DialogModule } from 'primeng/dialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
   ResponseDTO,
   ResponseErrorDTO,
@@ -11,8 +10,6 @@ import {
   ComponentFixture,
   TestBed,
   fakeAsync,
-  getTestBed,
-  tick,
 } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -20,13 +17,18 @@ import { of, Observable } from 'rxjs';
 
 import { ConsultPolicyComponent } from './consult-policy.component';
 import { ConsultPolicyService } from './services/consult-policy.service';
+import { By } from '@angular/platform-browser';
 
 describe('ConsultPolicyComponent', () => {
   let component: ConsultPolicyComponent;
   let consultPolicyService: ConsultPolicyService;
+  let fixture: ComponentFixture<ConsultPolicyComponent>;
+  let ref: DialogService;
 
   beforeEach(() => {
     consultPolicyService = ConsultPolicyService.prototype;
+    ref = DialogService.prototype
+
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       declarations: [],
@@ -35,9 +37,11 @@ describe('ConsultPolicyComponent', () => {
         ConsultPolicyComponent,
         MessageService,
         FormBuilder,
+        { provide: DynamicDialogRef, useValue: { onClose: of(true) } }
       ],
     });
-    component = TestBed.inject(ConsultPolicyComponent);
+    fixture = TestBed.createComponent(ConsultPolicyComponent);
+    component = fixture.componentInstance;
   });
 
   it('should create', () => {
@@ -81,7 +85,7 @@ describe('ConsultPolicyComponent', () => {
     expect(component.filters.pageNumber).toEqual(1);
   });
 
-  it('clearSearch',()=>{
+  it('clearSearch', () => {
     component.clearSearch()
     expect(component.policies).toEqual([])
     expect(component.totalRecords).toEqual(0)
@@ -105,7 +109,7 @@ describe('ConsultPolicyComponent', () => {
       .mockReturnValueOnce(of(response));
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual(['test']);
-  })); 
+  }));
 
 
   it('consult error 400', fakeAsync(() => {
@@ -124,9 +128,34 @@ describe('ConsultPolicyComponent', () => {
     jest
       .spyOn(consultPolicyService, 'getPolicies')
       .mockReturnValueOnce(of(response));
-    
+
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual([]);
   }));
+
+  it('disable items (Activa)', () => {
+    component.disabledItem('Activa')
+    expect(component.items[0].disabled).toBeFalsy();
+  });
+
+  it('disable items (Cancelada)', () => {
+    component.disabledItem('Cancelada')
+    expect(component.items[0].disabled).toBeTruthy();
+  });
+
+  it('show modal consult', () => {
+    component.selectedPolicy = { idPolicy: 1 }
+    const refOpenSpy = jest.spyOn(ref, 'open')
+    component.showModalConsulDetails()
+    expect(refOpenSpy).toHaveBeenCalled();
+  });
+
+  it('show modal cancelacion/rehabilitación', () => {
+    component.selectedPolicy = { idPolicy: 1 }
+    const refOpenSpy = jest.spyOn(ref, 'open')
+    component.showModal('Cancelacion/Rehabilitación', component.selectedPolicy, 'test')
+    expect(refOpenSpy).toHaveBeenCalled();
+  });
+
   
 });

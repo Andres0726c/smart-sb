@@ -14,26 +14,26 @@ import { ConsultPolicyService } from '../services/consult-policy.service';
   templateUrl: './modal-renewal.component.html',
   styleUrls: ['./modal-renewal.component.scss'],
 })
-export class ModalRenewalComponent implements OnInit {
+export class ModalRenewalComponent {
   val: string = '';
   policy!: Policy
 
   constructor(
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    public fb: FormBuilder,
-    public dialogService: DialogService,
-    public messageService: MessageService,
-    public consultPolicyService: ConsultPolicyService
+    // public ref: DynamicDialogRef,
+    // public config: DynamicDialogConfig,
+    // public fb: FormBuilder,
+    // public dialogService: DialogService,
+    // public messageService: MessageService,
+    // public consultPolicyService: ConsultPolicyService
   ) {}
 
-  ngOnInit(): void {
-    this.policy = this.config.data.policy;
-    console.log(this.policy);
+  //ngOnInit(): void {
+    // this.policy = this.config.data.policy;
+    // console.log(this.policy);
     
-  }
+  //}
 
-  cancelRenewal() {
-    this.ref.close();
-  }
+  //cancelRenewal() {
+    // this.ref.close();
+  //}
 }

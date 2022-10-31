@@ -100,7 +100,7 @@ export class ConsultPolicyComponent {
       {
         label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
-          this.showModalRenewal('Renovación', this.selectedPolicy, 'Renovar');
+          //this.showModalRenewal('Renovación', this.selectedPolicy, 'Renovar');
         }
       },
       {
@@ -203,38 +203,38 @@ export class ConsultPolicyComponent {
     this.totalRecords = 0;
   }
 
-  showModalRenewal(process: string, policy: any, buttonAction: any) {
-    let policyRes;
-    this.consultPolicyService.getPolicyById(policy.idPolicy).subscribe({
-      next: (res) => {
-        if (res.dataHeader.code && (res.dataHeader.code = 200)) {
-          policyRes = res.body;
-          this.totalRecords = res.dataHeader.totalRecords;
+  // showModalRenewal(process: string, policy: any, buttonAction: any) {
+  //   let policyRes;
+  //   this.consultPolicyService.getPolicyById(policy.idPolicy).subscribe({
+  //     next: (res) => {
+  //       if (res.dataHeader.code && (res.dataHeader.code = 200)) {
+  //         policyRes = res.body;
+  //         this.totalRecords = res.dataHeader.totalRecords;
 
-          const ref = this.dialogService.open(ModalRenewalComponent, {
-            data: {
-              process: process,
-              policy: policyRes,
-              buttonAction: buttonAction
-            },
-            header: process,
-            modal: true,
-            dismissableMask: true,
-            width: '80%',
-            contentStyle: { 'max-height': '600px', overflow: 'auto' },
-            baseZIndex: 10000,
-          });
+  //         const ref = this.dialogService.open(ModalRenewalComponent, {
+  //           data: {
+  //             process: process,
+  //             policy: policyRes,
+  //             buttonAction: buttonAction
+  //           },
+  //           header: process,
+  //           modal: true,
+  //           dismissableMask: true,
+  //           width: '80%',
+  //           contentStyle: { 'max-height': '600px', overflow: 'auto' },
+  //           baseZIndex: 10000,
+  //         });
 
-        } 
-      },
-      error: (error: ResponseErrorDTO) => {
-        console.error('error', error);
-      },
-    });
-  }
+  //       } 
+  //     },
+  //     error: (error: ResponseErrorDTO) => {
+  //       console.error('error', error);
+  //     },
+  //   });
+  // }
 
   showModalConsulDetails(){
-    const ref = this.dialogService.open(PolicyDetailsComponent,{
+    this.dialogService.open(PolicyDetailsComponent,{
       data: {
         idPolicy: this.selectedPolicy.idPolicy
       },

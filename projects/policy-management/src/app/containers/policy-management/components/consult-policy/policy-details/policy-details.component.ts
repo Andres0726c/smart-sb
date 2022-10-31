@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Policy } from 'projects/policy-management/src/app/core/interfaces/policy';
 import { ConsultPolicyService } from '../services/consult-policy.service';
 @Component({
@@ -8,9 +8,11 @@ import { ConsultPolicyService } from '../services/consult-policy.service';
   styleUrls: ['./policy-details.component.scss']
 })
 export class PolicyDetailsComponent implements OnInit {
+  component: any;
+  [x: string]: any;
   isLoading = true;
   policy!: Policy
-  constructor(public config: DynamicDialogConfig, public consultPolicyService: ConsultPolicyService,) {}
+  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, public consultPolicyService: ConsultPolicyService) { }
 
   ngOnInit(): void {
     this.consultPolicyService.getPolicyById(this.config.data.idPolicy).subscribe({
@@ -22,6 +24,10 @@ export class PolicyDetailsComponent implements OnInit {
       },
       error: (err) => this.isLoading = false,
     });
+  }
+
+  close() {
+    this.ref.close(true)
   }
 
 }
