@@ -85,9 +85,10 @@
                         <span>Identificación</span>
                         <span class="p-input-icon-right w-full">
                             <i class="pi pi-id-card"></i>
-                            <input type="text" pInputText formControlName="insuredDocumentNumber" maxlength="30"
-                                placeholder=" Identificación" mask="9999999999" class="w-full"
-                                [required]="isRequired['insuredDocument']">
+                            <p-inputMask formControlName="insuredDocumentNumber" class="w-full" styleClass="w-full"
+                                placeholder="Identificación" slotChar="" [autoClear]="false"
+                                [required]="isRequired['insuredDocument']" mask="******************************">
+                            </p-inputMask>
                         </span>
                         <small></small>
                     </div>
