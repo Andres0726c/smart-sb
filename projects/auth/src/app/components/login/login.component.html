@@ -11,8 +11,9 @@
             <div>
                 <label>Usuario</label>
                 <span class="p-input-icon-right flex flex-col">
-                    <i class="pi pi-user"></i>
-                    <input type="email" pInputText formControlName="email" (keydown)="hasEnterKey($event)" class="block text-base" placeholder="usuario" class="w-full" required>
+                    <em class="pi pi-user"></em>
+                    <input data-qa-id="sc-rpmf-input_email" 
+                        type="email" pInputText formControlName="email" (keydown)="hasEnterKey($event)" class="block text-base" placeholder="usuario" class="w-full" required>
                 </span>
                 <div *ngIf="formData.get('email')?.touched || formData.get('email')?.dirty">
                     <small class="p-error block" *ngIf="formData.get('email')?.hasError('pattern')">Ingrese un correo electrónico.</small>
@@ -21,12 +22,14 @@
             </div>
             <div>
                 <label>Contraseña</label>
-                <p-password [toggleMask]="true" formControlName="password" (keydown)="hasEnterKey($event)" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
+                <p-password data-qa-id="sc-rpmf-input_password" 
+                    [toggleMask]="true" formControlName="password" (keydown)="hasEnterKey($event)" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
                 <small class="p-error block" *ngIf="formData.get('password')?.hasError('required')&&(formData.get('password')?.touched || formData.get('password')?.dirty)">Ingrese su contraseña.</small>
             </div>
         </div>
         <div class="py-3">
-            <p-button *ngIf="!isLoading" (click)="logIn()" label="Iniciar sesión" styleClass="p-button"></p-button>
+            <p-button data-qa-id="sc-rpmf-login" 
+                *ngIf="!isLoading" (click)="logIn()" label="Iniciar sesión" styleClass="p-button"></p-button>
             <div *ngIf="isLoading" class="p-progress-spinner lib-progress-indicator__infinite" [style]="{width: '50px', height: '50px'}">
                 <svg
                     class="p-progress-spinner-svg"
