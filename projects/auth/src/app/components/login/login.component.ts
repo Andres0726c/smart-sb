@@ -88,10 +88,6 @@ export class LoginComponent implements OnInit {
       return error;
     }
   }
-
-  selectCompany() {
-    console.log('data', this.formCompany)
-  }
   
   async setCompany(company: any) {
     this.showCompanySelection = false;
@@ -111,7 +107,7 @@ export class LoginComponent implements OnInit {
       {
         data: {message:'El usuario no cuenta con los permisos para ingresar a la aplicación. Por favor contacte al administrador del sistema.'}
     }) */
-    alert('algo falló')
+    alert('El usuario no cuenta con los permisos para ingresar a la aplicación. Por favor contacte al administrador del sistema.')
     this.cognitoService.signOut();
   }
 
