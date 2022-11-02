@@ -2,10 +2,22 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { CognitoService } from 'commons-lib';
-import { ProductService } from '../../services/product.service';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
 import { SharedModule } from '../../shared/shared.module';
 import { MainComponent } from './main.component';
+
+class DialogMock {
+  open() {
+    return {
+      afterClosed: () => of([{
+        id         : 1,
+        name       : 'name test return',
+        description: 'description test return'
+      }])
+    };
+  }
+}
 
 describe('MainComponent', () => {
   let component: MainComponent;
@@ -17,8 +29,12 @@ describe('MainComponent', () => {
       declarations: [MainComponent],
       providers: [
         FormBuilder,
-        CognitoService,
-        ProductService
+        {
+          provide: Router,
+          useValue: {
+            url: '/productos'
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
@@ -26,16 +42,38 @@ describe('MainComponent', () => {
     fixture = TestBed.createComponent(MainComponent);
     component = fixture.componentInstance;
 
-    const spy = jest.fn().mockImplementation(() =>
-      Promise.resolve({ username: 'test' })
-    );
+    jest.spyOn(component.cognitoService, 'getUser').mockResolvedValue({
+      username: 'test',
+      attributes: {
+        'custom:sessionInformation': '{ id: 3 }'
+      },
+      signInUserSession: {
+        accessToken: {
+          payload: {
+            exp: 123456
+          }
+        }
+      }
+    });
 
-    jest.spyOn(component.cognitoService, 'getUser').mockImplementation(spy);
+    jest.spyOn(component.cognitoService, 'signOut').mockResolvedValue({
+      username: 'test',
+    });
+
+    component.productService.initialParameters.get('productName')?.setValue('test');
+    component.productService.initialParameters.get('businessCode')?.setValue('test');
+    component.productService.initialParameters.get('insuranceLine')?.setValue('test');
+
+    jest.spyOn(component.productService,'saveProduct').mockImplementation();
 
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it(`signOut`, () => {
+    expect(component.signOut()).toBeUndefined();
   });
 });

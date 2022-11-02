@@ -21,7 +21,7 @@
     "build:prod": "npx nx run-many --target=build --projects=shell,auth,product-parameterization,policy-management --configuration=prod --parallel=4 --skip-nx-cache && npm run deploy",
     "deploy": "rm -rf dist && mkdir dist && cd dist && mkdir browser && cp -r ../deploy/apps/shell/* browser && cp -r ../deploy/apps/auth browser && cp -r ../deploy/apps/product-parameterization browser && cp -r ../deploy/apps/policy-management browser",
     "watch": "ng build --watch --configuration development",
-    "test": "npx nx affected --base=HEAD~1 --target=test",
+    "test": "npx nx run-many --target=test --parallel=5 --skip-nx-cache",
     "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js",
     "postinstall": "node ./decorate-angular-cli.js"
   },

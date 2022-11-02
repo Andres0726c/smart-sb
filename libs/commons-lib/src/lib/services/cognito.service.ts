@@ -27,6 +27,7 @@ export class CognitoService {
     .then((value) => {
       if (value) {
         this.authenticationSubject.next(true);
+        this.sessionTimer();
       } else {
         this.authenticationSubject.next(false);
       }

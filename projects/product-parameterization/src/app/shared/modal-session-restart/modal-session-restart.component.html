@@ -1,0 +1,38 @@
+<div class="container">
+    <form class="form-login" [formGroup]="formData" ngNativeValidate>
+        <div class="container__message">
+            <em class="icon_alert picto-alert"></em>
+            <div class="text">
+                <h5 class="text text_message">Hemos detectado inactividad por parte del usuario.</h5>
+                <h5 class="text text_message">Si desea continuar trabajando por favor ingrese su contraseña a continuación:</h5>
+            </div>
+        </div>
+
+        <div class="container-alert" *ngIf = "!isDataValid">
+            <em matSuffix class="fal fa-info-circle"></em>
+            La contraseña es incorrecta
+        </div>
+        
+        <mat-form-field appearance="outline" class="fields"> 
+            <input #passwordLogin matInput [type]=passwordTypeInput id="passwordRestart" formControlName="password" [errorStateMatcher]="matcher"
+            required="true" autocomplete="off" placeholder="contraseña" data-qa-id="sc-rpmf-input_password_idle" (keydown.enter)="logIn()">
+            <em matSuffix [ngClass]="iconpassword" class = "text-blue-600 text-xl" (click)="showPassword()" ></em>
+            <mat-error class="text-error" *ngIf="hasError('password', 'required')">Ingrese su contraseña</mat-error> 
+        </mat-form-field>
+
+        <div class="container__buttons" *ngIf="!isLoading">
+            <button mat-button class="bt bt-secondary button" [mat-dialog-close]="false" data-qa-id="sc-rpmf-button_close_modal_idle">Cerrar</button>
+            <button mat-button class="bt bt-primary button" data-qa-id="sc-rpmf-button_accept_idle" (click)="logIn()">Aceptar</button>
+        </div>
+
+        <div class="container__buttons">
+            <mat-progress-spinner
+                *ngIf="isLoading"
+                diameter="24" 
+                color="primary"
+                mode="indeterminate">
+            </mat-progress-spinner>
+        </div>
+
+    </form>
+</div>

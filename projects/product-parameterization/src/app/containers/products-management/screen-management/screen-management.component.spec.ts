@@ -46,10 +46,6 @@ describe('ScreenManagementComponent', () => {
       providers: [ScreenManagementComponent,
         FormBuilder,
         {
-          ProductService,
-          useValue: new MockService()
-        },
-        {
           provide: Router,
           useClass: MockRouter
         },
@@ -75,5 +71,14 @@ describe('ScreenManagementComponent', () => {
   
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('unloadHandler', () => {
+    const event: any = { name: 'test' };
+
+    jest.spyOn(service, 'noProductChanges').mockReturnValue(false);
+    service.initialParameters.get('insuranceLine')?.setValue('test');
+
+    expect(component.unloadHandler(event)).toBeUndefined();
   });
 });
