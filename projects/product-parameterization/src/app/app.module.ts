@@ -4,10 +4,9 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { getPaginatorIntl } from '../assets/lang/paginator-intl';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ProductService } from './services/product.service';
+import { ModalSessionRestartModule } from './shared/modal-session-restart/modal-session-restart.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +14,8 @@ import { ProductService } from './services/product.service';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ModalSessionRestartModule
   ],
   providers: [
     FormBuilder,
