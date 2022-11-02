@@ -28,14 +28,14 @@ export class ModalPolicyActionsComponent implements OnInit {
     this.formProcess = fb.group({
       processDate: fb.control(null),
       causeType: fb.control(null, Validators.required),
-      immediate:fb.control(1),
+      immediate:fb.control(0),
       applicationProcess: fb.control(this.config.data.process),
       observation: fb.control(null, Validators.maxLength(2000))
     });
   }
 
   ngOnInit(): void {
-    this.getCauses(this.config.data.process); 
+    this.getCauses(this.config.data.process);
   }
 
   getCauses(applicationProcess: string){
@@ -45,29 +45,27 @@ export class ModalPolicyActionsComponent implements OnInit {
       } )
     }
 
-  getPremium(){
-    this.modalAPService.getPremium()
+  getPremium(idPolicy: any, deletionDate: any){
+    
+    this.modalAPService.getPremium(idPolicy, deletionDate)
     .subscribe( premium => {
       this.premium = premium.body;
     } )
   }
 
   cancelPolicy() {
-console.log('processValue', this.formProcess.value);
 
     if (this.formProcess.valid) {
       this.modalAPService
         .postCancelPolicy(this.config.data.policy ,this.formProcess.value)
         .subscribe((resp: any) => {
-          console.log('polizas', this.config.data.policy);
-          console.log('formulario', this.formProcess.value);
           
           if(resp.dataHeader.code != 500){
             this.ref.close(true)
             this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
           } else  {
               this.messageError = true;
-              return this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
+              this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
           }
         }, 
         // (error) => {        
@@ -85,10 +83,10 @@ console.log('processValue', this.formProcess.value);
         .subscribe((resp: any) => {
           if(resp.dataHeader.code != 500){
             this.ref.close(true)
-            this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');   //revisar estos retornos y el envío de post
+            this.showSuccess('success', 'Rehabilitación exitosa', 'La póliza ha sido rehabilitada');
           } else {
               this.messageError = true;
-              return this.showSuccess('error', 'Error al rehabilitar', resp.dataHeader.status);
+              this.showSuccess('error', 'Error al rehabilitar', resp.dataHeader.status);
           }  
         },
         //  (error) => {          
@@ -100,6 +98,7 @@ console.log('processValue', this.formProcess.value);
   }
 
     verifyDate() {
+      
     const date = new Date(
       this.formProcess.get('processDate')?.value
     ).toISOString();
@@ -109,13 +108,14 @@ console.log('processValue', this.formProcess.value);
     const expirationDate = new Date(
       this.config.data.policy.expirationDate
     ).toISOString();
-
+    
     if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
+      this.getPremium(this.config.data.policy.idPolicy, date) 
       this.formProcess.get('causeType')?.enable();
       this.formProcess.get('observation')?.enable();
     } else {
       this.formProcess.reset()
-      this.formProcess.get('immediate')?.setValue(1);
+      this.formProcess.get('immediate')?.setValue(0);
       this.formProcess.get('applicationProcess')?.setValue(this.config.data.process)
       this.formProcess.get('causeType')?.disable();
       this.formProcess.get('observation')?.disable();

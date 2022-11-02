@@ -29,6 +29,16 @@
             <span class="text-primary">Fin de póliza:</span>
             {{ config.data.policy.expirationDate }}
         </div>
+
+        <div>
+            <span class="text-primary">Valor total prima:</span>
+            {{config.data.policy.premiumValue | currency: 'COP'}}
+        </div>
+
+        <div>
+            <span class="text-primary">Valor a devolver al cliente:</span>
+            {{ premium?.value | currency: 'COP' }}
+        </div>
     </div>
     <p-divider></p-divider>
     <form [formGroup]="formProcess">
@@ -54,35 +64,6 @@
                     <i class="pi pi-calendar"></i> 
                 </span>
             </div>
-            <!-- <div>
-                <label>Seleccione la fecha de anulación</label>
-                <p-calendar formControlName="processDate" (onSelect)="verifyDate()" dateFormat="yy-mm-dd"
-                    [showIcon]="true" appendTo="body" [showTime]="true" hourFormat="24" [showSeconds]="true"
-                    styleClass="w-full" placeholder="aaaa/mm/dd" mask="9999/99/99">
-                </p-calendar>
-            </div> -->
-
-            <div *ngIf="config.data.process === 'Cancelación'">
-                <label>Valor total prima</label>
-                <input type="text" pInputText [disabled]="true" class="w-full"/>
-            </div>
-
-            <div *ngIf="config.data.process === 'Cancelación'">
-                <label>Valor a devolver al cliente</label>
-                <input type="text" pInputText [disabled]="true" class="w-full"/>
-            </div>
-
-            <!-- <div *ngIf="config.data.process === 'Cancelación'">
-                <label>Valor total prima</label>
-                <p-inputNumber mode="currency" currency="USD" locale="en-US" [readonly]="true" class="w-full">
-                </p-inputNumber>
-            </div> -->
-
-            <!-- <div *ngIf="config.data.process === 'Cancelación'">
-                <label>Valor a devolver al cliente</label>
-                <p-inputNumber mode="currency" currency="USD" locale="en-US" [readonly]="true" class="w-full">
-                </p-inputNumber>
-            </div> -->
 
             <div class="col-span-2">
                 <label>Observación</label>
