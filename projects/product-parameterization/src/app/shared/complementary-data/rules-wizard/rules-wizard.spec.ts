@@ -259,11 +259,15 @@ describe('RulesWizardComponent', () => {
         dbColumnName:['nmLabel']
       },
     ];
-    component.rulesModal.remotePaginator = false;
+    component.rulesModal.remotePaginator = true;
+    component.searchRule = 'testing';
+    jest.useFakeTimers();
+    component.pageChanged({ pageSize: 5, pageIndex: 1, length: 5 })
+    jest.runOnlyPendingTimers();
 
     expect(
-      component.pageChanged({ pageSize: 5, pageIndex: 1, length: 5 })
-    ).toBeDefined();
+      component.paginator
+    ).toBeUndefined();
   });
 
   it('loadData', async () => {
@@ -401,6 +405,50 @@ describe('RulesWizardComponent', () => {
     component.stepParameters = [{name: "idProduct",type: "number",value: ""}]
     expect(component.setParameters({code:"prdct", description:"Producto", businessCode:"prdct"},"idProduct")).toBeUndefined();
 
+  });
+
+  it('toggleSelection', () => {
+    const row: ElementTableSearch = {
+      id: 1,
+      name: 'test'
+    }
+    expect(component.toggleSelection(false, row)).toBeUndefined();
+
+  });
+
+  it('isObject', () => {
+    expect(component.isObject({id: 1})).toBeTruthy();
+
+  });
+
+  it('returnObj', () => {
+    expect(component.returnObj({id: 1, object: {id: 1}, array: [{id: 1}, {id: 2}]})).toBeDefined();
+
+  });
+
+  it('isAllDisplayedSelected', () => {
+    component.ruleSelection = new SelectionModel<ElementTableSearch>(true, []);
+
+    let obj = {
+      id: 1,
+      name: 'name',
+      description: '2',
+    };
+
+    component.ruleSelection.select(obj);
+
+    expect(component.isAllDisplayedSelected()).toBeDefined();
+
+    component.rulesDataSource = new MatTableDataSource<any>([
+      obj,
+      {
+        id: 2,
+        name: 'abc',
+        description: 'abc',
+      },
+    ]);
+
+    expect(component.isAllDisplayedSelected()).toBeDefined();
   });
 
 });
