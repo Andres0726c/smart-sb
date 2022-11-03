@@ -1,0 +1,28 @@
+{
+    "/tipos-moneda": [
+      { "id": 1, "name": "Peso Colombiano","description": "COP"  },
+      { "id": 2, "name": "Dolar Estadounidense ", "description": "USD" },
+      { "id": 3, "name": "Peso Mexicano", "description": "CLP" }
+    ],
+    "/metodos-pago": [
+      { "id": 1, "name": "Efectivo", "description": "Efectivo en pesos colombianos" },
+      { "id": 2, "name": "Transacción electrónica", "description": "Transaccioón electrónica de una entidad bancaria" },
+      { "id": 3, "name": "Tarjeta credito", "description": "Tarjeta de crédito unicamente MasterCard" }
+    ],
+    "/grupo-objetivo": [
+      { "id": 1, "name": "Persona natural", "description": "Natural" },
+      { "id": 2, "name": "Persona juridica", "description": "Júridica" },
+      { "id": 3, "name": "Familiar", "description": "Familia residente en Colombia" }
+    ],
+    "/canal-venta": [
+      { "id": 1, "name": "Ventanilla", "description": "Venta realizada por ventanilla" },
+      { "id": 2, "name": "Internet", "description": "Venta realizada por medios digitales" },
+      { "id": 3, "name": "Telefonica", "description": "Venta realizada por telefono" }
+    ],
+    "/periodo-facturacion": [
+      { "id": 1, "name": "Mensual", "description": "Periodo de facturación mensual" },
+      { "id": 2, "name": "Bimestral", "description": "Periodo de facturación bimestral" },
+      { "id": 3, "name": "Trimestral", "description": "Periodo de facturación trimestral" },
+      { "id": 4, "name": "Anual", "description": "Periodo de facturación anual" }
+    ]
+  }

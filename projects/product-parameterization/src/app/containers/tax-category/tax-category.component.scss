@@ -1,0 +1,98 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+.content_title {
+  flex-direction: column;
+  padding: 1rem 0;
+}
+.title {
+  font-family: Roboto Condensed !important;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+.subtitle {
+  font-family: Roboto Condensed !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+.container-taxes {
+  background: $grayscaleWhite;
+  margin-left: 20px;
+  margin-right: 10px;
+  min-width: none;
+  @include mq-max(lg) {
+    min-width: 700px;
+  }
+}
+.content_search_taxes {
+  font-family: Roboto condensed !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 30px;
+  .bt {
+    color: $primaryBase;
+    width: 204px;
+    height: 35px;
+  }
+  .search_input_taxes {
+    max-width: 300px;
+    width: 277.07px;
+    height: 56px;
+    input {
+      padding-left: 10px;
+      font-size: 15px;
+    }
+    .icon-search_taxes {
+      color: $primaryBase;
+      position: absolute;
+      top: -20px;
+      right: 5px;
+    }
+  }
+}
+::ng-deep {
+  .content_search_taxes .mat-form-field-outline-start {
+    border-radius: 28px 0 0 28px !important;
+    min-width: 28px !important;
+  }
+}
+::ng-deep .content_search_taxes .mat-form-field-outline-end {
+  border-radius: 0 28px 28px 0 !important;
+}
+tr.mat-header-row.cdk-header-row.ng-star-inserted {
+  background: $grayscaleLevel-6;
+  border-radius: 8px;
+}
+th.mat-header-cell {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 120%;
+  color: $grayscaleBase;
+  padding: 10px;
+  font-family: Roboto condensed !important;
+}
+.text-center {
+  text-align: center;
+}
+.icon-button-add {
+  color: $primaryBase;
+  font-size: 20px;
+  margin-right: 10px;
+  @include mq-max(md) {
+    margin-right: 5px;
+  }
+}

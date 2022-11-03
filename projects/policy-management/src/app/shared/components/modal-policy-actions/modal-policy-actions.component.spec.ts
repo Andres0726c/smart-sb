@@ -8,7 +8,6 @@ import {
 import { ModalPolicyActionsComponent } from './modal-policy-actions.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
-import { ConsultPolicyService } from 'projects/policy-management/src/app/containers/policy-management/components/consult-policy/services/consult-policy.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ModalPolicyActionsService } from './services/modal-policy-actions.service';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';

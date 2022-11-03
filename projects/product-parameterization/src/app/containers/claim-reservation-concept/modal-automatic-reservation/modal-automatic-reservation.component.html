@@ -1,0 +1,139 @@
+<div class="content-close" (click)="closeModal()">
+  <em class="fal fa-times fa-2x text-close"></em>
+</div>
+<div class="content">
+  <div class="content_title">
+    <h3 class="title">{{ data.title }}</h3>
+    <span class="subtitle">{{ data.subtitle }}</span>
+  </div>
+  <div class="content_search">
+    <section>
+      <mat-form-field
+        appearance="outline"
+        class="search_input"
+      >
+        <input
+          matInput
+          placeholder="Buscar"
+          (keyup)="recallFilter = true; applyFilter($event)"
+          data-qa-id="sc-rpmf-input_search_filter_concept_reservation"
+        />
+        <em matSuffix class="far fa-search fa-lg icon-search"></em>
+      </mat-form-field>
+    </section>
+    <div class="container-buttons">
+      <button type="button" class="createRel" (click)="addConcept()" data-qa-id="sc-rpmf-btn_open_modal_concept">
+        <em class="fal fa-plus-circle"></em>
+        Añadir concepto
+      </button>
+      <button
+        [disabled]="selection.selected.length === 0"
+        mat-raised-button
+        [class]="
+          selection.selected.length === 0 ? 'bt-delete__disabled' : 'bt-delete'
+        "
+        class="bt-delete"
+        (click)="deleteConcept()"
+        data-qa-id="sc-rpmf-btn_concept_reservation"
+      >
+        <em class="far fa-trash"></em>
+        Eliminar
+      </button>
+    </div>
+  </div>
+  <table mat-table [dataSource]="dataSource" style="width: 100%" data-qa-id="sc-rpmf-table_concept_reservation">
+    <caption></caption>
+
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox
+          (change)="$event ? masterToggle() : null"
+          [checked]="selection.hasValue() && isAllDisplayedSelected()"
+          [indeterminate]="selection.hasValue() && isSomeDisplayedSelected()"
+          color="primary"
+          data-qa-id="sc-rpmf-check-all-concept-reservation"
+        ></mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selection.toggle(row) : null"
+          [checked]="selection.isSelected(row)"
+          color="primary"
+          data-qa-id="sc-rpmf-check-concept-reservation"
+        ></mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- reservation-concept Column -->
+    <ng-container matColumnDef="reservation-concept">
+      <th mat-header-cell *matHeaderCellDef>Concepto de reserva</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- automatic-reservation Column -->
+    <ng-container matColumnDef="automatic">
+      <th mat-header-cell *matHeaderCellDef>Reserva automática?</th>
+      <td mat-cell *matCellDef="let element" >
+        <mat-checkbox
+          [checked]="element.automatic"
+          (change)="requeridForm(element, $event.checked)"
+          color="primary"
+          class="checked"
+          (click)="removeRule(element)"
+          data-qa-id="sc-rpmf-checkbox_automatic_reservation"
+        ></mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- rule Column -->
+    <ng-container matColumnDef="rule">
+      <th mat-header-cell *matHeaderCellDef>Regla de cálculo</th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        <section class="input input-rule">
+          <mat-form-field
+            type="button"
+            class="example-chip-list"
+            appearance="outline"
+            (click)="openModalRule(element.id, element.automatic)"
+            data-qa-id="sc-rpmf-input_open_modal_calculation_rule"
+          >
+            <mat-chip-list class="chip-list" [disabled]="!element.automatic">
+              <mat-chip class="chip" *ngIf="element.calcRule?.id" (removed)="removeRule(element)">
+                <span class="name-rule">{{element.calcRule.name}}</span>
+                <button matChipRemove data-qa-id="sc-rpmf-btn_remove_calculation_rule">
+                  <em class="fal fa-times-circle chip__icon"></em>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
+            <span class="mat-chip-placeholder" *ngIf="!element.calcRule?.id"
+              >Seleccionar</span
+            >
+            <em class="fas fa-caret-down custom-icon"></em>
+          </mat-form-field>
+        </section>
+        <label *ngIf="element.automatic && !element.calcRule?.id" style="font-size: 75%;color: red;margin-left: 5px;"> Seleccione una opción </label>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <div class="no-elements" *ngIf="dataSource.data.length === 0">
+    No hay elementos disponibles para asociar
+  </div>
+
+  <mat-paginator
+    #paginatorConcept
+    [hidePageSize]="true"
+    pageSize="5"
+    [showFirstLastButtons]="true"
+    data-qa-id="sc-rpmf-paginator_modal_concept_reservation"
+  >
+  </mat-paginator>
+  
+  <button mat-button class="button-add" [mat-dialog-close]="addElements()" [disabled]="checkElements()" data-qa-id="sc-rpmf-btn_add_reservation_concepts">
+    <em class="fal fa-plus-circle icon-button-add"  ></em>Aceptar
+  </button>  
+</div>

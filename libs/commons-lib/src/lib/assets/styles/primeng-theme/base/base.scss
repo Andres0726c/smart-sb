@@ -1023,6 +1023,11 @@ p-inputswitch.ng-dirty.ng-invalid>.p-inputswitch {
   color: var(--primary-base);
 }
 
+.p-input-icon-left>em:first-of-type {
+  left: 1rem;
+  color: var(--primary-base);
+}
+
 .p-input-icon-left>.p-inputtext {
   padding-left: 2.5rem;
 }
@@ -1034,6 +1039,17 @@ p-inputswitch.ng-dirty.ng-invalid>.p-inputswitch {
 .p-input-icon-right>i:last-of-type {
   right: 1rem;
   color: var(--primary-base);
+}
+
+.p-input-icon-right>em:last-of-type {
+  right: 1rem;
+  color: var(--primary-base);
+}
+
+.p-input-icon-left>em, .p-input-icon-right>em {
+  position: absolute;
+  top: 50%;
+  margin-top: -0.5rem;
 }
 
 .p-input-icon-right>.p-inputtext {

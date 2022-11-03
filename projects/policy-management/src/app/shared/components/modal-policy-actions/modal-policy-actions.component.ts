@@ -24,7 +24,6 @@ export class ModalPolicyActionsComponent implements OnInit {
     public dialogService: DialogService,
     public messageService: MessageService
   ) {
-    console.log('config', config)
     this.formProcess = fb.group({
       processDate: fb.control(null),
       causeType: fb.control(null, Validators.required),
@@ -35,7 +34,7 @@ export class ModalPolicyActionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCauses(this.config.data.process);
+    this.getCauses(this.config.data.process); 
   }
 
   getCauses(applicationProcess: string){

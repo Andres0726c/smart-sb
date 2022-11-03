@@ -1,0 +1,55 @@
+<div>  
+    <app-no-data-screen
+      [data]="productService.servicePlans"
+      [layoutType]="'full'"
+      [emptyTitle]="'Planes de Servicio'"
+      [emptySubTitle]="'Especifique y defina los planes de servicio'"
+      [emptyText]="'Sin planes de servicio'"
+      [emptySubText]="'No se ha asociado ningún plan de servicio al producto.'"
+      (action)="openToAdd()">
+    </app-no-data-screen>
+  
+    <div class="container-boxes" *ngIf="productService.servicePlans.length>0">
+      <section class="container-tree">
+        <div class="container-tree__header">
+          <span class="container-tree__header__title">Planes de servicio</span>
+          <button mat-button class="bt bt-primary" (click)="openToAdd()" data-qa-id="sc-rpmf-btn_add_service_plan">
+            <em class="fal fa-plus-circle icon-button-add"></em> Añadir
+          </button>
+        </div>
+  
+        <mat-tree class="tree" [dataSource]="dataSource" [treeControl]="treeControl">
+          <!-- This is the tree node template for leaf nodes -->
+          <mat-tree-node *matTreeNodeDef="let node" class="level-two">
+            <span class="title-node" [class]="classToServicePlanSelected(node)? 'title-node-selected':''"
+              (click)='viewServicePlan(node)'>{{node.name}}</span>
+            <em class="fal fa-trash icon-delete" (click)=removeServicePlan(node)></em>
+          </mat-tree-node>
+          <!-- This is the tree node template for expandable nodes -->
+          <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding class="level-one">
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+              <mat-icon class="icon-arrow-tree">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            <span class="title-node">{{node.name}}</span>
+            <div class="node-counter">{{productService.servicePlans.length}}</div>
+          </mat-tree-node>
+        </mat-tree>
+      </section>
+      <form class="container-details-coverage" [formGroup]="selectedServicePlan" *ngIf="selectedServicePlan?.get('id')">
+        <div class="container-details-coverage__header">
+          <h5 class="container-details-coverage__title">{{selectedServicePlan.value.name}}</h5>
+          <span class="container-details-coverage__subtitle">{{selectedServicePlan.value.description}}</span>
+        </div>
+        <div class="div"></div>
+        
+        <app-clauses 
+        [formClauses]="selectedServicePlan?.get('clauses')"
+        [emptyText]="'Sin cláusulas'"
+        [emptySubText]="'No se han asociado cláusulas al plan de servicio'"
+        [messageText]="'del plan de servicio'">
+    </app-clauses>
+    
+      </form>
+  </div>

@@ -1,0 +1,124 @@
+<div>
+    <app-no-data-screen
+      [data]="productService.conceptReservation"
+      [layoutType]="'full'"
+      [emptyTitle]="'Concepto de liquidación de reclamación'"
+      [emptySubTitle]="'Especifique y defina el concepto de liquidación de reclamación de un producto'"
+      [emptyText]="'Sin conceptos de reserva'"
+      [emptySubText]="'No se han asociado conceptos de reserva al producto.'"
+      [ShowButton]="false"
+      (action)="openToAdd()">
+    </app-no-data-screen>
+
+    <div class="container-boxes" *ngIf="productService.conceptReservation.length>0" >
+      <section class="container-tree">
+        <div class="container-tree__header">
+          <span class="container-tree__header__title">Concepto de reserva</span>
+        </div>
+  
+        <mat-tree class="tree" [dataSource]="dataSource" [treeControl]="treeControl">
+          <!-- This is the tree node template for leaf nodes -->
+          <mat-tree-node *matTreeNodeDef="let node" class="level-two">
+            <span class="title-node" [class]="classToLiquidationConceptSelected(node)? 'title-node-selected':''"
+              (click)='viewLiquidationConcept(node)'>{{node.name}}</span>
+          </mat-tree-node>
+          <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding class="level-one">
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name"  data-qa-id="sc-rpmf-btn_toggle_tree" >
+              <mat-icon class="icon-arrow-tree">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            <span class="title-node">{{node.name}}</span>
+            <div class="node-counter">{{productService.conceptReservation.length}}</div>
+          </mat-tree-node>
+        </mat-tree>
+      </section>
+      <form class="container-details-liquidation_concept" data-qa-id="sc-rpmf-form_liquidation_concept">
+        <div class="content_title" *ngIf="productService.conceptReservation && productService.conceptReservation.length > 0" style="border-bottom: #e9e6e6 1px solid;">
+          <h4 class="title" style="margin-bottom: 0px"> Concepto de liquidación para el concepto de reserva {{ selectedLiquidationConcept.get('name')?.value }}</h4>
+        </div>
+       <app-no-data-screen
+        [hidden]="selectedLiquidationConcept.get('claimLiquidation')?.value.length > 0"
+        [data]="selectedLiquidationConcept.get('claimLiquidation')"
+        [layoutType]="'child'"
+        [emptyText]="'Sin conceptos de liquidación'"
+        [emptySubText]="'No se han asociado conceptos de liquidación.'"
+        (action)="openToAdd()">
+      </app-no-data-screen>
+
+      <div style="padding: 0px 50px 30px 50px" [hidden]="selectedLiquidationConcept.get('claimLiquidation')?.value.length  === 0">
+       <div id="container-search" >
+        <div class="content_search_liquidation_concept">
+          <mat-form-field appearance="outline" class="search_input"  >
+            <input matInput placeholder="Buscar" (keyup)="applyFilter($event)" data-qa-id="sc-rpmf-input_search_liquidation"  />
+            <mat-icon matSuffix class="icon-search">search</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="div-button">
+            <button mat-raised-button data-qa-id="sc-rpmf-btn_add_liquidation" color="accent" class="bt" (click)="openToAdd()"  >
+              <em class="fal fa-plus-circle icon-button-add"></em>
+              Añadir
+            </button>
+            <button mat-raised-button data-qa-id="sc-rpmf-btn_delete_liquidation"  [class]="selection.selected.length === 0? 'bt-deletes':'bt-delete'" class="bt-deletes" [disabled]="selection.selected.length === 0"
+            (click)="removeItems()" >
+            <em class="fal fa-trash bt-icon"></em>
+            Eliminar
+          </button>
+       </div>
+      </div> 
+      <table mat-table #clausesTable [dataSource]="dataSourceTable" [hidden]="dataSourceTable.data.length===0" data-qa-id="sc-rpmf-table_liquidation" >
+        <caption></caption>
+
+          <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllDisplayedSelected()"
+                          [indeterminate]="selection.hasValue() && isSomeDisplayedSelected()"
+                          color="primary"
+                          data-qa-id="sc-rpmf-check_all_liquidation"
+                          >
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)"
+                          color="primary"
+                          data-qa-id="sc-rpmf-check_liquidation"
+                          >
+            </mat-checkbox>
+          </td>
+        </ng-container>
+  
+        <!-- Name Column -->  
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let element">{{element.name}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Descripción</th>
+          <td mat-cell *matCellDef="let element">{{element.description}}</td>
+        </ng-container>
+  
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+        </tr>
+      </table>
+
+      <mat-paginator
+        #paginator
+        [hidePageSize]="true"
+        pageSize="10"
+        [showFirstLastButtons]="true"
+        data-qa-id="sc-rpmf-paginator_liquidation"
+        >
+      </mat-paginator>
+    </div>
+
+
+      </form>
+    </div>
+  </div>

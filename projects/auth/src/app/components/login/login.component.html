@@ -11,8 +11,9 @@
             <div>
                 <label>Usuario</label>
                 <span class="p-input-icon-right flex flex-col">
-                    <i class="pi pi-user"></i>
-                    <input type="email" pInputText formControlName="email" (keydown)="hasEnterKey($event)" class="block text-base" placeholder="usuario" class="w-full" required>
+                    <em class="pi pi-user"></em>
+                    <input data-qa-id="sc-rpmf-input_email" 
+                        type="email" pInputText formControlName="email" (keydown)="hasEnterKey($event)" class="block text-base" placeholder="usuario" class="w-full" required>
                 </span>
                 <div *ngIf="formData.get('email')?.touched || formData.get('email')?.dirty">
                     <small class="p-error block" *ngIf="formData.get('email')?.hasError('pattern')">Ingrese un correo electrónico.</small>
@@ -21,13 +22,15 @@
             </div>
             <div>
                 <label>Contraseña</label>
-                <p-password [toggleMask]="true" formControlName="password" (keydown)="hasEnterKey($event)" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
+                <p-password data-qa-id="sc-rpmf-input_password" 
+                    [toggleMask]="true" formControlName="password" (keydown)="hasEnterKey($event)" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
                 <small class="p-error block" *ngIf="formData.get('password')?.hasError('required')&&(formData.get('password')?.touched || formData.get('password')?.dirty)">Ingrese su contraseña.</small>
             </div>
         </div>
         <div class="py-3">
-            <p-button *ngIf="!isLoading" (click)="logIn()" label="Iniciar sesión" styleClass="p-button"></p-button>
-            <div *ngIf="isLoading" class="p-progress-spinner lib-progress-indicator__infinite" [style]="{width: '50px', height: '50px'}">
+            <p-button data-qa-id="sc-rpmf-login" 
+                *ngIf="!isLoading" (click)="logIn()" label="Iniciar sesión" styleClass="p-button"></p-button>
+            <div *ngIf="isLoading && !showCompanySelection" class="p-progress-spinner lib-progress-indicator__infinite" [style]="{width: '50px', height: '50px'}">
                 <svg
                     class="p-progress-spinner-svg"
                     viewBox="25 25 50 50"
@@ -55,14 +58,17 @@
     </form>
 </div>
 
-<p-dialog header="Compañía" [(visible)]="showCompanySelection" [modal]="true" [draggable]="false" [closable]="false" styleClass="w-[440px]">
+<p-dialog data-qa-id="sc-rpmf-modal-select-company" 
+    header="Compañía" [(visible)]="showCompanySelection" [modal]="true" [draggable]="false" [closable]="false" styleClass="w-[400px]">
     <div class="flex justify-center mt-5 mb-3">
         Seleccione la compañía a la que desea ingresar
     </div>
     <form [formGroup]="formCompany">
-        <p-dropdown [options]="companies" formControlName="company" optionLabel="businessName" class="block" placeholder="Seleccione la compañía" styleClass="w-full" appendTo="body"></p-dropdown>
+        <p-dropdown data-qa-id="sc-rpmf-mat-select-company" 
+            [options]="companies" formControlName="company" optionLabel="businessName" class="block" placeholder="Seleccione la compañía" styleClass="w-full" appendTo="body"></p-dropdown>
     </form>
     <div class="flex justify-center pt-5 pb-3">
-        <p-button (click)="setCompany(formCompany.get('company')?.value)" label="Aceptar" styleClass="p-button" [disabled]="!formCompany.valid"></p-button>
+        <p-button data-qa-id="sc-rpmf-btm-add-company" 
+            (click)="setCompany(formCompany.get('company')?.value)" label="Aceptar" styleClass="p-button" [disabled]="!formCompany.valid"></p-button>
     </div>
 </p-dialog>

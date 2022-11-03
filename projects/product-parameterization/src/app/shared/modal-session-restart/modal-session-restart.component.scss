@@ -1,0 +1,102 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+.container {
+  &__icon_close {
+    color: $primaryBase;
+    font-size: 20px;
+    text-align: right;
+    .icon_close {
+      cursor: pointer;
+    }
+  }
+  &__message {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 24px;
+    row-gap: 32px;
+  }
+}
+
+.text {
+  font-family: Roboto Condensed;
+  max-width: 400px;
+  text-align: center;
+  &_message {
+    font-weight: 700;
+    font-size: 20px;
+    color: $titleSubtitle;
+    line-height: 23px;
+  }
+  &_submessage {
+    font-weight: 400;
+    font-size: 16px;
+    color: $alertsError;
+    line-height: 22px;
+  }
+}
+
+.container__buttons {
+  display: flex;
+  justify-content: center;
+  column-gap: 24px;
+  .button {
+    width: 125px;
+  }
+}
+
+.icon_alert {
+    font-size: 64px;
+    text-align: center;
+    line-height: 0px;
+}
+
+.fields {
+    width: 380px !important;
+    margin-bottom: 15px;
+}
+
+::ng-deep .fa-eye:before {
+    cursor: pointer;
+    padding: 5px;
+    color: $primaryBase;
+    font-size: 20px;
+}
+::ng-deep .fa-low-vision:before {
+    cursor: pointer;
+    padding: 5px;
+    color: rgba(40, 167, 69, 1);
+    font-size: 20px;
+}
+
+.form-login {
+    display: content;
+    margin: auto;
+    text-align: center;
+
+    span {
+        display: block;
+        background-size: cover;
+        margin: 8px;
+        position: relative;
+        overflow: hidden;
+        font-family: Roboto Condensed;
+        font-weight: bold;
+        text-align: left;
+        padding: 0px;
+        
+    }
+}
+
+.container-alert{
+    margin-bottom:10px;
+    background: $bgAlertDanger;
+    border-radius: 5px;
+    color: #DC3545;
+    height: 40px;
+    text-align: left;
+    font-family: Roboto Condensed;
+    padding: 10px;
+}

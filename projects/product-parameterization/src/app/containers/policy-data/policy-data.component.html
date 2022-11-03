@@ -1,0 +1,16 @@
+<div class="content">
+  <app-complementary-data
+    [applicationLevel]="'Póliza'" 
+    [title]="'Datos de la póliza'"
+    [subtitle]="'Especifique y defina los datos de la póliza'"
+    [groupName]="'Datos básicos'"
+    [emptyText]="'Sin datos de la póliza'"
+    [emptySubText]="'No se han asociado datos de la póliza al producto'"
+    [successAddItemMsg]="'Los datos de la póliza fueron asociados correctamente.'"
+    [removeItemMsg]="'¿Está seguro de querer desasociar el dato de la póliza seleccionado?'"
+    [titleModalCompData]="'Seleccionar nuevos datos de la póliza'"
+    [subtitleModalCompData]="'Seleccione los datos de la póliza que desea asociar'"
+    [complementaryData]="service.policyData"
+    [policyData]="true">
+  </app-complementary-data>
+</div>

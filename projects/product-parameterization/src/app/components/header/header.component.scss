@@ -1,0 +1,235 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+
+.main-header {
+  background-color: $primaryBase;
+  position: relative;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.main-header__nav {
+  display: flex;
+  justify-content: space-between;
+  @include mq-max(md) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.main-left-items {
+  display: flex;
+  @include mq-max(md) {
+    margin: 2px 0;
+  }
+}
+
+.main-left-items__menu-items-left {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  /*line-height: 120px;*/ /*se usa para centrar .. tiene que ser igual que el height del div padre*/
+  text-decoration: none;
+  color: white;
+}
+
+.main-left-items__items-left-special {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.main-header__nav__middle-items {
+  display: flex;
+  align-items: center;
+}
+.margin-item {
+  @include mq-max(md) {
+    margin-bottom: 20px;
+  }
+}
+.main-header__nav__middle-items > * {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.main-header__nav-user-info {
+  display: flex;
+  align-items: center;
+  min-width: 186px;
+  margin-left: 20px;
+  margin-right: 40px;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0 20px;
+  /*line-height: 120px;*/ /*se usa para centrar .. tiene que ser igual que el height del div padre*/
+  text-decoration: none;
+  color: white;
+  @include mq-max(md) {
+    display: none;
+  }
+}
+
+.logo-header {
+  width: 57px;
+  height: 63.25px;
+  margin-top: 1px;
+}
+
+.version {
+  background-color: $primaryLight;
+  text-align: center;
+  width: 50px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-size: 10px;
+  font-weight: bold;
+  height: 18px;
+  @include mq-max(md) {
+    display: none;
+  }
+}
+
+.policy-composer {
+  width: 265.41px;
+  left: 108.59px;
+  top: 27.2px;
+  font-weight: 700;
+  font-style: normal;
+  font-weight: bold;
+  font-family: "Roboto condensed";
+  margin-top: 0px;
+  font-size: 16px;
+  line-height: 19px;
+  @include mq-max(md) {
+    display: none;
+  }
+}
+
+.text-icon {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.arrow-icon {
+  font-size: 14px;
+  color: white;
+  margin-left: 10px;
+}
+
+.color-icon {
+  color: $grayscaleLevel-3;
+}
+
+.primary-icon{
+  color: $primaryBase;
+  font-size: large;
+}
+.mat-raised-button {
+  box-shadow: none;
+  width: 80px;
+}
+
+.avatar-img {
+  color: $secondaryBase;
+}
+
+.nav-user-info__text-user-info {
+  font-size: 12px;
+  margin-left: 8px;
+  color: white;
+  @include mq-max(md) {
+    display: none;
+  }
+}
+
+.company-title {
+  width: 265.41px;
+  left: 108.59px;
+  top: 27.2px;
+
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 120%;
+
+  display: flex;
+  align-items: center;
+}
+
+.text-header {
+  /* Label/🖥📱Label 1 */
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 120%;
+
+  /* greyscale/White */
+  color: white;
+}
+
+.div-saving {
+  display: flex; 
+  gap: 5px; 
+  border-radius: 5px; 
+  text-align: center;
+  justify-content: center; 
+  align-items: center; 
+  height: 36px; 
+  width: 120px; 
+  background-color: #fff;
+}
+
+.div-spinner {
+  display: flex;
+  justify-content: center;
+}
+
+.logout-spinner ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #fff !important;
+}
+
+/*.nav-link{
+    color: white;
+    text-decoration: none;
+}*/
+
+/*.logo{
+    font-size: 30px;
+    font-weight: bold;
+    padding: 0 40px;
+    line-height: 120px;/*se usa para centrar .. tiene que ser igual que el height del div padre
+}*/
+
+/*.nav-menu{
+    display: flex;
+    margin-right: 40px;
+    /*list-style: none;
+}*/
+
+/*.nav-menu-item{
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin: 0 10px;
+    /*line-height: 120px;
+    text-transform: uppercase;
+    width: max-content;
+}*/
+
+/*.nav-menu-link:hover{
+    background-color: #034574;
+    transition: 0.5s;
+}*/

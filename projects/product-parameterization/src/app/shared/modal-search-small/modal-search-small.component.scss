@@ -1,0 +1,132 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+.content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 605px;
+  font-family: Roboto condensed !important;
+}
+.content_title {
+  width: 100%;
+}
+.text-close {
+  color: $primaryBase;
+  cursor: pointer;
+}
+.content-close {
+  display: flex;
+  float: right;
+}
+.title {
+  color: $primaryBase;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 36px;
+  font-family: Roboto condensed !important;
+  margin: 0 0 16px;
+}
+
+.subtitle {
+  color: $titleSubtitle;
+  font-size: 16px;
+  line-height: 100%;
+  font-family: Roboto condensed !important;
+  margin: 0 0 16px;
+}
+tr.mat-header-row.cdk-header-row.ng-star-inserted {
+  background: $grayscaleLevel-6;
+  border-radius: 8px;
+}
+
+th.mat-header-cell {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 120%;
+  color: $grayscaleBase;
+  padding: 10px;
+  font-family: Roboto condensed !important;
+}
+.no-elements {
+  text-align: center;
+  margin: 20px;
+  color: gray;
+}
+td.mat-cell {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 120%;
+  color: $grayscaleLevel-2;
+  border-bottom-color: transparent;
+  padding: 10px;
+  font-family: Roboto condensed !important;
+}
+.button-add {
+  width: 120px;
+  height: 40px;
+  background: $secondaryBase;
+  color: $primaryBase;
+  border-radius: 50px;
+  font-family: "Roboto Condensed";
+  font-weight: 700;
+}
+
+.disabled-button {
+  width: 120px;
+  height: 40px;
+  background: $grayDisabled;
+  color: $grayscaleLevel-2;
+  border-radius: 50px;
+}
+.button-disabled {
+  color: $grayscaleLevel-2;
+  font-size: 26px;
+  margin-right: 10px;
+  @include mq-max(md) {
+    margin-right: 5px;
+  }
+}
+.icon-button-add {
+  color: $primaryBase;
+  font-size: 26px;
+  margin-right: 10px;
+  @include mq-max(md) {
+    margin-right: 5px;
+  }
+}
+
+.icon-search {
+  color: $primaryBase;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  margin-right: 5px;
+}
+.content_search {
+  width: 80%;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 450px;
+  font-family: Roboto condensed !important;
+}
+
+::ng-deep {
+  .content_search .mat-form-field-outline-start {
+    border-radius: 28px 0 0 28px !important;
+    min-width: 28px !important;
+  }
+}
+::ng-deep .content_search .mat-form-field-outline-end {
+  border-radius: 0 28px 28px 0 !important;
+}
+
+.search_input {
+  input {
+    padding-left: 10px;
+    font-size: 15px;
+  }
+}
