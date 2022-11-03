@@ -162,19 +162,6 @@ describe('AuthGuard', () => {
     expect(guard).toBeDefined();
   });
 
-  it('canActivateChild', async () => {
-    const activatedRouteSnapshotStub: ActivatedRouteSnapshot = <any>{};
-    const routerStateSnapshotStub: RouterStateSnapshot = <any>{
-      url: '/parametrizador-producto',
-    };
-    const spy = jest.fn().mockImplementation(() =>
-      Promise.resolve({})
-    );
-    jest.spyOn(service, 'getUser').mockImplementation(spy);
-    guard.canActivateChild(activatedRouteSnapshotStub, routerStateSnapshotStub);
-    expect(spy).toBeCalled();
-  });
-
   it('checkAccess', async () => {
     const routerStateSnapshotStub: RouterStateSnapshot = <any>{
       url: '/parametrizador-producto',

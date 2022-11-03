@@ -46,7 +46,6 @@ export class ModalCreateProductComponent implements OnInit {
         comercialName: new FormControl('', [Validators.required, Validators.maxLength(200), Validators.minLength(4), Validators.pattern('^[a-zA-ZñÑáéíóúÁÉÍÓÚ \s]+$')]),
         businessCode: new FormControl('', [Validators.required, Validators.maxLength(30), Validators.minLength(4), Validators.pattern('^[a-zA-Z0-9_]*[a-zA-Z0-9s][a-zA-Z0-9_]*$')])
       });
-      service 
   }
 
   ngOnInit(): void {

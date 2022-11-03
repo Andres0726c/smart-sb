@@ -13,24 +13,7 @@ export class AuthGuard implements CanActivate {
   ) {}
   
   async canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Promise<boolean> {
-    let check = false;
-
-    await this.cognitoService.getUser()
-    .then((value) => {
-      check = this.checkAccess(value, state);
-    })
-    .catch((err) => {
-      this.router.navigate(['/autenticacion']);
-    });
-
-    return check;
-  }
-
-  async canActivateChild(
-    route: ActivatedRouteSnapshot,
+    routerSnap: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
     let check = false;
@@ -56,7 +39,6 @@ export class AuthGuard implements CanActivate {
       && value.attributes['custom:sessionInformation'] !== ''
     ) {
       check = true;
-      //this.router.navigate(['/inicio']);
     } else {
       this.cognitoService.signOut()
       .then(() => {
