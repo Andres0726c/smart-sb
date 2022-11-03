@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   isDataValid = true;
   isLoading = false;
   showCompanySelection = false;
+  showModalForbhidden = false;
 
   constructor(
     public router: Router,
@@ -88,10 +89,6 @@ export class LoginComponent implements OnInit {
       return error;
     }
   }
-
-  selectCompany() {
-    console.log('data', this.formCompany)
-  }
   
   async setCompany(company: any) {
     this.showCompanySelection = false;
@@ -107,11 +104,7 @@ export class LoginComponent implements OnInit {
   }
 
   forbidden() {
-    /* this.dialog.open(ModalAlertComponent,
-      {
-        data: {message:'El usuario no cuenta con los permisos para ingresar a la aplicación. Por favor contacte al administrador del sistema.'}
-    }) */
-    alert('algo falló')
+    this.showModalForbhidden = true;
     this.cognitoService.signOut();
   }
 

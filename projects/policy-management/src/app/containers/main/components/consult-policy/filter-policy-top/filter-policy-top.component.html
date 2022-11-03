@@ -2,8 +2,8 @@
     <form [formGroup]="formQueryFilter">
         <div class="">
             <p-divider align="left" type="dashed" styleClass="my-2">
-                <div class="inline-flex align-items-center"><i class="pi pi-user mr-2"></i>
-                    <b>Póliza</b>
+                <div class="inline-flex align-items-center"><em class="pi pi-user mr-2"></em>
+                    <strong>Póliza</strong>
                 </div>
             </p-divider>
             <section class="w-full flex flex-col sm:flex-row gap-x-4">
@@ -26,15 +26,15 @@
                     <span>Vigente desde</span>
                     <span class="p-input-icon-right w-full">
                         <p-calendar formControlName="startDate" dateFormat="yy-mm-dd" appendTo="body" styleClass="w-full" placeholder="aaaa-mm-dd"></p-calendar>
-                        <i class="pi pi-calendar"></i> 
+                        <em class="pi pi-calendar"></em> 
                     </span>
                 </div>
             </section>
             <div *ngIf="showMoreFilters">
                 <p-divider align="left" type="dashed" styleClass="my-2">
                     <div class="inline-flex align-items-center">
-                        <i class="pi pi-user mr-2"></i>
-                        <b>Tomador</b>
+                        <em class="pi pi-user mr-2"></em>
+                        <strong>Tomador</strong>
                     </div>
                 </p-divider>
                 <section class="w-full flex gap-x-4">
@@ -49,7 +49,7 @@
                     <div class="w-1/3">
                         <label>Identificación</label>
                         <span class="p-input-icon-right w-full">
-                            <i class="pi pi-id-card"></i>
+                            <em class="pi pi-id-card"></em>
                             <p-inputMask formControlName="holderdocumentNumber" class="w-full" styleClass="w-full"
                                 placeholder="Identificación" slotChar="" [autoClear]="false"
                                 [required]="isRequired['holderDocument']" mask="******************************">
@@ -59,7 +59,7 @@
                     <div class="w-1/3">
                         <span>Nombre</span>
                         <span class="p-input-icon-right w-full">
-                            <i class="pi pi-user"></i>
+                            <em class="pi pi-user"></em>
                             <input type="text" pInputText formControlName="holderName" placeholder="Nombre"
                                 class="w-full">
                         </span>
@@ -67,8 +67,8 @@
                 </section>
                 <p-divider align="left" type="dashed" styleClass="my-2">
                     <div class="inline-flex align-items-center">
-                        <i class="pi pi-user mr-2"></i>
-                        <b>Asegurado</b>
+                        <em class="pi pi-user mr-2"></em>
+                        <strong>Asegurado</strong>
                     </div>
                 </p-divider>
                 <section class="w-full flex gap-x-4">
@@ -84,7 +84,7 @@
                     <div class="w-1/3">
                         <span>Identificación</span>
                         <span class="p-input-icon-right w-full">
-                            <i class="pi pi-id-card"></i>
+                            <em class="pi pi-id-card"></em>
                             <p-inputMask formControlName="insuredDocumentNumber" class="w-full" styleClass="w-full"
                                 placeholder="Identificación" slotChar="" [autoClear]="false"
                                 [required]="isRequired['insuredDocument']" mask="******************************">
@@ -95,7 +95,7 @@
                     <div class="w-1/3">
                         <span>Nombre</span>
                         <span class="p-input-icon-right w-full">
-                            <i class="pi pi-user"></i>
+                            <em class="pi pi-user"></em>
                             <input type="text" pInputText formControlName="insuredName" placeholder="Nombre"
                                 class="w-full">
                         </span>

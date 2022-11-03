@@ -402,7 +402,7 @@ export class CommercialPlanComponentWizard implements OnInit {
    * Function to handle the error of the name field in the form that is in step 1
    */
   get errorMessageName(): string {
-    var form: FormGroup = (<FormGroup> this.data.CommercialPlan?.get('step1'));
+    let form: FormGroup = (<FormGroup> this.data.CommercialPlan?.get('step1'));
     return form.controls['name'].hasError('required') ? 'El campo nombre del plan comercial es obligatorio' :
             form.controls['name'].hasError('pattern')  ? 'El campo nombre del plan comercial no recibe caracteres especiales' :
             form.controls['name'].hasError('maxlength')? 'La longitud ingresada no es válida, recuerde que este debe ser mínimo de 4 y máximo de 200' :
@@ -418,7 +418,7 @@ export class CommercialPlanComponentWizard implements OnInit {
    * Function to handle the error of the description field in the form that is in step 1
    */
   get errorMessageDesc(): string {
-    var form: FormGroup = (<FormGroup> this.data.CommercialPlan?.get('step1'));
+    let form: FormGroup = (<FormGroup> this.data.CommercialPlan?.get('step1'));
 
     return form.controls['description'].hasError('required') ? 'El campo descripción del plan comercial es obligatorio' :
             form.controls['description'].hasError('pattern')  ? 'El campo descripción del plan comercial no recibe caracteres especiales' :

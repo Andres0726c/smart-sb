@@ -30,9 +30,6 @@ export class MultiSelectComponent implements OnChanges{
   //* Quick access controller to select all options
   allSelected: boolean = false;
 
-  constructor() {
-  }
-
   /**
    * Detect changes to the dataOptions input variable and update the display listing
    */

@@ -160,7 +160,11 @@ describe('CommercialPlanComponent', () => {
     expect(component).toBeDefined();
   });
 
-  /*it('getMax  Ok', () => {
-    expect(component.getMax([{id: "001"}, {id: "002"}], 'code')).toBeDefined();
-  });*/
+  it('getMax  Ok', () => {
+    expect(component.getMax([{id: 1}, {id: 2}], 'id')).toEqual(2);
+  });
+
+  it('getMax Zero', () => {
+    expect(component.getMax([], 'id')).toEqual(0);
+  });
 });
