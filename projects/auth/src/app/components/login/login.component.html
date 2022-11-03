@@ -72,3 +72,20 @@
             (click)="setCompany(formCompany.get('company')?.value)" label="Aceptar" styleClass="p-button" [disabled]="!formCompany.valid"></p-button>
     </div>
 </p-dialog>
+
+<p-dialog data-qa-id="sc-rpmf-modal-forbhidden" 
+    header="Sin acceso" [(visible)]="showModalForbhidden" [modal]="true" [draggable]="false" [closable]="true" styleClass="w-[400px]">
+    <div class="flex justify-center pt-5 pb-3">
+        <img src="smartcore-commons/assets/styles/material-theme/icons/picto-alert.svg" alt="icon-warning">
+    </div>
+    <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl font-bold text-black">
+        <p class="w-full text-center">
+            El usuario no cuenta con los permisos para ingresar a la aplicación.
+            Por favor contacte al administrador del sistema.
+        </p>
+    </div>
+    <div class="flex justify-center pt-5 pb-3">
+        <p-button data-qa-id="sc-rpmf-btm-close-modal-dorbhidden" 
+            (click)="showModalForbhidden=false" label="Aceptar" styleClass="p-button"></p-button>
+    </div>
+</p-dialog>
