@@ -1,10 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-
 import { ModalPolicyActionsService } from './modal-policy-actions.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { environment } from 'commons-lib';
-import { CancelPolicy } from '../../../../containers/policy-management/components/consult-policy/interfaces/cancel-policy';
+import { CancelPolicy } from 'projects/policy-management/src/app/containers/main/components/consult-policy/interfaces/cancel-policy';
 
 describe('ModalPolicyActionsService', () => {
   let service: ModalPolicyActionsService;
