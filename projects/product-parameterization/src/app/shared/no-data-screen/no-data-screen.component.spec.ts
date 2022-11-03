@@ -21,11 +21,6 @@ describe('NoDataScreenComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('Componente inicializado', () => {
-      component.ngOnInit();
-      expect(component).toBeDefined();
-    });
-
     it('shootAction', () => {
       expect(component.shootAction()).toBeUndefined();
     })
