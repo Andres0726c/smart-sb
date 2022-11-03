@@ -7,7 +7,7 @@ import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
   templateUrl: './no-data-screen.component.html',
   styleUrls: ['./no-data-screen.component.scss']
 })
-export class NoDataScreenComponent implements OnInit {
+export class NoDataScreenComponent {
 
   @Output() action: EventEmitter<ElementTableSearch> = new EventEmitter();
 
@@ -18,13 +18,6 @@ export class NoDataScreenComponent implements OnInit {
   @Input() emptyText:string = '';
   @Input() emptySubText:string = '';
   @Input() ShowButton:boolean = true;
-
-
-  constructor() { }
-
-  ngOnInit(): void {
-    //    
-  }
 
   get serviceDataControls(): FormArray {
     return this.data as FormArray;
