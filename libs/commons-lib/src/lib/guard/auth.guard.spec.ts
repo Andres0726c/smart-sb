@@ -185,7 +185,7 @@ describe('AuthGuard', () => {
     }
     localStorageMock.setItem('CognitoSessionExp', 999999999999999);
 
-    expect(guard.checkAccess(value,routerStateSnapshotStub)).toBeDefined();
+    expect(guard.verifyAccess(value,routerStateSnapshotStub)).toBeDefined();
 
   });
 
@@ -210,7 +210,7 @@ describe('AuthGuard', () => {
     }
     localStorageMock.setItem('CognitoSessionExp', 999999999999999);
 
-    expect(guard.checkAccess(value,routerStateSnapshotStub)).toBeDefined();
+    expect(guard.verifyAccess(value,routerStateSnapshotStub)).toBeDefined();
 
   });
 
