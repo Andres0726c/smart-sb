@@ -293,9 +293,9 @@ export class ModalSearchSmallComponent implements OnInit {
    * @param prop variable that has the identifier from the object in the array
    */
    removeDuplicates(originalArray:any, prop:string) {
-      var newArray = [];
-      var lookupObject:any  = {};
-      var i;
+      let newArray = [];
+      let lookupObject:any  = {};
+      let i;
       for(i in originalArray) {
         lookupObject[originalArray[i][prop]] = originalArray[i];
       }
