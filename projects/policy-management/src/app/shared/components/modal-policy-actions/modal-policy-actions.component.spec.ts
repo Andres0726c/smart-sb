@@ -127,6 +127,12 @@ describe('ModalPolicyActionsComponent', () => {
   expect(spy1).toHaveBeenCalledTimes(1);
   });
 
+  it('cancel Policy else', () => {
+    component.formProcess.get('processDate')?.setValue(null);
+    component.formProcess.get('causeType')?.setValue(138);
+    expect(component.cancelPolicy()).toBeUndefined();
+  })
+
 
 it('rehabilitatePolicy success',() => {
 
@@ -195,19 +201,6 @@ it('verify Date else', () => {
   component.config.data.policy.inceptionDate = '2022-11-15T20:27:10.000Z';
   component.config.data.policy.expirationDate = '2022-11-15T20:27:10.000Z';
   expect(component.verifyDate()).toBeUndefined();
-});
-
-it('disable Button', () => {
-  component.formProcess.get('causeType')?.setValue(138)
-  component.formProcess.get('processDate')?.setValue('2022-11-15T20:27:10.000Z');
-  component.config.data.policy.inceptionDate = '2022-11-15T20:27:10.000Z';
-  component.config.data.policy.expirationDate = '2022-11-15T20:27:10.000Z';
-  expect(component.disableButton()).toBeFalsy();
-});
-
-it('disable Button', () => {
-  component.config.data.policy = null;
-  expect(component.disableButton()).toBeTruthy();
 });
 
   it('showSuccess', () => {

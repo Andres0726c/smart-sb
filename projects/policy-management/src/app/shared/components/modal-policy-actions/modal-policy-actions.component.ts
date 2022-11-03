@@ -34,7 +34,7 @@ export class ModalPolicyActionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getCauses(this.config.data.process); 
+    this.getCauses(this.config.data.process);
   }
 
   getCauses(applicationProcess: string){
@@ -55,6 +55,7 @@ export class ModalPolicyActionsComponent implements OnInit {
   cancelPolicy() {
 
     if (this.formProcess.valid) {
+      if(this.formProcess.get('processDate')?.value){
       this.modalAPService
         .postCancelPolicy(this.config.data.policy ,this.formProcess.value)
         .subscribe((resp: any) => {
@@ -72,6 +73,10 @@ export class ModalPolicyActionsComponent implements OnInit {
         //   this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
         // }
         );
+      } else {
+        this.messageError = true;
+        this.showSuccess('error', 'Error al cancelar', 'Seleccione una fecha válida');
+      }
     }
   }
 
@@ -104,24 +109,11 @@ export class ModalPolicyActionsComponent implements OnInit {
     
     if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
       this.getPremium(this.config.data.policy.idPolicy, date) 
-      this.formProcess.get('causeType')?.enable();
       this.formProcess.get('observation')?.enable();
     } else {
-      this.formProcess.reset()
       this.formProcess.get('immediate')?.setValue(0);
       this.formProcess.get('applicationProcess')?.setValue(this.config.data.process)
-      this.formProcess.get('causeType')?.disable();
       this.formProcess.get('observation')?.disable();
-    }
-  }
-  disableButton() {
-    if (this.config.data.policy) {
-      const date = new Date(this.formProcess.get('processDate')?.value).toISOString();
-      const inceptionDate = new Date(this.config.data.policy?.inceptionDate).toISOString();
-      const expirationDate = new Date(this.config.data.policy?.expirationDate).toISOString();
-      return !(this.formProcess.valid && this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate);
-    } else {
-      return true;
     }
   }
 
