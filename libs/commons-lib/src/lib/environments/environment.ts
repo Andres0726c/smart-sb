@@ -8,6 +8,7 @@ export const environment = {
   apiKeyServices: 'YkmEA1FYLQ8316jjoU0PR5gGnbLL8sOA7SrVdCly',
   urlParameterizerMS: 'https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev/parametrizador/v1/',
   urlPolicyIssuerMS: 'https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev/emisor/v1/',
+  // urlPolicyIssuerMS:'http://localhost:80/emisor/v1/',
   cognito: {
     userPoolId: 'us-east-1_juYNmSqyl',
     userPoolWebClientId: '2mlplq2vpom55e72sjphho6iu0',

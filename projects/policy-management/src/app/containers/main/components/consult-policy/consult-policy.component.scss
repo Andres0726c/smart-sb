@@ -37,7 +37,10 @@
 .pi {
     font-size: 18px;
 }
-
+.spaces {
+    display: flex;
+    align-items: flex-start;
+}
 .alert-description {
     font-size: 14px;
     line-height: 120%;
@@ -46,13 +49,11 @@
     & h5 {
         font-size: 14px;
         font-weight: bold;
-        // margin-left: -40px;
         margin-bottom: 8px;
         color: var(--greyscale-black);
     }
     & p {
         font-size: 14px;
-        // margin-left: -5px;
         font-weight: 400;
         color: var(--greyscale-black);
     }
@@ -63,18 +64,14 @@
 
 .line-border {
     border: 3px solid var(--success-base);
+
+    margin-left: 8px;
     margin-right: 16px;
     border-radius: 5px;
     height: 40px;
     z-index: 9999;
 }
 :host ::ng-deep .p-toast .p-toast-message {
-    // & .p-toast-message-success {
-    // // color: white;
-    // border-style: none !important;
-    // border-width: 0px 0px 0px 0.5px;
-    // background: #FFFFFF;
-    //     }
 
     & .p-toast-message-content {
         background: var(--greyscale-white);
@@ -82,14 +79,12 @@
     
 }
 :host ::ng-deep .p-toast .p-toast-message.p-toast-message-success {
-    // border: solid var(--success-base);
     border-style: none !important;
     border-width: 0px 0px 0px 0.5px !important;
     color: var(--success-base);
 }
 
 :host ::ng-deep .p-toast .p-toast-message.p-toast-message-error {
-    // border: solid var(--success-base);
     border-style: none !important;
     border-width: 0px 0px 0px 0.5px !important;
     color: var(--danger-base);
