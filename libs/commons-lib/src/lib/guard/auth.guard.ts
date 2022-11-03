@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
 
     await this.cognitoService.getUser()
     .then((value) => {
-      check = this.checkAccess(value, state);
+      check = this.verifyAccess(value, state);
     })
     .catch((err) => {
       this.router.navigate(['/autenticacion']);
@@ -29,8 +29,8 @@ export class AuthGuard implements CanActivate {
     return check;
   }
   
-  checkAccess(value: any, state: RouterStateSnapshot) {
-    let check = false;
+  verifyAccess(value: any, state: RouterStateSnapshot) {
+    let access = false;
     if (
       value 
       && ((Number(localStorage.getItem('CognitoSessionExp')) - (Math.floor((new Date).getTime() / 1000))) > 0) 
@@ -38,13 +38,13 @@ export class AuthGuard implements CanActivate {
       && value.attributes['custom:sessionInformation'] !== '{}' 
       && value.attributes['custom:sessionInformation'] !== ''
     ) {
-      check = true;
+      access = true;
     } else {
       this.cognitoService.signOut()
       .then(() => {
         this.router.navigate(['/autenticacion']);
       });
     }
-    return check;
+    return access;
   }
 }
