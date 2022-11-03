@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MainRoutingModule } from './main-routing.module';
@@ -10,7 +11,8 @@ describe('PolicyManagementComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MainComponent],
-      imports: [MainRoutingModule, RouterTestingModule]
+      imports: [MainRoutingModule, RouterTestingModule],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents();
   })
