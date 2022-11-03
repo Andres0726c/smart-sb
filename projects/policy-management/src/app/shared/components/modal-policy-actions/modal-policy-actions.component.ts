@@ -99,15 +99,9 @@ export class ModalPolicyActionsComponent implements OnInit {
 
     verifyDate() {
       
-    const date = new Date(
-      this.formProcess.get('processDate')?.value
-    ).toISOString();
-    const inceptionDate = new Date(
-      this.config.data.policy.inceptionDate
-    ).toISOString();
-    const expirationDate = new Date(
-      this.config.data.policy.expirationDate
-    ).toISOString();
+    const date = new Date(this.formProcess.get('processDate')?.value).toISOString();
+    const inceptionDate = new Date(this.config.data.policy.inceptionDate).toISOString();
+    const expirationDate = new Date(this.config.data.policy.expirationDate).toISOString();
     
     if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
       this.getPremium(this.config.data.policy.idPolicy, date) 
@@ -123,21 +117,10 @@ export class ModalPolicyActionsComponent implements OnInit {
   }
   disableButton() {
     if (this.config.data.policy) {
-      const date = new Date(
-        this.formProcess.get('processDate')?.value
-      ).toISOString();
-      const inceptionDate = new Date(
-        this.config.data.policy?.inceptionDate
-      ).toISOString();
-      const expirationDate = new Date(
-        this.config.data.policy?.expirationDate
-      ).toISOString();
-      return !(
-        this.formProcess.valid &&
-        this.formProcess.get('processDate')?.value &&
-        date >= inceptionDate &&
-        date <= expirationDate
-      );
+      const date = new Date(this.formProcess.get('processDate')?.value).toISOString();
+      const inceptionDate = new Date(this.config.data.policy?.inceptionDate).toISOString();
+      const expirationDate = new Date(this.config.data.policy?.expirationDate).toISOString();
+      return !(this.formProcess.valid && this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate);
     } else {
       return true;
     }

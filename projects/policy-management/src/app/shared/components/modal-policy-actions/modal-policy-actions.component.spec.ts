@@ -72,7 +72,7 @@ describe('ModalPolicyActionsComponent', () => {
     expect(spy1).toHaveBeenCalledTimes(1);
   })
 
-  it('cancelPolicy', fakeAsync(() => {
+  it('cancelPolicy success', () => {
 
     component.formProcess = new FormGroup({
       processDate: new FormControl('2022-11-15T20:27:10.000Z'),
@@ -82,7 +82,7 @@ describe('ModalPolicyActionsComponent', () => {
       observation: new FormControl('observación')
     })
 
-    const res = {
+    const res: any = {
       body: ['test'],
       dataHeader: {
           code: 200,
@@ -94,33 +94,42 @@ describe('ModalPolicyActionsComponent', () => {
           totalRecords: 0
       }
   };
-  const policy = {
-company: "SEGUROS COMERCIALES BOLÍVAR S.A.",
-expirationDate: "2022-12-08T12:53:00-05:00",
-holderDocument: "1131345121",
-holderName: null,
-holderTypeDocument: "CC",
-idPolicy: 103,
-idProduct: 58,
-inceptionDate: "2022-05-31T12:53:00-05:00",
-insuranceLine: "Hogar",
-insuredDocument: "123456",
-insuredName: null,
-insuredTypeDocument: "CC",
-policyNumber: "100000000000075",
-policyStatus: "Activa",
-premiumValue: 1000331,
-productName: "pruebaEmision",
-requestNumber: "87"
-  };
   const modalActionsService = fixture.debugElement.injector.get(ModalPolicyActionsService);
-  const spy1 = jest.spyOn(modalActionsService, 'postCancelPolicy').mockReturnValueOnce(of(policy));
+  const spy1 = jest.spyOn(modalActionsService, 'postCancelPolicy').mockReturnValue(of(res));
   component.cancelPolicy();
   expect(spy1).toHaveBeenCalledTimes(1);
-  }));
+  });
+
+  it('cancelPolicy error', () => {
+
+    component.formProcess = new FormGroup({
+      processDate: new FormControl('2022-11-15T20:27:10.000Z'),
+      causeType: new FormControl(138),
+      immediate:new FormControl(0),
+      applicationProcess: new FormControl('Cancelación'),
+      observation: new FormControl('observación')
+    })
+
+    const res: any = {
+      body: ['test'],
+      dataHeader: {
+          code: 500,
+          status: "OK",
+          errorList: [],
+          hasErrors: false,
+          currentPage: 0,
+          totalPage: 0,
+          totalRecords: 0
+      }
+  };
+  const modalActionsService = fixture.debugElement.injector.get(ModalPolicyActionsService);
+  const spy1 = jest.spyOn(modalActionsService, 'postCancelPolicy').mockReturnValue(of(res));
+  component.cancelPolicy();
+  expect(spy1).toHaveBeenCalledTimes(1);
+  });
 
 
-it('rehabilitatePolicy', fakeAsync(() => {
+it('rehabilitatePolicy success',() => {
 
   component.formProcess = new FormGroup({
     processDate: new FormControl('2022-11-15T20:27:10.000Z'),
@@ -130,7 +139,7 @@ it('rehabilitatePolicy', fakeAsync(() => {
     observation: new FormControl('observación')
   })
 
-  const res = {
+  const res: any = {
     body: ['test'],
     dataHeader: {
         code: 200,
@@ -142,49 +151,69 @@ it('rehabilitatePolicy', fakeAsync(() => {
         totalRecords: 0
     }
 };
-const policy = {
-company: "SEGUROS COMERCIALES BOLÍVAR S.A.",
-expirationDate: "2022-12-08T12:53:00-05:00",
-holderDocument: "1131345121",
-holderName: null,
-holderTypeDocument: "CC",
-idPolicy: 103,
-idProduct: 58,
-inceptionDate: "2022-05-31T12:53:00-05:00",
-insuranceLine: "Hogar",
-insuredDocument: "123456",
-insuredName: null,
-insuredTypeDocument: "CC",
-policyNumber: "100000000000075",
-policyStatus: "Activa",
-premiumValue: 1000331,
-productName: "pruebaEmision",
-requestNumber: "87"
-};
 const modalActionsService = fixture.debugElement.injector.get(ModalPolicyActionsService);
-const spy1 = jest.spyOn(modalActionsService, 'postRehabilitation').mockReturnValueOnce(of(policy));
+const spy1 = jest.spyOn(modalActionsService, 'postRehabilitation').mockReturnValueOnce(of(res));
 component.rehabilitatePolicy();
 expect(spy1).toHaveBeenCalledTimes(1);
-}));
+});
+it('rehabilitatePolicy error',() => {
 
-  it('disableButton', () => {
-    expect(component.disableButton()).toBeFalsy();
-  });
+  component.formProcess = new FormGroup({
+    processDate: new FormControl('2022-11-15T20:27:10.000Z'),
+    causeType: new FormControl(138),
+    immediate:new FormControl(0),
+    applicationProcess: new FormControl('Cancelación'),
+    observation: new FormControl('observación')
+  })
+
+  const res: any = {
+    body: ['test'],
+    dataHeader: {
+        code: 500,
+        status: "OK",
+        errorList: [],
+        hasErrors: false,
+        currentPage: 0,
+        totalPage: 0,
+        totalRecords: 0
+    }
+};
+const modalActionsService = fixture.debugElement.injector.get(ModalPolicyActionsService);
+const spy1 = jest.spyOn(modalActionsService, 'postRehabilitation').mockReturnValueOnce(of(res));
+component.rehabilitatePolicy();
+expect(spy1).toHaveBeenCalledTimes(1);
+});
+
+it('verify Date', () => {
+  component.formProcess.get('processDate')?.setValue('2022-11-15T20:27:10.000Z');
+  component.config.data.policy.inceptionDate = '2022-11-15T20:27:10.000Z';
+  component.config.data.policy.expirationDate = '2022-11-15T20:27:10.000Z';
+  expect(component.verifyDate()).toBeUndefined();
+});
+
+it('verify Date else', () => {
+  component.formProcess.get('processDate')?.setValue('2022-11-14T20:27:10.000Z');
+  component.config.data.policy.inceptionDate = '2022-11-15T20:27:10.000Z';
+  component.config.data.policy.expirationDate = '2022-11-15T20:27:10.000Z';
+  expect(component.verifyDate()).toBeUndefined();
+});
+
+it('disable Button', () => {
+  component.formProcess.get('causeType')?.setValue(138)
+  component.formProcess.get('processDate')?.setValue('2022-11-15T20:27:10.000Z');
+  component.config.data.policy.inceptionDate = '2022-11-15T20:27:10.000Z';
+  component.config.data.policy.expirationDate = '2022-11-15T20:27:10.000Z';
+  expect(component.disableButton()).toBeFalsy();
+});
+
+it('disable Button', () => {
+  component.config.data.policy = null;
+  expect(component.disableButton()).toBeTruthy();
+});
 
   it('showSuccess', () => {
     expect(component.showSuccess('succes', 'Cancelación exitosa', 'Se ha cancelado la póliza'));
   });
-  it('getCauses', () => {
-    expect(component.getCauses('succes')).toBeUndefined();
-  });
-
-  it('Cancel Policy', () => {
-    expect(component.cancelPolicy()).toBeUndefined();
-  })
-
-  it('Rehabilitate Policy', () => {
-    expect(component.rehabilitatePolicy()).toBeUndefined();
-  })
 
 });
 
