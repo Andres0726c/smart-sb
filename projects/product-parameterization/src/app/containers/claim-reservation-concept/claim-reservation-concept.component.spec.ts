@@ -271,7 +271,7 @@ describe('ClaimReservationConceptComponent', () => {
 
 
   it('ngAfterViewInit  Ok', () => {
-    var formgroup = new FormGroup({
+    let formgroup = new FormGroup({
       claimReservation: new FormControl('test')
     });
 
@@ -281,7 +281,7 @@ describe('ClaimReservationConceptComponent', () => {
   });
 
   it('updateTable  Ok', () => {
-    var formgroup = new FormGroup({
+    let formgroup = new FormGroup({
       claimReservation: new FormControl('test')
     });
 
