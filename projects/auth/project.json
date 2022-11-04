@@ -1,0 +1,161 @@
+{
+  "name": "auth",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "projects/auth/src",
+  "prefix": "refactoring-smartcore-mf",
+  "targets": {
+    "build": {
+      "builder": "ngx-build-plus:browser",
+      "options": {
+        "outputPath": "deploy/apps/auth",
+        "index": "projects/auth/src/index.html",
+        "main": "projects/auth/src/main.ts",
+        "polyfills": "projects/auth/src/polyfills.ts",
+        "tsConfig": "projects/auth/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "projects/auth/src/favicon.ico",
+          "projects/auth/src/assets"
+        ],
+        "styles": [
+          "projects/auth/src/styles.scss"
+        ],
+        "scripts": [],
+        "allowedCommonJsDependencies": [
+          "uuid",
+          "lodash",
+          "url",
+          "buffer",
+          "ulid",
+          "camelcase-keys",
+          "@aws-crypto",
+          "@aws-crypto/sha256-js",
+          "@aws-crypto/sha256-browser",
+          "@aws-crypto/crc32",
+          "fast-xml-parser",
+          "crypto-js",
+          "isomorphic-unfetch",
+          "paho-mqtt",
+          "js-cookie",
+          "@aws-amplify/ui",
+          "cookie",
+          "events"
+        ],
+        "extraWebpackConfig": "projects/auth/webpack.config.js",
+        "commonChunk": false
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "libs/commons-lib/src/lib/environments/environment.ts",
+              "with": "libs/commons-lib/src/lib/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "extraWebpackConfig": "projects/auth/webpack.prod.config.js"
+        },
+        "stage": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "libs/commons-lib/src/lib/environments/environment.ts",
+              "with": "libs/commons-lib/src/lib/environments/environment.stage.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "extraWebpackConfig": "projects/auth/webpack.prod.config.js"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "libs/commons-lib/src/lib/environments/environment.ts",
+              "with": "libs/commons-lib/src/lib/environments/environment.dev.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "local": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "builder": "ngx-build-plus:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "auth:build:production",
+          "extraWebpackConfig": "projects/auth/webpack.prod.config.js"
+        },
+        "stage": {
+          "browserTarget": "auth:build:stage",
+          "extraWebpackConfig": "projects/auth/webpack.prod.config.js"
+        },
+        "development": {
+          "browserTarget": "auth:build:development"
+        },
+        "local": {
+          "browserTarget": "auth:build:local"
+        }
+      },
+      "defaultConfiguration": "local",
+      "options": {
+        "port": 4201,
+        "publicHost": "http://localhost:4201",
+        "extraWebpackConfig": "projects/auth/webpack.config.js"
+      }
+    },
+    "extract-i18n": {
+      "builder": "ngx-build-plus:extract-i18n",
+      "options": {
+        "browserTarget": "auth:build",
+        "extraWebpackConfig": "projects/auth/webpack.config.js"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/auth"],
+      "options": {
+        "jestConfig": "projects/auth/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

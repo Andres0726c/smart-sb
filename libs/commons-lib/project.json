@@ -1,0 +1,18 @@
+{
+  "name": "commons-lib",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/commons-lib/src",
+  "prefix": "refactoring-smartcore-mf",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/commons-lib"],
+      "options": {
+        "jestConfig": "libs/commons-lib/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

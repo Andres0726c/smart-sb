@@ -1,0 +1,161 @@
+{
+  "name": "policy-management",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "projects/policy-management/src",
+  "prefix": "refactoring-smartcore-mf",
+  "targets": {
+    "build": {
+      "builder": "ngx-build-plus:browser",
+      "options": {
+        "outputPath": "deploy/apps/policy-management",
+        "index": "projects/policy-management/src/index.html",
+        "main": "projects/policy-management/src/main.ts",
+        "polyfills": "projects/policy-management/src/polyfills.ts",
+        "tsConfig": "projects/policy-management/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "projects/policy-management/src/favicon.ico",
+          "projects/policy-management/src/assets"
+        ],
+        "styles": [
+          "projects/policy-management/src/styles.scss"
+        ],
+        "scripts": [],
+        "allowedCommonJsDependencies": [
+          "uuid",
+          "lodash",
+          "url",
+          "buffer",
+          "ulid",
+          "camelcase-keys",
+          "@aws-crypto",
+          "@aws-crypto/sha256-js",
+          "@aws-crypto/sha256-browser",
+          "@aws-crypto/crc32",
+          "fast-xml-parser",
+          "crypto-js",
+          "isomorphic-unfetch",
+          "paho-mqtt",
+          "js-cookie",
+          "@aws-amplify/ui",
+          "cookie",
+          "events"
+        ],
+        "extraWebpackConfig": "projects/policy-management/webpack.config.js",
+        "commonChunk": false
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "libs/commons-lib/src/lib/environments/environment.ts",
+              "with": "libs/commons-lib/src/lib/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "extraWebpackConfig": "projects/policy-management/webpack.prod.config.js"
+        },
+        "stage": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "libs/commons-lib/src/lib/environments/environment.ts",
+              "with": "libs/commons-lib/src/lib/environments/environment.stage.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "extraWebpackConfig": "projects/policy-management/webpack.prod.config.js"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "libs/commons-lib/src/lib/environments/environment.ts",
+              "with": "libs/commons-lib/src/lib/environments/environment.dev.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "local": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "builder": "ngx-build-plus:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "policy-management:build:production",
+          "extraWebpackConfig": "projects/policy-management/webpack.prod.config.js"
+        },
+        "stage": {
+          "browserTarget": "policy-management:build:stage",
+          "extraWebpackConfig": "projects/policy-management/webpack.prod.config.js"
+        },
+        "development": {
+          "browserTarget": "policy-management:build:development"
+        },
+        "local": {
+          "browserTarget": "policy-management:build:local"
+        }
+      },
+      "defaultConfiguration": "local",
+      "options": {
+        "port": 4203,
+        "publicHost": "http://localhost:4203",
+        "extraWebpackConfig": "projects/policy-management/webpack.config.js"
+      }
+    },
+    "extract-i18n": {
+      "builder": "ngx-build-plus:extract-i18n",
+      "options": {
+        "browserTarget": "policy-management:build",
+        "extraWebpackConfig": "projects/policy-management/webpack.config.js"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/policy-management"],
+      "options": {
+        "jestConfig": "projects/policy-management/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

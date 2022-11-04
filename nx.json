@@ -1,4 +1,6 @@
 {
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "npmScope": "refactoring-smartcore-mf",
   "affected": {
     "defaultBase": "main"
   },
