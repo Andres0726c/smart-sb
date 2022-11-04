@@ -16,10 +16,19 @@
         "inlineStyleLanguage": "scss",
         "assets": [
           "projects/shell/src/favicon.ico",
-          "projects/shell/src/assets"
+          "projects/shell/src/assets",
+          {
+            "input": "libs/commons-lib/src/lib/assets",
+            "glob": "**/*",
+            "output": "smartcore-commons/assets"
+          }
         ],
         "styles": [
-          "projects/shell/src/styles.scss"
+          "projects/shell/src/styles.scss",
+          "node_modules/primeicons/primeicons.css",
+          "node_modules/primeng/resources/primeng.min.css",
+          "libs/commons-lib/src/lib/assets/styles/primeng-theme/theme.scss",
+          "libs/commons-lib/src/lib/assets/styles/material-theme/theme.scss"
         ],
         "scripts": [],
         "allowedCommonJsDependencies": [
