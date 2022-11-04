@@ -17,9 +17,7 @@
       "options": {
         "cacheableOperations": [
           "build",
-          "lint",
-          "test",
-          "e2e"
+          "test"
         ]
       }
     }
@@ -44,11 +42,9 @@
   "generators": {
     "@nrwl/angular:application": {
       "style": "scss",
-      "linter": "eslint",
       "unitTestRunner": "jest"
     },
     "@nrwl/angular:library": {
-      "linter": "eslint",
       "unitTestRunner": "jest"
     },
     "@nrwl/angular:component": {
