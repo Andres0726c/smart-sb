@@ -23,10 +23,35 @@
     }
   },
   "targetDefaults": {
-    "build": {}
+    "build": {},
+    "test": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/jest.preset.js"
+      ]
+    }
   },
   "workspaceLayout": {
     "appsDir": "projects",
     "libsDir": "libs"
+  },
+  "cli": {
+    "analytics": false
+  },
+  "generators": {
+    "@nrwl/angular:application": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "css"
+    }
   }
 }
