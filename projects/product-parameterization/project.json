@@ -1,0 +1,161 @@
+{
+  "name": "product-parameterization",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "projects/product-parameterization/src",
+  "prefix": "refactoring-smartcore-mf",
+  "targets": {
+    "build": {
+      "builder": "ngx-build-plus:browser",
+      "options": {
+        "outputPath": "deploy/apps/product-parameterization",
+        "index": "projects/product-parameterization/src/index.html",
+        "main": "projects/product-parameterization/src/main.ts",
+        "polyfills": "projects/product-parameterization/src/polyfills.ts",
+        "tsConfig": "projects/product-parameterization/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "projects/product-parameterization/src/favicon.ico",
+          "projects/product-parameterization/src/assets"
+        ],
+        "styles": [
+          "projects/product-parameterization/src/styles.scss"
+        ],
+        "scripts": [],
+        "allowedCommonJsDependencies": [
+          "uuid",
+          "lodash",
+          "url",
+          "buffer",
+          "ulid",
+          "camelcase-keys",
+          "@aws-crypto",
+          "@aws-crypto/sha256-js",
+          "@aws-crypto/sha256-browser",
+          "@aws-crypto/crc32",
+          "fast-xml-parser",
+          "crypto-js",
+          "isomorphic-unfetch",
+          "paho-mqtt",
+          "js-cookie",
+          "@aws-amplify/ui",
+          "cookie",
+          "events"
+        ],
+        "extraWebpackConfig": "projects/product-parameterization/webpack.config.js",
+        "commonChunk": false
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "libs/commons-lib/src/lib/environments/environment.ts",
+              "with": "libs/commons-lib/src/lib/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "extraWebpackConfig": "projects/product-parameterization/webpack.prod.config.js"
+        },
+        "stage": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2mb",
+              "maximumError": "6mb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "libs/commons-lib/src/lib/environments/environment.ts",
+              "with": "libs/commons-lib/src/lib/environments/environment.stage.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "extraWebpackConfig": "projects/product-parameterization/webpack.prod.config.js"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "libs/commons-lib/src/lib/environments/environment.ts",
+              "with": "libs/commons-lib/src/lib/environments/environment.dev.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "local": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "builder": "ngx-build-plus:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "product-parameterization:build:production",
+          "extraWebpackConfig": "projects/product-parameterization/webpack.prod.config.js"
+        },
+        "stage": {
+          "browserTarget": "product-parameterization:build:stage",
+          "extraWebpackConfig": "projects/product-parameterization/webpack.prod.config.js"
+        },
+        "development": {
+          "browserTarget": "product-parameterization:build:development"
+        },
+        "local": {
+          "browserTarget": "product-parameterization:build:local"
+        }
+      },
+      "defaultConfiguration": "local",
+      "options": {
+        "port": 4202,
+        "publicHost": "http://localhost:4202",
+        "extraWebpackConfig": "projects/product-parameterization/webpack.config.js"
+      }
+    },
+    "extract-i18n": {
+      "builder": "ngx-build-plus:extract-i18n",
+      "options": {
+        "browserTarget": "product-parameterization:build",
+        "extraWebpackConfig": "projects/product-parameterization/webpack.config.js"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/product-parameterization"],
+      "options": {
+        "jestConfig": "projects/product-parameterization/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
