@@ -58,7 +58,7 @@
             </div>
 
             <div *ngIf="config.data.process === 'Cancelación'">
-                <label>Seleccione la fecha de anulación</label>
+                <label>Fecha aplicación cancelación</label>
                 <span class="p-input-icon-right w-full">
                     <p-calendar formControlName="processDate" (onSelect) = "verifyDate()"  dateFormat="yy-mm-dd" appendTo="body" styleClass="w-full" placeholder="aaaa-mm-dd" [showTime]="true" hourFormat="24" [showSeconds]="true"></p-calendar>
                     <em class="pi pi-calendar"></em> 
