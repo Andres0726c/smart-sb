@@ -1,4 +1,6 @@
 {
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "npmScope": "refactoring-smartcore-mf",
   "affected": {
     "defaultBase": "main"
   },
@@ -15,18 +17,38 @@
       "options": {
         "cacheableOperations": [
           "build",
-          "lint",
-          "test",
-          "e2e"
+          "test"
         ]
       }
     }
   },
   "targetDefaults": {
-    "build": {}
+    "build": {},
+    "test": {
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/jest.preset.js"
+      ]
+    }
   },
   "workspaceLayout": {
     "appsDir": "projects",
     "libsDir": "libs"
+  },
+  "cli": {
+    "analytics": false
+  },
+  "generators": {
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
   }
 }
