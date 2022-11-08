@@ -46,8 +46,6 @@ export class ComplementaryDataComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   Rule! : FormGroup;
 
-  flIsMandatory:boolean = false;
-
   constructor(
     public dialog: MatDialog,
     public fb: FormBuilder,
