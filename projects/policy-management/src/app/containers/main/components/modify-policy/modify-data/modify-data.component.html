@@ -1,0 +1,67 @@
+<form [formGroup]="modifyData">
+  <div formArrayName="polizyData">
+    <div
+      *ngFor="let groups of policyData.controls; let i = index"
+      [formGroupName]="i"
+    >
+      {{ i }}
+      <input type="text" formControlName="code" />
+      <p-divider align="left" type="dashed" styleClass="my-2">
+        <div class="inline-flex items-center">
+          <i class="pi pi-user mr-2"></i>
+          <strong>{{ groups?.value.code }}</strong>
+        </div>
+      </p-divider>
+      <section class="w-full grid grid-cols-3 gap-4" formArrayName="fields">
+        <div
+          *ngFor="let parameters of groups?.value.fields; let x = index"
+          class="w-full"
+          [formGroupName]="x"
+        >
+          {{ x }}
+          <label>{{ parameters.label }}</label>
+          <input type="text" formControlName="value" class="p-inputtext" />
+          <!--   <span
+              *ngIf="parameters.dataTypeGui === 'Text box'"
+              class="p-input-icon-right w-full"
+            >
+              <i class="pi pi-id-card"></i>
+              <input
+                type="parameters.dataTypeName"
+                pInputText
+                pKeyFilter="int"
+                maxlength="30"
+                formControlName = "value"
+                placeholder="{{ parameters.name }}"
+                class="w-full"
+              />
+            </span>
+            <p-dropdown
+              *ngIf="parameters.dataTypeGui === 'List box'"
+              [styleClass]="'w-full'"
+              optionLabel="nmName"
+              optionValue="id"
+              formControlName = "value"
+              appendTo="body"
+              [showClear]="true"
+              placeholder="Seleccionar"
+            >
+            </p-dropdown>
+            <span
+              *ngIf="parameters.dataTypeGui === 'Calendar'"
+              class="p-input-icon-right w-full"
+            >
+              <i class="pi pi-calendar"></i>
+              <p-inputMask
+                styleClass="w-full"
+                placeholder="dd/mm/aaaa"
+                mask="99/99/9999"
+                formControlName = "value"
+              >
+              </p-inputMask>
+            </span> -->
+        </div>
+      </section>
+    </div>
+  </div>
+</form>

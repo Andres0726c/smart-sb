@@ -1,0 +1,8 @@
+<div>
+  <p-tabView [scrollable]="true">
+    <p-tabPanel [header]="item.name" *ngFor="let item of modifyData.value; let i = index" [selected]="i== 0">
+        {{item.description}}
+    </p-tabPanel>
+</p-tabView>
+
+</div>
