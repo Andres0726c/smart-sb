@@ -46,6 +46,8 @@ export class ComplementaryDataComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   Rule! : FormGroup;
 
+  flIsMandatory:boolean = false;
+
   constructor(
     public dialog: MatDialog,
     public fb: FormBuilder,
@@ -316,6 +318,13 @@ export class ComplementaryDataComponent implements OnInit {
       };
 
       for (let object of obj) {
+      
+        if (object.element.flIsMandatory === "S") {
+          this.flIsMandatory = true;
+        }else{
+          this.flIsMandatory = false;
+        }
+
         const index = this.getAllFields().findIndex((x: { id: number; }) => x.id === object.id);
 
         if (this.modifyData) {
@@ -340,6 +349,8 @@ export class ComplementaryDataComponent implements OnInit {
         else {
 
           if (index === -1) {
+            
+            
             this.getGroupArrayById(group).push(new FormGroup({
               id: this.fb.control(object.id, [Validators.required]),
               name: this.fb.control(object.name, [Validators.required]),
@@ -350,13 +361,15 @@ export class ComplementaryDataComponent implements OnInit {
               initializeRule: this.fb.array([], []),
               validateRule: this.fb.array([], []),
               dependency: this.fb.control(null, []),
-              required: this.fb.control(false, [Validators.required]),
+              requiredEssential: this.fb.control(object.element.flIsMandatory === "S" ? true : false, [Validators.required]),
+              required: this.fb.control(object.element.flIsMandatory === "S" ? true : false, [Validators.required]),
               editable: this.fb.control(true, [Validators.required]),
               visible: this.fb.control(true, [Validators.required]),
               fieldGroup: this.fb.control(1, []),
               shouldDelete: this.fb.control(object.shouldDelete, [Validators.required]),
               businessCode:this.fb.control(object.element.businessCode)
             }));
+            
           } else {
             const field = this.getGroupArrayById(group).controls[index];
 
@@ -455,6 +468,8 @@ export class ComplementaryDataComponent implements OnInit {
     this.selectedField = itemParam;
     this.dependsArray = [];
 
+    
+
     for (const item of this.getGroupArrayById(1).value.filter((e: any) => e.id != this.selectedField?.get('id')?.value)) {
       this.dependsArray.push(item)
     }
@@ -465,6 +480,13 @@ export class ComplementaryDataComponent implements OnInit {
       this.selectedField.get('fieldGroup')?.disable();
     } else {
       this.selectedField.get('fieldGroup')?.enable();
+    }
+
+    console.log('sle', this.selectedField);
+    if (this.selectedField.get('requiredEssential')?.value === true) {
+      this.selectedField.get('required')?.disable();
+    }else{
+      this.selectedField.get('required')?.enable();
     }
   }
 
