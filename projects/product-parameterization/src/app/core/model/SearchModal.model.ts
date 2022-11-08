@@ -18,7 +18,8 @@ export interface FieldArray {
     dsDescription: string,
     dataTypeDescription: string,
     dataTypeGui: string,
-    dataTypeName: string
+    dataTypeName: string,
+    flIsMandatory: string
   },
   dataTypeGui: string,
   dataTypeName: string,
@@ -45,7 +46,8 @@ export interface ElementReturn {
     dsDescription: string,
     dataTypeDescription: string,
     dataTypeGui: string,
-    dataTypeName: string
+    dataTypeName: string,
+    flIsMandatory: string
   }
 }
 

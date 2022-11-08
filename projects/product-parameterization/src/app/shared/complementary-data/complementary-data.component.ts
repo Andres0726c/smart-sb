@@ -156,7 +156,7 @@ export class ComplementaryDataComponent implements OnInit {
         })
       ], Validators.required);
     }
-
+    
     for (let item of arrayGroups.controls) {
       const index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === item.value.id);
       if (index === -1) {
@@ -340,6 +340,8 @@ export class ComplementaryDataComponent implements OnInit {
         else {
 
           if (index === -1) {
+            
+            
             this.getGroupArrayById(group).push(new FormGroup({
               id: this.fb.control(object.id, [Validators.required]),
               name: this.fb.control(object.name, [Validators.required]),
@@ -350,18 +352,32 @@ export class ComplementaryDataComponent implements OnInit {
               initializeRule: this.fb.array([], []),
               validateRule: this.fb.array([], []),
               dependency: this.fb.control(null, []),
-              required: this.fb.control(false, [Validators.required]),
+              requiredEssential: this.fb.control(object.element.flIsMandatory === "S" ? true : false, [Validators.required]),
+              required: this.fb.control(object.element.flIsMandatory === "S" ? true : false, [Validators.required]),
               editable: this.fb.control(true, [Validators.required]),
               visible: this.fb.control(true, [Validators.required]),
               fieldGroup: this.fb.control(1, []),
               shouldDelete: this.fb.control(object.shouldDelete, [Validators.required]),
               businessCode:this.fb.control(object.element.businessCode)
             }));
+            
           } else {
             const field = this.getGroupArrayById(group).controls[index];
 
             if (field && !(<FormGroup>field).contains('fieldGroup')){
               (<FormGroup>field).addControl('fieldGroup',this.fb.control(1));
+            }
+
+            if (field && !(<FormGroup>field).contains('requiredEssential')){
+              const valueRequiredEssential = object.element.flIsMandatory === 'S' ? true : false;
+              (<FormGroup>field).addControl('requiredEssential', this.fb.control(valueRequiredEssential));
+              (<FormGroup>field).get('required')?.setValue(valueRequiredEssential);
+              if (valueRequiredEssential) {
+                (<FormGroup>field).get('required')?.disable();
+              } else {
+                (<FormGroup>field).get('required')?.enable();
+              }
+              
             }
           }
         }
@@ -455,6 +471,8 @@ export class ComplementaryDataComponent implements OnInit {
     this.selectedField = itemParam;
     this.dependsArray = [];
 
+    
+
     for (const item of this.getGroupArrayById(1).value.filter((e: any) => e.id != this.selectedField?.get('id')?.value)) {
       this.dependsArray.push(item)
     }
@@ -465,6 +483,16 @@ export class ComplementaryDataComponent implements OnInit {
       this.selectedField.get('fieldGroup')?.disable();
     } else {
       this.selectedField.get('fieldGroup')?.enable();
+    }
+
+    if (this.selectedField.get('requiredEssential')?.value === true) {
+      setTimeout(() => {
+        this.selectedField.get('required')?.disable();
+      });
+    }else{
+      setTimeout(() => {
+        this.selectedField.get('required')?.enable();
+      });
     }
   }
 
