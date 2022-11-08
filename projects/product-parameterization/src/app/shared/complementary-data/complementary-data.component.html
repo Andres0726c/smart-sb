@@ -300,7 +300,7 @@
                     Visible
                 </mat-slide-toggle>
             </section>
-            <section class="input input-prop">
+            <section class="input input-prop" *ngIf="getGroupArrayById(this.selectedField.get('fieldGroup')?.value).length > 1">
                 <mat-label>Grupo</mat-label>
                 <mat-form-field appearance="outline">
                     <mat-select placeholder="Seleccionar" formControlName="fieldGroup"
