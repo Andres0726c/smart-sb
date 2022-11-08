@@ -159,6 +159,8 @@ export class ComplementaryDataComponent implements OnInit {
       ], Validators.required);
     }
 
+    console.log('array Data: ', this.complementaryDataControls);
+
     for (let item of arrayGroups.controls) {
       const index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === item.value.id);
       if (index === -1) {
@@ -376,6 +378,18 @@ export class ComplementaryDataComponent implements OnInit {
             if (field && !(<FormGroup>field).contains('fieldGroup')){
               (<FormGroup>field).addControl('fieldGroup',this.fb.control(1));
             }
+
+            if (field && !(<FormGroup>field).contains('requiredEssential')){
+              const valueRequiredEssential = object.element.flIsMandatory === 'S' ? true : false;
+              (<FormGroup>field).addControl('requiredEssential', this.fb.control(valueRequiredEssential));
+              (<FormGroup>field).get('required')?.setValue(valueRequiredEssential);
+              if (valueRequiredEssential) {
+                (<FormGroup>field).get('required')?.disable();
+              } else {
+                (<FormGroup>field).get('required')?.enable();
+              }
+              
+            }
           }
         }
       }
@@ -484,9 +498,13 @@ export class ComplementaryDataComponent implements OnInit {
 
     console.log('sle', this.selectedField);
     if (this.selectedField.get('requiredEssential')?.value === true) {
-      this.selectedField.get('required')?.disable();
+      setTimeout(() => {
+        this.selectedField.get('required')?.disable();
+      });
     }else{
-      this.selectedField.get('required')?.enable();
+      setTimeout(() => {
+        this.selectedField.get('required')?.enable();
+      });
     }
   }
 
