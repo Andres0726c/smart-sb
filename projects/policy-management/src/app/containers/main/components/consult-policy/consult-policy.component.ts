@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
 import { ModalRenewalComponent } from 'projects/policy-management/src/app/containers/main/components/consult-policy/modal-renewal/modal-renewal.component';
 import { PolicyDetailsComponent } from './policy-details/policy-details.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-consult-policy',
@@ -59,7 +60,8 @@ export class ConsultPolicyComponent {
     public consultPolicyService: ConsultPolicyService,
     public fb: FormBuilder,
     public dialogService: DialogService,
-    public messageService: MessageService
+    public messageService: MessageService,
+    public router: Router
   ) {
     this.formDate = fb.group({
       processDate: fb.control(null, Validators.required),
@@ -138,7 +140,16 @@ export class ConsultPolicyComponent {
     ];
 
     this.items = [
-      { label: 'Modificar', icon: 'pi pi-fw pi-pencil' },
+      { 
+        label: 'Modificar', 
+        icon: 'pi pi-fw pi-pencil',
+        command: () => {
+          this.router.navigate(
+            [`/polizas/modificar/${this.selectedPolicy?.idProduct}`],
+            { state: { policy: this.selectedPolicy }  }
+          );
+        }
+      },
       {
         label: 'Cancelar',
         icon: 'pi pi-fw pi-ban',

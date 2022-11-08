@@ -20,13 +20,16 @@ export class ModifyDataComponent implements OnInit {
   };
   
   @Input() modifyData!: FormGroup; //= new FormArray([], [Validators.required]);
+  @Input() dataType = '';
 
   Fields: any;
 
   constructor(
     public productService: ProductService,
     public fb: FormBuilder
-  ) { }
+  ) {
+    console.log('modifyData', this.modifyData);
+  }
 
   ngOnInit(): void {
     console.log('form',this.modifyData);
@@ -34,7 +37,15 @@ export class ModifyDataComponent implements OnInit {
   }
 
   get policyData(): FormArray {
-    return this.modifyData.get("polizyData") as FormArray
+    return this.modifyData.get('policyData') as FormArray
+  }
+
+  get dataTypeControls(): FormArray {
+    return this.modifyData.get(this.dataType) as FormArray;
+  }
+
+  getFieldsControls(group: any) {
+    return group.get('fields') as FormArray;
   }
 
  

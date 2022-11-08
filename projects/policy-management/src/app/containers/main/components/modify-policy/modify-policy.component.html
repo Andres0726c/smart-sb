@@ -1,263 +1,121 @@
 <div class="mx-1 sm:mx-12 sm:mb-12">
-    <h1>Modificación póliza</h1>
-    <span>Actualización de datos para póliza</span>
-    <div class="flex flex-col justify-center gap-y-4">
-      <p-card>
-        <form *ngIf="formPolicy" [formGroup]="formPolicy" (ngSubmit)="saveModification()">
-          <div class="form">
-            <p-divider align="left" type="dashed" styleClass="my-2">
-              <div class="inline-flex items-center">
-                <i class="fal fa-ballot mr-2"></i>
-                <strong>Póliza </strong>
-              </div>
-            </p-divider>
-            <section
-              class="w-full flex flex-col sm:flex-row gap-x-4"
-              formGroupName="basicData"
-            >
-              <div class="w-full sm:w-1/3">
-                <label>Póliza</label>
+  <h1>Modificación póliza</h1>
+  <span>Actualización de datos para póliza</span>
+  <div class="flex flex-col justify-center gap-y-4">
+    <p-card>
+      <form *ngIf="formPolicy" [formGroup]="formPolicy" (ngSubmit)="saveModification()">
+        <div class="form">
+          <p-divider align="left" type="dashed" styleClass="my-2">
+            <div class="inline-flex items-center">
+              <i class="fal fa-ballot mr-2"></i>
+              <strong>Póliza </strong>
+            </div>
+          </p-divider>
+          <section
+            class="w-full flex flex-col sm:flex-row gap-x-4"
+            formGroupName="basicData"
+          >
+            <div class="w-full sm:w-1/3">
+              <label>Póliza</label>
+              <p-inputMask
+                styleClass="w-full"
+                formControlName="policyNumber"
+                placeholder="12345-67891-23456"
+                mask="999999999999999"
+                [autoClear]="false"
+                [slotChar]="''"
+                [disabled]="true"
+              >
+              </p-inputMask>
+            </div>
+            <div class="w-full sm:w-1/3">
+              <label>Producto </label>
+              <input
+                type="text"
+                pInputText
+                formControlName="productField"
+                placeholder="Producto"
+                class="w-full"
+              />
+            </div>
+            <div class="w-full sm:w-1/3">
+              <span>Vigente desde </span>
+              <span class="p-input-icon-right w-full">
+                <i class="pi pi-calendar"></i>
                 <p-inputMask
                   styleClass="w-full"
-                  formControlName="policyNumber"
-                  placeholder="12345-67891-23456"
-                  mask="999999999999999"
-                  [autoClear]="false"
-                  [slotChar]="''"
-                  [disabled]="true"
+                  formControlName="startDate"
+                  placeholder="dd/mm/aaaa"
+                  mask="99/99/9999"
                 >
                 </p-inputMask>
-              </div>
-              <div class="w-full sm:w-1/3">
-                <label>Producto </label>
-                <input
-                  type="text"
-                  pInputText
-                  formControlName="productField"
-                  placeholder="Producto"
-                  class="w-full"
-                />
-              </div>
-              <div class="w-full sm:w-1/3">
-                <span>Vigente desde </span>
-                <span class="p-input-icon-right w-full">
-                  <i class="pi pi-calendar"></i>
-                  <p-inputMask
-                    styleClass="w-full"
-                    formControlName="startDate"
-                    placeholder="dd/mm/aaaa"
-                    mask="99/99/9999"
-                  >
-                  </p-inputMask>
-                </span>
-              </div>
-              <div class="w-full sm:w-1/3">
-                <label>Tipo de pago </label>
-                <p-dropdown
-                  [options]="['Tipo 1', 'Tipo 2']"
-                  [styleClass]="'w-full'"
-                  formControlName="idProduct"
-                  appendTo="body"
-                  [filter]="true"
-                  [showClear]="true"
-                  pipe=""
-                  placeholder="Seleccionar"
-                >
-                </p-dropdown>
-              </div>
-              <div class="w-full sm:w-1/3">
-                <label>Valor pago</label>
-                <p-inputNumber
-                  styleClass="w-full"
-                  class="w-full"
-                  mode="currency"
-                  formControlName="payValue"
-                  currency="USD"
-                  locale="en-US"
-                  [minFractionDigits]="0"
-                ></p-inputNumber>
-              </div>
-            </section>
-            <p-divider align="left" type="dashed" styleClass="my-2">
-              <div class="inline-flex items-center">
-                <i class="fal fa-ballot mr-2"></i>
-                <strong>Datos del póliza</strong>
-              </div>
-            </p-divider>
-            <div>
-            <app-modify-data>
-            </app-modify-data>
+              </span>
             </div>
-            <p-divider align="left" type="dashed" styleClass="my-2">
-              <div class="inline-flex items-center">
-                <i class="fal fa-ballot mr-2"></i>
-                <strong>Datos del riesgo </strong>
-              </div>
-            </p-divider>
+            <div class="w-full sm:w-1/3">
+              <label>Tipo de pago </label>
+              <p-dropdown
+                [options]="['Tipo 1', 'Tipo 2']"
+                [styleClass]="'w-full'"
+                formControlName="idProduct"
+                appendTo="body"
+                [filter]="true"
+                [showClear]="true"
+                pipe=""
+                placeholder="Seleccionar"
+              >
+              </p-dropdown>
+            </div>
+            <div class="w-full sm:w-1/3">
+              <label>Valor pago</label>
+              <p-inputNumber
+                styleClass="w-full"
+                class="w-full"
+                mode="currency"
+                formControlName="payValue"
+                currency="USD"
+                locale="en-US"
+                [minFractionDigits]="0"
+              ></p-inputNumber>
+            </div>
+          </section>
+
+          <p-divider align="left" type="dashed" styleClass="my-2">
+            <div class="inline-flex items-center">
+              <i class="fal fa-ballot mr-2"></i>
+              <strong>Datos del póliza</strong>
+            </div>
             <div>
-            <app-modify-tabs-data
+              <app-modify-data
+                [modifyData]="formPolicy"
+                [dataType]="'policyData'">
+              </app-modify-data>
+            </div>
+          </p-divider>
+
+          <p-divider align="left" type="dashed" styleClass="my-2">
+            <div class="inline-flex items-center">
+              <i class="fal fa-ballot mr-2"></i>
+              <strong>Datos del riesgo </strong>
+            </div>
+          </p-divider>
+          <div>
+          <app-modify-tabs-data
             [modifyData]="riskTypesControls">
           </app-modify-tabs-data>
-          </div>
-            <!-- tomador
-            <p-divider align="left" type="dashed" styleClass="my-2">
-              <div class="inline-flex items-center">
-                <i class="pi pi-user mr-2"></i>
-                <strong>Tomador</strong>
-              </div>
-            </p-divider>
-  
-            <section
-              class="w-full flex gap-x-4"
-              formGroupName="complementaryData"
-            >
-              <div class="w-1/3">
-                <label>Tipo de identificación</label>
-                <p-dropdown
-                  [options]="documentsType"
-                  [styleClass]="'w-full'"
-                  formControlName="holderdocumentType"
-                  optionLabel="nmName"
-                  optionValue="id"
-                  appendTo="body"
-                  [showClear]="true"
-                  placeholder="Seleccionar"
-                >
-                </p-dropdown>
-              </div>
-              <div class="w-1/3">
-                <label>Identificación</label>
-                <span class="p-input-icon-right w-full">
-                  <i class="pi pi-id-card"></i>
-                  <input
-                    type="text"
-                    pInputText
-                    pKeyFilter="int"
-                    formControlName="holderdocumentNumber"
-                    maxlength="30"
-                    placeholder="Identificación"
-                    class="w-full"
-                  />
-                </span>
-              </div>
-              <div class="w-1/3">
-                <span>Nombre</span>
-                <span class="p-input-icon-right w-full">
-                  <i class="pi pi-user"></i>
-                  <input
-                    type="text"
-                    pInputText
-                    formControlName="holderName"
-                    placeholder="Nombre"
-                    class="w-full"
-                  />
-                </span>
-              </div>
-            </section>
-  
-            Mascota 
-  
-            <p-divider align="left" type="dashed" styleClass="my-2">
-              <div class="inline-flex items-center">
-                <i class="fas fa-paw mr-2"></i>
-                <strong>Mascota</strong>
-              </div>
-            </p-divider>
-            <section
-              class="w-full flex gap-x-4"
-              formGroupName="complementaryData"
-            >
-              <div class="w-1/3">
-                <span>Raza</span>
-                <span class="p-input-icon-right w-full">
-                  <i class="fas fa-paw"></i>
-                  <input
-                    type="text"
-                    pInputText
-                    formControlName="petBreed"
-                    placeholder="Raza"
-                    class="w-full"
-                  />
-                </span>
-              </div>
-  
-              <div class="w-1/3">
-                <span>Nombre</span>
-                <span class="p-input-icon-right w-full">
-                  <i class="fas fa-paw"></i>
-                  <input
-                    type="text"
-                    formControlName="petName"
-                    pInputText
-                    placeholder="Nombre"
-                    class="w-full"
-                  />
-                </span>
-              </div>
-  
-              <div class="w-1/3">
-                <span>Edad</span>
-                <span class="p-input-icon-right w-full">
-                  <i class="fas fa-paw"></i>
-                  <input
-                    type="text"
-                    pInputText
-                    pKeyFilter="int"
-                    formControlName="petAge"
-                    placeholder="Edad"
-                    class="w-full"
-                  />
-                </span>
-              </div>
-            </section> -->
-  
-            <!-- otro       
-            <p-divider align="left" type="dashed" styleClass="my-2">
-              <div class="inline-flex items-center">
-                <i class="fas fa-ellipsis-h mr-2"></i>
-                <strong>Otros</strong>
-              </div>
-            </p-divider>
-            <section
-              class="w-full flex gap-x-4"
-              formGroupName="complementaryData"
-            >
-              <div class="w-1/3">
-                <span>Medio de pago</span>
-                <span class="p-input-icon-right w-full">
-                  <i class="pi pi-user"></i>
-                  <p-dropdown
-                    [options]="[
-                      { name: 'Medio1', value: 1 },
-                      { name: 'Medio2', value: 2 }
-                    ]"
-                    [styleClass]="'w-full'"
-                    formControlName="payment"
-                    optionLabel="name"
-                    optionValue="value"
-                    appendTo="body"
-                    [filter]="true"
-                    [showClear]="true"
-                    placeholder="Seleccionar"
-                  >
-                  </p-dropdown>
-                </span>
-              </div>
-            </section>
-          -->
-          </div>
-          <div class="flex justify-end mt-5">
-            <button
-              pButton
-              type="submit"
-              label="Aceptar"
-              class="p-button p-component"
-            >
-              <span class="p-button-label">Aceptar</span>
-            </button>
-          </div>
-        </form>
-      </p-card>
-    </div>
+        </div>
+        </div>
+        <div class="flex justify-end mt-5">
+          <button
+            pButton
+            type="submit"
+            label="Aceptar"
+            class="p-button p-component"
+          >
+            <span class="p-button-label">Aceptar</span>
+          </button>
+        </div>
+      </form>
+    </p-card>
   </div>
-  
+</div>
+

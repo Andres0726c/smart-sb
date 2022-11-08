@@ -67,8 +67,6 @@ export class ModifyPolicyComponent {
     private router: Router,
     public fb: FormBuilder
   ) {
-    
-
   
    this.policyData = this.router?.getCurrentNavigation()?.extras?.state?.['policy'] ?  Object?.assign(
         this.router?.getCurrentNavigation()?.extras?.state?.['policy'] ) : ""
@@ -85,29 +83,8 @@ export class ModifyPolicyComponent {
         idProduct: this.fb.control('', Validators.required),
         payValue: this.fb.control('', Validators.required),
       }),
-      polizyData: this.fb.array([]),
+      policyData: this.fb.array([]),
       riskData: this.fb.array([]),
-      // complementaryData: this.fb.group({
-      //   holderdocumentType: this.fb.control('', Validators.required),
-      //   holderdocumentNumber: this.fb.control(
-      //     this.policyData?.holderDocument,
-      //     Validators.required
-      //   ),
-      //   holderName: this.fb.control(this.policyData?.holderName, [
-      //     Validators.required,
-      //     Validators.pattern(/^[A-zÀ-ú\s]*$/),
-      //   ]),
-      //   payment: this.fb.control('', Validators.required),
-      //   petBreed: this.fb.control('', [
-      //     Validators.required,
-      //     Validators.pattern(/^[A-zÀ-ú\s]*$/),
-      //   ]),
-      //   petName: this.fb.control('', [
-      //     Validators.required,
-      //     Validators.pattern(/^[A-zÀ-ú\s]*$/),
-      //   ]),
-      //   petAge: this.fb.control('', Validators.required),
-      // }),
     });
 
     consultPolicyService.getDocumentType().subscribe((data) => {
@@ -116,122 +93,85 @@ export class ModifyPolicyComponent {
   }
 
   ngOnInit(): void {
-  this.getPolicy(this.policyData.idPolicy);
-   
-    
-  }
-  ngOnChanges(): void {
-    //this.getPolicy(this.policyData.idPolicy);
-  //  this.initializeData();
-  }
-  ngOnAfterViewInit(): void {
-   //this.getPolicy(this.policyData.idPolicy);
-    //this.initializeData();
+    this.getPolicy(this.policyData.idPolicy);
   }
 
-  get polizyDataControls(): FormArray {
-    return (<FormArray> this.formPolicy?.get('polizyData'));
+  get policyDataControls(): FormArray {
+    return this.formPolicy?.get('policyData') as FormArray;
   }
+
   get riskTypesControls(): FormArray {
-    return (<FormArray> this.formPolicy?.get('riskData'));
+    return this.formPolicy?.get('riskData') as FormArray;
   }
 
 
   initializeData() {
     this.policyId = Number(this.activatedroute.snapshot.paramMap.get('id'));
-    this.productService.getProductById(this.policyId).subscribe({
-      next: (res: ResponseDTO<Product>) => {
-        if (res.dataHeader.code && res.dataHeader.code == 200) {
-          this.product = res.body;
+    this.productService.getProductById(this.policyId).subscribe((res: ResponseDTO<Product>) => {
+      if (res.dataHeader.code && res.dataHeader.code == 200) {
+        this.product = res.body;
 
-      let polizyDt:any = res.body.nmContent?.policyData;
-      console.log(res.body.nmContent?.policyData);
+        let policyDt: any = res.body.nmContent?.policyData;
+        //console.log(res.body.nmContent?.policyData);
+        console.log('policyData', policyDt)
 
-          for (let x of polizyDt){
-            let group = this.fb.group({
-              id:x.id,
-              code: x.code,
-              name:x.name,
-              fields:this.fb.array([])
-            });
-            for(let fields of x.fields){
-            for(let valuePoliz of this.dataPolicy){
-             
-              if (fields.code.businessCode === valuePoliz.name){
+        for (let group of policyDt) {
+          let groupFG = this.fb.group({
+            id: group.id,
+            code: group.code,
+            name: group.name,
+            fields: this.fb.array([])
+          });
+
+          for (let fields of group.fields) {
+            for(let valuePoliz of this.dataPolicy) {
+              if (fields.code.businessCode === valuePoliz.name) {
                 let field = this.fb.group({
                   businessCode : fields.code.businessCode,
                   code: fields.code,
-                  dataTypeGui:fields.dataTypeGui,
-                  dataTypeName:fields.dataTypeName,
-                  dependency:fields.dependency,
-                  editable:fields.editable,
-                  id:fields.id,
-                  initializeRule:fields.initializeRule,
-                  label:fields.label,
-                  name:fields.name,
-                  required:fields.required,
-                  validateRule:fields.validateRule,
-                  visible:fields.visible,
-                  value:valuePoliz.value
+                  dataTypeGui: fields.dataTypeGui,
+                  dataTypeName: fields.dataTypeName,
+                  dependency: fields.dependency,
+                  editable: fields.editable,
+                  id: fields.id,
+                  initializeRule: fields.initializeRule,
+                  label: fields.label,
+                  name: fields.name,
+                  required: fields.required,
+                  validateRule: fields.validateRule,
+                  visible: fields.visible,
+                  value: valuePoliz.value
                 });
-                (<FormArray>group.get('fields')).push(field)
-                
-              // }else {
-              //   let field = this.fb.group({
-              //     businessCode : fields.code.businessCode,
-              //     code: fields.code,
-              //     dataTypeGui:fields.dataTypeGui,
-              //     dataTypeName:fields.dataTypeName,
-              //     dependency:fields.dependency,
-              //     editable:fields.editable,
-              //     id:fields.id,
-              //     initializeRule:fields.initializeRule,
-              //     label:fields.label,
-              //     name:fields.name,
-              //     required:fields.required,
-              //     validateRule:fields.validateRule,
-              //     visible:fields.visible,
-              //     value:null
-              //   });
-              //   (<FormArray>group.get('fields')).push(field)
-               }
-          }
-          this.polizyDataControls.clear();
-          this.polizyDataControls.push(group);
-         
-           }
-          }
-
-
-          //// RiskType
-
-          console.log(res.body.nmContent?.riskTypes);
-          if(res.body.nmContent?.riskTypes){
-            for (let risk of res.body.nmContent?.riskTypes ){
-              this.riskTypesControls.push(this.fb.control(risk));
+                (<FormArray>groupFG.get('fields')).push(field)
+              }
             }
           }
-         
-        } else {
-          this.product = {
-            id: 0,
-            nmName: '',
-            dsDescription: '',
-            nmHashCode: 0,
-            nmContent: undefined,
-          };
-          console.log('else');
+          this.policyDataControls.push(groupFG);
         }
-        error: (error: ResponseErrorDTO) => {
-          console.error('error', error);
+
+        //console.log(res.body.nmContent?.riskTypes);
+        if(res.body.nmContent?.riskTypes){
+          for (let risk of res.body.nmContent?.riskTypes ){
+            this.riskTypesControls.push(this.fb.control(risk));
+          }
+        }
+         
+      } else {
+        this.product = {
+          id: 0,
+          nmName: '',
+          dsDescription: '',
+          nmHashCode: 0,
+          nmContent: undefined,
         };
-      },
+        console.log('else');
+      }
     });
   }
 
-  getPolicy(idpolicy:number){
+  getPolicy(idpolicy: number) {
+    this.dataPolicy = [];
     this.productService.findByIdPolicy(idpolicy).subscribe((res) => {
-      
       let policy = res.body
       for (let objKey of Object.keys(policy.propertiesPolicyData)){
         for (let key of Object.keys(policy.propertiesPolicyData[objKey])){
@@ -240,12 +180,10 @@ export class ModifyPolicyComponent {
           value:policy.propertiesPolicyData[objKey][key]
          };
         this.dataPolicy.push(obj);
-        //console.log(this.dataPolicy);
         }
       }
       this.initializeData();
-     // return(this);
-     });
+    });
      
   }
 
