@@ -158,9 +158,7 @@ export class ComplementaryDataComponent implements OnInit {
         })
       ], Validators.required);
     }
-
-    console.log('array Data: ', this.complementaryDataControls);
-
+    
     for (let item of arrayGroups.controls) {
       const index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === item.value.id);
       if (index === -1) {
@@ -320,13 +318,6 @@ export class ComplementaryDataComponent implements OnInit {
       };
 
       for (let object of obj) {
-      
-        if (object.element.flIsMandatory === "S") {
-          this.flIsMandatory = true;
-        }else{
-          this.flIsMandatory = false;
-        }
-
         const index = this.getAllFields().findIndex((x: { id: number; }) => x.id === object.id);
 
         if (this.modifyData) {
@@ -496,7 +487,6 @@ export class ComplementaryDataComponent implements OnInit {
       this.selectedField.get('fieldGroup')?.enable();
     }
 
-    console.log('sle', this.selectedField);
     if (this.selectedField.get('requiredEssential')?.value === true) {
       setTimeout(() => {
         this.selectedField.get('required')?.disable();
