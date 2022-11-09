@@ -14,6 +14,13 @@ const routes: Routes = [
                     './components/consult-policy/consult-policy.module'
                 ).then((m) => m.ConsultPolicyModule)
             },
+            {
+                path: 'renovar/:id',
+                loadChildren: () =>
+                import(
+                    './components/policy-renewal/policy-renewal.module'
+                ).then((m) => m.PolicyRenewalModule)
+            }
         ]
     }
 ];
