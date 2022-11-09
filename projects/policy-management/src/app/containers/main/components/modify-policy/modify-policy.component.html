@@ -87,7 +87,8 @@
             <div>
               <app-modify-data
                 [modifyData]="formPolicy"
-                [dataType]="'policyData'">
+                [dataType]="'policyData'"
+                [Data]="riskTypesControls">
               </app-modify-data>
             </div>
           </p-divider>
@@ -99,9 +100,13 @@
             </div>
           </p-divider>
           <div>
-          <app-modify-tabs-data
-            [modifyData]="riskTypesControls">
-          </app-modify-tabs-data>
+            <!-- <app-modify-data
+                [modifyData]="formPolicy"
+                [dataType]="'complementaryData'">
+            </app-modify-data> -->
+          <!-- <app-modify-tabs-data
+          [modifyData]="formPolicy">
+          </app-modify-tabs-data> -->
         </div>
         </div>
         <div class="flex justify-end mt-5">

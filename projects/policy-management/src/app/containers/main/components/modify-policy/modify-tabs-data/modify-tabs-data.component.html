@@ -1,7 +1,10 @@
 <div>
   <p-tabView [scrollable]="true">
-    <p-tabPanel [header]="item.name" *ngFor="let item of modifyData.value; let i = index" [selected]="i== 0">
-        {{item.description}}
+    <p-tabPanel [header]="item.name" *ngFor="let item of modifyData.value.riskData; let i = index" [selected]="i== 0">
+       <!-- <app-modify-data
+      [modifyData]="modifyData"
+      [dataType]="'policyData'">
+    </app-modify-data>  -->
     </p-tabPanel>
 </p-tabView>
 

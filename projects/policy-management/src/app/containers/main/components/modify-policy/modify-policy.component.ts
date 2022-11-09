@@ -59,6 +59,7 @@ export class ModifyPolicyComponent {
     productName: "string;"
   }
   policyDataForm: any = new FormArray([]);
+  dataRiskValue:any=[];
 
   constructor(
     public productService: ProductService,
@@ -94,6 +95,7 @@ export class ModifyPolicyComponent {
 
   ngOnInit(): void {
     this.getPolicy(this.policyData.idPolicy);
+    this.getPolicyRisk(this.policyData.idPolicy);
   }
 
   get policyDataControls(): FormArray {
@@ -150,11 +152,13 @@ export class ModifyPolicyComponent {
         }
 
         //console.log(res.body.nmContent?.riskTypes);
-        if(res.body.nmContent?.riskTypes){
-          for (let risk of res.body.nmContent?.riskTypes ){
-            this.riskTypesControls.push(this.fb.control(risk));
-          }
-        }
+        // if(res.body.nmContent?.riskTypes){
+        //   for (let risk of res.body.nmContent?.riskTypes ){
+        //     this.riskTypesControls.push(this.fb.control(risk));
+        //   }
+        // }
+
+        this.riskTypes(res);
          
       } else {
         this.product = {
@@ -167,6 +171,60 @@ export class ModifyPolicyComponent {
         console.log('else');
       }
     });
+  }
+
+  riskTypes(data:any){
+
+    for(let risk of data.body.nmContent?.riskTypes) {
+
+      let groupRisk = this.fb.group({
+        id: risk.id,
+        name:risk.name,
+        description:risk.description,
+        code:risk.code,
+        complementaryData: this.fb.array([])
+
+      })
+
+        for (let dataRisk of risk.complementaryData){
+        
+        let group = this.fb.group({
+          id:dataRisk.id,
+          code: dataRisk.code,
+          name:dataRisk.name,
+          fields:this.fb.array([])
+        });
+            for(let fields of dataRisk.fields){
+                for(let valueRisk of this.dataRiskValue){
+                
+                    if (fields.code.businessCode === valueRisk.name){
+                        let field = this.fb.group({
+                          businessCode : fields.code.businessCode,
+                          code: fields.code,
+                          dataTypeGui:fields.dataTypeGui,
+                          dataTypeName:fields.dataTypeName,
+                          dependency:fields.dependency,
+                          editable:fields.editable,
+                          id:fields.id,
+                          initializeRule:fields.initializeRule,
+                          label:fields.label,
+                          name:fields.name,
+                          required:fields.required,
+                          validateRule:fields.validateRule,
+                          visible:fields.visible,
+                          value:valueRisk.value
+                        });
+                      (<FormArray>group.get('fields')).push(field)
+                   }
+          
+               }
+            }
+
+        (<FormArray>groupRisk.get('complementaryData')).push(group)  
+      }
+      this.riskTypesControls.push(groupRisk);
+    }
+ 
   }
 
   getPolicy(idpolicy: number) {
@@ -186,6 +244,53 @@ export class ModifyPolicyComponent {
     });
      
   }
+
+   /**
+   *
+   * @param id: number, id de la poliza para ser consulta
+   
+   * Función para ejecutar el ms de obtener los datos de la poliza
+    y se mapea la información para obtener el valor de cada elemento
+   */
+
+    getPolicyRisk(idpolicy:number){
+      this.productService.findByIdPolicy(idpolicy).subscribe((res) => {
+        
+        let policy = res.body
+        for (let objKey of Object.keys(policy.riskPropertiesPolicyData)){
+          let nameRiks=policy.riskPropertiesPolicyData[objKey];
+          for (let key of Object.keys(nameRiks)){
+           if(this.isObject(nameRiks[key])){
+            for (let risk of Object.keys(nameRiks[key])){
+              for (let dataRisk of Object.keys(nameRiks[key][risk])){
+                 let obj ={
+                  name:dataRisk,
+                  value:nameRiks[key][risk][dataRisk]
+                  }
+                  const index = this.dataRiskValue.findIndex((x: { name: any; }) => x.name === obj.name);
+                  if (index === -1) {
+                    this.dataRiskValue.push(obj);
+                  }
+                 
+              }
+            }
+          }
+          }
+        }
+       
+       });
+       
+    }
+     /**
+   *
+   * @param obj, objeto a validar
+   
+   * Función para ejecutar validar si es objeto
+   */
+
+    public isObject(obj: any) {
+      return obj !== undefined && obj !== null && obj.constructor == Object;
+    }
 
   saveModification() {
     console.log('formPolicy',this.formPolicy);
