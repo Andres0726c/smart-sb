@@ -1,14 +1,18 @@
-<!-- <ng-template #groupFields>
-    <div><span class="text-primary font-bold">Grupo: </span> {{group.value.name}}</div>
-    <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
-        <div *ngFor="let field of getFieldsControls(group).controls; let j= index" formGroupName="{{j}}">
-            <div class="flex flex-col m-3">
-                <label>{{field.value.label}}</label>
-                <input pInputText formControlName="value">
+<ng-template #groupFields let-group="group">
+    <div [formGroup]="group">
+        <div><span class="text-primary font-bold">Grupo: </span> {{group.value.name}}</div>
+        <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
+            <div *ngFor="let field of getFieldsControls(group).controls; let j= index" formGroupName="{{j}}">
+                <div class="flex flex-col m-3">
+                    <label>{{field.value.label}}</label>
+                    <input pInputText formControlName="value">
+                </div>
             </div>
         </div>
     </div>
-</ng-template> 
+</ng-template>
+
+<!-- Templates para los campos
 
 <ng-template #calendar let-field="field">
     <label for="icon">{{ field.label }}</label>
@@ -39,19 +43,13 @@
 <div class="p-5">
     <span class="text-4xl font-bold">Renovación de póliza</span>
     <form [formGroup]="formPolicy" class="mt-5 bg-white rounded-xl p-3">
+         
+
         <div>
             <span>Datos de póliza</span>
             <div formArrayName="policyData">
                 <div class="p-5" *ngFor="let group of policyDataControls.controls; let i = index" formGroupName="{{i}}">
-                    <div><span class="text-primary font-bold">Grupo: </span> {{group.value.name}}</div>
-                    <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
-                        <div *ngFor="let field of getFieldsControls(group).controls; let j= index" formGroupName="{{j}}">
-                            <div class="flex flex-col m-3">
-                                <label>{{field.value.label}}</label>
-                                <input pInputText formControlName="value">
-                            </div>
-                        </div>
-                    </div>
+                    <ng-container *ngTemplateOutlet="groupFields;context:{group: group}"></ng-container>
                 </div>
             </div>
         </div>
@@ -62,15 +60,7 @@
                     <p-tabPanel [header]="risk.value.name" *ngFor="let risk of riskDataControls.controls; let i = index" [selected]="i == 0" formGroupName="{{i}}">
                         <div formArrayName="complementaryData">
                             <div class="p-5" *ngFor="let group of getGroupsControls(risk).controls; let i = index" formGroupName="{{i}}">
-                                <div><span class="text-primary font-bold">Grupo: </span> {{group.value.name}}</div>
-                                <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
-                                    <div *ngFor="let field of getFieldsControls(group).controls; let j= index" formGroupName="{{j}}">
-                                        <div class="flex flex-col m-3">
-                                            <label>{{field.value.label}}</label>
-                                            <input pInputText formControlName="value">
-                                        </div>
-                                    </div>
-                                </div>
+                                <ng-container *ngTemplateOutlet="groupFields;context:{group: group}"></ng-container>
                             </div>
                         </div>
                     </p-tabPanel>
