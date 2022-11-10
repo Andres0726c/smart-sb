@@ -451,4 +451,38 @@ describe('RulesWizardComponent', () => {
     expect(component.isAllDisplayedSelected()).toBeDefined();
   });
 
+  it('selectRow', () => {
+    let row: any = {
+      "id": 12,
+      "name": "Validar plan comercial del producto",
+      "description": "Validar plan comercial del producto",
+      "cdRuleType": "Validación",
+      "endPoint": "/emisor_orquestador/v1/businessplans/validate",
+      "nmParameterList": "{\"idProduct\": \"number\", \"nameBusiness\": \"string\"}",
+      "cdBusinessCode": "RVL_PLC",
+      "urlBs": "https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev"
+    };
+
+    component.ParametersForm =  new FormGroup({
+      rule: new FormControl([new FormControl(row)]),
+      parameters: new FormArray([])
+    });
+
+    component.data.complementaryData = new FormArray([new FormControl(row)]);
+
+    component.rulesDataSource = new MatTableDataSource<ElementTableSearch>([row]);
+    component.dataSourceAux = new MatTableDataSource<ElementTableSearch>([row]);
+    component.ruleSelection = new SelectionModel<ElementTableSearch>(true, []);
+    component.ruleSelection.select(component.dataSourceAux.data[0]);
+
+    const parameters = (<FormArray>component.ParametersForm.get('parameters'));
+    const spyClearFields = jest.spyOn(component.fields, 'clear').mockImplementation(() => undefined);
+    const spyParametersFormClear = jest.spyOn(parameters, 'clear').mockImplementation(() => undefined);
+
+    component.selectRow(row);
+
+    expect(spyClearFields).toHaveBeenCalled();
+    expect(spyParametersFormClear).toHaveBeenCalled();
+  });
+
 });
