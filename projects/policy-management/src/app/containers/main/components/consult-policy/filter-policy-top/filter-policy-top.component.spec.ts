@@ -83,10 +83,10 @@ describe('FilterPolicyTopComponent', () => {
     expect(component.showMoreFilters).toBeTruthy();
   });
 
-  // it('search error all fields empty', () => {
-  //   component.search();
-  //   expect(component.errorAllForm).toBeTruthy();
-  // });
+  it('search error all fields empty', () => {
+    component.search();
+    expect(component.errorAllForm).toBeTruthy();
+  });
 
   it('search success', () => {
     component.policyNumber.setValue('100000000000010');
@@ -111,9 +111,9 @@ describe('FilterPolicyTopComponent', () => {
     expect(component.validForm()).toBeFalsy();
   });
 
-  // it('validate all fields empty', () => {
-  //   expect(component.validForm()).toBeTruthy();
-  // });
+  it('validate all fields empty', () => {
+    expect(component.validForm()).toBeTruthy();
+  });
 
   it('cleanFilter', () => {
     component.policyNumber.setValue('test');
