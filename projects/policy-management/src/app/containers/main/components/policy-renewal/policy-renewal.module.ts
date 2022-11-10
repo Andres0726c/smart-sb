@@ -4,7 +4,8 @@ import { PolicyRenewalComponent } from './policy-renewal.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import {TabViewModule} from 'primeng/tabview';
+import { TabViewModule } from 'primeng/tabview';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 const routes: Routes = [
   {
@@ -23,7 +24,8 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     InputTextModule,
-    TabViewModule
+    TabViewModule,
+    ProgressSpinnerModule
   ]
 })
 export class PolicyRenewalModule { }

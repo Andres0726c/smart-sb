@@ -24,6 +24,7 @@ export class PolicyRenewalComponent implements OnInit {
   };
 
   formPolicy: FormGroup;
+  isLoading: boolean = false;
 
   constructor(
     private _ActivatedRoute: ActivatedRoute,
@@ -60,6 +61,7 @@ export class PolicyRenewalComponent implements OnInit {
   }
 
   getPolicy() {
+    this.isLoading = true;
     console.log('id', this.id);
     this.productService.findByIdPolicy(this.id).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
@@ -98,6 +100,7 @@ export class PolicyRenewalComponent implements OnInit {
         this.formPolicy.addControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));*/
         console.log('policyData: ', this.policyDataControls);
         console.log('riskData: ', this.riskDataControls);
+        this.isLoading = false;
       }
     });
   }

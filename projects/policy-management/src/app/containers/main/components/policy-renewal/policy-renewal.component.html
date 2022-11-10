@@ -42,9 +42,10 @@
 -->
 <div class="p-5">
     <span class="text-4xl font-bold">Renovación de póliza</span>
-    <form [formGroup]="formPolicy" class="mt-5 bg-white rounded-xl p-3">
-         
-
+    <div *ngIf="isLoading" class="mt-5 bg-white rounded-xl p-3">
+        <span>Cargando...</span>
+    </div>
+    <form *ngIf="!isLoading" [formGroup]="formPolicy" class="mt-5 bg-white rounded-xl p-3">
         <div>
             <span>Datos de póliza</span>
             <div formArrayName="policyData">
