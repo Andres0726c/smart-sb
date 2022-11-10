@@ -368,10 +368,16 @@ export class RulesWizardComponent implements OnInit {
     (<FormArray>this.ParametersForm.get('parameters')).clear();
     this.ruleSelection.select(this.getDatasourceRow(row));
     this.ParametersForm.get('rule')?.setValue(this.ruleSelection.selected[0]);
-    let map = this.ParametersForm.get('rule')?.value.nmParameterList;
 
-    let Jsonmap = JSON.parse(map);
-    this.stepParameters = this.returnObj(Jsonmap);
+    let map = this.ParametersForm.get('rule')?.value.nmParameterList;
+    let Jsonmap: any;
+    
+    try {
+      Jsonmap = JSON.parse(map);
+      this.stepParameters = this.returnObj(Jsonmap);
+    } catch {
+      this.stepParameters = this.returnObj({});
+    }
 
     for(let x = 0; x < this.data.complementaryData.length; x++){
       this.aditionalData.push(this.data.complementaryData.value[x].fields);
@@ -544,7 +550,7 @@ export class RulesWizardComponent implements OnInit {
 
   setParameters(field: any, rule: any) {
     (<FormArray>this.ParametersForm.get('parameters'))?.clear();
-    
+
   let obj = this.fb.group({
      rule: rule,
      campo: field.businessCode
@@ -558,7 +564,7 @@ export class RulesWizardComponent implements OnInit {
     }
 
     this.fields.push(obj);
-   
+
       // push final
     let ObjForm;
 
