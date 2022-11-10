@@ -587,7 +587,7 @@ export class ComplementaryDataComponent implements OnInit {
           cdRuleType: response.RulesForm.rule.cdRuleType,
           endPoint: response.RulesForm.rule.endPoint,
           urlBs: response.RulesForm.rule.urlBs,
-          argmntLst: response.RulesForm.parameters
+          argmntLst:response.RulesForm.parameters
         };
         (<FormArray>this.selectedField?.get('initializeRule')).removeAt(0);
         (<FormArray>this.selectedField?.get('initializeRule')).push(this.fb.control(element));

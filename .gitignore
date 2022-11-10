@@ -5,6 +5,7 @@
 /deploy
 /tmp
 /out-tsc
+NX
 
 # dependencies
 node_modules

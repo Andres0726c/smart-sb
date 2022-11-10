@@ -1,5 +1,6 @@
 import { ComplementaryData } from './complementaryData';
 import { InitialParameters } from './initialParameters';
+import { RiskType } from './riskType';
 
 export interface Product{
     id: number,
@@ -11,6 +12,7 @@ export interface Product{
 
 export interface ContentProduct{
     initialParameters: InitialParameters,
-    policyData: ComplementaryData[];
+    policyData: ComplementaryData[],
+    riskTypes: RiskType[]
 }
 

@@ -61,6 +61,7 @@ export class RulesWizardComponent implements OnInit {
   fields: any = new FormArray([]);
   rule: any = [];
   contextData: any = [];
+  EmptyData:boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -371,10 +372,16 @@ export class RulesWizardComponent implements OnInit {
 
     let map = this.ParametersForm.get('rule')?.value.nmParameterList;
     let Jsonmap: any;
-    
     try {
-      Jsonmap = JSON.parse(map);
-      this.stepParameters = this.returnObj(Jsonmap);
+      if (map){
+         Jsonmap = JSON.parse(map);
+        this.stepParameters = this.returnObj(Jsonmap);
+    
+      }
+      else{
+      this.EmptyData=true;
+      this.stepParameters=[];
+    }
     } catch {
       this.stepParameters = this.returnObj({});
     }
@@ -399,6 +406,7 @@ export class RulesWizardComponent implements OnInit {
 
   returnObj(obj:any){
     let arrayMap:any =[];
+   
     for (let objKey of Object.keys(obj)){
       if (this.isObject(obj[objKey])){
         let arrayAux = this.returnObj(obj[objKey])
@@ -408,6 +416,7 @@ export class RulesWizardComponent implements OnInit {
         arrayMap.push(object);
       }
     }
+    
     return(arrayMap);
   }
 
@@ -543,9 +552,11 @@ export class RulesWizardComponent implements OnInit {
   }
 
   ConfirmRules(){
+
      return {
        RulesForm: this.ParametersForm.value
      };
+    
   }
 
   setParameters(field: any, rule: any) {
