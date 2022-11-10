@@ -26,6 +26,8 @@ export class PolicyRenewalComponent implements OnInit {
   formPolicy: FormGroup;
   isLoading: boolean = false;
 
+  defaultTypeGui = 'Text box';
+
   constructor(
     private _ActivatedRoute: ActivatedRoute,
     public fb: FormBuilder,
@@ -58,6 +60,10 @@ export class PolicyRenewalComponent implements OnInit {
 
   getFieldsControls(group: any) {
     return group.get('fields') as FormArray;
+  }
+
+  getFieldTypeGui(field: any) {
+    return field.value.dataTypeGui || 'Text box';
   }
 
   getPolicy() {
@@ -138,22 +144,13 @@ export class PolicyRenewalComponent implements OnInit {
         let valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
 
         if (valueObj) {
-          let fieldFG = this.fb.group({
-            businessCode : field.code.businessCode,
-            code: field.code,
-            dataTypeGui: field.dataTypeGui,
-            dataTypeName: field.dataTypeName,
-            dependency: field.dependency,
-            editable: field.editable,
-            id: field.id,
-            initializeRule: field.initializeRule,
-            label: field.label,
-            name: field.name,
-            required: field.required,
-            validateRule: field.validateRule,
-            visible: field.visible,
-            value: valueObj.value
+          let fieldFG = this.fb.group({});
+
+          Object.keys(field).forEach(key => {
+            fieldFG.addControl(key, this.fb.control(field[key]));
           });
+
+          fieldFG.addControl('value', this.fb.control(valueObj.value));
 
           (<FormArray>groupFG.get('fields')).push(fieldFG);
         }
