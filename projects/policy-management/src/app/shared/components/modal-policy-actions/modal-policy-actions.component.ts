@@ -109,11 +109,9 @@ export class ModalPolicyActionsComponent implements OnInit {
     
     if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
       this.getPremium(this.config.data.policy.idPolicy, date) 
-      this.formProcess.get('observation')?.enable();
     } else {
       this.formProcess.get('immediate')?.setValue(0);
       this.formProcess.get('applicationProcess')?.setValue(this.config.data.process)
-      this.formProcess.get('observation')?.disable();
     }
   }
 

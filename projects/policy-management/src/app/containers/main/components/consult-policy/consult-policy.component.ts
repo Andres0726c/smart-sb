@@ -94,7 +94,7 @@ export class ConsultPolicyComponent {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
-          this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitrar');
+          this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitar');
         },
       },
       {
