@@ -536,7 +536,10 @@ export class ComplementaryDataComponent implements OnInit {
       { name: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname'] },
       { name: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription']  },
       { name: 'cdRuleType', displayValue: ['cdRuleType'], dbColumnName:['cdRuleType']  },
-      { name: 'endPoint', displayValue: ['endPoint'] }
+      { name: 'endPoint', displayValue: ['endPoint'] },
+      { name: 'nmParameterList', displayValue: ['nmParameterList'] },
+      { name: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
+      { name: 'urlBs', displayValue: ['urlBs'] }
     ];
 
     this.openDialogWizard(
@@ -548,12 +551,15 @@ export class ComplementaryDataComponent implements OnInit {
       this.contextData
     ).subscribe((response: any) => {
       if (response) {
-        let element: ElementTableSearch = {
-          id: (<ElementTableSearch[]>response)[0].id,
-          name: (<ElementTableSearch[]>response)[0].name,
-          description: (<ElementTableSearch[]>response)[0].description,
-          cdRuleType: (<ElementTableSearch[]>response)[0].cdRuleType,
-          endPoint: (<ElementTableSearch[]>response)[0].endPoint
+        let element: any = {
+          id: response.RulesForm.rule.id,
+          name: response.RulesForm.rule.name,
+          cdBusinessCode: response.RulesForm.rule.cdBusinessCode,
+          description: response.RulesForm.rule.description,
+          cdRuleType: response.RulesForm.rule.cdRuleType,
+          endPoint: response.RulesForm.rule.endPoint,
+          urlBs: response.RulesForm.rule.urlBs,
+          argmntLst:response.RulesForm.parameters
         };
         (<FormArray>this.selectedField?.get('initializeRule')).removeAt(0);
         (<FormArray>this.selectedField?.get('initializeRule')).push(this.fb.control(element));
