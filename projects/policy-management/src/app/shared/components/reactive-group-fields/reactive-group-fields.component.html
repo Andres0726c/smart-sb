@@ -20,13 +20,19 @@
 </ng-template>
 
 <div [formGroup]="group">
-    <div><span class="text-primary font-bold">Grupo: </span> {{group.value.name}}</div>
-    <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
-        <div *ngFor="let field of getFieldsControls(group).controls; let j = index;" formGroupName="{{j}}">
-            <ng-container
-                [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataTypeGui]"
-                [ngTemplateOutletContext]="{ field: field }"
-            ></ng-container>
-        </div>
-    </div>
+    <p-accordion>
+        <p-accordionTab [selected]="true">
+            <ng-template pTemplate="header">
+                <span class="text-primary mr-2">Grupo:</span> {{ group.value.name }}
+            </ng-template>
+            <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
+                <div *ngFor="let field of getFieldsControls(group).controls; let j = index;" formGroupName="{{j}}">
+                    <ng-container
+                        [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataTypeGui]"
+                        [ngTemplateOutletContext]="{ field: field }"
+                    ></ng-container>
+                </div>
+            </div>
+        </p-accordionTab>
+    </p-accordion>
 </div>

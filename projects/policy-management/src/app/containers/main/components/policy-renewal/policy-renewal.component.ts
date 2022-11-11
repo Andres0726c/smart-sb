@@ -132,26 +132,30 @@ export class PolicyRenewalComponent implements OnInit {
         let valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
 
         if (valueObj) {
-          let fieldFG = this.fb.group({});
-
-          Object.keys(field).forEach(key => {
-            fieldFG.addControl(key, this.fb.control(field[key]));
-          });
-
-          fieldFG.addControl('value', this.fb.control(field.dataTypeName === 'date' ? new Date(valueObj.value) : valueObj.value));
-
-          if (field.dataTypeGui === 'List box') {
-            let options = [{ id: valueObj.value, name: valueObj.value }]
-            fieldFG.addControl('options', this.fb.control(options));
-          }
-
-          (<FormArray>groupFG.get('fields')).push(fieldFG);
+          (<FormArray>groupFG.get('fields')).push(this.getFieldControls(field, valueObj));
         }
       }
       (<FormArray>formArrayData).push(groupFG);
     }
 
     return formArrayData;
+  }
+
+  getFieldControls(field: any, value: any) {
+    let fieldFG = this.fb.group({});
+
+    Object.keys(field).forEach(key => {
+      fieldFG.addControl(key, this.fb.control(field[key]));
+    });
+
+    fieldFG.addControl('value', this.fb.control({ value: field.dataTypeName === 'date' ? new Date(value.value) : value.value, disabled: !field.editable }));
+
+    if (field.dataTypeGui === 'List box') {
+      let options = [{ id: value.value, name: value.value }]
+      fieldFG.addControl('options', this.fb.control(options));
+    }
+
+    return fieldFG;
   }
 
 }

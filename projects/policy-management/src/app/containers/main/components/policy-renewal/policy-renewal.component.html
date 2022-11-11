@@ -18,9 +18,10 @@
                 <p-tabView [scrollable]="true">
                     <p-tabPanel [header]="risk.value.name" *ngFor="let risk of riskDataControls.controls; let i = index" [selected]="i == 0" formGroupName="{{i}}">
                         <div formArrayName="complementaryData">
-                            <div class="p-5" *ngFor="let group of getGroupsControls(risk).controls; let i = index" formGroupName="{{i}}">
-                                <smartcore-reactive-group-fields [group]="group"></smartcore-reactive-group-fields>
-                            </div>
+                            
+                                <div class="p-5" *ngFor="let group of getGroupsControls(risk).controls; let i = index" formGroupName="{{i}}">
+                                    <smartcore-reactive-group-fields [group]="group"></smartcore-reactive-group-fields>
+                                </div>
                         </div>
                     </p-tabPanel>
                 </p-tabView>
