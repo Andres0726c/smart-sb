@@ -79,6 +79,7 @@ export class RulesWizardComponent implements OnInit {
 
   async ngOnInit() {
     try {
+      this.EmptyData=true;
       this.rulesModal = search.filter((item: SearchModal) => item.code === this.data.code)[0];
 
       // seteamos columnas por default
@@ -375,12 +376,13 @@ export class RulesWizardComponent implements OnInit {
     try {
       if (map){
          Jsonmap = JSON.parse(map);
-        this.stepParameters = this.returnObj(Jsonmap);
-    
+         this.stepParameters = this.returnObj(Jsonmap);
+         this.EmptyData=false;
       }
       else{
       this.EmptyData=true;
       this.stepParameters=[];
+
     }
     } catch {
       this.stepParameters = this.returnObj({});
