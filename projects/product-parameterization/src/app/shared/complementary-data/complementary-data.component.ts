@@ -156,7 +156,7 @@ export class ComplementaryDataComponent implements OnInit {
         })
       ], Validators.required);
     }
-    
+
     for (let item of arrayGroups.controls) {
       const index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === item.value.id);
       if (index === -1) {
@@ -340,8 +340,8 @@ export class ComplementaryDataComponent implements OnInit {
         else {
 
           if (index === -1) {
-            
-            
+
+
             this.getGroupArrayById(group).push(new FormGroup({
               id: this.fb.control(object.id, [Validators.required]),
               name: this.fb.control(object.name, [Validators.required]),
@@ -360,7 +360,7 @@ export class ComplementaryDataComponent implements OnInit {
               shouldDelete: this.fb.control(object.shouldDelete, [Validators.required]),
               businessCode:this.fb.control(object.element.businessCode)
             }));
-            
+
           } else {
             const field = this.getGroupArrayById(group).controls[index];
 
@@ -377,7 +377,7 @@ export class ComplementaryDataComponent implements OnInit {
               } else {
                 (<FormGroup>field).get('required')?.enable();
               }
-              
+
             }
           }
         }
@@ -471,7 +471,7 @@ export class ComplementaryDataComponent implements OnInit {
     this.selectedField = itemParam;
     this.dependsArray = [];
 
-    
+
 
     for (const item of this.getGroupArrayById(1).value.filter((e: any) => e.id != this.selectedField?.get('id')?.value)) {
       this.dependsArray.push(item)
@@ -561,10 +561,13 @@ export class ComplementaryDataComponent implements OnInit {
    */
   openModalInitializeRule() {
     const columns = [
-      { name: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname'] },
+      { name: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname']  },
       { name: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription']  },
       { name: 'cdRuleType', displayValue: ['cdRuleType'], dbColumnName:['cdRuleType']  },
-      { name: 'endPoint', displayValue: ['endPoint'] }
+      { name: 'endPoint', displayValue: ['endPoint'] },
+      { name: 'nmParameterList', displayValue: ['nmParameterList'] },
+      { name: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
+      { name: 'urlBs', displayValue: ['urlBs'] }
     ];
 
     this.openDialogWizard(
@@ -576,12 +579,15 @@ export class ComplementaryDataComponent implements OnInit {
       this.contextData
     ).subscribe((response: any) => {
       if (response) {
-        let element: ElementTableSearch = {
-          id: (<ElementTableSearch[]>response)[0].id,
-          name: (<ElementTableSearch[]>response)[0].name,
-          description: (<ElementTableSearch[]>response)[0].description,
-          cdRuleType: (<ElementTableSearch[]>response)[0].cdRuleType,
-          endPoint: (<ElementTableSearch[]>response)[0].endPoint
+        let element: any = {
+          id: response.RulesForm.rule.id,
+          name: response.RulesForm.rule.name,
+          cdBusinessCode: response.RulesForm.rule.cdBusinessCode,
+          description: response.RulesForm.rule.description,
+          cdRuleType: response.RulesForm.rule.cdRuleType,
+          endPoint: response.RulesForm.rule.endPoint,
+          urlBs: response.RulesForm.rule.urlBs,
+          argmntLst:response.RulesForm.parameters
         };
         (<FormArray>this.selectedField?.get('initializeRule')).removeAt(0);
         (<FormArray>this.selectedField?.get('initializeRule')).push(this.fb.control(element));
@@ -633,7 +639,7 @@ export class ComplementaryDataComponent implements OnInit {
         };
         (<FormArray>this.selectedField?.get('validateRule')).removeAt(0);
         (<FormArray>this.selectedField?.get('validateRule')).push(this.fb.control(element));
-      
+
         this.toastMessage.openFromComponent(ToastMessageComponent, { data: this.getSuccessStatus('Asociaci\u00f3n exitosa', 'La regla de validación fue asociada correctamente.') });
       }
     });

@@ -16,7 +16,7 @@ export class ProductService {
     'Content-Type': 'application/json',
     'x-api-key': environment.apiKeyServices,
   });
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   getAllProducts = (): Observable<Product[]> => {
     return this.httpClient
@@ -26,11 +26,27 @@ export class ProductService {
       .pipe(map((data: ResponseDTO<Product[]>) => data.body));
   };
 
-  getAllProductsByCompany = (idCompany:number,pageNumber:number=0, pageSize:number=100): Observable<Product[]> => {
+  getAllProductsByCompany = (idCompany: number, pageNumber: number = 0, pageSize: number = 100): Observable<Product[]> => {
     return this.httpClient
       .get<any>(`${this.apiUrl}product/findByCompany/${idCompany}/${pageNumber}/${pageSize}`, {
         headers: this.headers,
       })
       .pipe(map((data: ResponseDTO<Product[]>) => data.body));
+  };
+
+  getProductById = (idProduct: number): Observable<any> => {
+    return this.httpClient.get<ResponseDTO<Product>>
+      (`${this.apiUrl}product/findById/${idProduct}`,
+        {
+          headers: this.headers,
+        })
+  };
+
+  findByIdPolicy = (idPolicy: number): Observable<any> => {
+    return this.httpClient.get<ResponseDTO<Product>>
+      (`${this.apiUrl}policy/findByIdPolicy/${idPolicy}`,
+        {
+          headers: this.headers,
+        })
   };
 }
