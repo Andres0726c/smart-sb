@@ -1,33 +1,3 @@
-
-
-<!-- Templates para los campos
-
-<ng-template #calendar let-field="field">
-    <label for="icon">{{ field.label }}</label>
-    <p-calendar [showIcon]="true" placeholder="Seleccione {{field.label.toLowerCase()}}" [style]="{'width':'100%'}"></p-calendar>
-</ng-template>
-
-<ng-template #dropDown let-field="field">
-    <label>{{ field.label }}</label>
-    <p-dropdown [options]="optionsSelect" optionLabel="name" class="block" placeholder="Seleccione {{field.label.toLowerCase()}}" [style]="{'width':'100%', 'margin-bottom': '27px'}"></p-dropdown>
-</ng-template>
-
-<ng-template #inputText let-field="field">
-    <label>{{ field.label }}</label>
-    <input type="text" pInputText class="block" placeholder="Ingrese {{field.label.toLowerCase()}}" [style]="{'width':'100%', 'margin-bottom': '27px'}" required> 
-</ng-template>
-
-<div class="flex flex-col gap-10 mb-20">
-    <div *ngFor="let group of productPolicyData" class="grid grid-cols-3 gap-10 bg-white rounded-lg p-10 ml-10 mr-10 shadow-lg">
-        <div class="w-full col-span-3 text-5xl text-primary font-bold">{{group.name}}</div>
-        <div *ngFor="let field of group.fields" class="w-full">
-            <ng-container
-                *ngTemplateOutlet="{'Calendar': calendar, 'List box': dropDown, 'Text box': inputText}[field.dataTypeGui] context: {field: field}"
-            ></ng-container>
-        </div>
-    </div>
-</div>
--->
 <div class="p-5">
     <span class="text-4xl font-bold">Renovación de póliza</span>
     <div *ngIf="isLoading" class="mt-5 bg-white rounded-xl p-3">
@@ -38,8 +8,7 @@
             <span>Datos de póliza</span>
             <div formArrayName="policyData">
                 <div class="p-5" *ngFor="let group of policyDataControls.controls; let i = index" formGroupName="{{i}}">
-                    <refactoring-smartcore-mf-reactive-group-fields [group]="group"></refactoring-smartcore-mf-reactive-group-fields>
-                    <!-- <ng-container *ngTemplateOutlet="groupFields;context:{group: group}"></ng-container> -->
+                    <smartcore-reactive-group-fields [group]="group"></smartcore-reactive-group-fields>
                 </div>
             </div>
         </div>
@@ -50,7 +19,7 @@
                     <p-tabPanel [header]="risk.value.name" *ngFor="let risk of riskDataControls.controls; let i = index" [selected]="i == 0" formGroupName="{{i}}">
                         <div formArrayName="complementaryData">
                             <div class="p-5" *ngFor="let group of getGroupsControls(risk).controls; let i = index" formGroupName="{{i}}">
-                                <refactoring-smartcore-mf-reactive-group-fields [group]="group"></refactoring-smartcore-mf-reactive-group-fields>
+                                <smartcore-reactive-group-fields [group]="group"></smartcore-reactive-group-fields>
                             </div>
                         </div>
                     </p-tabPanel>

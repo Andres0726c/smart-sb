@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveGroupFieldsComponent } from './reactive-group-fields.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -12,7 +14,9 @@ import { InputTextModule } from 'primeng/inputtext';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    InputTextModule
+    InputTextModule,
+    CalendarModule,
+    DropdownModule
   ],
   exports: [
     ReactiveGroupFieldsComponent

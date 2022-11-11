@@ -1,24 +1,32 @@
 <ng-template #inputText let-groupName="groupName" let-field="field">
-    <div>{{field.value | json}}</div>
-    <div [formGroup]="group">
-        <div [formGroupName]="field">
-            <label>{{ field.value.label }}</label>
-            <input type="text" pInputText class="block" formControlName="value"> 
-        </div>
+    <div [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.label }}</label>
+        <input type="text" pInputText formControlName="value"> 
+    </div>
+</ng-template>
+
+<ng-template #calendar let-groupName="groupName" let-field="field">
+    <div [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.label }}</label>
+        <p-calendar [showIcon]="true" styleClass="w-full" dateFormat="yy-mm-ddT00:00:00-05:00" formControlName="value"></p-calendar>
+    </div>
+</ng-template>
+
+<ng-template #dropDown let-groupName="groupName" let-field="field">
+    <div [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.label }}</label>
+        <p-dropdown [options]="field.value.options" optionLabel="name" styleClass="w-full" formControlName="value"></p-dropdown>
     </div>
 </ng-template>
 
 <div [formGroup]="group">
     <div><span class="text-primary font-bold">Grupo: </span> {{group.value.name}}</div>
     <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
-        <div *ngFor="let field of getFieldsControls(group).controls; let j = index" formGroupName="{{j}}">
-            <div class="flex flex-col m-3">
-                <label>{{field.value.label}}</label>
-                <input pInputText formControlName="value">
-            </div>
-            <!-- <ng-container
-                *ngTemplateOutlet="inputText; context: {groupName: j, field: field}"
-            ></ng-container> -->
+        <div *ngFor="let field of getFieldsControls(group).controls; let j = index;" formGroupName="{{j}}">
+            <ng-container
+                [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataTypeGui]"
+                [ngTemplateOutletContext]="{ field: field }"
+            ></ng-container>
         </div>
     </div>
 </div>

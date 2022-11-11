@@ -58,14 +58,6 @@ export class PolicyRenewalComponent implements OnInit {
     return risk.get('complementaryData') as FormArray;
   }
 
-  getFieldsControls(group: any) {
-    return group.get('fields') as FormArray;
-  }
-
-  getFieldTypeGui(field: any) {
-    return field.value.dataTypeGui || 'Text box';
-  }
-
   getPolicy() {
     this.isLoading = true;
     console.log('id', this.id);
@@ -100,10 +92,6 @@ export class PolicyRenewalComponent implements OnInit {
         this.product = res.body;
         this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
-        /*this.formPolicy.removeControl('policyData');
-        this.formPolicy.removeControl('riskData');
-        this.formPolicy.addControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
-        this.formPolicy.addControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));*/
         console.log('policyData: ', this.policyDataControls);
         console.log('riskData: ', this.riskDataControls);
         this.isLoading = false;
@@ -150,7 +138,12 @@ export class PolicyRenewalComponent implements OnInit {
             fieldFG.addControl(key, this.fb.control(field[key]));
           });
 
-          fieldFG.addControl('value', this.fb.control(valueObj.value));
+          fieldFG.addControl('value', this.fb.control(field.dataTypeName === 'date' ? new Date(valueObj.value) : valueObj.value));
+
+          if (field.dataTypeGui === 'List box') {
+            let options = [{ id: valueObj.value, name: valueObj.value }]
+            fieldFG.addControl('options', this.fb.control(options));
+          }
 
           (<FormArray>groupFG.get('fields')).push(fieldFG);
         }
