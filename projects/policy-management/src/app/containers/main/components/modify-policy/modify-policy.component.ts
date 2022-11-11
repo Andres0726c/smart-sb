@@ -47,20 +47,23 @@ export class ModifyPolicyComponent {
   documentsType: Identification[] = [];
   policyData3: ComplementaryData[] | undefined;
 
-  policyData: PolicyData = {
-    holderDocument: "string",
-    holderName: "string",
-    holderTypeDocument:" string;",
-    idPolicy:1,
-    idProduct:1,
-    inceptionDate: "string;",
-    policyNumber: "string;",
-    policyStatus:" string;",
-    productName: "string;"
-  }
+  // policyData: PolicyData = {
+  //   holderDocument: "string",
+  //   holderName: "string",
+  //   holderTypeDocument:" string;",
+  //   idPolicy:1,
+  //   idProduct:1,
+  //   inceptionDate: "string;",
+  //   policyNumber: "string;",
+  //   policyStatus:" string;",
+  //   productName: "string;"
+  // }
   policyDataForm: any = new FormArray([]);
   dataRiskValue:any=[];
   isLoading: boolean = false;
+  policy: any;
+  policyData: any;
+  riskData: any;
 
   constructor(
     public productService: ProductService,
@@ -95,8 +98,9 @@ export class ModifyPolicyComponent {
   }
 
   ngOnInit(): void {
-    this.getPolicy(this.policyData.idPolicy);
-    this.getPolicyRisk(this.policyData.idPolicy);
+    // this.getPolicy(this.policyData.idPolicy);
+    // this.getPolicyRisk(this.policyData.idPolicy);
+    this.getPolicy();
   }
 
   get policyDataControls(): FormArray {
@@ -107,200 +111,310 @@ export class ModifyPolicyComponent {
     return this.formPolicy?.get('riskData') as FormArray;
   }
 
+ 
 
-  initializeData() {
-    this.policyId = Number(this.activatedroute.snapshot.paramMap.get('id'));
-    this.productService.getProductById(this.policyId).subscribe((res: ResponseDTO<Product>) => {
+  getPolicy() {
+    this.isLoading = true;
+    
+    this.productService.findByIdPolicy(this.policyData.idPolicy).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
-        this.product = res.body;
-
-        let policyDt: any = res.body.nmContent?.policyData;
-        //console.log(res.body.nmContent?.policyData);
-        console.log('policyData', policyDt)
-
-        for (let group of policyDt) {
-          let groupFG = this.fb.group({
-            id: group.id,
-            code: group.code,
-            name: group.name,
-            fields: this.fb.array([])
-          });
-
-          for (let fields of group.fields) {
-            for(let valuePoliz of this.dataPolicy) {
-              if (fields.code.businessCode === valuePoliz.name) {
-                let field = this.fb.group({
-                  businessCode : fields.code.businessCode,
-                  code: fields.code,
-                  dataTypeGui: fields.dataTypeGui,
-                  dataTypeName: fields.dataTypeName,
-                  dependency: fields.dependency,
-                  editable: fields.editable,
-                  id: fields.id,
-                  initializeRule: fields.initializeRule,
-                  label: fields.label,
-                  name: fields.name,
-                  required: fields.required,
-                  validateRule: fields.validateRule,
-                  visible: fields.visible,
-                  value: valuePoliz.value
-                });
-                (<FormArray>groupFG.get('fields')).push(field)
-              }
-            }
-          }
-          this.policyDataControls.push(groupFG);
-        }
-
-        //console.log(res.body.nmContent?.riskTypes);
-        // if(res.body.nmContent?.riskTypes){
-        //   for (let risk of res.body.nmContent?.riskTypes ){
-        //     this.riskTypesControls.push(this.fb.control(risk));
-        //   }
-        // }
-
-        this.riskTypes(res);
-         
-      } else {
-        this.product = {
-          id: 0,
-          nmName: '',
-          dsDescription: '',
-          nmHashCode: 0,
-          nmContent: undefined,
-        };
-        console.log('else');
+        this.policy = res.body; 
+        this.policyData = this.mapData(this.policy.propertiesPolicyData);
+        this.riskData = this.mapData(this.policy.riskPropertiesPolicyData[0].policyriskdata);
+        this.getProduct(this.policy.idProduct);
       }
     });
   }
 
-  riskTypes(data:any){
+  mapData(groupData: any) {
+    let arrayData: any[] = [];
 
-    for(let risk of data.body.nmContent?.riskTypes) {
+    for (let objKey of Object.keys(groupData)) {
+      for (let key of Object.keys(groupData[objKey])) {
+        let obj = {
+          name: key,
+          value: groupData[objKey][key]
+        };
+        arrayData.push(obj);
+      }
+    }
+    return arrayData;
+  }
 
+  getProduct(idProduct: number) {
+    this.productService.getProductById(idProduct).subscribe((res: ResponseDTO<Product>) => {
+      if (res.dataHeader.code && res.dataHeader.code == 200) {
+        this.product = res.body;
+        this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
+        this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
+        console.log('policyData: ', this.policyDataControls);
+        console.log('riskData: ', this.riskTypesControls);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  fillRiskData(riskTypes: any) {
+    let risksArrayData: any = this.fb.array([]);
+
+    for (let risk of riskTypes) {
       let groupRisk = this.fb.group({
         id: risk.id,
-        name:risk.name,
-        description:risk.description,
-        code:risk.code,
-        complementaryData: this.fb.array([])
+        name: risk.name,
+        description: risk.description,
+        code: risk.code,
+        complementaryData: this.fillGroupData(risk.complementaryData, this.riskData)
+      });
 
-      })
-
-        for (let dataRisk of risk.complementaryData){
-        
-        let group = this.fb.group({
-          id:dataRisk.id,
-          code: dataRisk.code,
-          name:dataRisk.name,
-          fields:this.fb.array([])
-        });
-            for(let fields of dataRisk.fields){
-                for(let valueRisk of this.dataRiskValue){
-                
-                    if (fields.code.businessCode === valueRisk.name){
-                        let field = this.fb.group({
-                          businessCode : fields.code.businessCode,
-                          code: fields.code,
-                          dataTypeGui:fields.dataTypeGui,
-                          dataTypeName:fields.dataTypeName,
-                          dependency:fields.dependency,
-                          editable:fields.editable,
-                          id:fields.id,
-                          initializeRule:fields.initializeRule,
-                          label:fields.label,
-                          name:fields.name,
-                          required:fields.required,
-                          validateRule:fields.validateRule,
-                          visible:fields.visible,
-                          value:valueRisk.value
-                        });
-                      (<FormArray>group.get('fields')).push(field)
-                   }
-          
-               }
-            }
-
-        (<FormArray>groupRisk.get('complementaryData')).push(group)  
-      }
-      this.riskTypesControls.push(groupRisk);
-      
+      (<FormArray>risksArrayData).push(groupRisk);
     }
- 
+
+    return risksArrayData;
+  }
+
+  fillGroupData(groupsArray: any, arrayData: any) {
+    let formArrayData: any = this.fb.array([]);
+
+    for (let group of groupsArray) {
+      let groupFG = this.fb.group({
+        id: group.id,
+        code: group.code,
+        name: group.name,
+        fields: this.fb.array([])
+      });
+
+      for (let field of group.fields) {
+        let valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
+
+        if (valueObj) {
+          let fieldFG = this.fb.group({});
+
+          Object.keys(field).forEach(key => {
+            fieldFG.addControl(key, this.fb.control(field[key]));
+          });
+
+          fieldFG.addControl('value', this.fb.control(field.dataTypeName === 'date' ? new Date(valueObj.value) : valueObj.value));
+
+          if (field.dataTypeGui === 'List box') {
+            let options = [{ id: valueObj.value, name: valueObj.value }]
+            fieldFG.addControl('options', this.fb.control(options));
+          }
+
+          (<FormArray>groupFG.get('fields')).push(fieldFG);
+        }
+      }
+      (<FormArray>formArrayData).push(groupFG);
+    }
+
+    return formArrayData;
   }
 
   getGroupsControls(risk: any) {
-    return risk.get('complementaryData') as FormArray;
-  }
+      return risk.get('complementaryData') as FormArray;
+    }
 
-  getFieldsControls(group: any) {
-    return group.get('fields') as FormArray;
-  }
+    getFieldsControls(group: any) {
+      return group.get('fields') as FormArray;
+    }
 
-  getPolicy(idpolicy: number) {
-    this.dataPolicy = [];
-    this.productService.findByIdPolicy(idpolicy).subscribe((res) => {
-      let policy = res.body
-      for (let objKey of Object.keys(policy.propertiesPolicyData)){
-        for (let key of Object.keys(policy.propertiesPolicyData[objKey])){
-         let obj = {
-          name:key,
-          value:policy.propertiesPolicyData[objKey][key]
-         };
-        this.dataPolicy.push(obj);
-        }
-      }
-      this.initializeData();
-    });
-     
-  }
 
-   /**
-   *
-   * @param id: number, id de la poliza para ser consulta
-   
-   * Función para ejecutar el ms de obtener los datos de la poliza
-    y se mapea la información para obtener el valor de cada elemento
-   */
+  // initializeData() {
+  //   this.policyId = Number(this.activatedroute.snapshot.paramMap.get('id'));
+  //   this.productService.getProductById(this.policyId).subscribe((res: ResponseDTO<Product>) => {
+  //     if (res.dataHeader.code && res.dataHeader.code == 200) {
+  //       this.product = res.body;
 
-    getPolicyRisk(idpolicy:number){
-      this.productService.findByIdPolicy(idpolicy).subscribe((res) => {
+  //       let policyDt: any = res.body.nmContent?.policyData;
+  //       //console.log(res.body.nmContent?.policyData);
+       
+
+  //       for (let group of policyDt) {
+  //         let groupFG = this.fb.group({
+  //           id: group.id,
+  //           code: group.code,
+  //           name: group.name,
+  //           fields: this.fb.array([])
+  //         });
+
+  //         for (let fields of group.fields) {
+  //           for(let valuePoliz of this.dataPolicy) {
+  //             if (fields.code.businessCode === valuePoliz.name) {
+  //               let field = this.fb.group({
+  //                 businessCode : fields.code.businessCode,
+  //                 code: fields.code,
+  //                 dataTypeGui: fields.dataTypeGui,
+  //                 dataTypeName: fields.dataTypeName,
+  //                 dependency: fields.dependency,
+  //                 editable: fields.editable,
+  //                 id: fields.id,
+  //                 initializeRule: fields.initializeRule,
+  //                 label: fields.label,
+  //                 name: fields.name,
+  //                 required: fields.required,
+  //                 validateRule: fields.validateRule,
+  //                 visible: fields.visible,
+  //                 value: fields.dataTypeName === 'date' ? new Date(valuePoliz.value) : valuePoliz.value,
+  //                 options:fields.dataTypeGui === 'List box' ? [{ id: valuePoliz.value, name: valuePoliz.value }]:[]
+  //               });
+  //               // if (fields.dataTypeGui === 'List box') {
+  //               //   let options = [{ id: valuePoliz.value, name: valuePoliz.value }]
+  //               //   field.addControl('options', this.fb.control(options));
+  //               // }
+  //               (<FormArray>groupFG.get('fields')).push(field)
+  //             }
+  //           }
+  //         }
+  //         this.policyDataControls.push(groupFG);
+  //       }
+
+  //       //console.log(res.body.nmContent?.riskTypes);
+  //       // if(res.body.nmContent?.riskTypes){
+  //       //   for (let risk of res.body.nmContent?.riskTypes ){
+  //       //     this.riskTypesControls.push(this.fb.control(risk));
+  //       //   }
+  //       // }
+
+  //       this.riskTypes(res);
+         
+  //     } else {
+  //       this.product = {
+  //         id: 0,
+  //         nmName: '',
+  //         dsDescription: '',
+  //         nmHashCode: 0,
+  //         nmContent: undefined,
+  //       };
+  //       console.log('else');
+  //     }
+  //   });
+  // }
+
+  // riskTypes(data:any){
+
+  //   for(let risk of data.body.nmContent?.riskTypes) {
+
+  //     let groupRisk = this.fb.group({
+  //       id: risk.id,
+  //       name:risk.name,
+  //       description:risk.description,
+  //       code:risk.code,
+  //       complementaryData: this.fb.array([])
+
+  //     })
+
+  //       for (let dataRisk of risk.complementaryData){
         
-        let policy = res.body
-        for (let objKey of Object.keys(policy.riskPropertiesPolicyData)){
-          let nameRiks=policy.riskPropertiesPolicyData[objKey];
-          for (let key of Object.keys(nameRiks)){
-           if(this.isObject(nameRiks[key])){
-            for (let risk of Object.keys(nameRiks[key])){
-              for (let dataRisk of Object.keys(nameRiks[key][risk])){
-                 let obj ={
-                  name:dataRisk,
-                  value:nameRiks[key][risk][dataRisk]
-                  }
-                  const index = this.dataRiskValue.findIndex((x: { name: any; }) => x.name === obj.name);
-                  if (index === -1) {
-                    this.dataRiskValue.push(obj);
-                  }
-                 
-              }
-            }
-          }
-          }
-        }
-       
-       });
-       
-    }
-     /**
-   *
-   * @param obj, objeto a validar
-   
-   * Función para ejecutar validar si es objeto
-   */
+  //       let group = this.fb.group({
+  //         id:dataRisk.id,
+  //         code: dataRisk.code,
+  //         name:dataRisk.name,
+  //         fields:this.fb.array([])
+  //       });
+  //           for(let fields of dataRisk.fields){
+  //               for(let valueRisk of this.dataRiskValue){
+                
+  //                   if (fields.code.businessCode === valueRisk.name){
+  //                       let field = this.fb.group({
+  //                         businessCode : fields.code.businessCode,
+  //                         code: fields.code,
+  //                         dataTypeGui:fields.dataTypeGui,
+  //                         dataTypeName:fields.dataTypeName,
+  //                         dependency:fields.dependency,
+  //                         editable:fields.editable,
+  //                         id:fields.id,
+  //                         initializeRule:fields.initializeRule,
+  //                         label:fields.label,
+  //                         name:fields.name,
+  //                         required:fields.required,
+  //                         validateRule:fields.validateRule,
+  //                         visible:fields.visible,
+  //                         value:fields.dataTypeName === 'date' ? new Date(valueRisk.value) : valueRisk.value,
+  //                         options:fields.dataTypeGui === 'List box' ? [{ id: valueRisk.value, name: valueRisk.value }]:[]
+  //                       });
+  //                       // if (fields.dataTypeGui === 'List box') {
+  //                       //   let options = [{ id: valueRisk.value, name: valueRisk.value }]
+  //                       //   field.addControl('options', this.fb.control(options));
+  //                       // }
+  //                     (<FormArray>group.get('fields')).push(field)
+  //                  }
+          
+  //              }
+  //           }
 
-    public isObject(obj: any) {
-      return obj !== undefined && obj !== null && obj.constructor == Object;
-    }
+  //       (<FormArray>groupRisk.get('complementaryData')).push(group)  
+  //     }
+  //     this.riskTypesControls.push(groupRisk);
+      
+  //   }
+ 
+  // }
+
+  
+
+  // getPolicys(idpolicy: number) {
+  //   this.dataPolicy = [];
+  //   this.productService.findByIdPolicy(idpolicy).subscribe((res) => {
+  //     let policy = res.body
+  //     for (let objKey of Object.keys(policy.propertiesPolicyData)){
+  //       for (let key of Object.keys(policy.propertiesPolicyData[objKey])){
+  //        let obj = {
+  //         name:key,
+  //         value:policy.propertiesPolicyData[objKey][key]
+  //        };
+  //       this.dataPolicy.push(obj);
+  //       }
+  //     }
+  //     this.initializeData();
+  //   });
+     
+  // }
+
+  //  /**
+  //  *
+  //  * @param id: number, id de la poliza para ser consulta
+   
+  //  * Función para ejecutar el ms de obtener los datos de la poliza
+  //   y se mapea la información para obtener el valor de cada elemento
+  //  */
+
+  //   getPolicyRisk(idpolicy:number){
+  //     this.productService.findByIdPolicy(idpolicy).subscribe((res) => {
+        
+  //       let policy = res.body
+  //       for (let objKey of Object.keys(policy.riskPropertiesPolicyData)){
+  //         let nameRiks=policy.riskPropertiesPolicyData[objKey];
+  //         for (let key of Object.keys(nameRiks)){
+  //          if(this.isObject(nameRiks[key])){
+  //           for (let risk of Object.keys(nameRiks[key])){
+  //             for (let dataRisk of Object.keys(nameRiks[key][risk])){
+  //                let obj ={
+  //                 name:dataRisk,
+  //                 value:nameRiks[key][risk][dataRisk]
+  //                 }
+  //                 const index = this.dataRiskValue.findIndex((x: { name: any; }) => x.name === obj.name);
+  //                 if (index === -1) {
+  //                   this.dataRiskValue.push(obj);
+  //                 }
+                 
+  //             }
+  //           }
+  //         }
+  //         }
+  //       }
+       
+  //      });
+       
+  //   }
+  //    /**
+  //  *
+  //  * @param obj, objeto a validar
+   
+  //  * Función para ejecutar validar si es objeto
+  //  */
+
+  //   public isObject(obj: any) {
+  //     return obj !== undefined && obj !== null && obj.constructor == Object;
+  //   }
 
   saveModification() {
     console.log('formPolicy',this.formPolicy);
@@ -310,5 +424,11 @@ export class ModifyPolicyComponent {
     //   this.formPolicy?.markAllAsTouched();
     // }
   }
+
+  cancelModification() {
+    this.router.navigate(
+      [`/polizas/consulta`],
+    );
+}
 
 }

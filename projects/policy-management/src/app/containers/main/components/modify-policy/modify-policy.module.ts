@@ -17,6 +17,7 @@ import { MessageModule } from 'primeng/message';
 import { TabMenuModule } from 'primeng/tabmenu';
 import {TabViewModule} from 'primeng/tabview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CalendarModule } from 'primeng/calendar';
 
 
 const routes: Routes = [
@@ -49,7 +50,8 @@ const routes: Routes = [
     TabMenuModule,
     TabViewModule,
     InputTextModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    CalendarModule,
   ]
 })
 export class ModifyPolicyModule { }
