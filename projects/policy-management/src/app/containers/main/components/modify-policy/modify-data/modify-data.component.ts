@@ -35,13 +35,7 @@ export class ModifyDataComponent implements OnInit {
   ngOnInit(): void {
    
     //this.initializeData();
-    console.log(this.dataTypeControls);
-    console.log("system")
-    let test = this.test;
-    console.log(test.value);
-    for (let x of (<FormArray>test)?.controls){
-       console.log(x);
-    }
+   
     
   }
 
@@ -50,18 +44,22 @@ export class ModifyDataComponent implements OnInit {
   }
 
   get dataTypeControls(): FormArray {
-    //if (this.dataType === 'policyData'){
+    if (this.dataType === 'policyData'){
+      
     return this.modifyData.get(this.dataType) as FormArray;
-    // }
-    // else{
-    //   // let array:any = new FormArray([]);
-    //   // return array as FormArray;
-     
-    // }
+    }
+    else if (this.dataType === 'riskData'){
+    
+      return (<FormArray>this.modifyData.get(this.dataType))?.controls[0].get('complementaryData') as FormArray
+    }
+    else{
+      let p:any = new FormArray([])
+      return p as FormArray
+    }
   }
 
   get test():FormArray {
-    return this.modifyData.get('riskData') as FormArray;
+    return this.Data as FormArray;
   }
 
   getFieldsControls(group: any) {

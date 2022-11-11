@@ -32,7 +32,7 @@ export interface HolderPolicy {
 })
 export class ModifyPolicyComponent {
 
-  formPolicy?: FormGroup;
+  formPolicy: FormGroup;
   policyId?: number;
   dataPolicy?: any=[];
   product: Product = {
@@ -60,6 +60,7 @@ export class ModifyPolicyComponent {
   }
   policyDataForm: any = new FormArray([]);
   dataRiskValue:any=[];
+  isLoading: boolean = false;
 
   constructor(
     public productService: ProductService,
@@ -223,8 +224,17 @@ export class ModifyPolicyComponent {
         (<FormArray>groupRisk.get('complementaryData')).push(group)  
       }
       this.riskTypesControls.push(groupRisk);
+      
     }
  
+  }
+
+  getGroupsControls(risk: any) {
+    return risk.get('complementaryData') as FormArray;
+  }
+
+  getFieldsControls(group: any) {
+    return group.get('fields') as FormArray;
   }
 
   getPolicy(idpolicy: number) {

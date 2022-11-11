@@ -1,5 +1,67 @@
 <div [formGroup]="modifyData">
-  <div [formArrayName]="dataType">
+  <div *ngIf="dataType === 'policyData'" [formArrayName]="dataType">
+    <div
+      *ngFor="let groups of dataTypeControls.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <p-divider align="left" type="dashed" styleClass="my-2">
+        <div class="inline-flex items-center">
+          <em class="pi pi-user mr-2"></em>
+          <strong>{{ groups?.value.name }}</strong>
+        </div>
+      </p-divider>
+      <section class="w-full grid grid-cols-3 gap-4" formArrayName="fields">
+        <div
+          *ngFor="let parameters of getFieldsControls(groups).controls; let x = index"
+          class="w-full flex flex-col"
+          [formGroupName]="x"
+        >
+          <label>{{ parameters.value.label }}</label>
+          <input pInputText type="text" formControlName="value" />
+          <!--   <span
+              *ngIf="parameters.dataTypeGui === 'Text box'"
+              class="p-input-icon-right w-full"
+            >
+              <i class="pi pi-id-card"></i>
+              <input
+                type="parameters.dataTypeName"
+                pInputText
+                pKeyFilter="int"
+                maxlength="30"
+                formControlName = "value"
+                placeholder="{{ parameters.name }}"
+                class="w-full"
+              />
+            </span>
+            <p-dropdown
+              *ngIf="parameters.dataTypeGui === 'List box'"
+              [styleClass]="'w-full'"
+              optionLabel="nmName"
+              optionValue="id"
+              formControlName = "value"
+              appendTo="body"
+              [showClear]="true"
+              placeholder="Seleccionar"
+            >
+            </p-dropdown>
+            <span
+              *ngIf="parameters.dataTypeGui === 'Calendar'"
+              class="p-input-icon-right w-full"
+            >
+              <i class="pi pi-calendar"></i>
+              <p-inputMask
+                styleClass="w-full"
+                placeholder="dd/mm/aaaa"
+                mask="99/99/9999"
+                formControlName = "value"
+              >
+              </p-inputMask>
+            </span> -->
+        </div>
+      </section>
+    </div>
+  </div>
+  <div *ngIf="dataType === 'riskData'" [formArrayName]="dataType">
     <div
       *ngFor="let groups of dataTypeControls.controls; let i = index"
       [formGroupName]="i"

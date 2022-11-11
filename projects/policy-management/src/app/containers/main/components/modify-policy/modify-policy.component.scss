@@ -3,3 +3,10 @@
     flex-direction: column !important;
     }
 }
+
+.isDisabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    background-color: gainsboro;
+}
+  
