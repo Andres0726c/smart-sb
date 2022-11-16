@@ -7,10 +7,14 @@
             </a>
             <div class="main-left-items__items-left-special">
                 <p class="version">1.0</p>
-                <span class="policy-composer"><strong>Parametrizador de producto</strong></span>
+                <span class="policy-composer"><strong>SmartCore {{sessionLocation}}</strong></span>
                 <span class="company-title">Compañía: {{ company }}</span>
             </div>
-            
+            <div class="main-left-items__menu-items-left">
+                <button class="text-header" mat-button (click) ="goToMenu()" *ngIf="!showOptions" data-qa-id="sc-rpmf-btn_menu">
+                    <em id="home-icon" class="fal fa-home text-icon"></em><strong>Inicio</strong>
+                </button>
+            </div>
             <div class="main-left-items__menu-items-left">
                 <button class="text-header" mat-button (click) ="goToHome()" *ngIf="showOptions" data-qa-id="sc-rpmf-btn_menu_productos">
                     <em id="home-icon" class="fal fa-home text-icon"></em><strong>Inicio</strong>
