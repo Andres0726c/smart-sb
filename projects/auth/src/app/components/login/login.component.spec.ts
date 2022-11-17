@@ -188,5 +188,8 @@ describe('LoginComponent', () => {
     component.hasEnterKey(event);
   });
 
+  it('closeModalCompany ok', () => {
+    expect(component.closeModalCompany()).toBeUndefined();
+  });
 
 });

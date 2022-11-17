@@ -59,7 +59,7 @@
 </div>
 
 <p-dialog data-qa-id="sc-rpmf-modal-select-company" 
-    header="Compañía" [(visible)]="showCompanySelection" [modal]="true" [draggable]="false" [closable]="true" styleClass="w-[400px]">
+    header="Compañía" [(visible)]="showCompanySelection" [modal]="true" [draggable]="false" styleClass="w-[400px]" (onHide)="closeModalCompany()">
     <div class="flex justify-center mt-5 mb-3">
         Seleccione la compañía a la que desea ingresar
     </div>
