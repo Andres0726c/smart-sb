@@ -27,33 +27,10 @@
                 <small class="p-error block" *ngIf="formData.get('password')?.hasError('required')&&(formData.get('password')?.touched || formData.get('password')?.dirty)">Ingrese su contraseña.</small>
             </div>
         </div>
-        <div class="py-3">
+        <div class="pt-3 h-[70px]">
             <p-button data-qa-id="sc-rpmf-login" 
                 *ngIf="!isLoading" (click)="logIn()" label="Iniciar sesión" styleClass="p-button"></p-button>
-            <div *ngIf="isLoading && !showCompanySelection" class="p-progress-spinner lib-progress-indicator__infinite" [style]="{width: '50px', height: '50px'}">
-                <svg
-                    class="p-progress-spinner-svg"
-                    viewBox="25 25 50 50"
-                    [style.animation-duration]="'.5s'"
-                >
-                    <defs>
-                        <linearGradient id="gradient" x1="0%" y1="20%" x2="50%" y2="150%">
-                            <stop offset="25%" stop-color="#6FD940"></stop>
-                            <stop offset="45%" stop-color="#DBDC11"></stop>
-                        </linearGradient>
-                    </defs>
-                    <circle
-                        stroke="url(#gradient)"
-                        class="p-progress-spinner-circle"
-                        cx="50"
-                        cy="50"
-                        [attr.r]="21"
-                        fill="none"
-                        [attr.stroke-width]="6"
-                        stroke-miterlimit="10"
-                    />
-                </svg>
-            </div>
+            <smartcore-loading-spinner *ngIf="isLoading && !showCompanySelection" [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
         </div>
     </form>
 </div>

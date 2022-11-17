@@ -67,6 +67,15 @@ export class LoginComponent implements OnInit {
             this.formCompany.reset();
             this.companySelectionComplete = false;
             this.showCompanySelection = true;
+            //alert('varias compañias');
+            /*dialogRef.afterClosed().subscribe(async (res) => {
+              if (res) {
+                this.setCompany(res);
+              } else {
+                await this.cognitoService.signOut();
+                this.isLoading = false;
+              }
+            });*/
           } else {
             this.setCompany(this.companies[0]);
           }
