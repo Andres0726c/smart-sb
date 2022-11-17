@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { DataToast, STATES, ToastMessageComponent } from '../../shared/toast-message/toast-message.component';
 import { ModalConfirmDeleteComponent } from '../../shared/modal-confirm-delete/modal-confirm-delete.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
               public service: ProductService,
               private toastMessage: MatSnackBar,
               private cognitoService: CognitoService,
-              public dialog: MatDialog) {}
+              public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.cognitoService.getUser()
@@ -99,8 +99,4 @@ export class HeaderComponent implements OnInit {
       }
     })
   }
-  goToMenu(){
-    this.router.navigate(['/inicio']);
-  }
-  
 }

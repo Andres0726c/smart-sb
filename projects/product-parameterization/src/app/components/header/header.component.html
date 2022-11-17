@@ -11,7 +11,7 @@
                 <span class="company-title">Compañía: {{ company }}</span>
             </div>
             <div class="main-left-items__menu-items-left">
-                <button class="text-header" mat-button (click) ="goToMenu()" *ngIf="!showOptions" data-qa-id="sc-rpmf-btn_menu">
+                <button class="text-header" mat-button [routerLink]="'/inicio'" *ngIf="!showOptions" data-qa-id="sc-rpmf-btn_menu">
                     <em id="home-icon" class="fal fa-home text-icon"></em><strong>Inicio</strong>
                 </button>
             </div>
