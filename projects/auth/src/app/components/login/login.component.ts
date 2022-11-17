@@ -48,19 +48,7 @@ export class LoginComponent implements OnInit {
           await this.getCompanies(company);
           if (this.companies.length > 1) {
             // Se muestra la modal de selección de compañia
-            /*const dialogRef = this.dialog.open(ModalCompanyComponent, {
-              data: { data: this.companies }
-            });*/
             this.showCompanySelection = true;
-            //alert('varias compañias');
-            /*dialogRef.afterClosed().subscribe(async (res) => {
-              if (res) {
-                this.setCompany(res);
-              } else {
-                await this.cognitoService.signOut();
-                this.isLoading = false;
-              }
-            });*/
           } else {
             this.setCompany(this.companies[0]);
           }
