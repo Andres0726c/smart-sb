@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   isLoading = false;
   showCompanySelection = false;
   showModalForbhidden = false;
+  companySelectionComplete = false;
 
   constructor(
     public router: Router,
@@ -38,6 +39,9 @@ export class LoginComponent implements OnInit {
     //
   }
 
+  /**
+   * Función que permite la autenticación a través del servicio de cognito
+   */
   logIn() {
     this.isLoading = true;
     this.cognitoService.signIn(this.formData.get('email')?.value, this.formData.get('password')?.value)
@@ -47,7 +51,9 @@ export class LoginComponent implements OnInit {
           const company = user.attributes['custom:company'];
           await this.getCompanies(company);
           if (this.companies.length > 1) {
-            // Se muestra la modal de selección de compañia
+            // Se muestra la modal de selección de compañía
+            this.formCompany.reset();
+            this.companySelectionComplete = false;
             this.showCompanySelection = true;
           } else {
             this.setCompany(this.companies[0]);
@@ -65,6 +71,11 @@ export class LoginComponent implements OnInit {
       });
   }
 
+  /**
+   * Función que permite consular el listado de las compañías asociadas al usuario en cognito
+   * @param idCompany Ids de las compañías a consultar en la base de datos
+   * @returns Retorna el listado de compañías en caso exitoso o un flag de error en caso de falla en el consumo del MS
+   */
   async getCompanies(idCompany: string) {
     try {
       let res: any = await lastValueFrom(this.apiService.getApiData('company/companies', idCompany));
@@ -78,7 +89,12 @@ export class LoginComponent implements OnInit {
     }
   }
   
+  /**
+   * Funcion que permite settear en cognito la compañia seleccionada por el usuario durante el proceso de autenticación
+   * @param company Objeto con la información de la compañía seleccionada
+   */
   async setCompany(company: any) {
+    this.companySelectionComplete = true;
     this.showCompanySelection = false;
     this.isLoading = true;
     await this.cognitoService.setUserCompany(company)
@@ -91,6 +107,9 @@ export class LoginComponent implements OnInit {
       });
   }
 
+  /**
+   * Función que permite mostrar un mensaje de error cuando el usuario no tiene los permisos suficientes para ingresar a la aplicación
+   */
   forbidden() {
     this.showModalForbhidden = true;
     this.cognitoService.signOut();
@@ -101,10 +120,22 @@ export class LoginComponent implements OnInit {
    * @param event evento que contiene informacion de la tecla presionada
    * @returns si se presiona cualquier tecla diferente a ENTER, devuelve void, de lo contrario redirecciona a la función de login
    */
-   public hasEnterKey(event:any) {
+  public hasEnterKey(event:any) {
     event.stopImmediatePropagation();
     if (event.keyCode === 13 || event.key === "Enter") {
       this.logIn();
+    }
+  }
+
+  /**
+   * Función que detecta el cierre de la modal de selección de compañía y cierra la sesión del usuario al no completarse la autenticación correctamente
+   */
+  closeModalCompany() {
+    if (!this.companySelectionComplete) {
+      this.cognitoService.signOut()
+      .then(() => {
+       this.isLoading = false; 
+      });
     }
   }
 }
