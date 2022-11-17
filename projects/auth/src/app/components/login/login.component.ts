@@ -145,6 +145,7 @@ export class LoginComponent implements OnInit {
       this.logIn();
     }
   }
+
   /**
    * Función que detecta el cierre de la modal de selección de compañía y cierra la sesión del usuario al no completarse la autenticación correctamente
    */
