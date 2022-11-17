@@ -107,6 +107,13 @@ export const search: SearchModal[] = [
     remotePaginator: true
   },
   {
+    code: 'ruleCalculationControls',
+    title: 'Reglas de Cálculo',
+    subtitle: 'Seleccione la regla de cálculo que desea asociar',
+    service: 'rule/findAllByCdRuleType/Cálculo',
+    remotePaginator: true
+  },
+  {
     code: 'clausesControls',
     title: 'Cláusulas',
     subtitle: 'Seleccione las cláusulas que desea asociar',

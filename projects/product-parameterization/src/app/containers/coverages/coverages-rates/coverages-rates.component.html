@@ -1,34 +1,54 @@
 <div class="div-content-chips">
-  
     <div class="container-chips">
-      <section class="input">
 
+      <section class="input">
         <span class="title">Tarifa</span>
-        
-          <mat-form-field class="example-chip-list" appearance="outline" (click)="openDialogCoverageRates()" placeholder="Seleccione la tarifa" data-qa-id="sc-rpmf-btn_rates">
-          
+          <mat-form-field class="example-chip-list"
+                          appearance="outline"
+                          (click)="openDialogCoverageRates()"
+                          placeholder="Seleccione la tarifa"
+                          data-qa-id="sc-rpmf-btn_rates"
+          >
             <mat-chip-list #chipListRates aria-label="Seleccione la Tarifa" class="chip-list">
-            
               <mat-chip *ngFor="let cr of coverageRatesControls?.value" (removed)="remove(cr)" class="chip">
-              
-              {{cr.name}}
-              
+                {{cr.name}}
                 <button matChipRemove data-qa-id="sc-rpmf-btn_delete_coverages_rates">
-                
                   <em class="fal fa-times-circle chip__icon"></em>
-                
                 </button>
-              
               </mat-chip>
-              
             </mat-chip-list>
-            
+
             <span class="mat-chip-placeholder" *ngIf="coverageRatesControls?.value?.length === 0">Seleccionar</span>
-            
             <em class="fas fa-caret-down custom-icon"></em>
-          
           </mat-form-field>
-        
+      </section>
+
+      <form [formGroup]="selectedField">
+        <section class="input">
+          <span class="title">Regla de cálculo</span>
+          <mat-form-field class="example-chip-list"
+                          appearance="outline"
+                          (click)="openModalCalculationRule()"
+                          placeholder="Seleccione la regla de cálculo"
+                          data-qa-id="sc-rpmf-btn_calculation_rule"
+          >
+            <mat-chip-list #chipListCalculationRule aria-label="Regla de cálculo"
+                           formArrayName="calculationRule" class="chip-list">
+              <mat-chip *ngFor="let cr of selectedField?.get('calculationRule')?.value"
+                        (removed)="removeCalculationRule()" class="chip">
+                <div class="ellipsis">
+                  {{cr.name}}
+                </div>
+                <button matChipRemove data-qa-id="sc-rpmf-btn_remove_calculation_rule">
+                  <em class="fal fa-times-circle chip__icon"></em>
+                </button>
+              </mat-chip>
+            </mat-chip-list>
+
+            <span class="mat-chip-placeholder" *ngIf="coverageRatesControls?.value?.length === 0">Seleccionar</span>
+            <em class="fas fa-caret-down custom-icon"></em>
+          </mat-form-field>
         </section>
+      </form>
     </div>
 </div>
