@@ -86,7 +86,6 @@ export class ModalPolicyActionsComponent implements OnInit {
 
   rehabilitatePolicy() {
     if (this.formProcess.valid) {
-      console.log("this.formProcess.get('rehabilitationDate')?.value:", this.formProcess.get('rehabilitationDate')?.value);
       if (this.formProcess.get('rehabilitationDate')?.value) {
         this.modalAPService
           .postRehabilitation(this.config.data.policy, this.formProcess.value)
@@ -101,6 +100,7 @@ export class ModalPolicyActionsComponent implements OnInit {
               }
             },
             error: (exception: any) => {
+              this.messageError = true;
               this.showSuccess('error', 'Error al rehabilitar', exception.error.dataHeader ? exception.error.dataHeader.status : exception.message);
             }
           });
