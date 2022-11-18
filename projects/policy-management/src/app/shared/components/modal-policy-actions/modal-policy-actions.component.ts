@@ -32,12 +32,13 @@ export class ModalPolicyActionsComponent implements OnInit {
       applicationProcess: fb.control(this.config.data.process),
       observation: fb.control(null, Validators.maxLength(2000))
     });
+    if (this.config.data.policy.endorsementInceptionDate) {
+      this.formProcess.get('rehabilitationDate')?.setValue(new Date(this.config.data.policy.endorsementInceptionDate));
+    }
   }
 
   ngOnInit(): void {
     this.getCauses(this.config.data.process);
-    console.log("this.config.data.policy:",this.config.data);
-    this.formProcess.get('rehabilitationDate')?.setValue(this.config.data.policy.endorsementInceptionDate);
   }
 
   getCauses(applicationProcess: string){
