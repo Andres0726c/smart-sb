@@ -7,7 +7,7 @@ import { lastValueFrom } from 'rxjs';
 @Component({
   selector: 'refactoring-smartcore-mf-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   formData: FormGroup;
@@ -26,8 +26,11 @@ export class LoginComponent implements OnInit {
     public apiService: ApiRequestsService
   ) {
     this.formData = fb.group({
-      email: fb.control('', [Validators.required, Validators.pattern('^[^@]+@[^@]+\.[a-zA-Z]{2,}$')]),
-      password: fb.control('', [Validators.required])
+      email: fb.control('', [
+        Validators.required,
+        Validators.pattern('^[^@]+@[^@]+.[a-zA-Z]{2,}$'),
+      ]),
+      password: fb.control('', [Validators.required]),
     });
 
     this.formCompany = this.fb.group({
@@ -44,14 +47,22 @@ export class LoginComponent implements OnInit {
    */
   logIn() {
     this.isLoading = true;
-    this.cognitoService.signIn(this.formData.get('email')?.value, this.formData.get('password')?.value)
-      .then(async user => {
-        const groups = user.signInUserSession.accessToken.payload["cognito:groups"]
-        if (groups && groups.includes('TLN') && user.attributes['custom:company']) {
+    this.cognitoService
+      .signIn(
+        this.formData.get('email')?.value,
+        this.formData.get('password')?.value
+      )
+      .then(async (user) => {
+        const groups =
+          user.signInUserSession.accessToken.payload['cognito:groups'];
+        if (
+          groups &&
+          groups.includes('TLN') &&
+          user.attributes['custom:company']
+        ) {
           const company = user.attributes['custom:company'];
           await this.getCompanies(company);
           if (this.companies.length > 1) {
-            // Se muestra la modal de selección de compañía
             this.formCompany.reset();
             this.companySelectionComplete = false;
             this.showCompanySelection = true;
@@ -59,12 +70,16 @@ export class LoginComponent implements OnInit {
             this.setCompany(this.companies[0]);
           }
         } else {
-          this.forbidden()
+          this.forbidden();
           this.isLoading = false;
         }
       })
-      .catch(err => {
-        if (err.code == 'UserNotFoundException' || err.code == 'NotAuthorizedException' || err.code == 'InvalidParameterException') {
+      .catch((err) => {
+        if (
+          err.code == 'UserNotFoundException' ||
+          err.code == 'NotAuthorizedException' ||
+          err.code == 'InvalidParameterException'
+        ) {
           this.isDataValid = false;
         }
         this.isLoading = false;
@@ -78,7 +93,9 @@ export class LoginComponent implements OnInit {
    */
   async getCompanies(idCompany: string) {
     try {
-      let res: any = await lastValueFrom(this.apiService.getApiData('company/companies', idCompany));
+      let res: any = await lastValueFrom(
+        this.apiService.getApiData('company/companies', idCompany)
+      );
       if (res.dataHeader.hasErrors === false) {
         this.companies = res.body;
         return res.body;
@@ -97,11 +114,12 @@ export class LoginComponent implements OnInit {
     this.companySelectionComplete = true;
     this.showCompanySelection = false;
     this.isLoading = true;
-    await this.cognitoService.setUserCompany(company)
-      .then(res => {
+    await this.cognitoService
+      .setUserCompany(company)
+      .then((res) => {
         this.router.navigate(['inicio']);
       })
-      .catch(err => {
+      .catch((err) => {
         this.isLoading = false;
         console.log('Error al instanciar la compañía en la sesión del usuario');
       });
@@ -120,9 +138,9 @@ export class LoginComponent implements OnInit {
    * @param event evento que contiene informacion de la tecla presionada
    * @returns si se presiona cualquier tecla diferente a ENTER, devuelve void, de lo contrario redirecciona a la función de login
    */
-  public hasEnterKey(event:any) {
+  public hasEnterKey(event: any) {
     event.stopImmediatePropagation();
-    if (event.keyCode === 13 || event.key === "Enter") {
+    if (event.keyCode === 13 || event.key === 'Enter') {
       this.logIn();
     }
   }
@@ -132,9 +150,8 @@ export class LoginComponent implements OnInit {
    */
   closeModalCompany() {
     if (!this.companySelectionComplete) {
-      this.cognitoService.signOut()
-      .then(() => {
-       this.isLoading = false; 
+      this.cognitoService.signOut().then(() => {
+        this.isLoading = false;
       });
     }
   }
