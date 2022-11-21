@@ -102,6 +102,9 @@ export class LoginComponent implements OnInit {
       }
     } catch (error) {
       console.log('ocurrio un error:', error);
+      this.companySelectionComplete = false;
+      this.showCompanySelection = false;
+      this.isLoading = false;
       return error;
     }
   }
