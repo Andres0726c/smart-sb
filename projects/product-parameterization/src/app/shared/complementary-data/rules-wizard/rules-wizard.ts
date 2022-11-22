@@ -61,6 +61,7 @@ export class RulesWizardComponent implements OnInit {
   fields: any = new FormArray([]);
   rule: any = [];
   contextData: any = [];
+  EmptyData:boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -78,6 +79,7 @@ export class RulesWizardComponent implements OnInit {
 
   async ngOnInit() {
     try {
+      this.EmptyData=true;
       this.rulesModal = search.filter((item: SearchModal) => item.code === this.data.code)[0];
 
       // seteamos columnas por default
@@ -368,10 +370,23 @@ export class RulesWizardComponent implements OnInit {
     (<FormArray>this.ParametersForm.get('parameters')).clear();
     this.ruleSelection.select(this.getDatasourceRow(row));
     this.ParametersForm.get('rule')?.setValue(this.ruleSelection.selected[0]);
-    let map = this.ParametersForm.get('rule')?.value.nmParameterList;
 
-    let Jsonmap = JSON.parse(map);
-    this.stepParameters = this.returnObj(Jsonmap);
+    let map = this.ParametersForm.get('rule')?.value.nmParameterList;
+    let Jsonmap: any;
+    try {
+      if (map){
+         Jsonmap = JSON.parse(map);
+         this.stepParameters = this.returnObj(Jsonmap);
+         this.EmptyData=false;
+      }
+      else{
+      this.EmptyData=true;
+      this.stepParameters=[];
+
+    }
+    } catch {
+      this.stepParameters = this.returnObj({});
+    }
 
     for(let x = 0; x < this.data.complementaryData.length; x++){
       this.aditionalData.push(this.data.complementaryData.value[x].fields);
@@ -393,6 +408,7 @@ export class RulesWizardComponent implements OnInit {
 
   returnObj(obj:any){
     let arrayMap:any =[];
+   
     for (let objKey of Object.keys(obj)){
       if (this.isObject(obj[objKey])){
         let arrayAux = this.returnObj(obj[objKey])
@@ -402,6 +418,7 @@ export class RulesWizardComponent implements OnInit {
         arrayMap.push(object);
       }
     }
+    
     return(arrayMap);
   }
 
@@ -537,14 +554,16 @@ export class RulesWizardComponent implements OnInit {
   }
 
   ConfirmRules(){
+
      return {
        RulesForm: this.ParametersForm.value
      };
+    
   }
 
   setParameters(field: any, rule: any) {
     (<FormArray>this.ParametersForm.get('parameters'))?.clear();
-    
+
   let obj = this.fb.group({
      rule: rule,
      campo: field.businessCode
@@ -558,7 +577,7 @@ export class RulesWizardComponent implements OnInit {
     }
 
     this.fields.push(obj);
-   
+
       // push final
     let ObjForm;
 

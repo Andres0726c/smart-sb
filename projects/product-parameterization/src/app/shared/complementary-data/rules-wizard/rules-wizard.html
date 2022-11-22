@@ -188,7 +188,7 @@
             class="button-add"
             [mat-dialog-close]="ConfirmRules()"
             data-qa-id="sc-rpmf-btn_to_accept_rules_wizard"
-            *ngIf="!(stepParameters?.length === 0)"
+            *ngIf=" stepParameters?.length > 0 || EmptyData"
           >
             Aceptar
             <em class="fas fa-light fa-check"></em>
@@ -198,7 +198,7 @@
           class="button-add"
           (click)="closeWizard()"
           data-qa-id="sc-rpmf-btn_to_cancel_rules_wizard"
-          *ngIf="stepParameters?.length === 0"
+          *ngIf="stepParameters?.length === 0 && !EmptyData"
         >
           Cancelar
         </button>

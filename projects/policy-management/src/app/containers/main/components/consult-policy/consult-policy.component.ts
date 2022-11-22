@@ -7,12 +7,13 @@ import { ConsultPolicyService } from './services/consult-policy.service';
 import { FilterPolicy } from './interfaces/consult-policy';
 import { Component } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
 import { ModalRenewalComponent } from 'projects/policy-management/src/app/containers/main/components/consult-policy/modal-renewal/modal-renewal.component';
 import { PolicyDetailsComponent } from './policy-details/policy-details.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-consult-policy',
@@ -57,7 +58,8 @@ export class ConsultPolicyComponent {
     public consultPolicyService: ConsultPolicyService,
     public fb: FormBuilder,
     public dialogService: DialogService,
-    public messageService: MessageService
+    public messageService: MessageService,
+    public router: Router
   ) {
     this.formDate = fb.group({
       processDate: fb.control(null, Validators.required),
@@ -77,7 +79,16 @@ export class ConsultPolicyComponent {
     ];
 
     this.items = [
-      { label: 'Modificar', icon: 'pi pi-fw pi-pencil' },
+      { 
+        label: 'Modificar', 
+        icon: 'pi pi-fw pi-pencil',
+        command: () => {
+          this.router.navigate(
+            [`/polizas/modificar/${this.selectedPolicy?.idProduct}`],
+            { state: { policy: this.selectedPolicy }  }
+          );
+        }
+      },
       {
         label: 'Cancelar',
         icon: 'pi pi-fw pi-ban',
@@ -94,7 +105,7 @@ export class ConsultPolicyComponent {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
-          this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitrar');
+          this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitar');
         },
       },
       {
@@ -110,6 +121,10 @@ export class ConsultPolicyComponent {
         }
       },
     ];
+  }
+
+  getFieldsControls(group: any) {
+    return group.get('fields') as FormArray;
   }
 
   disabledItem(status: string) {

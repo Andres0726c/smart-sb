@@ -21,6 +21,13 @@ const routes: Routes = [
                     './components/policy-renewal/policy-renewal.module'
                 ).then((m) => m.PolicyRenewalModule)
             }
+            // {
+            //     path: 'modificar/:id',
+            //     loadChildren: () =>
+            //     import(
+            //         './components/modify-policy/modify-policy.module'
+            //     ).then((m) => m.ModifyPolicyModule)
+            // }
         ]
     }
 ];

@@ -1,26 +1,21 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { SplashScreenService } from '../../services/splash-screen.service';
 import { SplashScreenComponent } from './splash-screen.component';
 
 describe('SplashScreenComponent', () => {
   let component: SplashScreenComponent;
   let fixture: ComponentFixture<SplashScreenComponent>;
-  let splashService: SplashScreenService;
-  
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
-      declarations: [],
-      providers: [
-        SplashScreenComponent,
-        SplashScreenService
-      ],
-      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-    });
-    component = TestBed.inject(SplashScreenComponent);
-    splashService = TestBed.inject(SplashScreenService);
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ SplashScreenComponent ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(SplashScreenComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -28,9 +23,6 @@ describe('SplashScreenComponent', () => {
   });
 
   it('Componente inicializado', () => {
-    splashService.subscribe(() => {
-      return true;
-    });
     component.ngOnInit();
     expect(component).toBeDefined();
   });

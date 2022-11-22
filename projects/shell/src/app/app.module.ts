@@ -7,13 +7,12 @@ import { AppComponent } from './app.component';
 import { CardModule } from 'primeng/card';
 import { SplashScreenComponent } from './components/splash-screen/splash-screen.component';
 import { InitScreenComponent } from './containers/init-screen/init-screen.component';
-import { HeaderModule } from 'commons-lib';
+import { CommonsLibModule, HeaderModule } from 'commons-lib';
 import { FormBuilder } from '@angular/forms';
 import { SharedModule } from 'projects/product-parameterization/src/app/shared/shared.module';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getPaginatorIntl } from '../assets/lang/paginator-intl';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @NgModule({
   declarations: [
@@ -28,7 +27,8 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
     HttpClientModule,
     CardModule,
     HeaderModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CommonsLibModule
   ],
   providers: [
     FormBuilder,

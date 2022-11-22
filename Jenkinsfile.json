@@ -1,6 +1,7 @@
 {
     "environment": {
-        "releasePath": "dist/browser"
+        "releasePath": "dist/browser",
+        "buildAll": "true"
     },
     "s3": {
         "dev": {
