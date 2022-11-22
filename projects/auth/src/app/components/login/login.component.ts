@@ -63,19 +63,9 @@ export class LoginComponent implements OnInit {
           const company = user.attributes['custom:company'];
           await this.getCompanies(company);
           if (this.companies.length > 1) {
-            // Se muestra la modal de selección de compañía
             this.formCompany.reset();
             this.companySelectionComplete = false;
             this.showCompanySelection = true;
-            //alert('varias compañias');
-            /*dialogRef.afterClosed().subscribe(async (res) => {
-              if (res) {
-                this.setCompany(res);
-              } else {
-                await this.cognitoService.signOut();
-                this.isLoading = false;
-              }
-            });*/
           } else {
             this.setCompany(this.companies[0]);
           }
@@ -112,10 +102,13 @@ export class LoginComponent implements OnInit {
       }
     } catch (error) {
       console.log('ocurrio un error:', error);
+      this.companySelectionComplete = false;
+      this.showCompanySelection = false;
+      this.isLoading = false;
       return error;
     }
   }
-
+  
   /**
    * Funcion que permite settear en cognito la compañia seleccionada por el usuario durante el proceso de autenticación
    * @param company Objeto con la información de la compañía seleccionada
