@@ -258,9 +258,7 @@ export class ModalSearchSmallComponent implements OnInit {
 
   setFieldValue(element: any, valueArray: string []) {
     let value = '';
-
-    for (let item of valueArray) {
-
+      for (let item of valueArray) {
       if(!isNaN(Number(item))) {
         return item;
       } else if (item === 'element') {
@@ -272,12 +270,23 @@ export class ModalSearchSmallComponent implements OnInit {
       }else{
         value += item;
       }
+     
     }
 
-    if(value === "null")
+    if(value === "null"){
        value='';
-
+    }
     return value;
+  }
+
+  getDetailColumn(element: any, colName: string) {
+    if(colName.includes('.')) {
+      const key1 = colName.split('.')[0];
+      const key2 = colName.split('.')[1];
+      return element.element[key1][key2];
+    } else {
+      return element[colName];
+    }
   }
 
   /*

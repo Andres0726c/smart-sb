@@ -16,13 +16,10 @@ export interface FieldArray {
     businessCode: string
     nmLabel: string,
     dsDescription: string,
-    dataTypeDescription: string,
-    dataTypeGui: string,
-    dataTypeName: string,
+    dataType: DataType,
     flIsMandatory: string
   },
-  dataTypeGui: string,
-  dataTypeName: string,
+  dataType: DataType,
   initializeRule: ElementTableSearch[],
   validateRule: ElementTableSearch[],
   dependency: number,
@@ -44,13 +41,29 @@ export interface ElementReturn {
     nmLabel?: string,
     label?: string,
     dsDescription: string,
-    dataTypeDescription: string,
-    dataTypeGui: string,
-    dataTypeName: string,
-    flIsMandatory: string
+    dataType: DataType,
+    flIsMandatory: string,
+    domainList:DomainList
   }
 }
 
+export interface DataType {
+  code: string;
+  name: string;
+  description: string;
+  bdFieldType: string;
+  guiComponent: string;
+  lenght?: number;
+  precision?: number;
+  scale?: number;
+}
+
+export interface DomainList {
+  code: string;
+  name: string;
+  description: string;
+  valueList:String;
+}
 export interface SearchModal {
   code: string;
   title: string;
