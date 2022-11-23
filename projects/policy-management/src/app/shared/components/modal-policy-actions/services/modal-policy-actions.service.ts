@@ -20,7 +20,7 @@ export class ModalPolicyActionsService {
   constructor(private httpClient: HttpClient) { }
 
   postCancelPolicy(policy: any, data: any): Observable<CancelPolicy> {
-    
+
     const sendData = {
       deletionDate: data.processDate,
       startDate: policy.inceptionDate,
@@ -33,7 +33,7 @@ export class ModalPolicyActionsService {
     };
     return this.httpClient.post<CancelPolicy>(`${this.apiUrl}policy/deletion`, sendData, { headers: this.headers });
   }
-  
+
   getCauses(applicationProcess: string): Observable<any>{
     return this.httpClient.get<any>(`${this.apiUrl}cause/findAllByApplicationProcess/${applicationProcess}`, {headers: this.headers})
   }
@@ -47,7 +47,8 @@ export class ModalPolicyActionsService {
     const sendData = {
       idPolicy: policy.idPolicy,
       idCause: data.causeType,
-      observation: data.observation
+      observation: data.observation,
+      inceptionDate: data.rehabilitationDate
     }
     return this.httpClient.post<any>(`${this.apiUrl}policy/rehabilitation`, sendData, {headers: this.headers});
   }
