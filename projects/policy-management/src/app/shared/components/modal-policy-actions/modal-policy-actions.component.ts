@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsService } from './services/modal-policy-actions.service';
+import { ConsultPolicyService } from '../../../containers/main/components/consult-policy/services/consult-policy.service';
+import { PolicyBrief } from '../../../core/interfaces/policy';
+import { ResponseDTO } from '../../../core/interfaces/commun/response';
+import { FilterPolicy } from '../../../containers/main/components/consult-policy/interfaces/consult-policy';
 
 @Component({
   selector: 'modal-policy-actions',
@@ -14,6 +18,9 @@ export class ModalPolicyActionsComponent implements OnInit {
   causes: any[] = []
   premium: any;
   messageError = false;
+  isDateValid = true;
+  policies: any;
+  paymentMethod: string = '';
 
 
   constructor(
@@ -22,7 +29,8 @@ export class ModalPolicyActionsComponent implements OnInit {
     public fb: FormBuilder,
     public modalAPService: ModalPolicyActionsService,
     public dialogService: DialogService,
-    public messageService: MessageService
+    public messageService: MessageService,
+    public consultPolicyService: ConsultPolicyService
   ) {
     this.formProcess = fb.group({
       processDate: fb.control(null),
@@ -30,6 +38,7 @@ export class ModalPolicyActionsComponent implements OnInit {
       causeType: fb.control(null, Validators.required),
       immediate:fb.control(0),
       applicationProcess: fb.control(this.config.data.process),
+      checked: fb.control(false),
       observation: fb.control(null, Validators.maxLength(2000))
     });
     if (this.config.data.policy.endorsementInceptionDate) {
@@ -39,21 +48,30 @@ export class ModalPolicyActionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCauses(this.config.data.process);
+    this.consultPoliciesById(this.config.data.policy.idPolicy)    
+  }
+
+  consultPoliciesById(id: number) {
+  this.consultPolicyService.getPolicyById(id).subscribe( policies => {
+    console.log(policies);
+    
+    this.paymentMethod = policies.body.payment.method;
+  });
   }
 
   getCauses(applicationProcess: string){
     this.modalAPService.getCauses(applicationProcess)
     .subscribe( causes => {
       this.causes = causes.body;
-      } )
+      });
     }
 
   getPremium(idPolicy: any, deletionDate: any){
 
     this.modalAPService.getPremium(idPolicy, deletionDate)
-    .subscribe( premium => {
+    .subscribe( premium => {      
       this.premium = premium.body;
-    } )
+    });
   }
 
   cancelPolicy() {
@@ -122,6 +140,20 @@ export class ModalPolicyActionsComponent implements OnInit {
     } else {
       this.formProcess.get('immediate')?.setValue(0);
       this.formProcess.get('applicationProcess')?.setValue(this.config.data.process)
+      this.isDateValid = false;
+    }
+  }
+
+  verifyCheck() {
+    
+    if(this.formProcess.get('checked')?.value === true){
+      this.formProcess.get('processDate')?.setValue(new Date(this.config.data.policy.inceptionDate))
+      this.formProcess.get('processDate')?.disable();
+      this.formProcess.get('immediate')?.setValue(1);
+      this.verifyDate();
+    } else{
+      this.formProcess.get('processDate')?.enable();
+      this.formProcess.get('immediate')?.setValue(0);
     }
   }
 

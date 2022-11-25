@@ -31,7 +31,7 @@ export class ConsultPolicyService {
   }
 
   getPolicyById(idPolicy:number){
-    return this.httpClient.get<ResponseDTO<Policy>>(
+    return this.httpClient.get<ResponseDTO<any>>(
       `${this.apiUrl}policy/${idPolicy}`,
       {
         headers: this.headers,
