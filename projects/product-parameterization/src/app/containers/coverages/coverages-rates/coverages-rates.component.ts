@@ -19,7 +19,7 @@ import {RulesWizardComponent} from "../../../shared/complementary-data/rules-wiz
 })
 export class CoveragesRatesComponent implements OnInit, AfterViewInit {
 
-  @Input() coverageRates:any = new FormArray([]);
+  @Input() coverageRates: any = new FormArray([]);
   @Input() complementaryData: any = new FormArray([], [Validators.required]);
 
   @ViewChild('chipListRates') chipListRates!: MatChipList;
@@ -40,7 +40,9 @@ export class CoveragesRatesComponent implements OnInit, AfterViewInit {
     private service: ProductService,
     public productService: ProductService,
     private fb: FormBuilder
-  ) { }
+  ) {
+
+  }
 
   ngOnInit(): void {
     console.log('');
@@ -123,24 +125,20 @@ export class CoveragesRatesComponent implements OnInit, AfterViewInit {
       this.contextData
     ).subscribe((response: any) => {
       if (response) {
-        let calculationRule: any = [
-          {
-            id: response.RulesForm.rule.id,
-            name: response.RulesForm.rule.name,
-            cdBusinessCode: response.RulesForm.rule.cdBusinessCode,
-            description: response.RulesForm.rule.description,
-            cdRuleType: response.RulesForm.rule.cdRuleType,
-            endPoint: response.RulesForm.rule.endPoint,
-            urlBs: response.RulesForm.rule.urlBs,
-            argmntLst: response.RulesForm.parameters
-          }
-        ]
+        let element = {
+          id: response.RulesForm.rule.id,
+          name: response.RulesForm.rule.name,
+          cdBusinessCode: response.RulesForm.rule.cdBusinessCode,
+          description: response.RulesForm.rule.description,
+          cdRuleType: response.RulesForm.rule.cdRuleType,
+          endPoint: response.RulesForm.rule.endPoint,
+          urlBs: response.RulesForm.rule.urlBs,
+          argmntLst: response.RulesForm.parameters
+        };
 
-        // (<FormArray>this.selectedField?.get('calculationRule')).removeAt(0);
-        // (<FormArray>this.selectedField?.get('calculationRule')).push(this.fb.control(element));
+        (<FormArray>this.coverageRatesControls?.get('calculationRule')).removeAt(0);
+        (<FormArray>this.coverageRatesControls?.get('calculationRule')).push(this.fb.control(element));
         // this.toastMessage.openFromComponent(ToastMessageComponent, { data: this.getSuccessStatus('Asociaci\u00f3n exitosa', 'La regla de inicializaci\u00f3n fue asociada correctamente.') });
-        this.coverageRatesControls.removeAt(0);
-        this.coverageRatesControls.push(this.fb.control(calculationRule));
         console.log(this.productService);
       }
     });
@@ -193,8 +191,8 @@ Funcion para agregar chip en el input de opciones múltiples pero de única sele
       for (let object of obj) {
         console.log(object);
 
-        this.coverageRatesControls.removeAt(0);
-        this.coverageRatesControls.push(this.fb.control(object));
+        this.selectedField.removeAt(0);
+        this.selectedField.push(this.fb.control(object));
       }
       this.chipListRates.errorState = false;
       data.msg ='La tarifa fue asociada correctamente.'
@@ -218,16 +216,18 @@ Funcion para agregar chip en el input de opciones múltiples pero de única sele
         message:'¿Está seguro de querer desasociar la tarifa seleccionada?'
       }
     });
+
     dialogRef.afterClosed().subscribe((res) => {
-      if(res){
-      let index = -1;
+      console.log(this.coverageRatesControls)
 
-          index = this.coverageRatesControls.value[0].indexOf(value);
+      if(res) {
+        let index = -1;
+        index = this.coverageRatesControls.value[0].indexOf(value);
 
-          if (index >= 0) {
-            this.coverageRatesControls.removeAt(index);
-
-      }}
+        if (index >= 0) {
+          this.coverageRatesControls.removeAt(index);
+        }
+      }
     })
   };
 
