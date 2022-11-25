@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResponseDTO, ResponseErrorDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { ComplementaryData } from 'projects/policy-management/src/app/core/interfaces/product/complementaryData';
@@ -147,8 +147,9 @@ export class ModifyPolicyComponent {
         this.product = res.body;
         this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
-        console.log('policyData: ', this.policyDataControls);
+       
         console.log('riskData: ', this.riskTypesControls);
+        console.log('policy: ', this.policyDataControls);
         this.isLoading = false;
       }
     });
@@ -184,23 +185,31 @@ export class ModifyPolicyComponent {
       });
 
       for (let field of group.fields) {
+        console.log(field);
         let valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
 
         if (valueObj) {
           let fieldFG = this.fb.group({});
 
           Object.keys(field).forEach(key => {
-            fieldFG.addControl(key, this.fb.control(field[key]));
+            // let Validator:Validators=[];
+            // if (key ==='value'){
+            //   Validator=[Validators.required];
+            // }
+            fieldFG.addControl(key,this.fb.control(field[key]));
+           
           });
 
-          fieldFG.addControl('value', this.fb.control(field.dataTypeName === 'date' ? new Date(valueObj.value) : valueObj.value));
+          fieldFG.addControl('value', this.fb.control(field.dataTypeName === 'date' ? new Date(valueObj.value) : valueObj.value,[Validators.required]));
 
           if (field.dataTypeGui === 'List box') {
             let options = [{ id: valueObj.value, name: valueObj.value }]
             fieldFG.addControl('options', this.fb.control(options));
           }
+          fieldFG.addControl('type', this.fb.control('Text box'));
 
           (<FormArray>groupFG.get('fields')).push(fieldFG);
+        
         }
       }
       (<FormArray>formArrayData).push(groupFG);
@@ -216,6 +225,16 @@ export class ModifyPolicyComponent {
     getFieldsControls(group: any) {
       return group.get('fields') as FormArray;
     }
+
+    getFieldsControlss(group: any) {
+      return group.get('fields') as FormControl;
+    }
+
+    addControls(value: FormArray) {
+      return value.setValidators([Validators.required]);
+
+      }
+    
 
 
   // initializeData() {

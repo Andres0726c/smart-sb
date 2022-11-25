@@ -9,9 +9,10 @@
                  <input *ngIf="!data" pInputText formControlName="value" [disabled]="true" readonly class="isDisabled"> 
               </div> -->
               <ng-container
-                [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataTypeGui]"
+                [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.type]"
                 [ngTemplateOutletContext]="{ field: field, data:data }"
             ></ng-container>
+           
           </div>
       </div>
   </div>
@@ -21,14 +22,18 @@
   <div [formGroup]="field" class="flex flex-col m-3">
       <label>{{ field.value.label }}</label>
       <input *ngIf="data" type="text" pInputText formControlName="value"> 
-      <input *ngIf="!data" type="text" pInputText formControlName="value" [disabled]="true" readonly class="isDisabled">
+      <input *ngIf="!data" type="text"  pInputText formControlName="value" [disabled]="true" readonly class="isDisabled">
+      <div *ngIf="(field.get('value')?.touched || field.get('value')?.dirty) && data">
+        <small class="p-error block" *ngIf="data && field.get('value')?.hasError('required')">Ingrese {{ field.value.label | lowercase }}</small>
+      </div>
   </div>
+  
 </ng-template>
 
 <ng-template #calendar let-groupName="groupName" let-field="field" let-data="data">
   <div [formGroup]="field" class="flex flex-col m-3">
       <label>{{ field.value.label }}</label>
-      <p-calendar *ngIf="data" [showIcon]="true" styleClass="w-full" dateFormat="yy-mm-ddT00:00:00-05:00" formControlName="value"></p-calendar>
+      <p-calendar *ngIf="data" [showIcon]="true" styleClass="w-full" dateFormat="yy-mm-ddT00:00:00-05:00" formControlName="value" ></p-calendar>
       <p-calendar *ngIf="!data" [showIcon]="true" styleClass="w-full" dateFormat="yy-mm-ddT00:00:00-05:00" formControlName="value" readonly class="isDisabled"></p-calendar>
     </div>
 </ng-template>
@@ -36,7 +41,7 @@
 <ng-template #dropDown let-groupName="groupName" let-field="field" let-data="data">
   <div [formGroup]="field" class="flex flex-col m-3">
       <label>{{ field.value.label }}</label>
-      <p-dropdown *ngIf="data" [options]="field.value.options" optionLabel="name" styleClass="w-full" formControlName="value"></p-dropdown>
+      <p-dropdown *ngIf="data" [options]="field.value.options" optionLabel="name" styleClass="w-full" formControlName="value"  ></p-dropdown>
       <input *ngIf="!data" type="text" pInputText  formControlName="value" readonly class="isDisabled">
   </div>
 </ng-template>
