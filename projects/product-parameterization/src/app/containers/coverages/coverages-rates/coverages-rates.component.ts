@@ -1,9 +1,9 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import { MatChipList } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
+import {lastValueFrom, Observable} from 'rxjs';
 import { DataToast, STATES, ToastMessageComponent } from '../../../shared/toast-message/toast-message.component';
 import { ModalSearchSmallComponent } from '../../../shared/modal-search-small/modal-search-small.component';
 import { ProductService } from '../../../services/product.service';
@@ -17,7 +17,7 @@ import {RulesWizardComponent} from "../../../shared/complementary-data/rules-wiz
   templateUrl: './coverages-rates.component.html',
   styleUrls: ['./coverages-rates.component.scss']
 })
-export class CoveragesRatesComponent implements OnInit {
+export class CoveragesRatesComponent implements OnInit, AfterViewInit {
 
   @Input() coverageRates:any = new FormArray([]);
   @Input() complementaryData: any = new FormArray([], [Validators.required]);
@@ -26,19 +26,28 @@ export class CoveragesRatesComponent implements OnInit {
 
   addOnBlur = true;
   contextData: any = [];
+  flagServiceError = false;
+  applicationLevel: string = 'Cobertura';
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
-  
+
   selectedField: any = new FormGroup({
     calculationRule: new FormArray([])
   });
 
-  constructor(public dialog: MatDialog,
-              private toastMessage: MatSnackBar,
-              private service: ProductService,
-              private fb: FormBuilder) { }
+  constructor(
+    public dialog: MatDialog,
+    private toastMessage: MatSnackBar,
+    private service: ProductService,
+    public productService: ProductService,
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     console.log('');
+  }
+
+  ngAfterViewInit() {
+    this.loadContextData();
   }
 
   /**
@@ -106,7 +115,7 @@ export class CoveragesRatesComponent implements OnInit {
     ];
 
     this.openDialogWizard(
-      'ruleCalculationControls',
+      'ruleInitializeControls',
       this.selectedField.get('calculationRule')?.value,
       columns,
       false,
@@ -114,19 +123,25 @@ export class CoveragesRatesComponent implements OnInit {
       this.contextData
     ).subscribe((response: any) => {
       if (response) {
-        let element: any = {
-          id: response.RulesForm.rule.id,
-          name: response.RulesForm.rule.name,
-          cdBusinessCode: response.RulesForm.rule.cdBusinessCode,
-          description: response.RulesForm.rule.description,
-          cdRuleType: response.RulesForm.rule.cdRuleType,
-          endPoint: response.RulesForm.rule.endPoint,
-          urlBs: response.RulesForm.rule.urlBs,
-          argmntLst: response.RulesForm.parameters
-        };
-        (<FormArray>this.selectedField?.get('calculationRule')).removeAt(0);
-        (<FormArray>this.selectedField?.get('calculationRule')).push(this.fb.control(element));
-        this.toastMessage.openFromComponent(ToastMessageComponent, { data: this.getSuccessStatus('Asociaci\u00f3n exitosa', 'La regla de inicializaci\u00f3n fue asociada correctamente.') });
+        let calculationRule: any = [
+          {
+            id: response.RulesForm.rule.id,
+            name: response.RulesForm.rule.name,
+            cdBusinessCode: response.RulesForm.rule.cdBusinessCode,
+            description: response.RulesForm.rule.description,
+            cdRuleType: response.RulesForm.rule.cdRuleType,
+            endPoint: response.RulesForm.rule.endPoint,
+            urlBs: response.RulesForm.rule.urlBs,
+            argmntLst: response.RulesForm.parameters
+          }
+        ]
+
+        // (<FormArray>this.selectedField?.get('calculationRule')).removeAt(0);
+        // (<FormArray>this.selectedField?.get('calculationRule')).push(this.fb.control(element));
+        // this.toastMessage.openFromComponent(ToastMessageComponent, { data: this.getSuccessStatus('Asociaci\u00f3n exitosa', 'La regla de inicializaci\u00f3n fue asociada correctamente.') });
+        this.coverageRatesControls.removeAt(0);
+        this.coverageRatesControls.push(this.fb.control(calculationRule));
+        console.log(this.productService);
       }
     });
   }
@@ -148,6 +163,20 @@ export class CoveragesRatesComponent implements OnInit {
    */
   get coverageRatesControls(): FormArray {
     return this.coverageRates;
+  }
+
+  async loadContextData() {
+    try {
+      let res: any
+      res = await lastValueFrom(this.productService.getApiData(`domainList/DATOS_CONTEXTO`));
+
+      this.contextData = res.body.nmValueList;
+      //se filtra los datos de contexto dependiendo del nivel de aplicación
+      this.contextData =  this.contextData.filter( (data:any) => data.applctnLvl.includes(this.applicationLevel) || data.applctnLvl.includes("*") )
+      console.log(this.contextData)
+    } catch (error) {
+      this.flagServiceError = true;
+    }
   }
 
   /**
@@ -193,7 +222,7 @@ Funcion para agregar chip en el input de opciones múltiples pero de única sele
       if(res){
       let index = -1;
 
-          index = this.coverageRatesControls.value.indexOf(value);
+          index = this.coverageRatesControls.value[0].indexOf(value);
 
           if (index >= 0) {
             this.coverageRatesControls.removeAt(index);
