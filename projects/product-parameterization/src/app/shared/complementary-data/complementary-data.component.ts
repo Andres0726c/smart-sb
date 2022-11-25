@@ -175,7 +175,7 @@ export class ComplementaryDataComponent implements OnInit {
         description: item.dsDescription,
         element: item,
         fieldGroup: 1,
-        shouldDelete: false
+        shouldDelete: false,
       };
 
       dataGroup.push(obj);
@@ -199,9 +199,10 @@ export class ComplementaryDataComponent implements OnInit {
           : '0';
     }
 
+    
     const columns = [
       { name: 'name', header: 'Nombre', displayValue: ['nmLabel'], dbColumnName:['nmLabel'] },
-      { name: 'description', header: 'Descripción', displayValue: ['dataTypeDescription'], dbColumnName:['dataTypeDescription'] },
+      { name: 'dataType.description', header: 'Descripción', displayValue:['dataType.description'], dbColumnName:['description'] },
       { name: 'shouldDelete', displayValue: [true] },
       { name: 'element', displayValue: ['element'] },
     ];
@@ -325,10 +326,10 @@ export class ComplementaryDataComponent implements OnInit {
               id: this.fb.control(object.id, [Validators.required]),
               name: this.fb.control(object.name, [Validators.required]),
               label: this.fb.control(object.element.nmLabel ? object.element.nmLabel : object.element.label, [Validators.required]),
-              dataTypeGui: this.fb.control(object.element.dataTypeGui, [Validators.required]),
-              dataTypeName: this.fb.control(object.element.dataTypeName, [Validators.required]),
+              dataType: this.fb.control(object.element.dataType),
               shouldDelete: this.fb.control(object.shouldDelete, [Validators.required]),
-              businessCode:this.fb.control(object.element.businessCode)
+              businessCode:this.fb.control(object.element.businessCode),
+              domainList:this.fb.control(object.element.domainList)
             }));
 
             if (this.getGroupArrayById(1).length > 0 && this.getGroupArrayById(1).controls.length === 1) {
@@ -346,9 +347,7 @@ export class ComplementaryDataComponent implements OnInit {
               id: this.fb.control(object.id, [Validators.required]),
               name: this.fb.control(object.name, [Validators.required]),
               label: this.fb.control(object.element.nmLabel ? object.element.nmLabel : object.element.label, [Validators.required]),
-              description: this.fb.control(object.element.dataTypeDescription),
-              dataTypeGui: this.fb.control(object.element.dataTypeGui, [Validators.required]),
-              dataTypeName: this.fb.control(object.element.dataTypeName, [Validators.required]),
+              dataType: this.fb.control(object.element.dataType),
               initializeRule: this.fb.array([], []),
               validateRule: this.fb.array([], []),
               dependency: this.fb.control(null, []),
@@ -358,7 +357,8 @@ export class ComplementaryDataComponent implements OnInit {
               visible: this.fb.control(true, [Validators.required]),
               fieldGroup: this.fb.control(1, []),
               shouldDelete: this.fb.control(object.shouldDelete, [Validators.required]),
-              businessCode:this.fb.control(object.element.businessCode)
+              businessCode:this.fb.control(object.element.businessCode),
+              domainList:this.fb.control(object.element.domainList)
             }));
 
           } else {
