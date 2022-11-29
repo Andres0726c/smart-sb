@@ -1,7 +1,7 @@
 <ng-template #inputText let-groupName="groupName" let-field="field">
     <div [formGroup]="field" class="flex flex-col m-3">
         <label>{{ field.value.label }}</label>
-        <input type="text" pInputText formControlName="value"> 
+        <input type="text" pInputText formControlName="value">
     </div>
 </ng-template>
 
@@ -27,8 +27,12 @@
             </ng-template>
             <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
                 <div *ngFor="let field of getFieldsControls(group).controls; let j = index;" formGroupName="{{j}}">
-                    <ng-container
+                    <!-- <ng-container
                         [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataTypeGui]"
+                        [ngTemplateOutletContext]="{ field: field }"
+                    ></ng-container> -->
+                    <ng-container
+                        [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})['Text box']"
                         [ngTemplateOutletContext]="{ field: field }"
                     ></ng-container>
                 </div>
