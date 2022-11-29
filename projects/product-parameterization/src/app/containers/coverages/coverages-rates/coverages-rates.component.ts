@@ -137,11 +137,8 @@ export class CoveragesRatesComponent implements OnInit, AfterViewInit {
           argmntLst: response.RulesForm.parameters
         };
 
-        console.log((<FormArray>this.coverageRatesControls.controls[0]?.get('calculationRule')));
-
         (<FormArray>this.coverageRatesControls.controls[0]?.get('calculationRule')).removeAt(0);
         (<FormArray>this.coverageRatesControls.controls[0]?.get('calculationRule')).push(this.fb.control(element));
-
         this.toastMessage.openFromComponent(ToastMessageComponent, { data: this.getSuccessStatus('Asociaci\u00f3n exitosa', 'La regla de inicializaci\u00f3n fue asociada correctamente.') });
       }
     });
