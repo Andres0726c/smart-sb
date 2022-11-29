@@ -41,11 +41,12 @@ export class CoveragesRatesComponent implements OnInit, AfterViewInit {
     public productService: ProductService,
     private fb: FormBuilder
   ) {
-
   }
 
   ngOnInit(): void {
-    console.log('');
+    if (this.coverageRatesControls.controls.length === 0) {
+      this.coverageRatesControls.push(this.fb.group({calculationRule: this.fb.array([])}));
+    }
   }
 
   ngAfterViewInit() {
@@ -117,7 +118,7 @@ export class CoveragesRatesComponent implements OnInit, AfterViewInit {
     ];
 
     this.openDialogWizard(
-      'ruleInitializeControls',
+      'ruleCalculationControls',
       this.selectedField.get('calculationRule')?.value,
       columns,
       false,
@@ -136,10 +137,12 @@ export class CoveragesRatesComponent implements OnInit, AfterViewInit {
           argmntLst: response.RulesForm.parameters
         };
 
-        (<FormArray>this.coverageRatesControls?.get('calculationRule')).removeAt(0);
-        (<FormArray>this.coverageRatesControls?.get('calculationRule')).push(this.fb.control(element));
-        // this.toastMessage.openFromComponent(ToastMessageComponent, { data: this.getSuccessStatus('Asociaci\u00f3n exitosa', 'La regla de inicializaci\u00f3n fue asociada correctamente.') });
-        console.log(this.productService);
+        console.log((<FormArray>this.coverageRatesControls.controls[0]?.get('calculationRule')));
+
+        (<FormArray>this.coverageRatesControls.controls[0]?.get('calculationRule')).removeAt(0);
+        (<FormArray>this.coverageRatesControls.controls[0]?.get('calculationRule')).push(this.fb.control(element));
+
+        this.toastMessage.openFromComponent(ToastMessageComponent, { data: this.getSuccessStatus('Asociaci\u00f3n exitosa', 'La regla de inicializaci\u00f3n fue asociada correctamente.') });
       }
     });
   }
@@ -171,7 +174,6 @@ export class CoveragesRatesComponent implements OnInit, AfterViewInit {
       this.contextData = res.body.nmValueList;
       //se filtra los datos de contexto dependiendo del nivel de aplicación
       this.contextData =  this.contextData.filter( (data:any) => data.applctnLvl.includes(this.applicationLevel) || data.applctnLvl.includes("*") )
-      console.log(this.contextData)
     } catch (error) {
       this.flagServiceError = true;
     }
@@ -209,7 +211,6 @@ Funcion para agregar chip en el input de opciones múltiples pero de única sele
  * Funcion para eliminar chips
  */
   remove = (value: string): void => {
-
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent,{
       data: {
         img: 'picto-delete',
@@ -218,14 +219,13 @@ Funcion para agregar chip en el input de opciones múltiples pero de única sele
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      console.log(this.coverageRatesControls)
-
       if(res) {
         let index = -1;
-        index = this.coverageRatesControls.value[0].indexOf(value);
+
+        index = this.coverageRatesControls.controls[0].value['calculationRule'].indexOf(value);
 
         if (index >= 0) {
-          this.coverageRatesControls.removeAt(index);
+          (<FormArray>this.coverageRatesControls.controls[0]?.get('calculationRule')).removeAt(0);
         }
       }
     })

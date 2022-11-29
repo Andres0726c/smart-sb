@@ -11,7 +11,7 @@
 
   <div class="container-boxes" *ngIf="productService.coverages.length>0">
     <app-coverage-menu (emitSelectedCoverage)="changeCoverage($event)" [edit]="false"></app-coverage-menu>
-    
+
     <form class="container-details-coverage" [formGroup]="selectedCoverage" *ngIf="selectedCoverage?.get('id')">
       <div class="container-details-coverage__header">
         <h5 class="container-details-coverage__title">{{selectedCoverage?.value.name}}</h5>
@@ -25,7 +25,7 @@
           ></app-waiting-time>
         </mat-tab>
         <mat-tab label="Cláusulas" data-qa-id="sc-rpmf-tab-clauses">
-          <app-clauses 
+          <app-clauses
             [formClauses]="selectedCoverage?.get('clauses')"
             [emptyText]="'Sin cláusulas'"
             [emptySubText]="'No se han asociado cláusulas a la cobertura'"
@@ -37,7 +37,7 @@
         </mat-tab>
         <mat-tab label="Datos cobertura"  data-qa-id="sc-rpmf-tab-data-coverages">
           <app-complementary-data #complementaryDataComponent
-            [applicationLevel]="'Cobertura'" 
+            [applicationLevel]="'Cobertura'"
             [subtitle]="'Datos cobertura'"
             [groupName]="'Datos básicos'"
             [emptyText]="'Sin datos de cobertura'"
@@ -50,8 +50,8 @@
           </app-complementary-data>
         </mat-tab>
         <mat-tab label="Deducible" data-qa-id="sc-rpmf-tab-deductibles">
-          <app-deductibles #deductibleComponent 
-            [formDeductibles]="selectedCoverage?.get('deductibles')" 
+          <app-deductibles #deductibleComponent
+            [formDeductibles]="selectedCoverage?.get('deductibles')"
             [dataSource]="selectedCoverage?.get('deductibles')?.value" >
           </app-deductibles>
         </mat-tab>
@@ -60,7 +60,7 @@
         </mat-tab>
         <mat-tab label="Datos de nómina" data-qa-id="sc-rpmf-tab-payRollData">
           <app-complementary-data #payRollDataComponent
-            [applicationLevel]="'Nómina'" 
+            [applicationLevel]="'Nómina'"
             [subtitle]="'Datos de nómina'"
             [groupName]="'Datos básicos'"
             [emptyText]="'Sin datos de nómina'"
