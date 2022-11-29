@@ -1,27 +1,6 @@
 @import "../../../../assets/styles/config/variables";
 @import "../../../../assets/styles/config/mixins";
 @import "../../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
-/*.div-content{
-  background: $primaryBase;
-  width: 396px;
-  height: 999px;
-}*/
-
-/*.mat-chip-placeholder {
-
-  width: 85%;
-  height: 20px;
-  margin-top: 5px;
-  background-color: $greenBG;
-  color: $primaryBase !important;
-  padding: 0 6px !important;
-  min-height: 20px;
-  font-family: Roboto Condensed;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 10px;
-}*/
 
 .title {
   display: flex;
@@ -50,39 +29,38 @@
   color: #0000008a;
 }
 
-h4{
+h4 {
   font-family: Roboto Condensed;
   margin-bottom: 5px;
 }
 
 .div-content-chips{
+  margin: 50px;
   display: flex;
   flex-direction: column;
-  margin-left: 50px;
-  margin-top: 50px;
-  .container-chips{
-    width: 35%;
-    display: flex;
-    align-items: center;
+  align-items: center;
+
+  .container-chips {
+    width: 70%;
   }
   .example-chip-list {
     width: 100%;
-    font-family: 9px;
-    // line-height: 3;
-    mat-error{
+
+    mat-error {
       line-height: 1;
     }
   }
-  .chip-list-input{
+  .chip-list-input {
     max-width: 10px;
     font-size: 8px;
     margin: 0 auto;
   }
-  
-  .icon-button-add{
+
+  .icon-button-add {
     color: $primaryBase;
     font-size: 20px;
     margin-right: 10px;
+
     @include mq-max(md) {
       margin-right: 5px;
     }
