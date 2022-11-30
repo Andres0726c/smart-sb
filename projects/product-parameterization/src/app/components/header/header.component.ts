@@ -18,6 +18,7 @@ export class HeaderComponent implements OnInit {
   company = '';
   userName = '';
   role = '';
+  sessionLocation = '- Parametrizador de Productos';
   isAuthenticated!: boolean;
   closing = false;
 
@@ -98,5 +99,4 @@ export class HeaderComponent implements OnInit {
       }
     })
   }
-  
 }

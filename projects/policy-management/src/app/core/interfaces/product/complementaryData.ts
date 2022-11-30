@@ -5,16 +5,20 @@ export interface ComplementaryData {
   fields: Field[];
 }
 
-interface Field {
+export interface Field {
   id: number;
   code: string;
+  businessCode: string;
   name: string;
   label: string;
   dataTypeGui: string;
+  dataType: string;
   dataTypeName: string;
   initializeRule: [];
   validateRule: [];
   dependency: number;
   required: boolean;
   visible: boolean;
+  domainList: string;
+  editable: boolean;
 }
