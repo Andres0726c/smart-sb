@@ -20,6 +20,13 @@ const routes: Routes = [
                 import(
                     './components/modify-policy/modify-policy.module'
                 ).then((m) => m.ModifyPolicyModule)
+            },
+            {
+                path: 'renovar/:id',
+                loadChildren: () =>
+                import(
+                    './components/policy-renewal/policy-renewal.module'
+                ).then((m) => m.PolicyRenewalModule)
             }
         ]
     }

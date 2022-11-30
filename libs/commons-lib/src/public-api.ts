@@ -24,3 +24,5 @@ export * from './lib/components/primeng-example/primeng-example.component';
 
 export * from './lib/components/header/header.module';
 export * from './lib/components/header/header.component';
+
+export * from "./lib/components/loading-spinner/loading-spinner.component";
