@@ -3,7 +3,6 @@ import { NgModule } from "@angular/core";
 import { HeaderComponent } from './header.component';
 import { MenubarModule } from "primeng/menubar";
 import { MenuModule } from "primeng/menu";
-import { CommonsLibModule } from "../../commons-lib.module";
 
 @NgModule({
     declarations: [
@@ -12,8 +11,7 @@ import { CommonsLibModule } from "../../commons-lib.module";
     imports: [
         CommonModule,
         MenubarModule,
-        MenuModule,
-        CommonsLibModule
+        MenuModule
     ],
     exports: [
         HeaderComponent

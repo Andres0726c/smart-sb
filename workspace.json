@@ -2,10 +2,10 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "shell": "projects/shell",
     "auth": "projects/auth",
-    "commons-lib": "libs/commons-lib",
-    "policy-management": "projects/policy-management",
     "product-parameterization": "projects/product-parameterization",
-    "shell": "projects/shell"
+    "policy-management": "projects/policy-management",
+    "commons-lib": "libs/commons-lib"
   }
 }

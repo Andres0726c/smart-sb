@@ -54,6 +54,8 @@ export class ConsultPolicyComponent {
 
   loading: boolean = false;
 
+  formTest!: FormGroup;
+
   constructor(
     public consultPolicyService: ConsultPolicyService,
     public fb: FormBuilder,
@@ -66,6 +68,65 @@ export class ConsultPolicyComponent {
       idCause: fb.control(null),
       causeType: fb.control(null, Validators.required),
       observation: fb.control(null, Validators.maxLength(2000)),
+    });
+
+    this.formTest = fb.group({
+      policyData: fb.array([
+        fb.group({
+          id: 1,
+          name: 'Grupo 1',
+          fields: fb.array([
+            fb.group({
+              label: 'campo 1',
+              value: 'prueba'
+            }),
+            fb.group({
+              label: 'campo 2',
+              value: 'prueba valor 2'
+            })
+          ])
+        }),
+        fb.group({
+          id: 2,
+          name: 'Grupo 2',
+          fields: fb.array([
+            fb.group({
+              label: 'campo 3',
+              value: 'prueba valor 3'
+            }),
+            fb.group({
+              label: 'campo 4',
+              value: 'prueba valor 4'
+            }),
+            fb.group({
+              label: 'campo 5',
+              value: 'prueba valor 5'
+            })
+          ])
+        }),
+        fb.group({
+          id: 3,
+          name: 'Grupo 3',
+          fields: fb.array([
+            fb.group({
+              label: 'campo 6',
+              value: 'prueba valor 6'
+            }),
+            fb.group({
+              label: 'campo 7',
+              value: 'prueba valor 7'
+            }),
+            fb.group({
+              label: 'campo 8',
+              value: 'prueba valor 8'
+            }),
+            fb.group({
+              label: 'campo 9',
+              value: 'prueba valor 9'
+            })
+          ])
+        })
+      ])
     });
 
     this.cols = [
@@ -121,6 +182,10 @@ export class ConsultPolicyComponent {
         }
       },
     ];
+  }
+
+  get policyDataControls(): FormArray {
+    return this.formTest.get('policyData') as FormArray;
   }
 
   getFieldsControls(group: any) {

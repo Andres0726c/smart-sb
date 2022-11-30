@@ -42,25 +42,9 @@ export class ProductService {
         })
   };
 
-  getProductByCode = (code: string): Observable<any> => {
-    return this.httpClient.get<ResponseDTO<Product>>
-      (`${this.apiUrl}product/findByBusinessCode/${code}`,
-        {
-          headers: this.headers,
-        })
-  };
-
   findByIdPolicy = (idPolicy: number): Observable<any> => {
     return this.httpClient.get<ResponseDTO<Product>>
       (`${this.apiUrl}policy/findByIdPolicy/${idPolicy}`,
-        {
-          headers: this.headers,
-        })
-  };
-
-  findPolicyDataById = (idPolicy: number): Observable<any> => {
-    return this.httpClient.get<ResponseDTO<Product>>
-      (`${this.apiUrl}policy/findPolicyDataById/${idPolicy}`,
         {
           headers: this.headers,
         })

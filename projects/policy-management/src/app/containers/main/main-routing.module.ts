@@ -15,19 +15,12 @@ const routes: Routes = [
                 ).then((m) => m.ConsultPolicyModule)
             },
             {
-                path: 'renovar/:id',
+                path: 'modificar/:id',
                 loadChildren: () =>
                 import(
-                    './components/policy-renewal/policy-renewal.module'
-                ).then((m) => m.PolicyRenewalModule)
+                    './components/modify-policy/modify-policy.module'
+                ).then((m) => m.ModifyPolicyModule)
             }
-            // {
-            //     path: 'modificar/:id',
-            //     loadChildren: () =>
-            //     import(
-            //         './components/modify-policy/modify-policy.module'
-            //     ).then((m) => m.ModifyPolicyModule)
-            // }
         ]
     }
 ];

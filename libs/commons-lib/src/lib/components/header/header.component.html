@@ -5,28 +5,12 @@
     </a>
     <div class="main-left-items__items-left-special">
       <p class="version">1.0</p>
-      <span class="title-app"
-        ><strong>SmartCore {{ sessionLocation }}</strong></span
-      >
+      <span class="title-app"><strong>SmartCore</strong></span>
       <span class="company-title">Compañía: {{ company }}</span>
     </div>
   </ng-template>
   <ng-template pTemplate="end">
-    <div class="header-end text-white" *ngIf="closing">
-      <img
-        class="w-12"
-        src="smartcore-commons/assets/img/user-config.svg"
-        alt="logo"
-      />
-      <div class="flex flex-col px-8 items-center">
-        <span><strong> Cerrando sesión... </strong></span>
-        <smartcore-loading-spinner [circleSize]="30" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
-        <!-- <p-progressSpinner
-          [style]="{ width: '30px', height: '30px' }"
-        ></p-progressSpinner> -->
-      </div>
-    </div>
-    <div class="header-end text-white" *ngIf="!closing">
+    <div class="header-end text-white">
       <img
         class="w-12"
         src="smartcore-commons/assets/img/user-config.svg"

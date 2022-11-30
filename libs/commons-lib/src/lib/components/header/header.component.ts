@@ -2,7 +2,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { NavigationEnd, Router } from '@angular/router';
-import { CognitoService } from '../../services/cognito.service';
 
 @Component({
   selector: 'refactoring-smartcore-mf-header',
@@ -13,18 +12,15 @@ export class HeaderComponent implements OnInit {
   items!: MenuItem[];
   items2!: MenuItem[];
 
-  userSesion = '';
-  rolSesion = '';
-  company = '';
-  sessionLocation = '';
-  isAuthenticated!: boolean;
-  closing = false;
+  userSesion = 'usuario@correo.com';
+  rolSesion = 'ROL';
+  company = 'Compañía';
+  flagUrl = true;
 
-  constructor(public router: Router, private cognitoService: CognitoService) {
+  constructor(public router: Router) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
-        if (this.router.url !== '/inicio') {
-          this.sessionLocation = '- Gestión de Póliza';
+        if (this.router.url !== '/') {
           this.items = [
             {
               label: 'Inicio',
@@ -34,7 +30,6 @@ export class HeaderComponent implements OnInit {
             },
           ];
         } else {
-          this.sessionLocation = '';
           this.items = [
             {
               label: 'Inicio',
@@ -46,38 +41,14 @@ export class HeaderComponent implements OnInit {
         }
       }
     });
-
+  }
+  ngOnInit() {
     this.items2 = [
       {
         icon: 'pi pi-sign-in',
         label: 'Cerrar sesión',
-        command: () => {
-          this.signOut();
-        }
+        routerLink: '/',
       },
     ];
-  }
-  ngOnInit() {
-    this.cognitoService
-      .getUser()
-      .then((value) => {
-        this.company = JSON.parse(value.attributes['custom:sessionInformation']).businessName;
-        this.userSesion = value.username;
-        this.rolSesion = value.signInUserSession.accessToken.payload['cognito:groups'];
-        this.isAuthenticated = true;
-      })
-      .catch((err) => {
-        this.isAuthenticated = false;
-        this.cognitoService.signOut();
-        this.router.navigate(['login']);
-      });
-  }
-
-  signOut(){
-    this.closing = true;
-    this.cognitoService.signOut()
-    .then(() => {
-      this.router.navigate(['/autenticacion']);
-    });
   }
 }

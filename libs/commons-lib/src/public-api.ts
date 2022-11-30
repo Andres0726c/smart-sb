@@ -1,6 +1,6 @@
 /*
-* Public API Surface of commons-lib
-*/
+ * Public API Surface of commons-lib
+ */
 
 export * from './lib/commons-lib.module';
 
@@ -24,5 +24,3 @@ export * from './lib/components/primeng-example/primeng-example.component';
 
 export * from './lib/components/header/header.module';
 export * from './lib/components/header/header.component';
-
-export * from "./lib/components/loading-spinner/loading-spinner.component";

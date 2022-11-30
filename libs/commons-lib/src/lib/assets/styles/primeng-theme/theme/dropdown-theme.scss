@@ -13,13 +13,6 @@
   border-color: var(--primary-base);
 }
 
-.p-dropdown.p-disabled {
-  background-color: var(--greyscale-6);
-  .p-dropdown-label{
-    color:var(--greyscale-3);
-  }
-}
-
 .p-dropdown .p-dropdown-label {
   background: transparent;
 }

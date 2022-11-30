@@ -11,8 +11,7 @@ import { MessageService } from 'primeng/api';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ModalPolicyActionsService } from './services/modal-policy-actions.service';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { rejects } from 'assert';
+import { of } from 'rxjs';
 
 describe('ModalPolicyActionsComponent', () => {
   let component: ModalPolicyActionsComponent;
@@ -142,8 +141,7 @@ it('rehabilitatePolicy success',() => {
     causeType: new FormControl(138),
     immediate:new FormControl(0),
     applicationProcess: new FormControl('Cancelación'),
-    observation: new FormControl('observación'),
-    rehabilitationDate: new FormControl('2022-11-15T20:27:10.000Z')
+    observation: new FormControl('observación')
   })
 
   const res: any = {
@@ -170,8 +168,7 @@ it('rehabilitatePolicy error',() => {
     causeType: new FormControl(138),
     immediate:new FormControl(0),
     applicationProcess: new FormControl('Cancelación'),
-    observation: new FormControl('observación'),
-    rehabilitationDate: new FormControl('2022-11-15T20:27:10.000Z')
+    observation: new FormControl('observación')
   })
 
   const res: any = {
@@ -191,48 +188,6 @@ const spy1 = jest.spyOn(modalActionsService, 'postRehabilitation').mockReturnVal
 component.rehabilitatePolicy();
 expect(spy1).toHaveBeenCalledTimes(1);
 });
-
-  it('rehabilitatePolicy error exception', () => {
-
-    component.formProcess = new FormGroup({
-      processDate: new FormControl('2022-11-15T20:27:10.000Z'),
-      causeType: new FormControl(138),
-      immediate: new FormControl(0),
-      applicationProcess: new FormControl('Cancelación'),
-      observation: new FormControl('observación'),
-      rehabilitationDate: new FormControl('2022-11-15T20:27:10.000Z')
-    })
-
-    const modalActionsService = fixture.debugElement.injector.get(ModalPolicyActionsService);
-
-    const spy = jest.fn().mockImplementation(() => {
-      return new Observable(() => {
-        throw new Error("Blahblah");
-      })
-    });
-
-    jest.spyOn(modalActionsService, 'postRehabilitation').mockImplementation(spy);
-
-    component.rehabilitatePolicy();
-    expect(component.messageError).toBeTruthy();
-  });
-
-
-  it('rehabilitatePolicy error no date', () => {
-
-    component.formProcess = new FormGroup({
-      processDate: new FormControl('2022-11-15T20:27:10.000Z'),
-      causeType: new FormControl(138),
-      immediate: new FormControl(0),
-      applicationProcess: new FormControl('Cancelación'),
-      observation: new FormControl('observación')
-    })
-
-    component.rehabilitatePolicy();
-
-    expect(component.messageError).toBeTruthy();
-
-  });
 
 it('verify Date', () => {
   component.formProcess.get('processDate')?.setValue('2022-11-15T20:27:10.000Z');
