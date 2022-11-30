@@ -8,6 +8,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ReactiveGroupFieldsModule } from 'projects/policy-management/src/app/shared/components/reactive-group-fields/reactive-group-fields.module';
 import { CommonsLibModule } from 'commons-lib';
+import { DividerModule } from 'primeng/divider';
 
 const routes: Routes = [
   {
@@ -29,7 +30,8 @@ const routes: Routes = [
     InputTextModule,
     TabViewModule,
     ProgressSpinnerModule,
-    ReactiveGroupFieldsModule
+    ReactiveGroupFieldsModule,
+    DividerModule
   ]
 })
 export class PolicyRenewalModule { }
