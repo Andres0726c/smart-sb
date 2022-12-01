@@ -3,19 +3,44 @@ import { ProductService } from 'projects/policy-management/src/app/core/services
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ModifyPolicyComponent } from './modify-policy.component';
 import { RouterTestingModule } from "@angular/router/testing";
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
+import { Identification } from '../consult-policy/interfaces/identification';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
+import { RiskType } from 'projects/policy-management/src/app/core/interfaces/product/riskType';
+import { ConsultPolicyService } from '../consult-policy/services/consult-policy.service';
 
 describe('ModifyPolicyComponent', () => {
   let component: ModifyPolicyComponent;
   let fixture: ComponentFixture<ModifyPolicyComponent>;
   let productService: ProductService;
+  let consultPolicyService: ConsultPolicyService;
   let formBuilderMock = new FormBuilder();
   let router: Router;
+  let documentsType: Identification[] = [];
 
+  let policies = [
+    {
+      idProduct: 126,
+      productName: 'ProductoEmision',
+      company: 'SEGUROS COMERCIALES BOLÍVAR S.A.',
+      idPolicy: 18,
+      policyNumber: '100000000000033',
+      requestNumber: '37',
+      insuranceLine: 'Hogar',
+      inceptionDate: '2022-05-08T12:53:00-05:00',
+      expirationDate: '2022-05-08T12:53:00-05:00',
+      policyStatus: 'Activa',
+      holderDocument: '1131345121',
+      holderTypeDocument: '1',
+      holderName: 'holderName',
+      insuredDocument: '1131345121',
+      insuredTypeDocument: '1',
+      insuredName: 'insuredName',
+    },
+  ];
 
   beforeEach(async () => {
 
@@ -29,6 +54,7 @@ describe('ModifyPolicyComponent', () => {
         { provide: FormBuilder, useValue: formBuilderMock },
         ProductService,
         FormBuilder,
+        ConsultPolicyService,
         {
           provide: FormArray,
           useValue: {},
@@ -46,31 +72,13 @@ describe('ModifyPolicyComponent', () => {
     fixture = TestBed.createComponent(ModifyPolicyComponent);
     component = fixture.componentInstance;
     productService = TestBed.inject(ProductService);
+    consultPolicyService=TestBed.inject(ConsultPolicyService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('policyDataControls', () => {
-    let policyNumber = component.formPolicy.controls['policyNumber']; 
-    let group: any = component.fb.array([]);
-
-
-    component.getFieldsControls(group);
-    expect(policyNumber).toBeFalsy(); 
-    component.getGroupsControls(group);
-    expect(policyNumber).toBeFalsy(); 
-    component.getFieldsControlss(group);
-    expect(policyNumber).toBeFalsy(); 
-    
-    component.addControls(group);
-    expect(policyNumber).toBeFalsy(); 
-
-
-    
   });
 
   it('cancelModification', () => {
@@ -99,18 +107,19 @@ describe('ModifyPolicyComponent', () => {
       },
     };
 
-
+    let isLoading = false;
     let idProduct = 7;
     const spy = jest.spyOn(productService, 'getProductById').mockReturnValue(of(res));
     const spy2 = jest.spyOn(component, 'fillGroupData').mockImplementation();
     const spy3 = jest.spyOn(component, 'fillRiskData').mockImplementation();
-
+    component.policyDataControls;
+    component.riskTypesControls;
     component.getProduct(idProduct)
     expect(spy).toBeCalled();
   });
   it('getPolicy', () => {
     const res: ResponseDTO<any> = {
-      body: ['policy'],
+      body: [policies],
       dataHeader: {
         code: 200,
         status: 'OK',
@@ -122,7 +131,8 @@ describe('ModifyPolicyComponent', () => {
       },
     };
     let isLoading = true;
-    let idPolicy = 100;
+    let idPolicy = policies[0].idPolicy;
+    
     const spy = jest.spyOn(productService, 'findByIdPolicy').mockReturnValue(of(res));
     const spy2 = jest.spyOn(component, 'mapData').mockImplementation();
     const spy3 = jest.spyOn(component, 'getProduct').mockImplementation();
@@ -130,13 +140,59 @@ describe('ModifyPolicyComponent', () => {
     expect(spy).toBeCalled();
   });
 
-  it('fillRiskData',()=>{
-    let riskTypes:any="";
-    let risksArrayData: any = component.fb.array([]);
+  it('fillRiskData', () => {
+    let riskTypes:any = [{
+      id: 1,
+      code: { businessCode: "aaa" },
+      name: "abc",
+      description: "abcd",
+      complementaryData: {
+        id: 1,
+        name: "string",
+        code: "string",
+        fields: [],
+      },
+      businessPlans: []
+    }];
+    const spy2 = jest.spyOn(component, 'fillGroupData').mockImplementation();
     component.fillRiskData(riskTypes);
+    expect(spy2).toBeCalled();
   });
 
-  it('saveModification',()=>{
-  component.saveModification();
+  it('saveModification', () => {
+    let group: any = component.fb.array([]);
+    component.getFieldsControls(group);
+    component.getGroupsControls(group);
+    component.getFieldsControlss(group);
+    component.addControls(group);
+    component.saveModification();
   });
+
+
+  it('fillGroupData', () => {
+
+    let riskTypes = [{
+      id: 7,
+      code: 7,
+      name: 'abc',
+      fields:[{code: { businessCode: "aaa" }}]
+    }];
+
+    let groupFG = [{
+      id: 7,
+      code: 7,
+      name: 'abc',
+      fields:[{code: { businessCode: "aaa" }}]
+    }];
+    let groupFG1 = [{
+      id: 7,
+      code: 7,
+      name: 'abc',
+      fields:[]
+    }];
+    const spy=component.fillGroupData(groupFG, riskTypes);
+    expect(spy.value).toEqual(groupFG1);
+  });
+
+  
 });
