@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ModifyPolicyComponent } from './modify-policy.component';
 import { RouterTestingModule } from "@angular/router/testing";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
@@ -157,11 +157,10 @@ describe('ModifyPolicyComponent', () => {
   });
 
   it('saveModification', () => {
-    let group: any = component.fb.array([]);
-    component.getFieldsControls(group);
-    component.getGroupsControls(group);
-    component.getFieldsControlss(group);
-    component.addControls(group);
+    let riskTypes = component.fb.array([]);
+    component.addControls(riskTypes);
+    component.getFieldsControls(riskTypes);
+    component.getGroupsControls(riskTypes);
     component.saveModification();
   });
 
@@ -173,7 +172,10 @@ describe('ModifyPolicyComponent', () => {
       code: 7,
       name: 'abc',
       fields: [
-        { code: { businessCode: "abc" } }]
+        {
+          code: { businessCode: "abc" },
+          dataType: { guiComponent: 'List box' }
+        }]
     }];
 
     let groupFG = [{
@@ -183,7 +185,7 @@ describe('ModifyPolicyComponent', () => {
       fields: [
         {
           code: { businessCode: "abc" },
-          dataTypeGui: 'List box'
+          dataType: { guiComponent: 'List box' },
         }]
     }];
     let groupFG1 = [{
@@ -193,12 +195,11 @@ describe('ModifyPolicyComponent', () => {
       fields: [
         {
           code: { businessCode: "abc" },
-          dataTypeGui: 'List box',
+          dataType: { guiComponent: 'List box' },
           options: [{
             id: undefined,
             name: undefined
           }],
-          type: "Text box",
           value: null
         }]
     }];
@@ -206,7 +207,7 @@ describe('ModifyPolicyComponent', () => {
     expect(spy.value).toEqual(groupFG1);
   });
 
-  it('mapData',()=>{
+  it('mapData', () => {
     let riskTypes = [{
       id: 7,
       code: 7,
@@ -215,13 +216,76 @@ describe('ModifyPolicyComponent', () => {
         { code: { businessCode: "abc" } }]
     }];
 
-    let response=[
+    let response = [
       { name: 'id', value: 7 },
       { name: 'code', value: 7 },
       { name: 'name', value: 'abc' },
-      { name:'fields',value:[{code: { businessCode: "abc" }}]}
-  ];
-    const spy=component.mapData(riskTypes);
+      { name: 'fields', value: [{ code: { businessCode: "abc" } }] }
+    ];
+    const spy = component.mapData(riskTypes);
     expect(spy).toEqual(response);
-  })
+  });
+
+  it('reverseMap', () => {
+
+    const groupData = [
+      {
+        plcy: {
+          plcyDtGrp: [
+            {
+              id: 1,
+              name: "Datos básicos",
+              code: "datos_basicos",
+              fields: [
+                {
+                  id: 67,
+                  code: {
+                    businessCode: "FEC_INI_VIG_POL",
+                    version: 1
+                  }
+                }]
+            }]
+        }
+      }];
+    const control = component.policyDataControls;
+    const spy = component.reverseMap(control, groupData);
+    expect(spy).toBeUndefined();
+  });
+  it('transformData', () => {
+    let a=[
+      {
+        id: 1,
+        name: "Datos básicos",
+        code: "datos_basicos",
+        fields: [
+          {
+            id: 67,
+            code: {businessCode: "FEC_INI_VIG_POL",version: 1}
+          }]
+      }];
+    component.policy =  [{
+          id: 1,
+          name: "Datos básicos",
+          code: "datos_basicos",
+          plcyDtGrp:{},
+          rskDtGrp:{}
+        }];
+        component.policy.plcy=a;
+    const spy2 = jest.spyOn(component, 'reverseMap').mockImplementation();
+    component.transformData();
+    expect(spy2).toBeCalled();
+  });
+  it('getControlValue', () => {
+
+    let dataControlsValue = [{
+      id: 7,
+      code: 7,
+      name: 'abc',
+      fields: [
+        { code: { businessCode: "abc" } }]
+    }];
+    let businessCode = "abc";
+    const spy = component.getControlValue(dataControlsValue, businessCode);
+    expect(spy).toBeUndefined();
+  });
 });
