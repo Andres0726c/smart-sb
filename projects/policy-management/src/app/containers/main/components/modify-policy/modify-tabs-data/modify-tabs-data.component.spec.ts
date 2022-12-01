@@ -3,7 +3,6 @@ import { ProductService } from 'projects/policy-management/src/app/core/services
 import { RouterTestingModule } from "@angular/router/testing";
 import { FormBuilder } from '@angular/forms';
 import { HttpClientTestingModule } from "@angular/common/http/testing";
-
 import { ModifyTabsDataComponent } from './modify-tabs-data.component';
 
 describe('ModifyTabsDataComponent', () => {
@@ -32,7 +31,22 @@ describe('ModifyTabsDataComponent', () => {
     fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  xit('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  xit('ngOnChanges',()=>{
+
+    let risk: any = component.fb.array([]);
+    component.getRiskComplementaryData(risk);
+    component.ngOnChanges();
+  });
+  xit('ngOnAfterViewInit',()=>{
+
+    let risk: any = component.fb.array([]);
+    component.riskControls;
+    component.riskDataControls;
+    component.ngOnAfterViewInit();
+  });
+
 });

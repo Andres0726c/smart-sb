@@ -4,12 +4,10 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ModifyPolicyComponent } from './modify-policy.component';
 import { RouterTestingModule } from "@angular/router/testing";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { of, Subscription } from 'rxjs';
-import { Identification } from '../consult-policy/interfaces/identification';
+import {  Router } from '@angular/router';
+import { of } from 'rxjs';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
-import { RiskType } from 'projects/policy-management/src/app/core/interfaces/product/riskType';
 import { ConsultPolicyService } from '../consult-policy/services/consult-policy.service';
 
 describe('ModifyPolicyComponent', () => {
@@ -19,7 +17,6 @@ describe('ModifyPolicyComponent', () => {
   let consultPolicyService: ConsultPolicyService;
   let formBuilderMock = new FormBuilder();
   let router: Router;
-  let documentsType: Identification[] = [];
 
   let policies = [
     {
@@ -72,7 +69,7 @@ describe('ModifyPolicyComponent', () => {
     fixture = TestBed.createComponent(ModifyPolicyComponent);
     component = fixture.componentInstance;
     productService = TestBed.inject(ProductService);
-    consultPolicyService=TestBed.inject(ConsultPolicyService);
+    consultPolicyService = TestBed.inject(ConsultPolicyService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
@@ -132,7 +129,7 @@ describe('ModifyPolicyComponent', () => {
     };
     let isLoading = true;
     let idPolicy = policies[0].idPolicy;
-    
+
     const spy = jest.spyOn(productService, 'findByIdPolicy').mockReturnValue(of(res));
     const spy2 = jest.spyOn(component, 'mapData').mockImplementation();
     const spy3 = jest.spyOn(component, 'getProduct').mockImplementation();
@@ -141,7 +138,7 @@ describe('ModifyPolicyComponent', () => {
   });
 
   it('fillRiskData', () => {
-    let riskTypes:any = [{
+    let riskTypes: any = [{
       id: 1,
       code: { businessCode: "aaa" },
       name: "abc",
@@ -175,24 +172,56 @@ describe('ModifyPolicyComponent', () => {
       id: 7,
       code: 7,
       name: 'abc',
-      fields:[{code: { businessCode: "aaa" }}]
+      fields: [
+        { code: { businessCode: "abc" } }]
     }];
 
     let groupFG = [{
       id: 7,
       code: 7,
       name: 'abc',
-      fields:[{code: { businessCode: "aaa" }}]
+      fields: [
+        {
+          code: { businessCode: "abc" },
+          dataTypeGui: 'List box'
+        }]
     }];
     let groupFG1 = [{
       id: 7,
       code: 7,
       name: 'abc',
-      fields:[]
+      fields: [
+        {
+          code: { businessCode: "abc" },
+          dataTypeGui: 'List box',
+          options: [{
+            id: undefined,
+            name: undefined
+          }],
+          type: "Text box",
+          value: null
+        }]
     }];
-    const spy=component.fillGroupData(groupFG, riskTypes);
+    const spy = component.fillGroupData(groupFG, riskTypes);
     expect(spy.value).toEqual(groupFG1);
   });
 
-  
+  it('mapData',()=>{
+    let riskTypes = [{
+      id: 7,
+      code: 7,
+      name: 'abc',
+      fields: [
+        { code: { businessCode: "abc" } }]
+    }];
+
+    let response=[
+      { name: 'id', value: 7 },
+      { name: 'code', value: 7 },
+      { name: 'name', value: 'abc' },
+      { name:'fields',value:[{code: { businessCode: "abc" }}]}
+  ];
+    const spy=component.mapData(riskTypes);
+    expect(spy).toEqual(response);
+  })
 });
