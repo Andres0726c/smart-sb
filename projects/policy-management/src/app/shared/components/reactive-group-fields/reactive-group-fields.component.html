@@ -32,7 +32,7 @@
                         [ngTemplateOutletContext]="{ field: field }"
                     ></ng-container> -->
                     <ng-container
-                        [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})['Text box']"
+                        [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataType.guiComponent]"
                         [ngTemplateOutletContext]="{ field: field }"
                     ></ng-container>
                 </div>
