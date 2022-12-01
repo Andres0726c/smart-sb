@@ -192,22 +192,18 @@ export class ModifyPolicyComponent {
           let fieldFG = this.fb.group({});
 
           Object.keys(field).forEach(key => {
-            // let Validator:Validators=[];
-            // if (key ==='value'){
-            //   Validator=[Validators.required];
-            // }
+            
             fieldFG.addControl(key,this.fb.control(field[key]));
            
           });
 
-          fieldFG.addControl('value', this.fb.control(field.dataTypeName === 'date' ? new Date(valueObj.value) : valueObj.value,[Validators.required]));
+          fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value,[Validators.required]));
 
-          if (field.dataTypeGui === 'List box') {
+          if (field.dataType.guiComponent === 'List box') {
             let options = [{ id: valueObj.value, name: valueObj.value }]
             fieldFG.addControl('options', this.fb.control(options));
           }
-          fieldFG.addControl('type', this.fb.control('Text box'));
-
+          
           (<FormArray>groupFG.get('fields')).push(fieldFG);
         
         }
@@ -226,13 +222,43 @@ export class ModifyPolicyComponent {
       return group.get('fields') as FormArray;
     }
 
-    getFieldsControlss(group: any) {
-      return group.get('fields') as FormControl;
-    }
 
     addControls(value: FormArray) {
       return value.setValidators([Validators.required]);
 
+      }
+
+      getControlValue(dataControlsValue: any, businessCode: string) {
+        let value = null;
+    
+        for(let group of dataControlsValue) {
+          const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
+          if (valueField) {
+            value = valueField.value;
+            break;
+          }
+        }
+    
+        return value;
+      }
+    
+      reverseMap(dataControls: any, groupData: any) {
+        for (let objKey of Object.keys(groupData)) {
+          for (let key of Object.keys(groupData[objKey])) {
+            groupData[objKey][key] = this.getControlValue(dataControls.value, key);
+          }
+        }
+      }
+    
+      transformData() {
+        this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp);
+    
+        for(let risk of this.riskTypesControls.controls) {
+          this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp);
+        }
+    
+        console.log('result', this.policy);
+        
       }
     
 

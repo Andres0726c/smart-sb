@@ -18,6 +18,8 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import {TabViewModule} from 'primeng/tabview';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CalendarModule } from 'primeng/calendar';
+import { ReactiveGroupFieldsModule } from 'projects/policy-management/src/app/shared/components/reactive-group-fields/reactive-group-fields.module';
+import { AccordionModule } from 'primeng/accordion';
 
 
 const routes: Routes = [
@@ -52,6 +54,8 @@ const routes: Routes = [
     InputTextModule,
     ProgressSpinnerModule,
     CalendarModule,
+    ReactiveGroupFieldsModule,
+    AccordionModule,
   ]
 })
 export class ModifyPolicyModule { }
