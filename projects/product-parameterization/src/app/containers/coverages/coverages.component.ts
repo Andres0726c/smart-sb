@@ -37,7 +37,7 @@ export class CoveragesComponent implements OnInit {
 
   selectedCoverage:any = new FormGroup({});
   index: number = 0;
-  
+
   dataSourcetable = new MatTableDataSource<any>();
 
   constructor(
@@ -46,7 +46,7 @@ export class CoveragesComponent implements OnInit {
     private toastMessage: MatSnackBar,
     public fb: FormBuilder
   ) {
-  
+
   }
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class CoveragesComponent implements OnInit {
     if (this.payRollDataComponent) { this.payRollDataComponent.reset() }
     //this.dataSourcetable.paginator = this.paginatorClaim;
   }
-  
+
   get coverageGroup(): FormGroup {
     return this.productService.coverages?.controls[this.index] as FormGroup;
   }
@@ -140,7 +140,7 @@ export class CoveragesComponent implements OnInit {
       this.toastMessage.openFromComponent(ToastMessageComponent, {
         data: dataToast,
       });
-    } 
+    }
   };
 
 }
