@@ -403,7 +403,7 @@ export class CommercialPlanComponent implements OnInit {
   }
 
   getMax(arr: any[], prop: string) {
-    return (arr.length > 0) ? Math.max(...arr.map(o => parseInt(o[prop].match(/\d+/g)))) : 0;
+      return (arr.length > 0) ? Math.max(...arr.map(o => parseInt(o[prop].match(/\d+/g)))) : 0;
   }
 
 }
