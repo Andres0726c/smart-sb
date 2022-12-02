@@ -161,7 +161,9 @@ describe('CommercialPlanComponent', () => {
   });
 
   it('getMax  Ok', () => {
-    expect(component.getMax([{id: 1}, {id: 2}], 'id')).toEqual(2);
+    let arr=[{code:'pc001_plancccc',coverages:{id:2,required:true},description:'PLANCCCC PLANCCCC PLANCCCC PLANCCCC',name:'PLANCCCC'},
+            {code:'pc002_planAAA',coverages:{id:2,required:true},description:'PLANAAAA PLANAAAA PLANAAAA PLANAAAAA',name:'PLANAAAAA'}];
+    expect(component.getMax(arr,'code')).toEqual(2);
   });
 
   it('getMax Zero', () => {
