@@ -10,6 +10,7 @@ import { ElementTableSearch } from '../../../core/model/ElementTableSearch.model
 import { ProductService } from '../../../services/product.service';
 import { CommercialPlanComponentWizard } from '../commercial-plan-wizard/commercial-plan-wizard.component';
 
+
 @Component({
   selector: 'app-commercial-plan',
   templateUrl: './commercial-plan.component.html',
@@ -163,6 +164,7 @@ export class CommercialPlanComponent implements OnInit {
       servicePlans: servicePlans
     });
 
+
     this.CommertialPlanControls.push(element);
     this.dataSource = new MatTableDataSource<any>(this.CommertialPlanControls.value);
     this.dataSource.paginator = this.paginatorCommercialPlan;
@@ -181,6 +183,7 @@ export class CommercialPlanComponent implements OnInit {
 
   autoIncrementCustomId(lastRecordId:any,name:string){
     let textValue="";
+
     if(lastRecordId.toString().length>1){
       for(let i=0; i<lastRecordId.toString().length;i++){
          if(i<1){
@@ -191,13 +194,15 @@ export class CommercialPlanComponent implements OnInit {
     }else{
       textValue="00"+lastRecordId;
     }
+
     let lastCharacter="";
     name = name.replace(/ /g, "").replace(/[^a-zA-Z0-9 ]/g, '');
     if(name.length>24){
       lastCharacter = name.substr(name.length - 24);
     }else{
       lastCharacter=name;
-    }    
+    } 
+  
     return "pc"+textValue +"_"+lastCharacter.toLocaleLowerCase();
   }
   /**
@@ -335,6 +340,7 @@ export class CommercialPlanComponent implements OnInit {
         }
         i++;
       }
+   
       return isValid ? null : { name: true };
     };
   }
@@ -397,7 +403,7 @@ export class CommercialPlanComponent implements OnInit {
   }
 
   getMax(arr: any[], prop: string) {
-    return (arr.length > 0) ? Math.max(...arr.map(o => Number(o[prop]))) : 0;
+    return (arr.length > 0) ? Math.max(...arr.map(o => parseInt(o[prop].match(/\d+/g)))) : 0;
   }
 
 }
