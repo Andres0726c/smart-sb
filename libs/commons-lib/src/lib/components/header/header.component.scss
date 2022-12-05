@@ -102,3 +102,27 @@
   margin-bottom: 10px;
   margin-left: 15px;
 }
+
+/*::ng-deep .p-progress-spinner {
+  box-shadow: none;
+  background: none;
+}
+::ng-deep .p-progress-spinner .p-progress-spinner-circle {
+  stroke: white;
+  animation: p-progress-spinner-circle-dash  1.5s ease-in-out infinite, 6s ease-in-out infinite;
+}
+
+@keyframes p-progress-spinner-circle-dash {
+  0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+  }
+  50% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -35px;
+  }
+  100% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -124px;
+  }
+}*/

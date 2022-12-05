@@ -14,20 +14,13 @@ const routes: Routes = [
                     './components/consult-policy/consult-policy.module'
                 ).then((m) => m.ConsultPolicyModule)
             },
-            {
-                path: 'modificar/:id',
-                loadChildren: () =>
-                import(
-                    './components/modify-policy/modify-policy.module'
-                ).then((m) => m.ModifyPolicyModule)
-            },
-            {
-                path: 'renovar/:id',
-                loadChildren: () =>
-                import(
-                    './components/policy-renewal/policy-renewal.module'
-                ).then((m) => m.PolicyRenewalModule)
-            }
+            // {
+            //     path: 'modificar/:id',
+            //     loadChildren: () =>
+            //     import(
+            //         './components/modify-policy/modify-policy.module'
+            //     ).then((m) => m.ModifyPolicyModule)
+            // }
         ]
     }
 ];

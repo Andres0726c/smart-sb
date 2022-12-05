@@ -58,25 +58,6 @@
     </div>
 </div>
 
-<!-- <div class="w-full bg-white">
-    Prueba de formulario dinamico
-
-    <form [formGroup]="formTest">
-        <div formArrayName="policyData">
-            <div class="p-5" *ngFor="let group of policyDataControls.controls; let i = index" formGroupName="{{i}}">
-                <div><span class="text-primary font-bold">Grupo: </span> {{group.value.name}}</div>
-                <div class="flex flex-wrap p-3 gap-x-3" formArrayName="fields">
-                    <div *ngFor="let field of getFieldsControls(group).controls; let j= index" formGroupName="{{j}}">
-                        <div class="flex flex-col">
-                            <label>{{field.value.label}}</label>
-                            <input pInputText formControlName="value">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
-</div> -->
 <!-- <p-toast position="bottom-right">
     <ng-template let-message pTemplate="message">
         <div class="flex flex-column alert-description" style="flex: 1">
