@@ -26,7 +26,7 @@
                 <span class="text-primary mr-2">Grupo:</span> {{ group.value.name }}
             </ng-template>
             <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
-                <div *ngFor="let field of getFieldsControls(group).controls; let j = index;" formGroupName="{{j}}">
+                <div *ngFor="let field of getFieldsControls(group)?.controls; let j = index;" formGroupName="{{j}}">
                     <!-- <ng-container
                         [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataTypeGui]"
                         [ngTemplateOutletContext]="{ field: field }"

@@ -1,48 +1,38 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ProductService } from '../../../core/services/product/product.service';
-
+import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ReactiveGroupFieldsComponent } from './reactive-group-fields.component';
 
 describe('ReactiveGroupFieldsComponent', () => {
   let component: ReactiveGroupFieldsComponent;
   let fixture: ComponentFixture<ReactiveGroupFieldsComponent>;
-  let productService: ProductService;
-  let formBuilderMock = new FormBuilder();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        HttpClientTestingModule
-      ],
-      declarations: [ ReactiveGroupFieldsComponent ],
+      declarations: [ReactiveGroupFieldsComponent],
       providers: [
-        FormBuilder,
-        FormGroup,
-        { provide: ProductService,
-        useValue: formBuilderMock },
-        
-      ]
-    });
-    component = TestBed.inject(ReactiveGroupFieldsComponent);
+        ReactiveFormsModule,
+        FormBuilder
+      ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ReactiveGroupFieldsComponent);
+    component = fixture.componentInstance;
+
+    component.group = new FormArray([
+      new FormGroup({
+        id: new FormControl(1),
+        name: new FormControl(test),
+        fields: new FormArray([])
+      })
+    ]);
+
+    fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  xit('ngOnInit', () => {
-    component.ngOnInit();
-    expect(component).toBeDefined();
-  });
-  
-  xit('getFieldsControls', () => {
-    let fields = new FormGroup({});
-    component.getFieldsControls(fields);
-    expect(component.getFieldsControls(fields)).toBeUndefined();
   });
 
 });

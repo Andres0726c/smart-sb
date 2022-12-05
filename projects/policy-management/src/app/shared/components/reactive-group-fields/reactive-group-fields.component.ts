@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 
 @Component({
@@ -8,12 +8,6 @@ import { FormArray, FormGroup } from '@angular/forms';
 })
 export class ReactiveGroupFieldsComponent {
   @Input() group: any = new FormGroup({});
-
-  constructor() { }
-
-  ngOnInit(): void {
-    //
-  }
 
   getFieldsControls(group: any) {
     return group.get('fields') as FormArray;
