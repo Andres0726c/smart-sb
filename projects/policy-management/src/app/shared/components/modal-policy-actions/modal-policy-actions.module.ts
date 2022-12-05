@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [ModalPolicyActionsComponent],
@@ -24,7 +25,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ReactiveFormsModule,
     ToastModule,
     InputTextModule,
-    InputNumberModule
+    InputNumberModule,
+    CheckboxModule
   ]
 })
 export class ModalPolicyActionsModule {}

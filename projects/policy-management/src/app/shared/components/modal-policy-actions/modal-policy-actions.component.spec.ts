@@ -11,7 +11,9 @@ import { MessageService } from 'primeng/api';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ModalPolicyActionsService } from './services/modal-policy-actions.service';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { of } from 'rxjs';
+import { ConsultPolicyService } from '../../../containers/main/components/consult-policy/services/consult-policy.service';
+import { ResponseDTO } from '../../../core/interfaces/commun/response';
+import { Observable, of } from 'rxjs';
 
 describe('ModalPolicyActionsComponent', () => {
   let component: ModalPolicyActionsComponent;
@@ -56,6 +58,25 @@ describe('ModalPolicyActionsComponent', () => {
     const componentAux = fixtureAux.componentInstance;
     expect(componentAux.ngOnInit()).toBeUndefined();
   });
+
+  it('consultPoliciesById', () => {
+    const res: ResponseDTO<any> = {
+      body: undefined,
+      dataHeader: {
+        code: 200,
+        status: 'OK',
+        errorList: [],
+        hasErrors: false,
+        currentPage: 0,
+        totalPage: 0,
+        totalRecords: 0
+      }
+    }
+    const consultPolicyService = fixture.debugElement.injector.get(ConsultPolicyService);
+    const spy1 = jest.spyOn(consultPolicyService, 'getPolicyById').mockReturnValueOnce(of(res));
+    component.consultPoliciesById(1);
+    expect(spy1).toHaveBeenCalledTimes(1);
+  })
 
   it('getCauses', () => {
     const modalActionsService = fixture.debugElement.injector.get(ModalPolicyActionsService);
@@ -205,6 +226,18 @@ it('verify Date else', () => {
 
   it('showSuccess', () => {
     expect(component.showSuccess('succes', 'Cancelación exitosa', 'Se ha cancelado la póliza'));
+  });
+
+  it('verify Check', () => {
+    component.formProcess.get('checked')?.setValue(true);
+    component.config.data.policy.inceptionDate = '2022-11-15T20:27:10.000Z';
+    component.config.data.policy.expirationDate = '2022-11-15T20:27:10.000Z';
+    expect(component.verifyCheck()).toBeUndefined();
+  });
+
+  it('verify Check else', () => {
+    component.formProcess.get('checked')?.setValue(false);
+    expect(component.verifyCheck()).toBeUndefined();
   });
 
 });

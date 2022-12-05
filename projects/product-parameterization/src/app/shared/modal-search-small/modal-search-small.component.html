@@ -59,7 +59,7 @@
         <ng-container *ngIf="col.header" [matColumnDef]="col.name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header="{{ '{ \"name\": \"'+ col.name +'\" , \"dbColumnName\": \"'+col.dbColumnName +'\" }' }}">{{col.header}}</th>
           <td mat-cell *matCellDef="let element">
-            {{ element[col.name] }}
+            {{ getDetailColumn(element, col.name) }}
           </td>
         </ng-container>
       </div>
