@@ -35,18 +35,18 @@ describe('ModifyTabsDataComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('ngOnChanges',()=>{
+  // xit('ngOnChanges',()=>{
 
-    let risk: any = component.fb.array([]);
-    component.getRiskComplementaryData(risk);
-    component.ngOnChanges();
-  });
-  xit('ngOnAfterViewInit',()=>{
+  //   let risk: any = component.fb.array([]);
+  //   // component.getRiskComplementaryData(risk);
+  //   component.ngOnChanges();
+  // });
+  // xit('ngOnAfterViewInit',()=>{
 
-    let risk: any = component.fb.array([]);
-    component.riskControls;
-    component.riskDataControls;
-    component.ngOnAfterViewInit();
-  });
+  //   let risk: any = component.fb.array([]);
+  //   // component.riskControls;
+  //   // component.riskDataControls;
+  //   component.ngOnAfterViewInit();
+  // });
 
 });

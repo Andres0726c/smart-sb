@@ -145,6 +145,7 @@ export class ModifyPolicyComponent {
     this.productService.getProductById(idProduct).subscribe((res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
+        console.log(this.product);
         this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
        
@@ -185,7 +186,6 @@ export class ModifyPolicyComponent {
       });
 
       for (let field of group.fields) {
-        console.log(field);
         let valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
 
         if (valueObj) {

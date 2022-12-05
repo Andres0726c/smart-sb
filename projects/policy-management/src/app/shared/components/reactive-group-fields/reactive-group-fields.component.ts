@@ -6,12 +6,13 @@ import { FormArray, FormGroup } from '@angular/forms';
   templateUrl: './reactive-group-fields.component.html',
   styleUrls: ['./reactive-group-fields.component.scss']
 })
-export class ReactiveGroupFieldsComponent implements OnInit {
+export class ReactiveGroupFieldsComponent {
   @Input() group: any = new FormGroup({});
 
   constructor() { }
 
   ngOnInit(): void {
+    //
   }
 
   getFieldsControls(group: any) {
