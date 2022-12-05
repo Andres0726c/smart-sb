@@ -1,6 +1,6 @@
 /*
-* Public API Surface of commons-lib
-*/
+ * Public API Surface of commons-lib
+ */
 
 export * from './lib/commons-lib.module';
 

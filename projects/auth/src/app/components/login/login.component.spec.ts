@@ -72,42 +72,6 @@ describe('LoginComponent', () => {
     //expect(component.companies).toEqual([1]);
   });
 
-  it('Autenticacion sin rol', () => {
-    const spy = jest.fn().mockImplementation(() =>
-      Promise.resolve({
-        signInUserSession: {
-          accessToken: {
-            payload: {
-              'cognito:groups': [],
-            },
-          },
-        },
-        attributes: {
-          'custom:company': '',
-        },
-      })
-    );
-
-    jest.spyOn(component.cognitoService, 'signIn').mockImplementation(spy);
-
-    component.getCompanies = async () => {
-      component.companies = [1,2];
-      await Promise.resolve();
-    };
-
-    //component.setCompany = () => Promise.resolve();
-    const spySetCompany = jest.fn().mockImplementation(()=>Promise.resolve(console.log('JLAKJLKFSADJFLKDSAJ')));
-    jest.spyOn(component, 'setCompany').mockImplementation(spySetCompany)
-    component.setCompany = async () => {
-      component.companies = [1];
-      await Promise.resolve();
-    };
-
-    component.setCompany = () => Promise.resolve();
-    component.logIn();
-    expect(spySetCompany)
-  });
-
   it('Autenticacion exitosa para un rol TLN y dos compañías', () => {
     const spy = jest.fn().mockImplementation(() =>
       Promise.resolve({
@@ -142,6 +106,38 @@ describe('LoginComponent', () => {
     component.setCompany = () => Promise.resolve();
     component.logIn();
     expect(spySetCompany)
+  });
+
+  it('logIn error', () => {
+    const spy = jest.fn().mockImplementation(() =>
+      Promise.reject({
+        signInUserSession: {
+          accessToken: {
+            payload: {
+              'cognito:groups': ['TLN'],
+            },
+          },
+        },
+        attributes: {
+          'custom:company': '1',
+        },
+      })
+    );
+
+    jest.spyOn(component.cognitoService, 'signIn').mockImplementation(spy);
+    component.getCompanies = async () => {
+      component.companies = [1];
+      await Promise.reject();
+    };
+
+    component.setCompany = async () => {
+      component.companies = [1];
+      await Promise.resolve();
+    };
+
+    component.setCompany = () => Promise.reject();
+    component.logIn();
+    expect(spy).toBeCalled();
   });
 
   it('getCompanies', async () => {
@@ -192,8 +188,5 @@ describe('LoginComponent', () => {
     component.hasEnterKey(event);
   });
 
-  it('closeModalCompany ok', () => {
-    expect(component.closeModalCompany()).toBeUndefined();
-  });
 
 });

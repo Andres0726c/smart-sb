@@ -9,7 +9,6 @@ import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { CommonsLibModule } from 'commons-lib';
 
 const routes: Route[] = [
   {
@@ -30,8 +29,7 @@ const routes: Route[] = [
     ButtonModule,
     ProgressSpinnerModule,
     DialogModule,
-    DropdownModule,
-    CommonsLibModule
+    DropdownModule
   ],
   providers: [
     FormBuilder
