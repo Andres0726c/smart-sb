@@ -30,7 +30,7 @@
             {{ config.data.policy.expirationDate }}
         </div>
 
-        <div *ngIf="config.data.process === 'Cancelación'">
+        <div>
             <span class="text-primary">Valor total prima:</span>
             {{config.data.policy.premiumValue | currency: 'COP'}}
         </div>

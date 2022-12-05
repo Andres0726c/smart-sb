@@ -13,9 +13,6 @@ export class SplashScreenComponent implements OnInit {
   // First access the splash is visible
   public showSplash = true;
   readonly ANIMATION_DURATION = 0.4;
-  radius = 21;
-  circumference = 2 * Math.PI * this.radius;
-  strokeDasharray = `0, ${this.circumference}`;
 
   constructor(private splashService: SplashScreenService) { 
     //

@@ -83,7 +83,7 @@ describe('FilterPolicyTopComponent', () => {
     expect(component.showMoreFilters).toBeTruthy();
   });
 
-  xit('search error all fields empty', () => {
+  it('search error all fields empty', () => {
     component.search();
     expect(component.errorAllForm).toBeTruthy();
   });
@@ -111,7 +111,7 @@ describe('FilterPolicyTopComponent', () => {
     expect(component.validForm()).toBeFalsy();
   });
 
-  xit('validate all fields empty', () => {
+  it('validate all fields empty', () => {
     expect(component.validForm()).toBeTruthy();
   });
 
