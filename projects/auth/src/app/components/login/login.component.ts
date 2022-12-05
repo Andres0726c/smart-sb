@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiRequestsService, CognitoService } from 'commons-lib';
+import { Dropdown } from 'primeng/dropdown';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
@@ -10,6 +11,7 @@ import { lastValueFrom } from 'rxjs';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  @ViewChild('drpdwnCompany') drpdwnCompany!: Dropdown;
   formData: FormGroup;
   formCompany: FormGroup;
   companies: any = [];
