@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiRequestsService, CognitoService } from 'commons-lib';
+import { Dropdown } from 'primeng/dropdown';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
@@ -10,6 +11,7 @@ import { lastValueFrom } from 'rxjs';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  @ViewChild('drpdwnCompany') drpdwnCompany!: Dropdown;
   formData: FormGroup;
   formCompany: FormGroup;
   companies: any = [];
@@ -63,19 +65,9 @@ export class LoginComponent implements OnInit {
           const company = user.attributes['custom:company'];
           await this.getCompanies(company);
           if (this.companies.length > 1) {
-            // Se muestra la modal de selección de compañía
             this.formCompany.reset();
             this.companySelectionComplete = false;
             this.showCompanySelection = true;
-            //alert('varias compañias');
-            /*dialogRef.afterClosed().subscribe(async (res) => {
-              if (res) {
-                this.setCompany(res);
-              } else {
-                await this.cognitoService.signOut();
-                this.isLoading = false;
-              }
-            });*/
           } else {
             this.setCompany(this.companies[0]);
           }
@@ -112,10 +104,13 @@ export class LoginComponent implements OnInit {
       }
     } catch (error) {
       console.log('ocurrio un error:', error);
+      this.companySelectionComplete = false;
+      this.showCompanySelection = false;
+      this.isLoading = false;
       return error;
     }
   }
-
+  
   /**
    * Funcion que permite settear en cognito la compañia seleccionada por el usuario durante el proceso de autenticación
    * @param company Objeto con la información de la compañía seleccionada
