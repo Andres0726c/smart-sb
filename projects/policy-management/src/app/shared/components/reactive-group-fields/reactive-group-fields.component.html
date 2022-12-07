@@ -1,0 +1,42 @@
+<ng-template #inputText let-groupName="groupName" let-field="field">
+    <div [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.label }}</label>
+        <input type="text" pInputText formControlName="value">
+    </div>
+</ng-template>
+
+<ng-template #calendar let-groupName="groupName" let-field="field">
+    <div [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.label }}</label>
+        <p-calendar [showIcon]="true" styleClass="w-full" dateFormat="yy-mm-ddT00:00:00-05:00" formControlName="value"></p-calendar>
+    </div>
+</ng-template>
+
+<ng-template #dropDown let-groupName="groupName" let-field="field">
+    <div [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.label }}</label>
+        <p-dropdown [options]="field.value.options" optionLabel="name" styleClass="w-full" formControlName="value"></p-dropdown>
+    </div>
+</ng-template>
+
+<div [formGroup]="group">
+    <p-accordion>
+        <p-accordionTab [selected]="true">
+            <ng-template pTemplate="header">
+                <span class="text-primary mr-2">Grupo:</span> {{ group.value.name }}
+            </ng-template>
+            <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
+                <div *ngFor="let field of getFieldsControls(group)?.controls; let j = index;" formGroupName="{{j}}">
+                    <!-- <ng-container
+                        [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataTypeGui]"
+                        [ngTemplateOutletContext]="{ field: field }"
+                    ></ng-container> -->
+                    <ng-container
+                        [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataType.guiComponent]"
+                        [ngTemplateOutletContext]="{ field: field }"
+                    ></ng-container>
+                </div>
+            </div>
+        </p-accordionTab>
+    </p-accordion>
+</div>
