@@ -49,4 +49,8 @@ export class ProductService {
           headers: this.headers,
         })
   };
+  getApiData = (serviceData: string = '', rlEngnCd: string = '', id:string='') => {
+    id = (id !== '' ? `/${id}` : '');
+    return this.httpClient.get(`${this.apiUrl}${serviceData}${id}`, { headers: this.headers });
+  };
 }

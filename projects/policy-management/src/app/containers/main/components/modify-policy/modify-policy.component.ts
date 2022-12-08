@@ -5,6 +5,7 @@ import { ResponseDTO, ResponseErrorDTO } from 'projects/policy-management/src/ap
 import { ComplementaryData } from 'projects/policy-management/src/app/core/interfaces/product/complementaryData';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
+import { lastValueFrom } from 'rxjs';
 import { Identification } from '../consult-policy/interfaces/identification';
 import { ConsultPolicyService } from '../consult-policy/services/consult-policy.service';
 
@@ -25,6 +26,10 @@ export interface HolderPolicy {
   dataTypeGui: string;
   dataTypeName: string;
 }
+export interface DomainList {
+  code: string;
+  description: string;
+}
 @Component({
   selector: 'app-modify-policy',
   templateUrl: './modify-policy.component.html',
@@ -34,7 +39,8 @@ export class ModifyPolicyComponent {
 
   formPolicy: FormGroup;
   policyId?: number;
-  dataPolicy?: any=[];
+  dataPolicy?: any = [];
+  ListForm:any = new FormArray([]);
   product: Product = {
     id: 0,
     nmName: '',
@@ -43,7 +49,7 @@ export class ModifyPolicyComponent {
     nmContent: undefined,
   };
   policyIds = Number(this.activatedroute.snapshot.paramMap.get('id'));
-
+  List: any[] = [];
   documentsType: Identification[] = [];
   policyData3: ComplementaryData[] | undefined;
 
@@ -59,7 +65,7 @@ export class ModifyPolicyComponent {
   //   productName: "string;"
   // }
   policyDataForm: any = new FormArray([]);
-  dataRiskValue:any=[];
+  dataRiskValue: any = [];
   isLoading: boolean = false;
   policy: any;
   policyData: any;
@@ -72,10 +78,10 @@ export class ModifyPolicyComponent {
     private router: Router,
     public fb: FormBuilder
   ) {
-  
-   this.policyData = this.router?.getCurrentNavigation()?.extras?.state?.['policy'] ?  Object?.assign(
-        this.router?.getCurrentNavigation()?.extras?.state?.['policy'] ) : ""
-    
+
+    this.policyData = this.router?.getCurrentNavigation()?.extras?.state?.['policy'] ? Object?.assign(
+      this.router?.getCurrentNavigation()?.extras?.state?.['policy']) : ""
+
 
     this.formPolicy = this.fb.group({
       basicData: this.fb.group({
@@ -111,14 +117,14 @@ export class ModifyPolicyComponent {
     return this.formPolicy?.get('riskData') as FormArray;
   }
 
- 
+
 
   getPolicy() {
     this.isLoading = true;
-    
+
     this.productService.findByIdPolicy(this.policyData.idPolicy).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
-        this.policy = res.body; 
+        this.policy = res.body;
         this.policyData = this.mapData(this.policy.propertiesPolicyData);
         this.riskData = this.mapData(this.policy.riskPropertiesPolicyData[0].policyriskdata);
         this.getProduct(this.policy.idProduct);
@@ -148,7 +154,7 @@ export class ModifyPolicyComponent {
         console.log(this.product);
         this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
-       
+
         console.log('riskData: ', this.riskTypesControls);
         console.log('policy: ', this.policyDataControls);
         this.isLoading = false;
@@ -185,6 +191,8 @@ export class ModifyPolicyComponent {
         fields: this.fb.array([])
       });
 
+
+
       for (let field of group.fields) {
         let valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
 
@@ -192,20 +200,42 @@ export class ModifyPolicyComponent {
           let fieldFG = this.fb.group({});
 
           Object.keys(field).forEach(key => {
-            
-            fieldFG.addControl(key,this.fb.control(field[key]));
-           
+
+            fieldFG.addControl(key, this.fb.control(field[key]));
+
           });
 
-          fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value,[Validators.required]));
+          fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
 
           if (field.dataType.guiComponent === 'List box') {
-            let options = [{ id: valueObj.value, name: valueObj.value }]
-            fieldFG.addControl('options', this.fb.control(options));
+            if (field.domainList) {
+              let domainList = JSON.parse(field.domainList.valueList);
+              let options = [];
+
+              console.log('valueObj', valueObj)
+              console.log('valueObj.value', valueObj.value)
+
+              if (domainList[0].url) {
+                //options = [{ id: valueObj.value, name: valueObj.value }]
+                const url = domainList[0].url.slice(11)
+                this.loadData(url, domainList[0].rlEngnCd);
+                console.log(url);
+                options = this.List;
+                fieldFG.addControl('options', this.fb.control(options));
+                console.log(this.List);
+                console.log(this.List.find(element => element.value =='CC'));
+              } else {
+                options = [{ id: valueObj.value, name: valueObj.value }]
+                fieldFG.addControl('options', this.fb.control(options));
+              }
+            }else{
+             let options = [{ id: valueObj.value, name: valueObj.value }]
+             fieldFG.addControl('options', this.fb.control(options));
+            }
           }
-          
+
           (<FormArray>groupFG.get('fields')).push(fieldFG);
-        
+
         }
       }
       (<FormArray>formArrayData).push(groupFG);
@@ -214,53 +244,128 @@ export class ModifyPolicyComponent {
     return formArrayData;
   }
 
+  async loadData(url: string, rlEngnCd: string) {
+    try {
+      let res: any;
+
+      if (url) {
+        res = await lastValueFrom(this.productService.getApiData(url, rlEngnCd));
+
+      }
+
+      if (res.body) {
+        await this.setData(res);
+      }
+
+    } catch (error) {
+
+      console.log('Hubo un error:', error);
+    }
+  }
+  async setData(res: any) {
+    if (Array.isArray(res.body)) {
+      this.addToElementData(res.body);
+    } else {
+      this.addToElementData([res.body]);
+    }
+  }
+
+  addToElementData(res: any[]) {
+
+    res.forEach((element: any) => {
+      let obj: any = { value: element.code, name: element.description };
+      if (obj.value != '' && obj.value != undefined) {
+        this.List.push(obj);
+      }
+    });
+  }
+
+  // selectRow(row: ElementTableSearch) {
+  //   this.aditionalData = [];
+  //   this.fields.clear();
+  //   (<FormArray>this.ParametersForm.get('parameters')).clear();
+  //   this.ruleSelection.select(this.getDatasourceRow(row));
+  //   this.ParametersForm.get('rule')?.setValue(this.ruleSelection.selected[0]);
+
+  //   let map = this.ParametersForm.get('rule')?.value.nmParameterList;
+  //   let Jsonmap: any;
+  //   try {
+  //     if (map){
+  //        Jsonmap = JSON.parse(map);
+  //        this.stepParameters = this.returnObj(Jsonmap);
+  //        this.EmptyData=false;
+  //     }
+  //     else{
+  //     this.EmptyData=true;
+  //     this.stepParameters=[];
+
+  //   }
+  //   } catch {
+  //     this.stepParameters = this.returnObj({});
+  //   }
+
+  //   for(let x = 0; x < this.data.complementaryData.length; x++){
+  //     this.aditionalData.push(this.data.complementaryData.value[x].fields);
+  //   }
+
+  //   for ( let rule of this.stepParameters) {
+  //      let ObjForm = this.fb.group({
+  //        name: this.fb.control(rule.name),
+  //        value: this.fb.control('')
+  //      });
+
+  //      (<FormArray>this.ParametersForm.get('parameters'))?.push(ObjForm);
+  //    }
+  // }
+
+
   getGroupsControls(risk: any) {
-      return risk.get('complementaryData') as FormArray;
+    return risk.get('complementaryData') as FormArray;
+  }
+
+  getFieldsControls(group: any) {
+    return group.get('fields') as FormArray;
+  }
+
+
+  addControls(value: FormArray) {
+    return value.setValidators([Validators.required]);
+
+  }
+
+  getControlValue(dataControlsValue: any, businessCode: string) {
+    let value = null;
+
+    for (let group of dataControlsValue) {
+      const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
+      if (valueField) {
+        value = valueField.value;
+        break;
+      }
     }
 
-    getFieldsControls(group: any) {
-      return group.get('fields') as FormArray;
+    return value;
+  }
+
+  reverseMap(dataControls: any, groupData: any) {
+    for (let objKey of Object.keys(groupData)) {
+      for (let key of Object.keys(groupData[objKey])) {
+        groupData[objKey][key] = this.getControlValue(dataControls.value, key);
+      }
+    }
+  }
+
+  transformData() {
+    this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp);
+
+    for (let risk of this.riskTypesControls.controls) {
+      this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp);
     }
 
+    console.log('result', this.policy);
 
-    addControls(value: FormArray) {
-      return value.setValidators([Validators.required]);
+  }
 
-      }
-
-      getControlValue(dataControlsValue: any, businessCode: string) {
-        let value = null;
-    
-        for(let group of dataControlsValue) {
-          const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
-          if (valueField) {
-            value = valueField.value;
-            break;
-          }
-        }
-    
-        return value;
-      }
-    
-      reverseMap(dataControls: any, groupData: any) {
-        for (let objKey of Object.keys(groupData)) {
-          for (let key of Object.keys(groupData[objKey])) {
-            groupData[objKey][key] = this.getControlValue(dataControls.value, key);
-          }
-        }
-      }
-    
-      transformData() {
-        this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp);
-    
-        for(let risk of this.riskTypesControls.controls) {
-          this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp);
-        }
-    
-        console.log('result', this.policy);
-        
-      }
-    
 
 
   // initializeData() {
@@ -271,7 +376,7 @@ export class ModifyPolicyComponent {
 
   //       let policyDt: any = res.body.nmContent?.policyData;
   //       //console.log(res.body.nmContent?.policyData);
-       
+
 
   //       for (let group of policyDt) {
   //         let groupFG = this.fb.group({
@@ -320,7 +425,7 @@ export class ModifyPolicyComponent {
   //       // }
 
   //       this.riskTypes(res);
-         
+
   //     } else {
   //       this.product = {
   //         id: 0,
@@ -348,7 +453,7 @@ export class ModifyPolicyComponent {
   //     })
 
   //       for (let dataRisk of risk.complementaryData){
-        
+
   //       let group = this.fb.group({
   //         id:dataRisk.id,
   //         code: dataRisk.code,
@@ -357,7 +462,7 @@ export class ModifyPolicyComponent {
   //       });
   //           for(let fields of dataRisk.fields){
   //               for(let valueRisk of this.dataRiskValue){
-                
+
   //                   if (fields.code.businessCode === valueRisk.name){
   //                       let field = this.fb.group({
   //                         businessCode : fields.code.businessCode,
@@ -382,19 +487,19 @@ export class ModifyPolicyComponent {
   //                       // }
   //                     (<FormArray>group.get('fields')).push(field)
   //                  }
-          
+
   //              }
   //           }
 
-  //       (<FormArray>groupRisk.get('complementaryData')).push(group)  
+  //       (<FormArray>groupRisk.get('complementaryData')).push(group)
   //     }
   //     this.riskTypesControls.push(groupRisk);
-      
+
   //   }
- 
+
   // }
 
-  
+
 
   // getPolicys(idpolicy: number) {
   //   this.dataPolicy = [];
@@ -411,20 +516,20 @@ export class ModifyPolicyComponent {
   //     }
   //     this.initializeData();
   //   });
-     
+
   // }
 
   //  /**
   //  *
   //  * @param id: number, id de la poliza para ser consulta
-   
+
   //  * Función para ejecutar el ms de obtener los datos de la poliza
   //   y se mapea la información para obtener el valor de cada elemento
   //  */
 
   //   getPolicyRisk(idpolicy:number){
   //     this.productService.findByIdPolicy(idpolicy).subscribe((res) => {
-        
+
   //       let policy = res.body
   //       for (let objKey of Object.keys(policy.riskPropertiesPolicyData)){
   //         let nameRiks=policy.riskPropertiesPolicyData[objKey];
@@ -440,20 +545,20 @@ export class ModifyPolicyComponent {
   //                 if (index === -1) {
   //                   this.dataRiskValue.push(obj);
   //                 }
-                 
+
   //             }
   //           }
   //         }
   //         }
   //       }
-       
+
   //      });
-       
+
   //   }
   //    /**
   //  *
   //  * @param obj, objeto a validar
-   
+
   //  * Función para ejecutar validar si es objeto
   //  */
 
@@ -462,7 +567,7 @@ export class ModifyPolicyComponent {
   //   }
 
   saveModification() {
-    console.log('formPolicy',this.formPolicy);
+    console.log('formPolicy', this.formPolicy);
     // if (this.formPolicy?.valid) {
     //   console.log(this.formPolicy.value);
     // } else {
@@ -474,6 +579,6 @@ export class ModifyPolicyComponent {
     this.router.navigate(
       [`/polizas/consulta`],
     );
-}
+  }
 
 }
