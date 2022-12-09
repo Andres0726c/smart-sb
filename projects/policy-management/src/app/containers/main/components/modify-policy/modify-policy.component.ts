@@ -40,7 +40,7 @@ export class ModifyPolicyComponent {
   formPolicy: FormGroup;
   policyId?: number;
   dataPolicy?: any = [];
-  ListForm:any = new FormArray([]);
+  ListForm: any = new FormArray([]);
   product: Product = {
     id: 0,
     nmName: '',
@@ -50,6 +50,7 @@ export class ModifyPolicyComponent {
   };
   policyIds = Number(this.activatedroute.snapshot.paramMap.get('id'));
   List: any[] = [];
+  options: any = [];
   documentsType: Identification[] = [];
   policyData3: ComplementaryData[] | undefined;
 
@@ -210,30 +211,22 @@ export class ModifyPolicyComponent {
           if (field.dataType.guiComponent === 'List box') {
             if (field.domainList) {
               let domainList = JSON.parse(field.domainList.valueList);
-              let options = [];
-
-              console.log('valueObj', valueObj)
-              console.log('valueObj.value', valueObj.value)
-
               if (domainList[0].url) {
-                //options = [{ id: valueObj.value, name: valueObj.value }]
                 const url = domainList[0].url.slice(11)
                 this.loadData(url, domainList[0].rlEngnCd);
-                console.log(url);
-                options = this.List;
-                fieldFG.addControl('options', this.fb.control(options));
-                console.log(this.List);
-                console.log(this.List.find(element => element.value =='CC'));
-              } else {
-                options = [{ id: valueObj.value, name: valueObj.value }]
-                fieldFG.addControl('options', this.fb.control(options));
+                //this.options.push();
+                fieldFG.addControl('options', this.fb.control(this.options));
+                //console.log("if: ",this.List);
+                //let findTest=options.find(element => element.id === valueObj.value);
+                console.log(this.options);
+                // console.log(findTest);
               }
-            }else{
-             let options = [{ id: valueObj.value, name: valueObj.value }]
-             fieldFG.addControl('options', this.fb.control(options));
+            } else {
+              let options = [{ id: valueObj.value, name: valueObj.value }]
+              console.log("else: ", options)
+              fieldFG.addControl('options', this.fb.control(options));
             }
           }
-
           (<FormArray>groupFG.get('fields')).push(fieldFG);
 
         }
@@ -244,17 +237,21 @@ export class ModifyPolicyComponent {
     return formArrayData;
   }
 
-  async loadData(url: string, rlEngnCd: string) {
+
+  loadData(url: string, rlEngnCd: string, parameters?: string) {
     try {
       let res: any;
 
-      if (url) {
-        res = await lastValueFrom(this.productService.getApiData(url, rlEngnCd));
 
+      if (url.slice(-1) != '/') {
+        res = lastValueFrom(this.productService.getApiData(url, rlEngnCd));
+
+      } else {
+        res = lastValueFrom(this.productService.getApiData(url, rlEngnCd, parameters));
       }
 
       if (res.body) {
-        await this.setData(res);
+        this.setData(res);
       }
 
     } catch (error) {
@@ -262,7 +259,7 @@ export class ModifyPolicyComponent {
       console.log('Hubo un error:', error);
     }
   }
-  async setData(res: any) {
+  setData(res: any) {
     if (Array.isArray(res.body)) {
       this.addToElementData(res.body);
     } else {
@@ -273,11 +270,12 @@ export class ModifyPolicyComponent {
   addToElementData(res: any[]) {
 
     res.forEach((element: any) => {
-      let obj: any = { value: element.code, name: element.description };
-      if (obj.value != '' && obj.value != undefined) {
-        this.List.push(obj);
+      let obj: any = { id: element.code, name: element.code };
+      if (obj.id != '' && obj.id != undefined) {
+        this.options.push(obj);
       }
     });
+    console.log("forEach: ", this.options)
   }
 
   // selectRow(row: ElementTableSearch) {
