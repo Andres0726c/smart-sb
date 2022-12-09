@@ -220,6 +220,10 @@ export class ModifyPolicyComponent {
                 //let findTest=options.find(element => element.id === valueObj.value);
                 console.log(this.options);
                 // console.log(findTest);
+              }else{
+              let options = [{ id: valueObj.value, name: valueObj.value }]
+              console.log("else: ", options)
+              fieldFG.addControl('options', this.fb.control(options));
               }
             } else {
               let options = [{ id: valueObj.value, name: valueObj.value }]
