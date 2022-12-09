@@ -244,13 +244,15 @@ export class ModifyPolicyComponent {
     return formArrayData;
   }
 
-  async loadData(url: string, rlEngnCd: string) {
+  async loadData(url: string, rlEngnCd: string, parameters?:string) {
     try {
       let res: any;
 
-      if (url) {
+      if (url.slice(-1)!='/') {
         res = await lastValueFrom(this.productService.getApiData(url, rlEngnCd));
 
+      }else{
+        res = await lastValueFrom(this.productService.getApiData(url, rlEngnCd,parameters));
       }
 
       if (res.body) {
@@ -273,8 +275,8 @@ export class ModifyPolicyComponent {
   addToElementData(res: any[]) {
 
     res.forEach((element: any) => {
-      let obj: any = { value: element.code, name: element.description };
-      if (obj.value != '' && obj.value != undefined) {
+      let obj: any = { id: element.code, name: element.description };
+      if (obj.id != '' && obj.id != undefined) {
         this.List.push(obj);
       }
     });
