@@ -5,7 +5,6 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { of } from 'rxjs';
 import { PolicyRenewalComponent } from './policy-renewal.component';
-import { PolicyRenewalModule } from './policy-renewal.module';
 
 describe('PolicyRenewalComponent', () => {
   let component: PolicyRenewalComponent;
@@ -489,7 +488,8 @@ describe('PolicyRenewalComponent', () => {
   it('getPolicy else', () => {
     const res = { dataHeader: { code: 500 } };
     jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
-    expect(component.getPolicy()).toBeUndefined();
+    component.getPolicy()
+    expect(component.errorFlag).toBeTruthy();
   });
 
   it('transformData', () => {
