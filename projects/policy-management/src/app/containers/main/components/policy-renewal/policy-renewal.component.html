@@ -1,0 +1,47 @@
+<div>
+    <div *ngIf="isLoading || errorFlag" class="mt-5 bg-white rounded-xl p-3">
+        <smartcore-loading-spinner *ngIf="isLoading" [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
+        <div class="container-alert text-center" *ngIf="errorFlag">
+            <em class="pi pi-info-circle mr-1"></em>
+            Ha ocurrido un error al cargar los datos, por favor intente nuevamente
+        </div>
+    </div>
+    <form *ngIf="!isLoading && !errorFlag" [formGroup]="formPolicy" class="mt-5 bg-white rounded-xl p-3">
+        <div>
+            <p-divider align="left" type="dashed" styleClass="my-2">
+                <div class="inline-flex align-items-center text-xl">
+                    <strong>Datos de póliza</strong>
+                </div>
+            </p-divider>
+            <div formArrayName="policyData">
+                <div class="p-5" *ngFor="let group of policyDataControls.controls; let i = index" formGroupName="{{i}}">
+                    <smartcore-reactive-group-fields [group]="group"></smartcore-reactive-group-fields>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p-divider align="left" type="dashed" styleClass="my-2">
+                <div class="inline-flex align-items-center text-xl">
+                    <strong>Datos del riesgo</strong>
+                </div>
+            </p-divider>
+            <div formArrayName="riskData">
+                <p-tabView [scrollable]="true">
+                    <p-tabPanel [header]="risk.value.name" *ngFor="let risk of riskDataControls.controls; let i = index" [selected]="i == 0" formGroupName="{{i}}">
+                        <div formArrayName="complementaryData">
+
+                                <div class="p-5" *ngFor="let group of getGroupsControls(risk).controls; let i = index" formGroupName="{{i}}">
+                                    <smartcore-reactive-group-fields [group]="group"></smartcore-reactive-group-fields>
+                                </div>
+                        </div>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+        <div>
+            <button (click)="transformData()">
+                Hola mundo
+            </button>
+        </div>
+    </form>
+</div>

@@ -14,6 +14,7 @@ import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/
 import { ModalRenewalComponent } from 'projects/policy-management/src/app/containers/main/components/consult-policy/modal-renewal/modal-renewal.component';
 import { PolicyDetailsComponent } from './policy-details/policy-details.component';
 import { Router } from '@angular/router';
+import { PolicyRenewalComponent } from '../policy-renewal/policy-renewal.component';
 
 @Component({
   selector: 'app-consult-policy',
@@ -111,7 +112,11 @@ export class ConsultPolicyComponent {
       {
         label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
-          //this.showModalRenewal('Renovación', this.selectedPolicy, 'Renovar');
+          this.showModalPolicyRenewal('Renovación', this.selectedPolicy, 'Renovar');
+          /*this.router.navigate(
+            [`/polizas/renovar/${this.selectedPolicy?.idProduct}`],
+            { state: { policy: this.selectedPolicy }  }
+          );*/
         }
       },
       {
@@ -159,6 +164,29 @@ export class ConsultPolicyComponent {
       dismissableMask: true,
       width: '60%',
       contentStyle: { 'max-height': '600px', overflow: 'auto' },
+      baseZIndex: 10000,
+    });
+
+    ref.onClose.subscribe((res: boolean) => {
+      if (res) {
+        this.consultPolicies(this.filters);
+      }
+    });
+  }
+
+  showModalPolicyRenewal(process: string, policy: any, buttonAction: any) {
+    console.log('policy', policy)
+    const ref = this.dialogService.open(PolicyRenewalComponent, {
+      data: {
+        process: process,
+        policy: policy,
+        buttonAction: buttonAction
+      },
+      header: process,
+      modal: true,
+      width: '95%',
+      height: '100%',
+      contentStyle: { 'max-height': '100%', overflow: 'auto' },
       baseZIndex: 10000,
     });
 
