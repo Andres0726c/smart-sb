@@ -34,17 +34,22 @@
                           data-qa-id="sc-rpmf-btn_calculation_rule"
           >
             <mat-chip-list #chipListRates aria-label="Seleccione la Tarifa" class="chip-list">
-              <mat-chip *ngFor="let cr of coverageRatesControls?.value[0]['calculationRule']"
-                        (removed)="remove(cr)" class="chip">
-                {{cr.name}}
-                <button matChipRemove data-qa-id="sc-rpmf-btn_delete_coverages_rates">
-                  <em class="fal fa-times-circle chip__icon"></em>
-                </button>
-              </mat-chip>
+              <ng-container *ngIf="coverageRatesControls?.value[0]">
+                <mat-chip *ngFor="let cr of coverageRatesControls?.value[0]['calculationRule']"
+                          (removed)="remove(cr)" class="chip">
+                  {{cr.name}}
+                  <button matChipRemove data-qa-id="sc-rpmf-btn_delete_coverages_rates">
+                    <em class="fal fa-times-circle chip__icon"></em>
+                  </button>
+                </mat-chip>
+              </ng-container>
             </mat-chip-list>
 
             <span class="mat-chip-placeholder"
-                  *ngIf="coverageRatesControls?.value[0]['calculationRule'].length === 0">Seleccionar</span>
+                  *ngIf="!coverageRatesControls?.value[0] ||
+                          coverageRatesControls?.value[0]['calculationRule'].length === 0">
+              Seleccionar
+            </span>
             <em class="fas fa-caret-down custom-icon"></em>
           </mat-form-field>
         </section>
