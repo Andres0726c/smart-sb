@@ -50,7 +50,8 @@ export class ModifyPolicyComponent {
     nmContent: undefined,
   };
   policyIds = Number(this.activatedroute.snapshot.paramMap.get('id'));
-  List: any[] = [];
+  list: any[] = [];
+  listAux: any = [];
   documentsType: Identification[] = [];
   policyData3: ComplementaryData[] | undefined;
   policyDataForm: any = new FormArray([]);
@@ -61,6 +62,7 @@ export class ModifyPolicyComponent {
   riskData: any;
   isNextDisabled = true;
   result: any;
+  options: any = [];
   constructor(
     public productService: ProductService,
     public consultPolicyService: ConsultPolicyService,
@@ -144,7 +146,7 @@ export class ModifyPolicyComponent {
     }
     if (guiComponent == 'Calendar') {
       let dateObject = new Date(data.value);
-      policy.value.toString().slice(0,-46)===dateObject.toString().slice(0,-46)? flag = true : flag = false;  
+      policy.value.toString().slice(0, -46) === dateObject.toString().slice(0, -46) ? flag = true : flag = false;
     }
     if (guiComponent == 'Text box') {
       policy.value === data.value ? flag = true : flag = false;
@@ -200,7 +202,7 @@ export class ModifyPolicyComponent {
     this.productService.getProductById(idProduct).subscribe((res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-       // console.log(this.product);
+        // console.log(this.product);
         this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
 
@@ -259,14 +261,16 @@ export class ModifyPolicyComponent {
           if (field.dataType.guiComponent === 'List box') {
             if (field.domainList) {
               let domainList = JSON.parse(field.domainList.valueList);
-              let options = [];
+
               if (domainList[0].url) {
                 const url = domainList[0].url.slice(11)
                 this.loadData(url, domainList[0].rlEngnCd);
-                options = this.List;
-                fieldFG.addControl('options', this.fb.control(options));
+                this.options.push({ id: valueObj.value, name: valueObj.value });
+                console.log(this.options.find((element: { id: string; })=>element.id==valueObj.value));
+                console.log(this.options);
+                fieldFG.addControl('options', this.fb.control(this.options));
               } else {
-                options = [{ id: valueObj.value, name: valueObj.value }]
+                let options = [{ id: valueObj.value, name: valueObj.value }]
                 fieldFG.addControl('options', this.fb.control(options));
               }
             } else {
@@ -289,6 +293,7 @@ export class ModifyPolicyComponent {
     try {
       let res: any;
 
+
       if (url.slice(-1) != '/') {
         res = await lastValueFrom(this.productService.getApiData(url, rlEngnCd));
 
@@ -307,20 +312,24 @@ export class ModifyPolicyComponent {
   }
   async setData(res: any) {
     if (Array.isArray(res.body)) {
-      this.addToElementData(res.body);
+        this.addToElementData(res.body);
     } else {
-      this.addToElementData([res.body]);
+        this.addToElementData([res.body]);
     }
+
   }
 
   addToElementData(res: any[]) {
 
     res.forEach((element: any) => {
       let obj: any = { id: element.code, name: element.description };
+      //let obj1:any={id:valueObj, name:element.description};
       if (obj.id != '' && obj.id != undefined) {
-        this.List.push(obj);
+          this.options.push(obj);
       }
     });
+
+
   }
 
   getGroupsControls(risk: any) {
