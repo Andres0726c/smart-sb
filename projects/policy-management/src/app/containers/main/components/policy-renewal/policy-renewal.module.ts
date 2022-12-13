@@ -10,20 +10,12 @@ import { ReactiveGroupFieldsModule } from 'projects/policy-management/src/app/sh
 import { CommonsLibModule } from 'commons-lib';
 import { DividerModule } from 'primeng/divider';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: PolicyRenewalComponent,
-  },
-];
-
 @NgModule({
   declarations: [
     PolicyRenewalComponent
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes),
     FormsModule,
     ReactiveFormsModule,
     CommonsLibModule,
