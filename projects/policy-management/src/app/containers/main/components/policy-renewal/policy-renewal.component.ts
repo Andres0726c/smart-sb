@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, NavigationStart, Router, Event, NavigationEnd } from '@angular/router';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
@@ -32,21 +31,15 @@ export class PolicyRenewalComponent implements OnInit {
 
   defaultTypeGui = 'Text box';
 
-  urlFrom = '';
-  previousUrl = '';
-  currentUrl = '';
-
   causes: any[] = [];
 
   constructor(
-    private _ActivatedRoute: ActivatedRoute,
-    public fb: FormBuilder,
-    public productService: ProductService,
-    public router: Router,
+    public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     public dialogService: DialogService,
-    public ref: DynamicDialogRef,
     public modalAPService: ModalPolicyActionsService,
+    public fb: FormBuilder,
+    public productService: ProductService
   ) {
     this.formPolicy = this.fb.group({
       policyData: this.fb.array([]),
@@ -55,48 +48,17 @@ export class PolicyRenewalComponent implements OnInit {
       observation: this.fb.control(''),
     });
 
-    this.urlFrom = this.router.url;
-
-    this.router.events
-    .pipe(
-        filter(event => event instanceof NavigationEnd),
-        take(1)
-    )
-    .subscribe((event: any) => {
-      /*console.log('urlFrom', this.urlFrom)
-      console.log('router', router);
-      console.log('event', event.url);
-      console.log('Route change detected');*/
-      this.previousUrl = this.currentUrl;
-      this.currentUrl = event.url;
-      console.log('prev', this.previousUrl);
-      console.log('current', this.currentUrl);
-      /*if(router.url === event) {
-        router.navigate(['polizas/consulta'])
-      }*/
-        //this.stop();
-    });
-
-    /*this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationEnd) {
-          // Show progress spinner or progress bar
-          console.log('router', router);
-          console.log('event', event);
-          console.log('Route change detected');
-          if(router.url === event.url) {
-            router.navigate(['polizas/consulta'])
-          }
-      }
-    });*/
-
   }
 
   ngOnInit(): void {
-    this._ActivatedRoute.paramMap.subscribe(params => {
+    /*this._ActivatedRoute.paramMap.subscribe(params => {
       this.id = params.get('id');
       this.getPolicy();
     });
+
+    });*/
     this.getCauses(this.config.data.process);
+    this.getPolicy();
   }
 
   get policyDataControls() {

@@ -73,7 +73,8 @@ const routes: Routes = [
     ToastModule,
     ModalPolicyActionsModule,
     ModalRenewalModule,
-    PolicyDetailsModule
+    PolicyDetailsModule,
+    PolicyRenewalModule
   ],
   exports: [ConsultPolicyComponent],
 })
