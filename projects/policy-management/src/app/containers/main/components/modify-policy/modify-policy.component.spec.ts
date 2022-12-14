@@ -252,7 +252,7 @@ describe('ModifyPolicyComponent', () => {
     expect(spy).toBeUndefined();
   });
   it('transformData', () => {
-    let a=[
+    let a = [
       {
         id: 1,
         name: "Datos básicos",
@@ -260,17 +260,17 @@ describe('ModifyPolicyComponent', () => {
         fields: [
           {
             id: 67,
-            code: {businessCode: "FEC_INI_VIG_POL",version: 1}
+            code: { businessCode: "FEC_INI_VIG_POL", version: 1 }
           }]
       }];
-    component.policy =  [{
-          id: 1,
-          name: "Datos básicos",
-          code: "datos_basicos",
-          plcyDtGrp:{},
-          rskDtGrp:{}
-        }];
-        component.policy.plcy=a;
+    component.policy = [{
+      id: 1,
+      name: "Datos básicos",
+      code: "datos_basicos",
+      plcyDtGrp: {},
+      rskDtGrp: {}
+    }];
+    component.policy.plcy = a;
     const spy2 = jest.spyOn(component, 'reverseMap').mockImplementation();
     component.transformData();
     expect(spy2).toBeCalled();
@@ -288,4 +288,112 @@ describe('ModifyPolicyComponent', () => {
     const spy = component.getControlValue(dataControlsValue, businessCode);
     expect(spy).toBeUndefined();
   });
+  it('validateSaveButtonFalse', () => {
+    let policyData = [{ name: 'MONEDA', value: 'COP' }];
+    let policyDataControls1 = { value: [{ fields: [{ businessCode: "MONEDA", value: 'USD', dataType: { guiComponent: "Text box" } }] }] };
+    let riskData = { name: 'MONEDA', value: 'USD' };
+    let riskTypesControls = { value: { complementaryData: { fields: { businessCode: "MONEDA", value: 'COP', dataType: [{ guiComponent: "Text box" }] } } } };
+    let res = false;
+    const spy2 = jest.spyOn(component, 'validateGui').mockReturnValue(res);
+    const spy1 = jest.spyOn(component, 'validateSaveButtonRisk').mockReturnValue(res);
+    const spy = component.validateSaveButton(policyData, policyDataControls1, riskData, riskTypesControls);
+    expect(spy).toEqual(false);
+  });
+
+  it('validateSaveButtonTrue', () => {
+    let policyData = [{ name: 'MONEDA', value: 'COP' }];
+    let policyDataControls1 = { value: [{ fields: [{ businessCode: 'MONEDA', value: 'COP', dataType: { guiComponent: "Text box" } }] }] };
+    let riskData = { name: 'MONEDA', value: 'COP' };
+    let riskTypesControls = { value: { complementaryData: { fields: { businessCode: 'MONEDA', value: 'COP', dataType: [{ guiComponent: "Text box" }] } } } };
+    let res = true;
+    const spy2 = jest.spyOn(component, 'validateGui').mockReturnValue(res);
+    const spy1 = jest.spyOn(component, 'validateSaveButtonRisk').mockReturnValue(res);
+    const spy = component.validateSaveButton(policyData, policyDataControls1, riskData, riskTypesControls);
+    expect(spy).toEqual(true);
+  });
+
+  it('validateSaveButtonRiskTrue', () => {
+    let riskData = [{ name: 'MONEDA', value: 'COP' }];
+    let riskTypesControls ={value:[{complementaryData:[{fields:[{businessCode: 'MONEDA',value: 'COP',dataType: { guiComponent: "Text box" }}]}]}]};
+    let res = true;
+    const spy2 = jest.spyOn(component, 'validateGui').mockReturnValue(res);
+    const spy1 = component.validateSaveButtonRisk(riskData, riskTypesControls);
+    expect(spy1).toEqual(true);
+  });
+
+  it('validateSaveButtonRiskFalse', () => {
+    let riskData = [{ name: 'MONEDA', value: 'USD' }];
+    let riskTypesControls ={value:[{complementaryData:[{fields:[{businessCode: 'MONEDA',value: 'COP',dataType: { guiComponent: "Text box" }}]}]}]};
+    let res = false;
+    const spy2 = jest.spyOn(component, 'validateGui').mockReturnValue(res);
+    console.log(spy2);
+    const spy1 = component.validateSaveButtonRisk(riskData, riskTypesControls);
+    console.log('spy1: ', spy1);
+  });
+  describe('validateGui', () => {
+    it('ListBoxWithIdTrue', () => {
+      let guiComponent = 'List box';
+      let policy = { value: { name: 'MONEDA', id: 'COP' } };
+      let data = { name: 'MONEDA', value: 'COP' };
+      const spy = component.validateGui(guiComponent, policy, data);
+      expect(spy).toEqual(true);
+    });
+    it('ListBoxWithIdFalse', () => {
+      let guiComponent = 'List box';
+      let policy = { value: { name: 'MONEDA', id: 'USD' } };
+      let data = { name: 'MONEDA', value: 'COP' };
+      const spy = component.validateGui(guiComponent, policy, data);
+      expect(spy).toEqual(false);
+    });
+
+    it('ListBoxTrue', () => {
+      let guiComponent = 'List box';
+      let policy = { value: 'COP' };
+      let data = { name: 'MONEDA', value: 'COP' };
+      const spy = component.validateGui(guiComponent, policy, data);
+      expect(spy).toEqual(true);
+    });
+    it('ListBoxFalse', () => {
+      let guiComponent = 'List box';
+      let policy = { value: 'USD' };
+      let data = { name: 'MONEDA', value: 'COP' };
+      const spy = component.validateGui(guiComponent, policy, data);
+      expect(spy).toEqual(false);
+    });
+    it('TextBoxFalse', () => {
+      let guiComponent = 'Text box';
+      let policy = { value: 'USD' };
+      let data = { name: 'MONEDA', value: 'COP' };
+      const spy = component.validateGui(guiComponent, policy, data);
+      expect(spy).toEqual(false);
+    });
+
+    it('TextBoxTrue', () => {
+      let guiComponent = 'Text box';
+      let policy = { value: 'COP' };
+      let data = { name: 'MONEDA', value: 'COP' };
+      const spy = component.validateGui(guiComponent, policy, data);
+      expect(spy).toEqual(true);
+    });
+
+    it('CalendarTrue', () => {
+      let guiComponent = 'Calendar';
+      let policy = { value: 'Tue Nov 01 2022 12:53:00 GMT-0500 (hora estándar de Colombia)' };
+      let data = { value: '2022-11-01T12:53:00-05:00' };
+      const spy = component.validateGui(guiComponent, policy, data);
+      expect(spy).toEqual(true);
+    });
+
+    it('CalendarFalse', () => {
+      let guiComponent = 'Calendar';
+      let policy = { value: 'Tue Nov 01 2023 12:53:00 GMT-0500 (hora estándar de Colombia)' };
+      let data = { value: '2022-11-01T12:53:00-05:00' };
+      const spy = component.validateGui(guiComponent, policy, data);
+      expect(spy).toEqual(false);
+    });
+
+  });
+
+
+
 });
