@@ -4,6 +4,8 @@ import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dy
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
+import { ModalPolicyActionsService } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/services/modal-policy-actions.service';
+import { filter, take } from 'rxjs';
 
 @Component({
   selector: 'refactoring-smartcore-mf-policy-renewal',
@@ -29,16 +31,21 @@ export class PolicyRenewalComponent implements OnInit {
 
   defaultTypeGui = 'Text box';
 
+  causes: any[] = [];
+
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     public dialogService: DialogService,
+    public modalAPService: ModalPolicyActionsService,
     public fb: FormBuilder,
     public productService: ProductService
   ) {
     this.formPolicy = this.fb.group({
       policyData: this.fb.array([]),
-      riskData: this.fb.array([])
+      riskData: this.fb.array([]),
+      causeType: this.fb.control({ value: '', disabled: true }),
+      observation: this.fb.control(''),
     });
 
   }
@@ -47,7 +54,10 @@ export class PolicyRenewalComponent implements OnInit {
     /*this._ActivatedRoute.paramMap.subscribe(params => {
       this.id = params.get('id');
       this.getPolicy();
+    });
+
     });*/
+    this.getCauses(this.config.data.process);
     this.getPolicy();
   }
 
@@ -62,6 +72,15 @@ export class PolicyRenewalComponent implements OnInit {
   getGroupsControls(risk: any) {
     return risk.get('complementaryData') as FormArray;
   }
+
+  getCauses(applicationProcess: string){
+    this.modalAPService.getCauses(applicationProcess)
+    .subscribe( causes => {
+      this.causes = causes.body;
+      this.formPolicy.get('causeType')?.setValue(136)
+      });
+    }
+
 
   getPolicy() {
     this.isLoading = true;
@@ -199,7 +218,9 @@ export class PolicyRenewalComponent implements OnInit {
     }
 
     console.log('result', this.policy);
-    
+
+    console.log('form', this.formPolicy)
+
   }
 
 }

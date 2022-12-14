@@ -8,6 +8,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ReactiveGroupFieldsModule } from 'projects/policy-management/src/app/shared/components/reactive-group-fields/reactive-group-fields.module';
 import { CommonsLibModule } from 'commons-lib';
 import { DividerModule } from 'primeng/divider';
+import { DropdownModule } from "primeng/dropdown";
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { DividerModule } from 'primeng/divider';
     TabViewModule,
     ProgressSpinnerModule,
     ReactiveGroupFieldsModule,
-    DividerModule
+    DividerModule,
+    DropdownModule,
+    InputTextareaModule
   ]
 })
 export class PolicyRenewalModule { }
