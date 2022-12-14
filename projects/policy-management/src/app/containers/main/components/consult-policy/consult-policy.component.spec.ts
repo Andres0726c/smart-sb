@@ -18,6 +18,7 @@ import { of, Observable } from 'rxjs';
 import { ConsultPolicyComponent } from './consult-policy.component';
 import { ConsultPolicyService } from './services/consult-policy.service';
 import { By } from '@angular/platform-browser';
+import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
 
 describe('ConsultPolicyComponent', () => {
   let component: ConsultPolicyComponent;
@@ -153,7 +154,7 @@ describe('ConsultPolicyComponent', () => {
   it('show modal cancelacion/rehabilitación', () => {
     component.selectedPolicy = { idPolicy: 1 }
     const refOpenSpy = jest.spyOn(ref, 'open')
-    component.showModal('Cancelacion/Rehabilitación', component.selectedPolicy, 'test')
+    component.showModal(ModalPolicyActionsComponent, 'Cancelacion/Rehabilitación', component.selectedPolicy, 'test')
     expect(refOpenSpy).toHaveBeenCalled();
   });
 

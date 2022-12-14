@@ -97,7 +97,7 @@ export class ConsultPolicyComponent {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
-          this.showModal('Cancelación', this.selectedPolicy, 'Cancelar Póliza');
+          this.showModal(ModalPolicyActionsComponent, 'Cancelación', this.selectedPolicy, 'Cancelar Póliza');
         },
       },
       {
@@ -106,13 +106,13 @@ export class ConsultPolicyComponent {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
-          this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitar');
+          this.showModal(ModalPolicyActionsComponent, 'Rehabilitación', this.selectedPolicy, 'Rehabilitar');
         },
       },
       {
         label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
-          this.showModalPolicyRenewal('Renovación', this.selectedPolicy, 'Renovar');
+          this.showModal(PolicyRenewalComponent, 'Renovación', this.selectedPolicy, 'Renovar', '100%', '100%', '100%');
           /*this.router.navigate(
             [`/polizas/renovar/${this.selectedPolicy?.idProduct}`],
             { state: { policy: this.selectedPolicy }  }
@@ -152,8 +152,8 @@ export class ConsultPolicyComponent {
     }
   }
 
-  showModal(process: string, policy: any, buttonAction: any) {
-    const ref = this.dialogService.open(ModalPolicyActionsComponent, {
+  showModal(component: any, process: string, policy: any, buttonAction: any, width?: string, height?: string, mxHeight?: string) {
+    const ref = this.dialogService.open(component, {
       data: {
         process: process,
         policy: policy,
@@ -162,8 +162,9 @@ export class ConsultPolicyComponent {
       header: process,
       modal: true,
       dismissableMask: true,
-      width: '60%',
-      contentStyle: { 'max-height': '600px', overflow: 'auto' },
+      width: width ?? '60%',
+      height: height ?? 'auto',
+      contentStyle: { 'max-height': mxHeight ?? '600px', overflow: 'auto' },
       baseZIndex: 10000,
     });
 
@@ -174,7 +175,7 @@ export class ConsultPolicyComponent {
     });
   }
 
-  showModalPolicyRenewal(process: string, policy: any, buttonAction: any) {
+  /*showModalPolicyRenewal(process: string, policy: any, buttonAction: any) {
     console.log('policy', policy)
     const ref = this.dialogService.open(PolicyRenewalComponent, {
       data: {
@@ -195,7 +196,7 @@ export class ConsultPolicyComponent {
         this.consultPolicies(this.filters);
       }
     });
-  }
+  }*/
 
   search(filters: FilterPolicy) {
     filters.pageNumber = 0;
