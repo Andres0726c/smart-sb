@@ -38,6 +38,18 @@
                 </p-tabView>
             </div>
         </div>
+        <label>Causa</label>
+        <p-dropdown formControlName="causeType" [options]="causes" optionLabel="description" optionValue="id"
+          placeholder="Seleccione la causa" class="block" [style]="{'width':'100%'}">
+          <ng-template let-cause pTemplate="item">
+            <div>
+              <div>{{cause.description}}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+
+        <label>Observación</label>
+        <textarea formControlName="observation" rows="5" cols="30" pInputTextarea class="w-full"></textarea>
         <div>
             <button (click)="transformData()">
                 Hola mundo
@@ -45,3 +57,5 @@
         </div>
     </form>
 </div>
+
+

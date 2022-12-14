@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { ControlContainer, FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, NavigationStart, Router, Event, NavigationEnd } from '@angular/router';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
+import { ModalPolicyActionsService } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/services/modal-policy-actions.service';
 import { filter, take } from 'rxjs';
 
 @Component({
@@ -35,6 +36,8 @@ export class PolicyRenewalComponent implements OnInit {
   previousUrl = '';
   currentUrl = '';
 
+  causes: any[] = [];
+
   constructor(
     private _ActivatedRoute: ActivatedRoute,
     public fb: FormBuilder,
@@ -42,11 +45,14 @@ export class PolicyRenewalComponent implements OnInit {
     public router: Router,
     public config: DynamicDialogConfig,
     public dialogService: DialogService,
-    public ref: DynamicDialogRef
+    public ref: DynamicDialogRef,
+    public modalAPService: ModalPolicyActionsService,
   ) {
     this.formPolicy = this.fb.group({
       policyData: this.fb.array([]),
-      riskData: this.fb.array([])
+      riskData: this.fb.array([]),
+      causeType: this.fb.control({ value: '', disabled: true }),
+      observation: this.fb.control(''),
     });
 
     this.urlFrom = this.router.url;
@@ -90,6 +96,7 @@ export class PolicyRenewalComponent implements OnInit {
       this.id = params.get('id');
       this.getPolicy();
     });
+    this.getCauses(this.config.data.process);
   }
 
   get policyDataControls() {
@@ -103,6 +110,15 @@ export class PolicyRenewalComponent implements OnInit {
   getGroupsControls(risk: any) {
     return risk.get('complementaryData') as FormArray;
   }
+
+  getCauses(applicationProcess: string){
+    this.modalAPService.getCauses(applicationProcess)
+    .subscribe( causes => {
+      this.causes = causes.body;
+      this.formPolicy.get('causeType')?.setValue(136)
+      });
+    }
+
 
   getPolicy() {
     this.isLoading = true;
@@ -240,7 +256,9 @@ export class PolicyRenewalComponent implements OnInit {
     }
 
     console.log('result', this.policy);
-    
+
+    console.log('form', this.formPolicy)
+
   }
 
 }
