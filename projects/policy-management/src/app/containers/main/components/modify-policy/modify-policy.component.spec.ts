@@ -20,22 +20,46 @@ describe('ModifyPolicyComponent', () => {
 
   let policies = [
     {
-      idProduct: 126,
-      productName: 'ProductoEmision',
-      company: 'SEGUROS COMERCIALES BOLÍVAR S.A.',
-      idPolicy: 18,
-      policyNumber: '100000000000033',
-      requestNumber: '37',
-      insuranceLine: 'Hogar',
-      inceptionDate: '2022-05-08T12:53:00-05:00',
-      expirationDate: '2022-05-08T12:53:00-05:00',
-      policyStatus: 'Activa',
-      holderDocument: '1131345121',
-      holderTypeDocument: '1',
-      holderName: 'holderName',
-      insuredDocument: '1131345121',
-      insuredTypeDocument: '1',
-      insuredName: 'insuredName',
+      id: 72,
+      nmName: "producto_seguro_diciembre",
+      dsDescription: "producto_seguro_diciembre",
+      nmHashCode: 200,
+      plcy: {
+        chngActvtyTyp: 'EMI_ORI',
+        endrsmntNmbr: '0',
+        mnPlcyNmbr: '0',
+        plcyDtGrp: {
+          datos_basicos: {
+            COD_AGENTE: 'COD_AGENTE',
+            FECHA_EMISION: '2022-11-30T12:53:00-05:00',
+            FEC_FIN_VIG_POL: '2023-12-31T12:53:00-05:00',
+            FEC_INI_VIG_POL: '2022-12-31T12:53:00-05:00',
+            METODO_PAGO: 'MPG_EFT',
+            MONEDA: 'COP',
+            NRO_ID_TOMADOR: '1092312351',
+            OBSERVACIONES: 'Esto es una observacion',
+            PERIODO_FACT: '1',
+            TIPO_DOC_TOMADOR: 'CC'
+          }
+        },
+        rsk: [{
+          1: {
+            cmmrclPln: [{}],
+            rskDtGrp: {
+              rskTyp: '2',
+              datos_basicos: {
+                APE_ASEG: 'Perez',
+                CPOS_RIES: '05030',
+                NOM_ASEG: 'Pepe',
+                NRO_ID_ASEGURADO: '123456',
+                TIPO_DOC_ASEGURADO: 'CC'
+              }
+            }
+          }
+        }],
+      },
+      plcyNmbr: '100000000000419',
+      rqstNmbr: '432',
     },
   ];
 
@@ -88,7 +112,7 @@ describe('ModifyPolicyComponent', () => {
 
     const res: ResponseDTO<Product> = {
       body: {
-        id: 7,
+        id: 72,
         nmName: "nombre",
         dsDescription: "descripcion",
         nmHashCode: 3000
@@ -105,14 +129,15 @@ describe('ModifyPolicyComponent', () => {
     };
 
     let isLoading = false;
-    let idProduct = 7;
+    let idProduct = '72';
     const spy = jest.spyOn(productService, 'getProductById').mockReturnValue(of(res));
     const spy2 = jest.spyOn(component, 'fillGroupData').mockImplementation();
     const spy3 = jest.spyOn(component, 'fillRiskData').mockImplementation();
     component.policyDataControls;
     component.riskTypesControls;
-    component.getProduct(idProduct)
-    expect(spy).toBeCalled();
+    const spy1 = component.getProduct(idProduct);
+    console.log(spy2);
+    expect(spy1).toBeUndefined();
   });
   it('getPolicy', () => {
     const res: ResponseDTO<any> = {
@@ -128,13 +153,13 @@ describe('ModifyPolicyComponent', () => {
       },
     };
     let isLoading = true;
-    let idPolicy = policies[0].idPolicy;
 
-    const spy = jest.spyOn(productService, 'findByIdPolicy').mockReturnValue(of(res));
+    const spy = jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of(res));
     const spy2 = jest.spyOn(component, 'mapData').mockImplementation();
     const spy3 = jest.spyOn(component, 'getProduct').mockImplementation();
-    component.getPolicy();
-    expect(spy).toBeCalled();
+    const spy1 = component.getPolicy();
+    console.log("spy1", spy);
+    expect(spy1).toBeUndefined();
   });
 
   it('fillRiskData', () => {
@@ -396,7 +421,7 @@ describe('ModifyPolicyComponent', () => {
   it('loadData', () => {
     let url = 'identificationtype/findAllIdentification',
       rlEngnCd = 'MTR_SMT', parameters = '';
-    const spy=component.loadData(url,rlEngnCd,parameters);
+    const spy = component.loadData(url, rlEngnCd, parameters);
     const spy2 = jest.spyOn(component, 'setData').mockImplementation();
     expect(spy).toBeDefined();
   });
@@ -404,22 +429,22 @@ describe('ModifyPolicyComponent', () => {
   it('loadDataElse', () => {
     let url = 'state/statefindbycountry/',
       rlEngnCd = 'MTR_SMT', parameters = 'CO';
-    const spy=component.loadData(url,rlEngnCd,parameters);
+    const spy = component.loadData(url, rlEngnCd, parameters);
     const spy2 = jest.spyOn(component, 'setData').mockImplementation();
     expect(spy).toBeDefined();
   });
 
   it('setData', () => {
-    let res:any = {body:{value:'', name:''}};
-    const spy=component.setData(res);
+    let res: any = { body: { value: '', name: '' } };
+    const spy = component.setData(res);
     const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
     expect(spy).toBeDefined();
   });
 
   it('addToElementData', () => {
-    let res:any = {body:[{code:'abc', description :'abc'},{code:'bcd', description :'bcd'}]};
-    const spy=component.setData(res);
+    let res: any = { body: [{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }] };
+    const spy = component.setData(res);
     const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
     expect(spy).toBeDefined();
-      });
+  });
 });
