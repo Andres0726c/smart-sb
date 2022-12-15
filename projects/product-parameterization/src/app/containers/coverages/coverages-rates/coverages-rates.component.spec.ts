@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, SimpleChanges} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import {FormArray, FormBuilder, FormControl, FormGroup, FormsModule, Validators} from '@angular/forms';
@@ -80,6 +80,11 @@ describe('CoveragesRatesComponent', () => {
 
   it('Componente inicializado', () => {
     component.ngOnInit();
+    expect(component).toBeDefined();
+  });
+
+  it('Componente inicializado', () => {
+    component.ngOnChanges({});
     expect(component).toBeDefined();
   });
 
