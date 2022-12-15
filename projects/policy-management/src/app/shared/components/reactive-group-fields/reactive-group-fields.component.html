@@ -1,7 +1,8 @@
 <ng-template #inputText let-groupName="groupName" let-field="field">
     <div [formGroup]="field" class="flex flex-col m-3">
         <label>{{ field.value.label }}</label>
-        <input type="text" pInputText formControlName="value">
+        <input type="text" pInputText formControlName="value"
+        (focus)="executeRule(true,field)" (focusout)="executeRule(false,field)">
     </div>
 </ng-template>
 

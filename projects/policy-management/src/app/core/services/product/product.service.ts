@@ -42,6 +42,14 @@ export class ProductService {
         })
   };
 
+  getProductByCode = (code: string): Observable<any> => {
+    return this.httpClient.get<ResponseDTO<Product>>
+      (`${this.apiUrl}product/findByBusinessCode/${code}`,
+        {
+          headers: this.headers,
+        })
+  };
+
   findByIdPolicy = (idPolicy: number): Observable<any> => {
     return this.httpClient.get<ResponseDTO<Product>>
       (`${this.apiUrl}policy/findByIdPolicy/${idPolicy}`,
@@ -49,8 +57,18 @@ export class ProductService {
           headers: this.headers,
         })
   };
+
+  
   getApiData = (serviceData: string = '', rlEngnCd: string = '', id:string='') => {
     id = (id !== '' ? `/${id}` : '');
     return this.httpClient.get(`${this.apiUrl}${serviceData}${id}`, { headers: this.headers });
+  };
+
+  findPolicyDataById = (idPolicy: number): Observable<any> => {
+    return this.httpClient.get<ResponseDTO<Product>>
+      (`${this.apiUrl}policy/findPolicyDataById/${idPolicy}`,
+        {
+          headers: this.headers,
+        })
   };
 }

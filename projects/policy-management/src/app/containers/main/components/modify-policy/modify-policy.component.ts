@@ -102,6 +102,8 @@ export class ModifyPolicyComponent {
         this.isNextDisabled = true;
       }
     });
+
+    
   }
 
 
@@ -172,12 +174,13 @@ export class ModifyPolicyComponent {
   getPolicy() {
     this.isLoading = true;
 
-    this.productService.findByIdPolicy(this.policyData.idPolicy).subscribe((res: any) => {
+    this.productService.findPolicyDataById(this.policyData.policyNumber).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
-        this.policyData = this.mapData(this.policy.propertiesPolicyData);
-        this.riskData = this.mapData(this.policy.riskPropertiesPolicyData[0].policyriskdata);
-        this.getProduct(this.policy.idProduct);
+        console.log(this.policy);
+        this.policyData = this.mapData(this.policy.plcy.plcyDtGrp);
+        this.riskData = this.mapData(this.policy.plcy.rsk['1'].rskDtGrp);
+        this.getProduct(this.policy.prdct);
       }
     });
   }
@@ -198,16 +201,16 @@ export class ModifyPolicyComponent {
     return arrayData;
   }
 
-  getProduct(idProduct: number) {
-    this.productService.getProductById(idProduct).subscribe((res: ResponseDTO<Product>) => {
+  getProduct(code: string) {
+    this.productService.getProductByCode(code).subscribe((res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
         // console.log(this.product);
         this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
 
-        console.log('riskData: ', this.riskTypesControls);
-        console.log('policy: ', this.policyDataControls);
+        // console.log('riskData: ', this.riskTypesControls);
+        // console.log('policy: ', this.policyDataControls);
         this.isLoading = false;
       }
     });
@@ -266,8 +269,8 @@ export class ModifyPolicyComponent {
                 const url = domainList[0].url.slice(11)
                 this.loadData(url, domainList[0].rlEngnCd);
                 this.options.push({ id: valueObj.value, name: valueObj.value });
-                console.log(this.options.find((element: { id: string; })=>element.id==valueObj.value));
-                console.log(this.options);
+                // console.log(this.options.find((element: { id: string; })=>element.id==valueObj.value));
+                // console.log(this.options);
                 fieldFG.addControl('options', this.fb.control(this.options));
               } else {
                 let options = [{ id: valueObj.value, name: valueObj.value }]

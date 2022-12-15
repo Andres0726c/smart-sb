@@ -57,7 +57,7 @@ export class FilterPolicyTopComponent {
       insuredDocumentType: this.fb.control(''),
       insuredDocumentNumber: this.fb.control(''),
       insuredName: this.fb.control(''),
-      policyNumber: this.fb.control(''),
+      policyNumber: this.fb.control('100000000000419'),
       idProduct: this.fb.control(''),
       startDate: this.fb.control(''),
     });
