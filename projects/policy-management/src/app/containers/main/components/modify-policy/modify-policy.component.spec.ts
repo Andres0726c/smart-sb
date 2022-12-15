@@ -110,12 +110,23 @@ describe('ModifyPolicyComponent', () => {
 
   it('getProduct', () => {
 
-    const res: ResponseDTO<Product> = {
+    const res: ResponseDTO<any> = {
       body: {
         id: 72,
         nmName: "nombre",
         dsDescription: "descripcion",
-        nmHashCode: 3000
+        nmHashCode: 3000,
+        policyData: [ {id: 72,   name: "abc",
+                      code: '300',
+                      fields: [{id: 123,code: "string",name: "string",label: "string",dataTypeGui: "string",dataTypeName: "string",initializeRule: [],validateRule: [],dependency: 23,required: true,visible: true,}],
+                    }],
+        riskTypes:[{id: 1,
+                    code: {businessCode: "abc"},
+                    name: "abd",
+                    description: "description",
+                    complementaryData: {id: 20,name: "fgh",code: "abc", fields: [{id: 123,code: "string",name: "string",label: "string",dataTypeGui: "string",dataTypeName: "string",initializeRule: [],validateRule: [],dependency: 23,required: true,visible: true}]},
+                    businessPlans:[]
+                  }]
       },
       dataHeader: {
         code: 200,
