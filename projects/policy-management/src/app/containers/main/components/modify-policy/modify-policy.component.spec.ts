@@ -314,7 +314,7 @@ describe('ModifyPolicyComponent', () => {
 
   it('validateSaveButtonRiskTrue', () => {
     let riskData = [{ name: 'MONEDA', value: 'COP' }];
-    let riskTypesControls ={value:[{complementaryData:[{fields:[{businessCode: 'MONEDA',value: 'COP',dataType: { guiComponent: "Text box" }}]}]}]};
+    let riskTypesControls = { value: [{ complementaryData: [{ fields: [{ businessCode: 'MONEDA', value: 'COP', dataType: { guiComponent: "Text box" } }] }] }] };
     let res = true;
     const spy2 = jest.spyOn(component, 'validateGui').mockReturnValue(res);
     const spy1 = component.validateSaveButtonRisk(riskData, riskTypesControls);
@@ -323,12 +323,11 @@ describe('ModifyPolicyComponent', () => {
 
   it('validateSaveButtonRiskFalse', () => {
     let riskData = [{ name: 'MONEDA', value: 'USD' }];
-    let riskTypesControls ={value:[{complementaryData:[{fields:[{businessCode: 'MONEDA',value: 'COP',dataType: { guiComponent: "Text box" }}]}]}]};
+    let riskTypesControls = { value: [{ complementaryData: [{ fields: [{ businessCode: 'MONEDA', value: 'COP', dataType: { guiComponent: "Text box" } }] }] }] };
     let res = false;
     const spy2 = jest.spyOn(component, 'validateGui').mockReturnValue(res);
-    console.log(spy2);
     const spy1 = component.validateSaveButtonRisk(riskData, riskTypesControls);
-    console.log('spy1: ', spy1);
+    expect(spy1).toEqual(false);
   });
   describe('validateGui', () => {
     it('ListBoxWithIdTrue', () => {
@@ -394,6 +393,33 @@ describe('ModifyPolicyComponent', () => {
 
   });
 
+  it('loadData', () => {
+    let url = 'identificationtype/findAllIdentification',
+      rlEngnCd = 'MTR_SMT', parameters = '';
+    const spy=component.loadData(url,rlEngnCd,parameters);
+    const spy2 = jest.spyOn(component, 'setData').mockImplementation();
+    expect(spy).toBeDefined();
+  });
 
+  it('loadDataElse', () => {
+    let url = 'state/statefindbycountry/',
+      rlEngnCd = 'MTR_SMT', parameters = 'CO';
+    const spy=component.loadData(url,rlEngnCd,parameters);
+    const spy2 = jest.spyOn(component, 'setData').mockImplementation();
+    expect(spy).toBeDefined();
+  });
 
+  it('setData', () => {
+    let res:any = {body:{value:'', name:''}};
+    const spy=component.setData(res);
+    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
+    expect(spy).toBeDefined();
+  });
+
+  it('addToElementData', () => {
+    let res:any = {body:[{code:'abc', description :'abc'},{code:'bcd', description :'bcd'}]};
+    const spy=component.setData(res);
+    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
+    expect(spy).toBeDefined();
+      });
 });
