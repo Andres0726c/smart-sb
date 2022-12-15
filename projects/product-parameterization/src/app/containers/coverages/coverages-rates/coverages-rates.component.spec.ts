@@ -79,11 +79,6 @@ describe('CoveragesRatesComponent', () => {
   });
 
   it('Componente inicializado', () => {
-    component.ngOnInit();
-    expect(component).toBeDefined();
-  });
-
-  it('Componente inicializado', () => {
     component.ngOnChanges({});
     expect(component).toBeDefined();
   });

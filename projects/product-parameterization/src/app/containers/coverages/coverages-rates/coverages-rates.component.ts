@@ -17,7 +17,7 @@ import {RulesWizardComponent} from "../../../shared/complementary-data/rules-wiz
   templateUrl: './coverages-rates.component.html',
   styleUrls: ['./coverages-rates.component.scss']
 })
-export class CoveragesRatesComponent implements OnInit, AfterViewInit, OnChanges {
+export class CoveragesRatesComponent implements AfterViewInit, OnChanges {
 
   @Input() coverageRates: any = new FormArray([]);
   @Input() complementaryData: any = new FormArray([], [Validators.required]);
@@ -41,8 +41,6 @@ export class CoveragesRatesComponent implements OnInit, AfterViewInit, OnChanges
     public productService: ProductService,
     private fb: FormBuilder
   ) { }
-
-  ngOnInit(): void { }
 
   ngAfterViewInit() {
     this.loadContextData();
