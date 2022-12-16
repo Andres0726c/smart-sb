@@ -2,7 +2,7 @@
     <div [formGroup]="field" class="flex flex-col m-3">
         <label>{{ field.value.label }}</label>
         <input type="text" pInputText formControlName="value"
-        (focus)="executeRule(true,field)" (focusout)="executeRule(false,field)">
+        (focusout)="executeRule(field)">
     </div>
 </ng-template>
 
@@ -34,7 +34,7 @@
                     ></ng-container> -->
                     <ng-container
                         [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataType.guiComponent]"
-                        [ngTemplateOutletContext]="{ field: field }"
+                        [ngTemplateOutletContext]="{ field: field,groupName:group }"
                     ></ng-container>
                 </div>
             </div>

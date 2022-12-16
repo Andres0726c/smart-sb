@@ -372,6 +372,7 @@ export class ModifyPolicyComponent {
   }
 
   transformData() {
+    
     this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp);
 
     for (let risk of this.riskTypesControls.controls) {
@@ -384,6 +385,7 @@ export class ModifyPolicyComponent {
 
   saveModification() {
     console.log('formPolicy', this.formPolicy);
+    this.transformData();
   }
 
   cancelModification() {
