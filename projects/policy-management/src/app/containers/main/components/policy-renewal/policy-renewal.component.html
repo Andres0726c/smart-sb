@@ -1,5 +1,5 @@
 <div>
-    <div *ngIf="isLoading || errorFlag" class="mt-5 bg-white rounded-xl p-3">
+    <div *ngIf="isLoading || errorFlag" class="mt-5 text-center bg-white rounded-xl p-3">
         <smartcore-loading-spinner *ngIf="isLoading" [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
         <div class="container-alert text-center" *ngIf="errorFlag">
             <em class="pi pi-info-circle mr-1"></em>
@@ -62,12 +62,15 @@
                 </div>
             </div>
         </div>
-    </form>
-    <div class="flex flex-col text-right">
-        <div>
-            <p-button [label]="'Renovar'" (click)="confirmSave()"></p-button>
+        <div class="flex justify-center mt-5 gap-x-3">
+            <div>
+                <p-button [label]="'Cancelar'" (click)="ref.close()" styleClass="p-button-danger"></p-button>
+            </div>
+            <div>
+                <p-button [label]="'Renovar'" (click)="confirmSave()" [disabled]="!formPolicy.valid"></p-button>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <p-confirmDialog
