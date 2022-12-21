@@ -35,14 +35,11 @@ export class ModalPolicyActionsService {
   }
 
   savePolicyRenewal(processData: any, policy: any): Observable<any> {
-    console.log('policy request service', policy);
-
     const sendData = {
       processData: processData,
       policyData: policy,
     };
-
-    console.log('send data', sendData);
+    
     return this.httpClient.post<any>(`${this.apiUrl}policy/savePolicyRenewal`, JSON.stringify(sendData), { headers: this.headers });
   }
 

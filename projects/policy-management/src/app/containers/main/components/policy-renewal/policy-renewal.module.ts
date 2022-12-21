@@ -12,6 +12,7 @@ import { DropdownModule } from "primeng/dropdown";
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DropdownModule,
     InputTextareaModule,
     ButtonModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    DialogModule
   ]
 })
 export class PolicyRenewalModule { }

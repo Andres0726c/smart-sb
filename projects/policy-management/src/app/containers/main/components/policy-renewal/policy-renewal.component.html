@@ -75,3 +75,10 @@
     rejectButtonStyleClass="p-button-secondary">
 </p-confirmDialog>
 
+<p-dialog data-qa-id="sc-rpmf-modal-saving" 
+    header="Guardando..." [(visible)]="isSaving" [modal]="true" [draggable]="false" [closable]="false" styleClass="w-[200px]">
+    <div class="flex justify-center pt-5">
+        <smartcore-loading-spinner [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
+    </div>
+</p-dialog>
+

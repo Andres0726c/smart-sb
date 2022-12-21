@@ -7,7 +7,6 @@ import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { ModalPolicyActionsService } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/services/modal-policy-actions.service';
-import { filter, take } from 'rxjs';
 
 @Component({
   selector: 'refactoring-smartcore-mf-policy-renewal',
@@ -33,6 +32,8 @@ export class PolicyRenewalComponent implements OnInit {
   errorFlag: boolean = false;
 
   defaultTypeGui = 'Text box';
+  readOnly = true;
+  isSaving = false;
 
   causes: any[] = [];
 
@@ -56,12 +57,6 @@ export class PolicyRenewalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    /*this._ActivatedRoute.paramMap.subscribe(params => {
-      this.id = params.get('id');
-      this.getPolicy();
-    });
-
-    });*/
     this.getCauses(this.config.data.process);
     this.getPolicy();
   }
@@ -173,7 +168,7 @@ export class PolicyRenewalComponent implements OnInit {
     });
 
     //fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: !field.editable }));
-    fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: true }));
+    fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: this.readOnly ?? !field.editable }));
 
     if (field.dataType.guiComponent === 'List box') {
       let options = [{ id: value.value, name: value.value }]
@@ -212,38 +207,33 @@ export class PolicyRenewalComponent implements OnInit {
       this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp);
     }
 
-    console.log('result', this.policy);
-
-    //console.log('form', this.formPolicy)
     this.savePolicyRenewal();
 
   }
 
   savePolicyRenewal() {
+    this.isSaving = true;
     const processData = {
       idCause: this.formPolicy.get('causeType')?.value,
       idChangeActivityType: 15, // tipo para renovación en línea
       observation: this.formPolicy.get('observation')?.value
     };
 
-    console.log('policy request', ...[this.policy]);
-
     this.modalAPService.savePolicyRenewal(processData, this.policy)
       .subscribe((resp: any) => {
         if(resp.dataHeader.code != 500){
           this.ref.close(true)
-          this.showSuccess('success', 'Renovación xxitosa', 'La póliza ha sido renovada');
+          this.showSuccess('success', 'Renovación exitosa', 'La póliza ha sido renovada');
         } else  {
-            //this.messageError = true;
-            this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
+          this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
         }
+        this.isSaving = false;
       },
       // (error) => {
       //   this.messageError = true;
       //   this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
       // }
       );
-      
   }
 
   showSuccess(status: string, title: string, msg: string) {
