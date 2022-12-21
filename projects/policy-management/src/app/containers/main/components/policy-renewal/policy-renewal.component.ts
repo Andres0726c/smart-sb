@@ -111,8 +111,6 @@ export class PolicyRenewalComponent implements OnInit {
         this.product = res.body;
         this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
-        console.log('policyData: ', this.policyDataControls);
-        console.log('riskData: ', this.riskDataControls);
         this.isLoading = false;
       }
     });
