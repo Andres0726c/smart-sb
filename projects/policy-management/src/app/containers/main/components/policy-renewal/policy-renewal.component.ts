@@ -83,6 +83,7 @@ export class PolicyRenewalComponent implements OnInit {
 
 
   getPolicy() {
+    this.isLoading = true;
     this.policy = this.config.data.policy.policyData;
     this.policyData = this.mapData(this.policy.plcy.plcyDtGrp);
     this.riskData = this.mapData(this.policy.plcy.rsk['1'].rskDtGrp);
