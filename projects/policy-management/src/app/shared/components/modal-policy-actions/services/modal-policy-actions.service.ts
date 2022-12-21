@@ -34,6 +34,18 @@ export class ModalPolicyActionsService {
     return this.httpClient.post<CancelPolicy>(`${this.apiUrl}policy/deletion`, sendData, { headers: this.headers });
   }
 
+  savePolicyRenewal(processData: any, policy: any): Observable<any> {
+    console.log('policy request service', policy);
+
+    const sendData = {
+      processData: processData,
+      policyData: policy,
+    };
+
+    console.log('send data', sendData);
+    return this.httpClient.post<any>(`${this.apiUrl}policy/savePolicyRenewal`, JSON.stringify(sendData), { headers: this.headers });
+  }
+
   getCauses(applicationProcess: string): Observable<any>{
     return this.httpClient.get<any>(`${this.apiUrl}cause/findAllByApplicationProcess/${applicationProcess}`, {headers: this.headers})
   }

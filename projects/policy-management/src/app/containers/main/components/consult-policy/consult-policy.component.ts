@@ -5,7 +5,7 @@ import {
 import { PolicyBrief } from './../../../../core/interfaces/policy';
 import { ConsultPolicyService } from './services/consult-policy.service';
 import { FilterPolicy } from './interfaces/consult-policy';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -15,6 +15,7 @@ import { ModalRenewalComponent } from 'projects/policy-management/src/app/contai
 import { PolicyDetailsComponent } from './policy-details/policy-details.component';
 import { Router } from '@angular/router';
 import { PolicyRenewalComponent } from '../policy-renewal/policy-renewal.component';
+import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 
 @Component({
   selector: 'app-consult-policy',
@@ -22,7 +23,7 @@ import { PolicyRenewalComponent } from '../policy-renewal/policy-renewal.compone
   styleUrls: ['./consult-policy.component.scss'],
   providers: [MessageService, DialogService],
 })
-export class ConsultPolicyComponent {
+export class ConsultPolicyComponent implements OnDestroy {
   policies: PolicyBrief[] = [];
   cols: any[] = [];
   filters: FilterPolicy = {
@@ -57,6 +58,7 @@ export class ConsultPolicyComponent {
 
   constructor(
     public consultPolicyService: ConsultPolicyService,
+    public productService: ProductService,
     public fb: FormBuilder,
     public dialogService: DialogService,
     public messageService: MessageService,
@@ -112,7 +114,8 @@ export class ConsultPolicyComponent {
       {
         label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
-          this.showModal(PolicyRenewalComponent, 'Renovación', this.selectedPolicy, 'Renovar', '100%', '100%', '100%');
+          this.getPolicy();
+          //this.showModal(PolicyRenewalComponent, 'Renovación', this.selectedPolicy, 'Renovar', '98%', '100%', '100%');
           /*this.router.navigate(
             [`/polizas/renovar/${this.selectedPolicy?.idProduct}`],
             { state: { policy: this.selectedPolicy }  }
@@ -127,6 +130,7 @@ export class ConsultPolicyComponent {
       },
     ];
   }
+  
 
   getFieldsControls(group: any) {
     return group.get('fields') as FormArray;
@@ -290,5 +294,37 @@ export class ConsultPolicyComponent {
       contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px'},
       baseZIndex: 10000,
     })
+  }
+
+  getPolicy() {
+    this.loading = true;
+    this.productService.findPolicyDataById(this.selectedPolicy.policyNumber, 0).subscribe((res: any) => {
+      if (res.dataHeader.code && res.dataHeader.code == 200) {
+        const policy = res.body;
+        if (new Date(policy.plcy.plcyDtGrp.datos_basicos['FEC_FIN_VIG_POL']) > new Date(this.selectedPolicy.expirationDate)) {
+          this.showSuccess('error', 'Proceso pendiente', 'La póliza tiene un endoso pendiente');
+        } else {
+          this.showModal(PolicyRenewalComponent, 'Renovación', { policyBasic: this.selectedPolicy, policyData: policy }, 'Renovar', '96%', '100%', '100%');
+        }
+      } else {
+        this.showSuccess('error', 'Error interno', 'Por favor intente nuevamente');
+      }
+      this.loading = false;
+    });
+  }
+
+  showSuccess(status: string, title: string, msg: string) {
+    this.messageService.add({
+      severity: status,
+      summary: title,
+      detail: msg
+    });
+  }
+  
+  ngOnDestroy(): void {
+    // Cerramos todas las modales al cambiar de componente
+    this.dialogService.dialogComponentRefMap.forEach(dialog => {
+      dialog.destroy();
+    });
   }
 }

@@ -9,7 +9,9 @@ import { ReactiveGroupFieldsModule } from 'projects/policy-management/src/app/sh
 import { CommonsLibModule } from 'commons-lib';
 import { DividerModule } from 'primeng/divider';
 import { DropdownModule } from "primeng/dropdown";
-import {InputTextareaModule} from 'primeng/inputtextarea';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
     ReactiveGroupFieldsModule,
     DividerModule,
     DropdownModule,
-    InputTextareaModule
+    InputTextareaModule,
+    ButtonModule,
+    ConfirmDialogModule
   ]
 })
 export class PolicyRenewalModule { }

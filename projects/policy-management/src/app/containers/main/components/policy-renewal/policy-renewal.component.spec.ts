@@ -1,8 +1,11 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
+import { ModalPolicyActionsService } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/services/modal-policy-actions.service';
 import { of } from 'rxjs';
 import { PolicyRenewalComponent } from './policy-renewal.component';
 
@@ -10,23 +13,28 @@ describe('PolicyRenewalComponent', () => {
   let component: PolicyRenewalComponent;
   let fixture: ComponentFixture<PolicyRenewalComponent>;
   let productService: ProductService;
+  let modalAPService: ModalPolicyActionsService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [ PolicyRenewalComponent ],
-      providers: [DynamicDialogRef, DynamicDialogConfig, DialogService, FormBuilder]
+      providers: [DynamicDialogRef, DynamicDialogConfig, DialogService, MessageService, FormBuilder],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(PolicyRenewalComponent);
     component = fixture.componentInstance;
     productService = fixture.debugElement.injector.get(ProductService);
+    modalAPService = fixture.debugElement.injector.get(ModalPolicyActionsService);
 
     component.config = {
       data: {
         policy: {
-          policyNumber: '123'
+            policyBasic: {
+                policyNumber: '123'
+            }
         }
       }
     };
@@ -90,6 +98,8 @@ describe('PolicyRenewalComponent', () => {
           "totalRecords": 0
       }
     };
+
+    component.config.data.policy.policyData = res.body;
 
     const resProduct = {
       "body": {
@@ -475,7 +485,46 @@ describe('PolicyRenewalComponent', () => {
       }
     };
 
-    jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
+    const resCauses = {
+        "body": [
+            {
+                "id": 136,
+                "businessCode": "RNV_CRE_1",
+                "name": "Solicitud del tomador",
+                "description": "Solicitud del tomador",
+                "applicationProcess": "Renovación",
+                "applicationSubprocess": 9,
+                "idStatus": 1
+            },
+            {
+                "id": 165,
+                "businessCode": "RNV_CRE_2",
+                "name": "Condición del negocio",
+                "description": "Condición del negocio",
+                "applicationProcess": "Renovación",
+                "applicationSubprocess": 9,
+                "idStatus": 1
+            }
+        ],
+        "dataHeader": {
+            "code": 200,
+            "status": "OK",
+            "errorList": [],
+            "hasErrors": false,
+            "currentPage": 0,
+            "totalPage": 0,
+            "totalRecords": 0
+        }
+    };
+
+    const resSave = {
+        dataHeader: {
+            code: 200
+        }
+    };
+
+    jest.spyOn(modalAPService, 'getCauses').mockReturnValue(of (resCauses));
+    jest.spyOn(modalAPService, 'savePolicyRenewal').mockReturnValue(of (resSave));
     jest.spyOn(productService, 'getProductByCode').mockReturnValue(of (resProduct));
 
     fixture.detectChanges();
@@ -485,14 +534,21 @@ describe('PolicyRenewalComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('getPolicy else', () => {
+  it('savePolicyRenewal else', () => {
     const res = { dataHeader: { code: 500 } };
-    jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
-    component.getPolicy()
-    expect(component.errorFlag).toBeTruthy();
+    jest.spyOn(modalAPService, 'savePolicyRenewal').mockReturnValue(of (res));
+    expect(component.savePolicyRenewal()).toBeUndefined();
   });
 
   it('transformData', () => {
     expect(component.transformData()).toBeUndefined();
+  });
+
+  it('showSuccess', () => {
+    expect(component.showSuccess('error', 'error', 'error')).toBeUndefined();
+  });
+
+  it('confirmSave', () => {
+    expect(component.confirmSave()).toBeUndefined();
   });
 });

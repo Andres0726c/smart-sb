@@ -19,10 +19,13 @@ import { ConsultPolicyComponent } from './consult-policy.component';
 import { ConsultPolicyService } from './services/consult-policy.service';
 import { By } from '@angular/platform-browser';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
+import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('ConsultPolicyComponent', () => {
   let component: ConsultPolicyComponent;
   let consultPolicyService: ConsultPolicyService;
+  let productService: ProductService;
   let fixture: ComponentFixture<ConsultPolicyComponent>;
   let ref: DialogService;
 
@@ -40,9 +43,75 @@ describe('ConsultPolicyComponent', () => {
         FormBuilder,
         { provide: DynamicDialogRef, useValue: { onClose: of(true) } }
       ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     });
     fixture = TestBed.createComponent(ConsultPolicyComponent);
     component = fixture.componentInstance;
+    productService = fixture.debugElement.injector.get(ProductService);
+
+    const res = {
+      "body": {
+        "prdct": "producto_seguro_mascota",
+        "plcy": {
+            "rqstNmbr": "406",
+            "plcyNmbr": "100000000000393",
+            "mnPlcyNmbr": "0",
+            "endrsmntNmbr": "0",
+            "chngActvtyTyp": "EMI_ORI",
+            "plcyDtGrp": {
+                "datos_basicos": {
+                    "MONEDA": "COP",
+                    "COD_AGENTE": "ABC123",
+                    "PERIODO_FACT": "1",
+                    "FECHA_EMISION": "2022-11-11T12:53:00-05:00",
+                    "OBSERVACIONES": "Esto es una observacion",
+                    "NRO_ID_TOMADOR": "123458676",
+                    "FEC_FIN_VIG_POL": "2023-01-31T12:53:00-05:00",
+                    "FEC_INI_VIG_POL": "2022-11-01T12:53:00-05:00",
+                    "TIPO_DOC_TOMADOR": "CC",
+                    "NOMBRE_DEL_AGENTE": "José Gallego",
+                    "NOMBRE_DEL_TOMADOR": "Jorge Bermudez"
+                },
+                "gd002_datosdedebito": {
+                    "METODO_PAGO": "MPG_EFT"
+                }
+            },
+            "rsk": {
+                "1": {
+                    "rskTyp": "2",
+                    "rskDtGrp": {
+                        "datos_basicos": {
+                            "RAZA": "A",
+                            "EDAD_MASCOTA": "10",
+                            "TIPO_MASCOTA": "1",
+                            "NOMBRE_MASCOTA": "Luna"
+                        },
+                        "gd002_datosasegurado": {
+                            "APE_ASEG": "Echeverry",
+                            "NOM_ASEG": "Pablo Andrés",
+                            "CPOS_RIES": "05030",
+                            "NRO_ID_ASEGURADO": "55551121",
+                            "TIPO_DOC_ASEGURADO": "CC"
+                        }
+                    }
+                }
+            }
+        }
+      },
+      "dataHeader": {
+          "code": 200,
+          "status": "OK",
+          "errorList": [],
+          "hasErrors": false,
+          "currentPage": 0,
+          "totalPage": 0,
+          "totalRecords": 0
+      }
+    };
+
+    jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
+
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -156,6 +225,18 @@ describe('ConsultPolicyComponent', () => {
     const refOpenSpy = jest.spyOn(ref, 'open')
     component.showModal(ModalPolicyActionsComponent, 'Cancelacion/Rehabilitación', component.selectedPolicy, 'test')
     expect(refOpenSpy).toHaveBeenCalled();
+  });
+
+  it('getPolicy ok', () => {
+    component.selectedPolicy = { idPolicy: 1, policyNumber: 123 };
+    expect(component.getPolicy()).toBeUndefined();
+  });
+
+  it('getPolicy else', () => {
+    component.selectedPolicy = { idPolicy: 1, policyNumber: 123 };
+    const res = { dataHeader: { code: 500 } };
+    jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
+    expect(component.getPolicy()).toBeUndefined();
   });
 
   

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
@@ -10,7 +12,8 @@ import { filter, take } from 'rxjs';
 @Component({
   selector: 'refactoring-smartcore-mf-policy-renewal',
   templateUrl: './policy-renewal.component.html',
-  styleUrls: ['./policy-renewal.component.scss']
+  styleUrls: ['./policy-renewal.component.scss'],
+  providers: [ConfirmationService]
 })
 export class PolicyRenewalComponent implements OnInit {
   id: any = '';
@@ -34,20 +37,22 @@ export class PolicyRenewalComponent implements OnInit {
   causes: any[] = [];
 
   constructor(
+    private confirmationService: ConfirmationService,
+    public router: Router,
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
     public dialogService: DialogService,
     public modalAPService: ModalPolicyActionsService,
     public fb: FormBuilder,
-    public productService: ProductService
+    public messageService: MessageService,
+    public productService: ProductService,
   ) {
     this.formPolicy = this.fb.group({
       policyData: this.fb.array([]),
       riskData: this.fb.array([]),
       causeType: this.fb.control({ value: '', disabled: true }),
-      observation: this.fb.control(''),
+      observation: this.fb.control('', [Validators.maxLength(200)]),
     });
-
   }
 
   ngOnInit(): void {
@@ -83,20 +88,10 @@ export class PolicyRenewalComponent implements OnInit {
 
 
   getPolicy() {
-    this.isLoading = true;
-    this.errorFlag = false;
-    console.log('id', this.id);
-    this.productService.findPolicyDataById(this.config.data.policy.policyNumber).subscribe((res: any) => {
-      if (res.dataHeader.code && res.dataHeader.code == 200) {
-        this.policy = res.body;
-        this.policyData = this.mapData(this.policy.plcy.plcyDtGrp);
-        this.riskData = this.mapData(this.policy.plcy.rsk['1'].rskDtGrp);
-        this.getProduct(this.policy.prdct);
-      } else {
-        this.errorFlag = true;
-      }
-      this.isLoading = false;
-    });
+    this.policy = this.config.data.policy.policyData;
+    this.policyData = this.mapData(this.policy.plcy.plcyDtGrp);
+    this.riskData = this.mapData(this.policy.plcy.rsk['1'].rskDtGrp);
+    this.getProduct(this.policy.prdct);
   }
 
   mapData(groupData: any) {
@@ -205,7 +200,7 @@ export class PolicyRenewalComponent implements OnInit {
   reverseMap(dataControls: any, groupData: any) {
     for (let objKey of Object.keys(groupData)) {
       for (let key of Object.keys(groupData[objKey])) {
-        groupData[objKey][key] = this.getControlValue(dataControls.value, key);
+        groupData[objKey][key] = this.getControlValue(dataControls.getRawValue(), key);
       }
     }
   }
@@ -219,8 +214,63 @@ export class PolicyRenewalComponent implements OnInit {
 
     console.log('result', this.policy);
 
-    console.log('form', this.formPolicy)
+    //console.log('form', this.formPolicy)
+    this.savePolicyRenewal();
 
+  }
+
+  savePolicyRenewal() {
+    const processData = {
+      idCause: this.formPolicy.get('causeType')?.value,
+      idChangeActivityType: 15, // tipo para renovación en línea
+      observation: this.formPolicy.get('observation')?.value
+    };
+
+    console.log('policy request', ...[this.policy]);
+
+    this.modalAPService.savePolicyRenewal(processData, this.policy)
+      .subscribe((resp: any) => {
+        if(resp.dataHeader.code != 500){
+          this.ref.close(true)
+          this.showSuccess('success', 'Renovación xxitosa', 'La póliza ha sido renovada');
+        } else  {
+            //this.messageError = true;
+            this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
+        }
+      },
+      // (error) => {
+      //   this.messageError = true;
+      //   this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
+      // }
+      );
+      
+  }
+
+  showSuccess(status: string, title: string, msg: string) {
+    this.messageService.add({
+      severity: status,
+      summary: title,
+      detail: msg
+    });
+  }
+
+  confirmSave() {
+    this.confirmationService.confirm({
+        message: `
+          <div class="flex justify-center pt-5 pb-3">
+              <img src="smartcore-commons/assets/styles/material-theme/icons/picto-alert.svg" alt="icon-warning">
+          </div>
+          <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl">
+            <p class="w-full text-center">
+              Está seguro de realizar esta renovación?
+            </p>
+          </div>
+        `,
+        header: 'Confirmación',
+        accept: () => {
+          this.transformData();
+        }
+    });
   }
 
 }

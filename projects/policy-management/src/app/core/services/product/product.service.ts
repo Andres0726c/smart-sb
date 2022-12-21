@@ -58,9 +58,9 @@ export class ProductService {
         })
   };
 
-  findPolicyDataById = (idPolicy: number): Observable<any> => {
+  findPolicyDataById = (idPolicy: number, status: number): Observable<any> => {
     return this.httpClient.get<ResponseDTO<Product>>
-      (`${this.apiUrl}policy/findPolicyDataById/${idPolicy}`,
+      (`${this.apiUrl}policy/findPolicyDataById/${idPolicy}/${status}`,
         {
           headers: this.headers,
         })
