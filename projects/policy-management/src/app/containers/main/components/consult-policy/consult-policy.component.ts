@@ -11,7 +11,6 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
-import { ModalRenewalComponent } from 'projects/policy-management/src/app/containers/main/components/consult-policy/modal-renewal/modal-renewal.component';
 import { PolicyDetailsComponent } from './policy-details/policy-details.component';
 import { Router } from '@angular/router';
 import { PolicyRenewalComponent } from '../policy-renewal/policy-renewal.component';
@@ -115,11 +114,6 @@ export class ConsultPolicyComponent implements OnDestroy {
         label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
           this.getPolicy();
-          //this.showModal(PolicyRenewalComponent, 'Renovación', this.selectedPolicy, 'Renovar', '98%', '100%', '100%');
-          /*this.router.navigate(
-            [`/polizas/renovar/${this.selectedPolicy?.idProduct}`],
-            { state: { policy: this.selectedPolicy }  }
-          );*/
         }
       },
       {
@@ -179,29 +173,6 @@ export class ConsultPolicyComponent implements OnDestroy {
     });
   }
 
-  /*showModalPolicyRenewal(process: string, policy: any, buttonAction: any) {
-    console.log('policy', policy)
-    const ref = this.dialogService.open(PolicyRenewalComponent, {
-      data: {
-        process: process,
-        policy: policy,
-        buttonAction: buttonAction
-      },
-      header: process,
-      modal: true,
-      width: '95%',
-      height: '100%',
-      contentStyle: { 'max-height': '100%', overflow: 'auto' },
-      baseZIndex: 10000,
-    });
-
-    ref.onClose.subscribe((res: boolean) => {
-      if (res) {
-        this.consultPolicies(this.filters);
-      }
-    });
-  }*/
-
   search(filters: FilterPolicy) {
     filters.pageNumber = 0;
     this.totalRecords = 0;
@@ -250,36 +221,6 @@ export class ConsultPolicyComponent implements OnDestroy {
     this.policies = [];
     this.totalRecords = 0;
   }
-
-  // showModalRenewal(process: string, policy: any, buttonAction: any) {
-  //   let policyRes;
-  //   this.consultPolicyService.getPolicyById(policy.idPolicy).subscribe({
-  //     next: (res) => {
-  //       if (res.dataHeader.code && (res.dataHeader.code = 200)) {
-  //         policyRes = res.body;
-  //         this.totalRecords = res.dataHeader.totalRecords;
-
-  //         const ref = this.dialogService.open(ModalRenewalComponent, {
-  //           data: {
-  //             process: process,
-  //             policy: policyRes,
-  //             buttonAction: buttonAction
-  //           },
-  //           header: process,
-  //           modal: true,
-  //           dismissableMask: true,
-  //           width: '80%',
-  //           contentStyle: { 'max-height': '600px', overflow: 'auto' },
-  //           baseZIndex: 10000,
-  //         });
-
-  //       } 
-  //     },
-  //     error: (error: ResponseErrorDTO) => {
-  //       console.error('error', error);
-  //     },
-  //   });
-  // }
 
   showModalConsulDetails(){
     this.dialogService.open(PolicyDetailsComponent,{
