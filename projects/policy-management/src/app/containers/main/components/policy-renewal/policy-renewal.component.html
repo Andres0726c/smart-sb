@@ -1,0 +1,84 @@
+<div>
+    <div *ngIf="isLoading || errorFlag" class="mt-5 bg-white rounded-xl p-3">
+        <smartcore-loading-spinner *ngIf="isLoading" [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
+        <div class="container-alert text-center" *ngIf="errorFlag">
+            <em class="pi pi-info-circle mr-1"></em>
+            Ha ocurrido un error al cargar los datos, por favor intente nuevamente
+        </div>
+    </div>
+    <form *ngIf="!isLoading && !errorFlag" [formGroup]="formPolicy" class="mt-5 bg-white rounded-xl p-3">
+        <div>
+            <p-divider align="left" type="dashed" styleClass="my-2">
+                <div class="inline-flex align-items-center text-xl">
+                    <strong>Datos de póliza</strong>
+                </div>
+            </p-divider>
+            <div formArrayName="policyData">
+                <div class="p-5" *ngFor="let group of policyDataControls.controls; let i = index" formGroupName="{{i}}">
+                    <smartcore-reactive-group-fields [group]="group"></smartcore-reactive-group-fields>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p-divider align="left" type="dashed" styleClass="my-2">
+                <div class="inline-flex align-items-center text-xl">
+                    <strong>Datos del riesgo</strong>
+                </div>
+            </p-divider>
+            <div formArrayName="riskData">
+                <p-tabView [scrollable]="true">
+                    <p-tabPanel [header]="risk.value.name" *ngFor="let risk of riskDataControls.controls; let i = index" [selected]="i == 0" formGroupName="{{i}}">
+                        <div formArrayName="complementaryData">
+                                <div class="p-5" *ngFor="let group of getGroupsControls(risk).controls; let i = index" formGroupName="{{i}}">
+                                    <smartcore-reactive-group-fields [group]="group"></smartcore-reactive-group-fields>
+                                </div>
+                        </div>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+        <div>
+            <p-divider align="left" type="dashed" styleClass="my-2">
+                <div class="inline-flex align-items-center text-xl">
+                    <strong>Datos del proceso</strong>
+                </div>
+            </p-divider>
+            <div class="grid grid-cols-3 my-2 p-3 gap-5">
+                <div class="cols-1">
+                    <label>Causa</label>
+                    <p-dropdown formControlName="causeType" [options]="causes" optionLabel="description" optionValue="id"
+                    placeholder="Seleccione la causa" class="block" [style]="{'width':'100%'}">
+                    <ng-template let-cause pTemplate="item">
+                        <div>
+                        <div>{{cause.description}}</div>
+                        </div>
+                    </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="col-span-3">
+                    <label>Observación</label>
+                    <textarea formControlName="observation" rows="5" cols="30" pInputTextarea class="w-full"></textarea>
+                    <small class="p-error block" *ngIf="formPolicy.get('observation')?.hasError('maxlength')">Máximo 200 caracteres</small>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="flex flex-col text-right">
+        <div>
+            <p-button [label]="'Renovar'" (click)="confirmSave()"></p-button>
+        </div>
+    </div>
+</div>
+
+<p-confirmDialog
+    acceptLabel="Si"
+    rejectButtonStyleClass="p-button-secondary">
+</p-confirmDialog>
+
+<p-dialog data-qa-id="sc-rpmf-modal-saving" 
+    header="Guardando..." [(visible)]="isSaving" [modal]="true" [draggable]="false" [closable]="false" styleClass="w-[200px]">
+    <div class="flex justify-center pt-5">
+        <smartcore-loading-spinner [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
+    </div>
+</p-dialog>
+

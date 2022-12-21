@@ -72,4 +72,37 @@ describe('ProductService', () => {
     });
     req.flush(mockProducts);
   });
+
+  it('getProductById', () => {
+    service.getProductById(1).subscribe((res) => {
+      expect(res).toEqual(mockProducts);
+    });
+    const req = httpController.expectOne({
+      method: 'GET',
+      url: `${apiUrl}product/findById/1`,
+    });
+    req.flush(mockProducts);
+  });
+
+  it('getProductByCode', () => {
+    service.getProductByCode('test').subscribe((res) => {
+      expect(res).toEqual(mockProducts);
+    });
+    const req = httpController.expectOne({
+      method: 'GET',
+      url: `${apiUrl}product/findByBusinessCode/test`,
+    });
+    req.flush(mockProducts);
+  });
+
+  it('findPolicyDataById', () => {
+    service.findPolicyDataById(1, 17).subscribe((res) => {
+      expect(res).toEqual(mockProducts);
+    });
+    const req = httpController.expectOne({
+      method: 'GET',
+      url: `${apiUrl}policy/findPolicyDataById/1/17`,
+    });
+    req.flush(mockProducts);
+  });
 });
