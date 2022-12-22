@@ -181,7 +181,7 @@ export class ModifyPolicyComponent {
   getPolicy() {
     this.isLoading = true;
 
-    this.productService.findPolicyDataById(this.policyData.policyNumber).subscribe((res: any) => {
+    this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
         console.log(this.policy);
