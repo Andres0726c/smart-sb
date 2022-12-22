@@ -5,15 +5,16 @@ import {
 import { PolicyBrief } from './../../../../core/interfaces/policy';
 import { ConsultPolicyService } from './services/consult-policy.service';
 import { FilterPolicy } from './interfaces/consult-policy';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
-import { ModalRenewalComponent } from 'projects/policy-management/src/app/containers/main/components/consult-policy/modal-renewal/modal-renewal.component';
 import { PolicyDetailsComponent } from './policy-details/policy-details.component';
 import { Router } from '@angular/router';
+import { PolicyRenewalComponent } from '../policy-renewal/policy-renewal.component';
+import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 
 @Component({
   selector: 'app-consult-policy',
@@ -21,7 +22,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./consult-policy.component.scss'],
   providers: [MessageService, DialogService],
 })
-export class ConsultPolicyComponent {
+export class ConsultPolicyComponent implements OnDestroy {
   policies: PolicyBrief[] = [];
   cols: any[] = [];
   filters: FilterPolicy = {
@@ -56,6 +57,7 @@ export class ConsultPolicyComponent {
 
   constructor(
     public consultPolicyService: ConsultPolicyService,
+    public productService: ProductService,
     public fb: FormBuilder,
     public dialogService: DialogService,
     public messageService: MessageService,
@@ -96,7 +98,7 @@ export class ConsultPolicyComponent {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
-          this.showModal('Cancelación', this.selectedPolicy, 'Cancelar Póliza');
+          this.showModal(ModalPolicyActionsComponent, 'Cancelación', this.selectedPolicy, 'Cancelar Póliza');
         },
       },
       {
@@ -105,13 +107,13 @@ export class ConsultPolicyComponent {
           this.formDate.reset();
           this.formDate.get('causeType')?.disable();
           this.formDate.get('observation')?.disable();
-          this.showModal('Rehabilitación', this.selectedPolicy, 'Rehabilitar');
+          this.showModal(ModalPolicyActionsComponent, 'Rehabilitación', this.selectedPolicy, 'Rehabilitar');
         },
       },
       {
         label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
-          //this.showModalRenewal('Renovación', this.selectedPolicy, 'Renovar');
+          this.getPolicy();
         }
       },
       {
@@ -122,6 +124,7 @@ export class ConsultPolicyComponent {
       },
     ];
   }
+  
 
   getFieldsControls(group: any) {
     return group.get('fields') as FormArray;
@@ -147,8 +150,8 @@ export class ConsultPolicyComponent {
     }
   }
 
-  showModal(process: string, policy: any, buttonAction: any) {
-    const ref = this.dialogService.open(ModalPolicyActionsComponent, {
+  showModal(component: any, process: string, policy: any, buttonAction: any, width?: string, height?: string, mxHeight?: string) {
+    const ref = this.dialogService.open(component, {
       data: {
         process: process,
         policy: policy,
@@ -157,8 +160,9 @@ export class ConsultPolicyComponent {
       header: process,
       modal: true,
       dismissableMask: true,
-      width: '60%',
-      contentStyle: { 'max-height': '600px', overflow: 'auto' },
+      width: width ?? '60%',
+      height: height ?? 'auto',
+      contentStyle: { 'max-height': mxHeight ?? '600px', overflow: 'auto' },
       baseZIndex: 10000,
     });
 
@@ -218,36 +222,6 @@ export class ConsultPolicyComponent {
     this.totalRecords = 0;
   }
 
-  // showModalRenewal(process: string, policy: any, buttonAction: any) {
-  //   let policyRes;
-  //   this.consultPolicyService.getPolicyById(policy.idPolicy).subscribe({
-  //     next: (res) => {
-  //       if (res.dataHeader.code && (res.dataHeader.code = 200)) {
-  //         policyRes = res.body;
-  //         this.totalRecords = res.dataHeader.totalRecords;
-
-  //         const ref = this.dialogService.open(ModalRenewalComponent, {
-  //           data: {
-  //             process: process,
-  //             policy: policyRes,
-  //             buttonAction: buttonAction
-  //           },
-  //           header: process,
-  //           modal: true,
-  //           dismissableMask: true,
-  //           width: '80%',
-  //           contentStyle: { 'max-height': '600px', overflow: 'auto' },
-  //           baseZIndex: 10000,
-  //         });
-
-  //       } 
-  //     },
-  //     error: (error: ResponseErrorDTO) => {
-  //       console.error('error', error);
-  //     },
-  //   });
-  // }
-
   showModalConsulDetails(){
     this.dialogService.open(PolicyDetailsComponent,{
       data: {
@@ -261,5 +235,37 @@ export class ConsultPolicyComponent {
       contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px'},
       baseZIndex: 10000,
     })
+  }
+
+  getPolicy() {
+    this.loading = true;
+    this.productService.findPolicyDataById(this.selectedPolicy.policyNumber, 0).subscribe((res: any) => {
+      if (res.dataHeader.code && res.dataHeader.code == 200) {
+        const policy = res.body;
+        if (new Date(policy.plcy.plcyDtGrp.datos_basicos['FEC_FIN_VIG_POL']) > new Date(this.selectedPolicy.expirationDate)) {
+          this.showSuccess('error', 'Proceso pendiente', 'La póliza tiene un endoso pendiente');
+        } else {
+          this.showModal(PolicyRenewalComponent, 'Renovación', { policyBasic: this.selectedPolicy, policyData: policy }, 'Renovar', '96%', '100%', '100%');
+        }
+      } else {
+        this.showSuccess('error', 'Error interno', 'Por favor intente nuevamente');
+      }
+      this.loading = false;
+    });
+  }
+
+  showSuccess(status: string, title: string, msg: string) {
+    this.messageService.add({
+      severity: status,
+      summary: title,
+      detail: msg
+    });
+  }
+  
+  ngOnDestroy(): void {
+    // Cerramos todas las modales al cambiar de componente
+    this.dialogService.dialogComponentRefMap.forEach(dialog => {
+      dialog.destroy();
+    });
   }
 }

@@ -4,6 +4,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { environment } from 'commons-lib';
 import { CancelPolicy } from 'projects/policy-management/src/app/containers/main/components/consult-policy/interfaces/cancel-policy';
+import { of } from 'rxjs';
 
 describe('ModalPolicyActionsService', () => {
   let service: ModalPolicyActionsService;
@@ -71,8 +72,6 @@ describe('ModalPolicyActionsService', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     });
-    service = TestBed.inject(ModalPolicyActionsService);
-    httpController = TestBed.inject(HttpTestingController)
   });
 
   beforeEach( () => {
@@ -86,6 +85,18 @@ describe('ModalPolicyActionsService', () => {
   
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('savePolicyRenewal', () => {
+    service.savePolicyRenewal('Renovar', {}).subscribe((res) =>{
+      expect(res.dataHeader.code).toEqual(200);
+    });
+
+    const req = httpController.expectOne({
+      method: 'POST',
+      url: `${apiUrl}policy/savePolicyRenewal`
+    });
+    req.flush({ dataHeader: { code: 200 } });
   });
 
   it('getCauses', () => {
