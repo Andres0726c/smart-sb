@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ElementTableSearch } from 'projects/product-parameterization/src/app/core/model/ElementTableSearch.model';
@@ -15,13 +15,14 @@ export class ReactiveGroupFieldsComponent {
   @Input() group: any = new FormGroup({});
   @Input() policy: any;
   @Input() level: any;
-  @Input() validRule: boolean=true;
+  //@Input() validRule: boolean=true;
   @Output() updatePolicy: EventEmitter<any> = new EventEmitter();
   @Output() validRules: EventEmitter<any> = new EventEmitter();
   @Output() validRulesNot: EventEmitter<any> = new EventEmitter();
-  rule:boolean=false;
+  validRule:boolean=true;
 
   constructor(
+    public fb : FormBuilder,
     public dialogService: DialogService,
     public messageService: MessageService,
     public productService: ProductService
@@ -32,7 +33,6 @@ export class ReactiveGroupFieldsComponent {
   }
  
   executeRule(field:any,groupName:any,show:boolean) {
-    console.log(this.level);
   
     let valueAfter = this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp[groupName.value.code][field.value.businessCode]
     :this.policy.plcy.plcyDtGrp[groupName.value.code][field.value.businessCode];
@@ -45,14 +45,16 @@ export class ReactiveGroupFieldsComponent {
 
     valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.name
 
-  // console.log(valueCurrent,"actual");
-  // console.log(valueAfter,"despues");
+    console.log(valueCurrent,"actual");
+    console.log(valueAfter,"despues");
    
     if (valueCurrent !== valueAfter || show) {
 
       this.updatePolicy.emit();
       this.validRulesNot.emit();
-      this.validRule=true;
+     
+
+      field.addControl("test", this.fb.control(false));
        
       let levelField:any= [];
      
@@ -91,7 +93,10 @@ export class ReactiveGroupFieldsComponent {
 
           let errorRule = res.body;
           if(res.body ===''){
-            this.validRule=false;
+            
+            field.value.test = true;
+
+            console.log (field);
             this.validRules.emit();
             errorRule = res.dataHeader!.errorList[0].errorDescription!;
             
@@ -112,7 +117,9 @@ export class ReactiveGroupFieldsComponent {
     return obj !== undefined && obj !== null && obj.constructor == Object;
   }
 
-
+valid(){
+  console.log("llega");
+}
 
 
   showModal(title:any,field:any, message: string) {
