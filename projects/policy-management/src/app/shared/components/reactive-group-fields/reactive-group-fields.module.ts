@@ -6,6 +6,9 @@ import { AccordionModule } from 'primeng/accordion';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
+import { ModalResponseRulesModule } from '../modal-response-rules/modal-response-rules.module';
+import { DialogModule } from 'primeng/dialog';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { DropdownModule } from 'primeng/dropdown';
     AccordionModule,
     InputTextModule,
     CalendarModule,
-    DropdownModule
+    DropdownModule,
+    ModalResponseRulesModule,
+    // MessageModule,
+    // DialogModule,
   ],
   exports: [
     ReactiveGroupFieldsComponent

@@ -84,7 +84,7 @@
     <p-divider align="left" type="dashed" styleClass="my-2">
       <div class="inline-flex items-center">
         <em class="fal fa-ballot mr-2"></em>
-        <strong class="text-2xl font-bold">Datos a previzualiar</strong>
+        <strong class="text-2xl font-bold">Datos a previzualizar</strong>
       </div>
     </p-divider>
     <div>
@@ -94,6 +94,13 @@
           </div>
       </div>
   </div>  
+
+  <p-divider align="center" type="dashed" styleClass="my-2">
+    <div class="inline-flex items-center">
+      <em class="fal fa-ballot mr-2"></em>
+      <strong class="text-2xl font-bold">Datos a modificar</strong>
+    </div>
+  </p-divider>
 
   <p-divider align="left" type="dashed" styleClass="my-2">
     <div class="inline-flex items-center">
@@ -108,7 +115,7 @@
           <div formArrayName="policyData">
               <div class="p-5" *ngFor="let group of policyDataControls.controls; let i = index" formGroupName="{{i}}">
                   <!-- <ng-container *ngTemplateOutlet="groupFields;context:{group: group, data:true}"></ng-container> -->
-                  <smartcore-reactive-group-fields [group]="group"[policy]="policy" (updatePolicy)="transformData()"></smartcore-reactive-group-fields>
+                  <smartcore-reactive-group-fields [group]="group"[policy]="policy" [level]="'policy'" (validRules)="validRules()" (validRulesNot)="validRulesNot()" (updatePolicy)="transformData()"></smartcore-reactive-group-fields>
               </div>
           </div>
       </div>
@@ -126,7 +133,7 @@
                   <p-tabPanel [header]="risk.value.name" *ngFor="let risk of riskTypesControls.controls; let i = index" [selected]="i == 0" formGroupName="{{i}}">
                       <div formArrayName="complementaryData">
                           <div class="p-5" *ngFor="let group of getGroupsControls(risk).controls; let i = index" formGroupName="{{i}}">
-                            <smartcore-reactive-group-fields [group]="group"></smartcore-reactive-group-fields>
+                            <smartcore-reactive-group-fields [group]="group" [policy]="policy" [level]="'risk'" (validRules)="validRules()" (validRulesNot)="validRulesNot()" (updatePolicy)="transformData()"></smartcore-reactive-group-fields>
                           </div>
                       </div>
                   </p-tabPanel>
@@ -146,7 +153,7 @@
           pButton
           type="submit"
           class="p-button p-component ml-5 w-[100px]"
-          [disabled]="isNextDisabled"
+          [disabled]="isNextDisabled || !validRule"
         >
           <span class="p-button-label">Guardar</span>
         </button>

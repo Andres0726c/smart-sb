@@ -71,4 +71,15 @@ export class ProductService {
           headers: this.headers,
         })
   };
+
+  executeRule( data: any): Observable<any>{
+    
+    return this.httpClient.post<any>(`${this.apiUrl}rule/executeOneRule`, data, {headers: this.headers});
+  }
+
+  saveModify( data: any): Observable<any>{
+    console.log(data);
+    
+    return this.httpClient.post<any>(`${this.apiUrl}policy/saveModifyPolicy`, data, {headers: this.headers});
+  }
 }

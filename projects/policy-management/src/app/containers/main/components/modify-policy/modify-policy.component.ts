@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
 import { ResponseDTO, ResponseErrorDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { ComplementaryData } from 'projects/policy-management/src/app/core/interfaces/product/complementaryData';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
+import { ModalResponseRulesComponent } from 'projects/policy-management/src/app/shared/components/modal-response-rules/modal-response-rules.component';
 import { lastValueFrom } from 'rxjs';
 import { resourceLimits } from 'worker_threads';
 import { Identification } from '../consult-policy/interfaces/identification';
@@ -34,7 +37,8 @@ export interface DomainList {
 @Component({
   selector: 'app-modify-policy',
   templateUrl: './modify-policy.component.html',
-  styleUrls: ['./modify-policy.component.scss']
+  styleUrls: ['./modify-policy.component.scss'],
+  providers:[DialogService,MessageService]
 })
 export class ModifyPolicyComponent {
 
@@ -62,11 +66,14 @@ export class ModifyPolicyComponent {
   riskData: any;
   isNextDisabled = true;
   result: any;
+  validRule: boolean = true;
   options: any = [];
   constructor(
     public productService: ProductService,
     public consultPolicyService: ConsultPolicyService,
     private activatedroute: ActivatedRoute,
+    public dialogService: DialogService,
+    public messageService: MessageService,
     private router: Router,
     public fb: FormBuilder
   ) {
@@ -273,7 +280,7 @@ export class ModifyPolicyComponent {
                 // console.log(this.options);
                 fieldFG.addControl('options', this.fb.control(this.options));
               } else {
-                let options = [{ id: valueObj.value, name: valueObj.value }]
+                let options = [{ id: valueObj.value, name: valueObj.value }]//,{id: "1", name: "11"}
                 fieldFG.addControl('options', this.fb.control(options));
               }
             } else {
@@ -340,6 +347,7 @@ export class ModifyPolicyComponent {
   }
 
   getFieldsControls(group: any) {
+   // group.disable
     return group.get('fields') as FormArray;
   }
 
@@ -355,7 +363,7 @@ export class ModifyPolicyComponent {
     for (let group of dataControlsValue) {
       const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
       if (valueField) {
-        value = valueField.value;
+        value = !this.isObject(valueField.value)?valueField.value:valueField.value.name;
         break;
       }
     }
@@ -365,6 +373,7 @@ export class ModifyPolicyComponent {
 
   reverseMap(dataControls: any, groupData: any) {
     for (let objKey of Object.keys(groupData)) {
+
       for (let key of Object.keys(groupData[objKey])) {
         groupData[objKey][key] = this.getControlValue(dataControls.value, key);
       }
@@ -375,6 +384,7 @@ export class ModifyPolicyComponent {
     
     this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp);
 
+    
     for (let risk of this.riskTypesControls.controls) {
       this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp);
     }
@@ -384,14 +394,70 @@ export class ModifyPolicyComponent {
   }
 
   saveModification() {
-    console.log('formPolicy', this.formPolicy);
     this.transformData();
+
+  //  this.productService.saveModify(this.policy).subscribe((res: any) => {
+
+      let responsemModify:any; //= res;
+
+      let codeModal = 200;//responsemModify.dataHeader.code ===200 && responsemModify.body==='OK' ? 200:400
+
+         this.showModal("Modificación",codeModal,"");
+
+  //  });
+
+    
+
   }
 
+  
   cancelModification() {
     this.router.navigate(
       [`/polizas/consulta`],
     );
+  }
+
+  public isObject(obj: any) {
+    return obj !== undefined && obj !== null && obj.constructor == Object;
+  }
+
+  validRules(){
+
+    this.validRule = false;
+    console.log(this.validRule);
+    
+  }
+
+  validRulesNot(){
+
+    this.validRule = true;
+    console.log(this.validRule);
+    
+  }
+
+  showModal(title:any,field:any, message: string) {
+    const ref = this.dialogService.open(ModalResponseRulesComponent, {
+      data: {
+        title: title,
+        field:field,
+        message: message,
+      },
+      header: title,
+      modal: true,
+      dismissableMask: true,
+      width: '60%',
+      contentStyle: { 'max-height': '600px', overflow: 'auto' },
+      baseZIndex: 10000,
+    });
+
+    ref.onClose.subscribe((res: boolean) => {
+
+      this.router.navigate(
+        [`/polizas/consulta`],
+      );
+      
+      
+    });
   }
 
 }
