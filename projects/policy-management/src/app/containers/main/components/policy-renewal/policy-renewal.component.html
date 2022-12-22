@@ -46,8 +46,9 @@
             <div class="grid grid-cols-3 my-2 p-3 gap-5">
                 <div class="cols-1">
                     <label>Causa</label>
-                    <p-dropdown formControlName="causeType" [options]="causes" optionLabel="description" optionValue="id"
-                    placeholder="Seleccione la causa" class="block" [style]="{'width':'100%'}">
+                    <p-dropdown data-qa-id="sc-rsmf-drpdwn-renewal-cause"
+                        formControlName="causeType" [options]="causes" optionLabel="description" optionValue="id"
+                        placeholder="Seleccione la causa" class="block" [style]="{'width':'100%'}">
                     <ng-template let-cause pTemplate="item">
                         <div>
                         <div>{{cause.description}}</div>
@@ -57,28 +58,31 @@
                 </div>
                 <div class="col-span-3">
                     <label>Observación</label>
-                    <textarea formControlName="observation" rows="5" cols="30" pInputTextarea class="w-full"></textarea>
+                    <textarea data-qa-id="sc-rsmf-btn-txta-renewal-observation"
+                        formControlName="observation" rows="5" cols="30" pInputTextarea class="w-full"></textarea>
                     <small class="p-error block" *ngIf="formPolicy.get('observation')?.hasError('maxlength')">Máximo 200 caracteres</small>
                 </div>
             </div>
         </div>
         <div class="flex justify-center mt-5 gap-x-3">
             <div>
-                <p-button [label]="'Cancelar'" (click)="ref.close()" styleClass="p-button-danger"></p-button>
+                <p-button data-qa-id="sc-rsmf-btn-cancel-renewal"
+                    [label]="'Cancelar'" (click)="ref.close()" styleClass="p-button-danger"></p-button>
             </div>
             <div>
-                <p-button [label]="'Renovar'" (click)="confirmSave()" [disabled]="!formPolicy.valid"></p-button>
+                <p-button data-qa-id="sc-rsmf-btn-policy-renewal"
+                    [label]="'Renovar'" (click)="confirmSave()" [disabled]="!formPolicy.valid"></p-button>
             </div>
         </div>
     </form>
 </div>
 
-<p-confirmDialog
+<p-confirmDialog data-qa-id="sc-rsmf-modal-renewal-confirmation"
     acceptLabel="Si"
     rejectButtonStyleClass="p-button-secondary">
 </p-confirmDialog>
 
-<p-dialog data-qa-id="sc-rpmf-modal-saving" 
+<p-dialog data-qa-id="sc-rsmf-modal-saving-renewal" 
     header="Guardando..." [(visible)]="isSaving" [modal]="true" [draggable]="false" [closable]="false" styleClass="w-[200px]">
     <div class="flex justify-center pt-5">
         <smartcore-loading-spinner [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
