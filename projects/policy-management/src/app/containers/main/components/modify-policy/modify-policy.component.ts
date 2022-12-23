@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -24,21 +24,19 @@ export interface PolicyData {
   policyStatus: string;
   productName: string;
 }
+
 export interface HolderPolicy {
   name: string;
   label: string;
   dataTypeGui: string;
   dataTypeName: string;
 }
-export interface DomainList {
-  code: string;
-  description: string;
-}
+
 @Component({
   selector: 'app-modify-policy',
   templateUrl: './modify-policy.component.html',
   styleUrls: ['./modify-policy.component.scss'],
-  providers:[DialogService,MessageService]
+  providers: [DialogService, MessageService]
 })
 export class ModifyPolicyComponent {
 
@@ -54,8 +52,7 @@ export class ModifyPolicyComponent {
     nmContent: undefined,
   };
   policyIds = Number(this.activatedroute.snapshot.paramMap.get('id'));
-  list: any[] = [];
-  listAux: any = [];
+
   documentsType: Identification[] = [];
   policyData3: ComplementaryData[] | undefined;
   policyDataForm: any = new FormArray([]);
@@ -67,7 +64,12 @@ export class ModifyPolicyComponent {
   isNextDisabled = true;
   result: any;
   validRule: boolean = true;
-  options: any = [];
+  state: any = [];
+  url: any = "";
+  types: any = [];
+
+
+
   constructor(
     public productService: ProductService,
     public consultPolicyService: ConsultPolicyService,
@@ -99,7 +101,6 @@ export class ModifyPolicyComponent {
   }
 
   ngOnInit(): void {
-
     this.getPolicy();
     this.formPolicy.valueChanges.subscribe((v) => {
       this.result = this.validateSaveButton(this.policyData, this.policyDataControls, this.riskData, this.riskTypesControls);
@@ -110,8 +111,9 @@ export class ModifyPolicyComponent {
       }
     });
 
-    
+
   }
+
 
 
   validateSaveButton(policyData: any, policyDataControls: any, riskData: any, riskTypesControls: any) {
@@ -212,12 +214,8 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe((res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-        // console.log(this.product);
         this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
-
-        // console.log('riskData: ', this.riskTypesControls);
-        // console.log('policy: ', this.policyDataControls);
         this.isLoading = false;
       }
     });
@@ -269,18 +267,28 @@ export class ModifyPolicyComponent {
           fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
 
           if (field.dataType.guiComponent === 'List box') {
-            if (field.domainList) {
-              let domainList = JSON.parse(field.domainList.valueList);
 
+            if (field.domainList) {
+              let list: any = [], options: any = [], domainList = JSON.parse(field.domainList.valueList);
               if (domainList[0].url) {
-                const url = domainList[0].url.slice(11)
-                this.loadData(url, domainList[0].rlEngnCd);
-                this.options.push({ id: valueObj.value, name: valueObj.value });
-                // console.log(this.options.find((element: { id: string; })=>element.id==valueObj.value));
-                // console.log(this.options);
-                fieldFG.addControl('options', this.fb.control(this.options));
+                let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
+                // this.url = domainList[0].url.slice(11);
+                this.types.push(type);
+                list = localStorage.getItem(type);
+                list = JSON.parse(list);
+                if (list == null) {
+                  options.push({ id: valueObj.value, name: valueObj.value })
+                  this.loadData(url, domainList[0].rlEngnCd, type).then(datos => options.push(datos));
+                  fieldFG.addControl('options', this.fb.control(options));
+                }
+                else {
+                  options = this.validateList(list, valueObj);
+                  type == 'state' ? this.state = options.find((result: { id: any; }) => result.id == valueObj.value) : options;
+                  this.state && type == "city" ? options = this.validateStateList(this.state.id, type) : options;
+                  fieldFG.addControl('options', this.fb.control(options));
+                }
               } else {
-                let options = [{ id: valueObj.value, name: valueObj.value }]//,{id: "1", name: "11"}
+                options = this.validateList(options, valueObj);
                 fieldFG.addControl('options', this.fb.control(options));
               }
             } else {
@@ -299,45 +307,105 @@ export class ModifyPolicyComponent {
     return formArrayData;
   }
 
-  async loadData(url: string, rlEngnCd: string, parameters?: string) {
+  validateStateList(parameter: string, type: any, listPet?: any) {
+
+    let list: any = [], listAux: any = [], options: any = [], optionsAux: any = [];
+    if (parameter == "city") {
+
+      list = localStorage.getItem(type);
+      list = JSON.parse(list);
+
+      for (let list1 of list) {
+        listAux.push(list1.id);
+      }
+      console.log("state: ", parameter, "list: ", list);
+
+      for (let list1 of listAux) {
+        if (list1.slice(0, 2) == parameter) {
+          options.push(list1);
+        }
+      }
+
+      for (let list1 of list) {
+        for (let list2 of options) {
+          if (list2 == list1.id) {
+            optionsAux.push(list1);
+          }
+        }
+      }
+    }
+
+    if (type = "pets" && listPet != undefined) {
+      for (let list1 of listPet) {
+        listAux.push(list1.id);
+      }
+    }
+    return optionsAux;
+  }
+  validateList(list: any, valueObj: any) {
+    let listAux: any = [], x = list.find((result: { id: any; }) => result.id == valueObj.value);
+    listAux = list;
+    listAux.splice(listAux.indexOf(x), 1);
+    listAux.splice(0, 0, x);
+    return listAux;
+  }
+  orderData(domainList: any, dataList?: any) {
+    let options: any = [];
+    domainList.forEach((element: any) => {
+      let obj: any = { id: element.code, name: element.description }
+      if (obj.id != '' || obj != undefined) {
+        options.push(obj);
+      }
+    });
+    return options;
+  }
+
+
+  async loadData(url: string, rlEngnCd: string, type: any) {
     try {
       let res: any;
-
-
       if (url.slice(-1) != '/') {
         res = await lastValueFrom(this.productService.getApiData(url, rlEngnCd));
-
-      } else {
-        res = await lastValueFrom(this.productService.getApiData(url, rlEngnCd, parameters));
       }
-
+      if (url == "city/findByState/") {
+        res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, '0'))
+      }
+      if (url == "state/statefindbycountry/") {
+        res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, 'CO'))
+      }
       if (res.body) {
-        await this.setData(res);
+        await this.setData(res, type);
       }
-
     } catch (error) {
-
       console.log('Hubo un error:', error);
     }
   }
-  async setData(res: any) {
+  setData(res: any, type: any) {
+
     if (Array.isArray(res.body)) {
-        this.addToElementData(res.body);
+      this.addToElementData(res.body, type);
     } else {
-        this.addToElementData([res.body]);
+      this.addToElementData([res.body], type);
     }
 
   }
 
-  addToElementData(res: any[]) {
+  addToElementData(res: any[], type: any) {
+    let options: any = [];
+    let list: any = [];
+    let optionsAux: any = [];
 
     res.forEach((element: any) => {
       let obj: any = { id: element.code, name: element.description };
-      //let obj1:any={id:valueObj, name:element.description};
       if (obj.id != '' && obj.id != undefined) {
-          this.options.push(obj);
+        options.push(obj);
       }
     });
+    localStorage.setItem(type, JSON.stringify(options));
+    list = localStorage.getItem(type);
+    optionsAux = JSON.parse(list);
+    console.log(optionsAux)
+    console.log(type, ": ", localStorage.getItem(type));
 
 
   }
@@ -347,7 +415,7 @@ export class ModifyPolicyComponent {
   }
 
   getFieldsControls(group: any) {
-   // group.disable
+    // group.disable
     return group.get('fields') as FormArray;
   }
 
@@ -363,7 +431,7 @@ export class ModifyPolicyComponent {
     for (let group of dataControlsValue) {
       const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
       if (valueField) {
-        value = !this.isObject(valueField.value)?valueField.value:valueField.value.name;
+        value = !this.isObject(valueField.value) ? valueField.value : valueField.value.name;
         break;
       }
     }
@@ -381,10 +449,10 @@ export class ModifyPolicyComponent {
   }
 
   transformData() {
-    
+
     this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp);
 
-    
+
     for (let risk of this.riskTypesControls.controls) {
       this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp);
     }
@@ -396,50 +464,54 @@ export class ModifyPolicyComponent {
   saveModification() {
     this.transformData();
 
-  //  this.productService.saveModify(this.policy).subscribe((res: any) => {
+    //  this.productService.saveModify(this.policy).subscribe((res: any) => {
 
-      let responsemModify:any; //= res;
+    let responsemModify: any; //= res;
 
-      let codeModal = 200;//responsemModify.dataHeader.code ===200 && responsemModify.body==='OK' ? 200:400
+    let codeModal = 200;//responsemModify.dataHeader.code ===200 && responsemModify.body==='OK' ? 200:400
 
-         this.showModal("Modificación",codeModal,"");
+    this.showModal("Modificación", codeModal, "");
 
-  //  });
+    //  });
 
-    
+
 
   }
 
-  
+
   cancelModification() {
     this.router.navigate(
       [`/polizas/consulta`],
     );
+    for (let type of this.types) {
+      localStorage.removeItem(type)
+    }
+
   }
 
   public isObject(obj: any) {
     return obj !== undefined && obj !== null && obj.constructor == Object;
   }
 
-  validRules(){
+  validRules() {
 
     this.validRule = false;
     console.log(this.validRule);
-    
+
   }
 
-  validRulesNot(){
+  validRulesNot() {
 
     this.validRule = true;
     console.log(this.validRule);
-    
+
   }
 
-  showModal(title:any,field:any, message: string) {
+  showModal(title: any, field: any, message: string) {
     const ref = this.dialogService.open(ModalResponseRulesComponent, {
       data: {
         title: title,
-        field:field,
+        field: field,
         message: message,
       },
       header: title,
@@ -455,8 +527,8 @@ export class ModifyPolicyComponent {
       this.router.navigate(
         [`/polizas/consulta`],
       );
-      
-      
+
+
     });
   }
 
