@@ -386,15 +386,16 @@ export class ModifyPolicyComponent {
     }
   }
 
-  transformData() {
-    
+  transformData(flag:any) {
+
+    console.log("llega",flag)
     this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp);
 
     
     for (let risk of this.riskTypesControls.controls) {
       this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp);
     }
-
+    if (flag)
     this.savePolicyModify();
 
   }
@@ -414,7 +415,7 @@ export class ModifyPolicyComponent {
       `,
       header: 'Confirmación',
       accept: () => {
-        this.transformData();
+        this.transformData(true);
       }
   });
 
@@ -427,7 +428,7 @@ export class ModifyPolicyComponent {
     this.productService.saveModify(this.policy)
       .subscribe((resp: any) => {
 
-       
+       console.log("entra");
         if(resp.dataHeader.code != 500){
           this.ref.close(true)
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
