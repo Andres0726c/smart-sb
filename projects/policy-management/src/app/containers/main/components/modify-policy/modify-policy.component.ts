@@ -108,6 +108,9 @@ export class ModifyPolicyComponent {
 
   ngOnInit(): void {
 
+    console.log("antes del show");
+        this.showSuccess("prueba","prueba","prueba");
+
     this.getPolicy();
     this.formPolicy.valueChanges.subscribe((v) => {
       this.result = this.validateSaveButton(this.policyData, this.policyDataControls, this.riskData, this.riskTypesControls);
@@ -227,6 +230,7 @@ export class ModifyPolicyComponent {
         // console.log('riskData: ', this.riskTypesControls);
         // console.log('policy: ', this.policyDataControls);
         this.isLoading = false;
+        
       }
     });
   }
@@ -294,7 +298,7 @@ export class ModifyPolicyComponent {
                 else {
                   options = this.validateList(list, valueObj);
                   type == 'state' ? this.state = options.find((result: { id: any; }) => result.id == valueObj.value) : options;
-                  this.state && type == "city" ? options = this.validateStateList(this.state.id, type) : options;
+                 // this.state && type == "city" ? options = this.validateStateList(this.state.id, type) : options;
                   fieldFG.addControl('options', this.fb.control(options));
                 }
               } else {
@@ -443,7 +447,7 @@ export class ModifyPolicyComponent {
     for (let group of dataControlsValue) {
       const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
       if (valueField) {
-        value = !this.isObject(valueField.value) ? valueField.value : valueField.value.name;
+        value = !this.isObject(valueField.value) ? valueField.value : valueField.value.id;
         break;
       }
     }
@@ -504,7 +508,7 @@ export class ModifyPolicyComponent {
       .subscribe((resp: any) => {
 
         if (resp.dataHeader.code != 500) {
-          this.ref.close(true)
+         // this.ref.close(true)
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
         } else {
           this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
@@ -533,16 +537,12 @@ export class ModifyPolicyComponent {
     return obj !== undefined && obj !== null && obj.constructor == Object;
   }
 
-  validRules() {
-    this.validRule = false;
-  }
-
-  validRulesNot() {
-    this.validRule = true;
-    console.log(this.validRule);
+  validRules(flag:boolean) {
+    this.validRule = flag?true:false;
   }
 
   showSuccess(status: string, title: string, msg: string) {
+    console.log("llega a show");
     this.messageService.add({
       severity: status,
       summary: title,
