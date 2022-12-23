@@ -23,6 +23,8 @@ import { AccordionModule } from 'primeng/accordion';
 import { DialogModule } from 'primeng/dialog';
 import { ModalResponseRulesModule } from 'projects/policy-management/src/app/shared/components/modal-response-rules/modal-response-rules.module';
 import { DialogService } from 'primeng/dynamicdialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { CommonsLibModule } from 'commons-lib';
 
 
 const routes: Routes = [
@@ -48,8 +50,7 @@ const routes: Routes = [
     InputNumberModule,
     DropdownModule,
     ReactiveFormsModule,
-    // BrowserModule,
-    // BrowserAnimationsModule,
+    CommonsLibModule,
     MessageModule,
     MenuModule,
     TabMenuModule,
@@ -59,7 +60,9 @@ const routes: Routes = [
     CalendarModule,
     ReactiveGroupFieldsModule,
     AccordionModule,
-    ModalResponseRulesModule
+    ModalResponseRulesModule,
+    ConfirmDialogModule,
+    DialogModule,
   ]
 })
 export class ModifyPolicyModule { }

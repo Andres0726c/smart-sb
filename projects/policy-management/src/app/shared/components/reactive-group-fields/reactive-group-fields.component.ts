@@ -50,7 +50,7 @@ export class ReactiveGroupFieldsComponent {
    
     if (valueCurrent !== valueAfter || show) {
 
-      this.updatePolicy.emit();
+     // this.updatePolicy.emit();
       this.validRulesNot.emit();
      
 
