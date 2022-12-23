@@ -445,14 +445,14 @@ describe('ModifyPolicyComponent', () => {
     expect(spy).toBeDefined();
   });
 
-  xit('setData', () => {
+  it('setData', () => {
     let res: any = { body: { value: '', name: '' } };
     const spy = component.setData(res);
     const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
     expect(spy).toBeDefined();
   });
 
-  xit('addToElementData', () => {
+  it('addToElementData', () => {
     let res: any = { body: [{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }] };
     const spy = component.setData(res);
     const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
