@@ -288,7 +288,9 @@ describe('ModifyPolicyComponent', () => {
     expect(spy).toBeUndefined();
   });
   it('transformData', () => {
-    let a = [
+    let a = 
+    {
+      plcyDtGrp:
       {
         id: 1,
         name: "Datos básicos",
@@ -298,14 +300,19 @@ describe('ModifyPolicyComponent', () => {
             id: 67,
             code: { businessCode: "FEC_INI_VIG_POL", version: 1 }
           }]
-      }];
-    component.policy = [{
+      }
+    }
+    component.policy = {
+     plcy:{ 
+        plcyDtGrp: {
       id: 1,
       name: "Datos básicos",
       code: "datos_basicos",
-      plcyDtGrp: {},
+       },
+      risk:{
       rskDtGrp: {}
-    }];
+    }
+    }};
     component.policy.plcy = a;
     const spy2 = jest.spyOn(component, 'reverseMap').mockImplementation();
     component.transformData();

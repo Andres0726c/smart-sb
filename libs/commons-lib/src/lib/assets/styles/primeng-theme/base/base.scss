@@ -656,6 +656,10 @@ p-checkbox.ng-dirty.ng-invalid>.p-checkbox>.p-checkbox-box {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
+.p-dropdown .p-disabled .p-inputtex{
+  color: var(--greyscale-3);
+}
+
 .p-input-filled .p-dropdown {
   background: #e9ecef;
 }
@@ -984,6 +988,12 @@ p-inputswitch.ng-dirty.ng-invalid>.p-inputswitch {
 
 .p-inputtext.ng-dirty.ng-invalid {
   border-color: var(--danger-base);
+}
+
+.p-inputtext:disabled {
+  background-color: var(--greyscale-6);
+  color: var(--greyscale-3);
+  opacity: 1;
 }
 
 .p-inputtext.p-inputtext-sm {
@@ -4078,9 +4088,9 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   font-size: 2rem;
 }
 
-.p-dialog.p-confirm-dialog .p-confirm-dialog-message {
+/*.p-dialog.p-confirm-dialog .p-confirm-dialog-message {
   margin-left: 1rem;
-}
+}*/
 
 .p-overlaypanel {
   background: #ffffff;

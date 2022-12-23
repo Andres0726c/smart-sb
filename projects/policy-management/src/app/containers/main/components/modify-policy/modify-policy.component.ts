@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResponseDTO, ResponseErrorDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { ComplementaryData } from 'projects/policy-management/src/app/core/interfaces/product/complementaryData';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
@@ -38,7 +38,7 @@ export interface DomainList {
   selector: 'app-modify-policy',
   templateUrl: './modify-policy.component.html',
   styleUrls: ['./modify-policy.component.scss'],
-  providers:[DialogService,MessageService]
+  providers:[ConfirmationService,DynamicDialogRef,DialogService,MessageService]
 })
 export class ModifyPolicyComponent {
 
@@ -60,7 +60,10 @@ export class ModifyPolicyComponent {
   policyData3: ComplementaryData[] | undefined;
   policyDataForm: any = new FormArray([]);
   dataRiskValue: any = [];
+
   isLoading: boolean = false;
+  errorFlag: boolean = false;
+
   policy: any;
   policyData: any;
   riskData: any;
@@ -68,8 +71,11 @@ export class ModifyPolicyComponent {
   result: any;
   validRule: boolean = true;
   options: any = [];
+  isSaving = false;
   constructor(
+    private confirmationService: ConfirmationService,
     public productService: ProductService,
+    public ref: DynamicDialogRef,
     public consultPolicyService: ConsultPolicyService,
     private activatedroute: ActivatedRoute,
     public dialogService: DialogService,
@@ -181,7 +187,7 @@ export class ModifyPolicyComponent {
   getPolicy() {
     this.isLoading = true;
 
-    this.productService.findPolicyDataById(this.policyData.policyNumber).subscribe((res: any) => {
+    this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
         console.log(this.policy);
@@ -389,25 +395,52 @@ export class ModifyPolicyComponent {
       this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp);
     }
 
-    console.log('result', this.policy);
+    this.savePolicyModify();
 
   }
 
   saveModification() {
-    this.transformData();
 
-  //  this.productService.saveModify(this.policy).subscribe((res: any) => {
+    this.confirmationService.confirm({
+      message: `
+        <div class="flex justify-center pt-5 pb-3">
+            <img src="smartcore-commons/assets/styles/material-theme/icons/picto-alert.svg" alt="icon-warning">
+        </div>
+        <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl">
+          <p class="w-full text-center">
+            Está seguro de realizar esta la modificación?
+          </p>
+        </div>
+      `,
+      header: 'Confirmación',
+      accept: () => {
+        this.transformData();
+      }
+  });
 
-      let responsemModify:any; //= res;
 
-      let codeModal = 200;//responsemModify.dataHeader.code ===200 && responsemModify.body==='OK' ? 200:400
+  }
 
-         this.showModal("Modificación",codeModal,"");
+  savePolicyModify() {
+    this.isSaving = true
 
-  //  });
+    this.productService.saveModify(this.policy)
+      .subscribe((resp: any) => {
 
-    
-
+       
+        if(resp.dataHeader.code != 500){
+          this.ref.close(true)
+          this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
+        } else  {
+          this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
+        }
+        this.isSaving = false;
+      },
+      // (error) => {
+      //   this.messageError = true;
+      //   this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
+      // }
+      );
   }
 
   
@@ -422,42 +455,21 @@ export class ModifyPolicyComponent {
   }
 
   validRules(){
-
     this.validRule = false;
-    console.log(this.validRule);
-    
   }
 
   validRulesNot(){
-
     this.validRule = true;
     console.log(this.validRule);
-    
   }
 
-  showModal(title:any,field:any, message: string) {
-    const ref = this.dialogService.open(ModalResponseRulesComponent, {
-      data: {
-        title: title,
-        field:field,
-        message: message,
-      },
-      header: title,
-      modal: true,
-      dismissableMask: true,
-      width: '60%',
-      contentStyle: { 'max-height': '600px', overflow: 'auto' },
-      baseZIndex: 10000,
-    });
-
-    ref.onClose.subscribe((res: boolean) => {
-
-      this.router.navigate(
-        [`/polizas/consulta`],
-      );
-      
-      
+  showSuccess(status: string, title: string, msg: string) {
+    this.messageService.add({
+      severity: status,
+      summary: title,
+      detail: msg
     });
   }
 
+  
 }
