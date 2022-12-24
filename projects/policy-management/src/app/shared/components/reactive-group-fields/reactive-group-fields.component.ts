@@ -31,33 +31,41 @@ export class ReactiveGroupFieldsComponent {
   getFieldsControls(group: any) {
     return group.get('fields') as FormArray;
   }
- 
+
+
   executeRule(field:any,groupName:any,show:boolean) {
-  
+
+    console.log(field.value.validateRule.length);
+    console.log("field:", field);
+    console.log("policy: ",this.policy.plcy);
+    console.log("groupName: ", groupName)
+    console.log("show:", show)
+    console.log(this.policy.plcy.rsk['1'].rskDtGrp["datos_basicos"]["FECHA_EMISION"])
     let valueAfter = this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp[groupName.value.code][field.value.businessCode]
     :this.policy.plcy.plcyDtGrp[groupName.value.code][field.value.businessCode];
 
     //let validObj = this.isObject(field.value.value);
 
-  
-    
+
+
     let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.name;
 
+    console.log("valueCurrent: ",valueCurrent);
     valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.name
 
     console.log(valueCurrent,"actual");
     console.log(valueAfter,"despues");
-   
+
     if (valueCurrent !== valueAfter || show) {
 
      // this.updatePolicy.emit();
       this.validRulesNot.emit();
-     
 
-      field.addControl("test", this.fb.control(false));
-       
+
+      //field.addControl("test", this.fb.control(false));
+
       let levelField:any= [];
-     
+
       if(field.value.initializeRule.length !== 0 && valueCurrent !==''){
 
         levelField= [];
@@ -68,7 +76,7 @@ export class ReactiveGroupFieldsComponent {
           ruleIssue:this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp:this.policy.plcy.plcyDtGrp,
           keysContextVariables:levelField
         }
-  
+
         this.productService.executeRule(obj).subscribe((res: any) => {
 
           let errorRule = res.body;
@@ -88,29 +96,30 @@ export class ReactiveGroupFieldsComponent {
           ruleIssue:this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp:this.policy.plcy.plcyDtGrp,
           keysContextVariables:levelField
         }
-  
+
         this.productService.executeRule(obj).subscribe((res: any) => {
 
+          console.log("res: ",res);
           let errorRule = res.body;
           if(res.body ===''){
-            
+
             field.value.test = true;
 
             console.log (field);
             this.validRules.emit();
             errorRule = res.dataHeader!.errorList[0].errorDescription!;
-            
+
           }
 
           if(show)
           this.showModal("Regla de validación",field.value.validateRule[0],errorRule);
 
         });
-       
+
       }
 
     }
-   
+
   }
 
   public isObject(obj: any) {
@@ -138,10 +147,10 @@ valid(){
     });
 
     ref.onClose.subscribe((res: boolean) => {
-      
+
     });
   }
 
-  
+
 
 }
