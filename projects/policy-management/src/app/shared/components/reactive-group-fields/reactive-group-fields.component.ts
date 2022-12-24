@@ -18,7 +18,7 @@ export class ReactiveGroupFieldsComponent {
   //@Input() validRule: boolean=true;
   @Output() updatePolicy: EventEmitter<any> = new EventEmitter();
   @Output() validRules: EventEmitter<any> = new EventEmitter();
-  @Output() validRulesNot: EventEmitter<any> = new EventEmitter();
+  
   validRule:boolean=true;
 
   constructor(
@@ -41,17 +41,17 @@ export class ReactiveGroupFieldsComponent {
 
   
     
-    let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.name;
+    let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.id;
 
-    valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.name
+    valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id
 
     console.log(valueCurrent,"actual");
     console.log(valueAfter,"despues");
    
     if (valueCurrent !== valueAfter || show) {
 
-     // this.updatePolicy.emit();
-      this.validRulesNot.emit();
+      this.updatePolicy.emit(false);
+      this.validRules.emit(true);
      
 
       field.addControl("test", this.fb.control(false));
@@ -97,7 +97,7 @@ export class ReactiveGroupFieldsComponent {
             field.value.test = true;
 
             console.log (field);
-            this.validRules.emit();
+            this.validRules.emit(false);
             errorRule = res.dataHeader!.errorList[0].errorDescription!;
             
           }
