@@ -1,38 +1,22 @@
 <div class="py-5">
 
-    <!-- <p-messages severity="warning">
-        <ng-template pTemplate> Hubo un error. Vuelva a intentarlo. </ng-template>
-    </p-messages> -->
-    <div *ngIf="config.data.title !=='Modificación'">
-
         <div class="grid grid-cols-2 gap-y-2">
             <div>
                 <span class="text-primary 2xl font-bold">Campo:</span>
             </div>
             <div>
-            <span class="bagdeError"> {{ config.data.field.description }}</span>
+            <span class="bagdeError"> {{ config.data.field!.description }}</span>
         </div>
             <div>
                 <span class="text-primary 2xl font-bold">Regla:</span>
-                {{ config.data.field.code.name }}
+                {{ config.data.field!.code.name }}
             </div>
             <div>
-                     <span class="bagde">{{ config.data.message }}</span>
+                     <span class="bagde">{{ config.data!.message }}</span>
              </div>
         </div>
     </div>
 
-    <div *ngIf="config.data.title==='Modificación'">
-
-        <div class="flex flex-col m-1">
-            <p-messages severity="success">
-                <ng-template class="3xl font-bold" pTemplate> Modificación exitosa </ng-template>
-            </p-messages>
-    
-        </div>
-    </div>
-
-</div>
 <div class="flex justify-center" >
     <button
             pButton
