@@ -66,6 +66,7 @@ export class ModifyPolicyComponent {
 
   policy: any;
   policyData: any;
+  policyDataPreview: any;
   riskData: any;
   isNextDisabled = true;
   result: any;
@@ -101,6 +102,7 @@ export class ModifyPolicyComponent {
         idProduct: this.fb.control('', Validators.required),
         payValue: this.fb.control('', Validators.required),
       }),
+      policyDataPreview: this.fb.array([]),
       policyData: this.fb.array([]),
       riskData: this.fb.array([]),
     });
@@ -108,8 +110,6 @@ export class ModifyPolicyComponent {
 
   ngOnInit(): void {
 
-    console.log("antes del show");
-        this.showSuccess("prueba","prueba","prueba");
 
     this.getPolicy();
     this.formPolicy.valueChanges.subscribe((v) => {
@@ -183,6 +183,10 @@ export class ModifyPolicyComponent {
     return this.formPolicy?.get('policyData') as FormArray;
   }
 
+  get policyDataPreviewControls(): FormArray {
+    return this.formPolicy?.get('policyDataPreview') as FormArray;
+  }
+
   get riskTypesControls(): FormArray {
     return this.formPolicy?.get('riskData') as FormArray;
   }
@@ -196,8 +200,9 @@ export class ModifyPolicyComponent {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
         console.log(this.policy);
-        this.policyData = this.mapData(this.policy.plcy.plcyDtGrp);
-        this.riskData = this.mapData(this.policy.plcy.rsk['1'].rskDtGrp);
+        this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
+        this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
+        this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
         this.getProduct(this.policy.prdct);
       }
     });
@@ -223,7 +228,8 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe((res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-        // console.log(this.product);
+         console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp);
+        // this.formPolicy.setControl('policyDataPreview', this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
         this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
 
@@ -256,6 +262,7 @@ export class ModifyPolicyComponent {
   fillGroupData(groupsArray: any, arrayData: any) {
     let formArrayData: any = this.fb.array([]);
 
+
     for (let group of groupsArray) {
       let groupFG = this.fb.group({
         id: group.id,
@@ -273,7 +280,6 @@ export class ModifyPolicyComponent {
           let fieldFG = this.fb.group({});
 
           Object.keys(field).forEach(key => {
-
             fieldFG.addControl(key, this.fb.control(field[key]));
 
           });
@@ -466,11 +472,7 @@ export class ModifyPolicyComponent {
 
   transformData(flag:any) {
 
-    console.log("llega",flag)
-
     this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp);
-
-
     for (let risk of this.riskTypesControls.controls) {
       this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp);
     }
@@ -519,7 +521,11 @@ export class ModifyPolicyComponent {
         //   this.messageError = true;
         //   this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
         // }
+
+        
       );
+
+      
   }
 
 
@@ -542,12 +548,18 @@ export class ModifyPolicyComponent {
   }
 
   showSuccess(status: string, title: string, msg: string) {
-    console.log("llega a show");
     this.messageService.add({
       severity: status,
       summary: title,
       detail: msg
     });
+
+    // this.router.navigate(
+    //   [`/polizas/consulta`],
+    // );
+    // for (let type of this.types) {
+    //   localStorage.removeItem(type)
+    // }
   }
 
 

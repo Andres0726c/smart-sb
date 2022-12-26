@@ -25,6 +25,7 @@ import { ModalResponseRulesModule } from 'projects/policy-management/src/app/sha
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CommonsLibModule } from 'commons-lib';
+import { ToastModule } from 'primeng/toast';
 
 
 const routes: Routes = [
@@ -63,6 +64,7 @@ const routes: Routes = [
     ModalResponseRulesModule,
     ConfirmDialogModule,
     DialogModule,
+    ToastModule
   ]
 })
 export class ModifyPolicyModule { }

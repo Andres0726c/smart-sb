@@ -37,16 +37,13 @@ export class ReactiveGroupFieldsComponent {
     let valueAfter = this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp[groupName.value.code][field.value.businessCode]
     :this.policy.plcy.plcyDtGrp[groupName.value.code][field.value.businessCode];
 
-    //let validObj = this.isObject(field.value.value);
-
-  
-    
+   
     let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.id;
 
     valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id
 
-    console.log(valueCurrent,"actual");
-    console.log(valueAfter,"despues");
+    // console.log(valueCurrent,"actual");
+    // console.log(valueAfter,"despues");
    
     if (valueCurrent !== valueAfter || show) {
 
@@ -54,7 +51,8 @@ export class ReactiveGroupFieldsComponent {
       this.validRules.emit(true);
      
 
-      field.addControl("test", this.fb.control(false));
+      this.addControls(field);
+      // field.addControl("rule", this.fb.control(false));
        
       let levelField:any= [];
      
@@ -94,7 +92,7 @@ export class ReactiveGroupFieldsComponent {
           let errorRule = res.body;
           if(res.body ===''){
             
-            field.value.test = true;
+            field.value.rule = true;
 
             console.log (field);
             this.validRules.emit(false);
@@ -117,9 +115,14 @@ export class ReactiveGroupFieldsComponent {
     return obj !== undefined && obj !== null && obj.constructor == Object;
   }
 
-valid(){
-  console.log("llega");
-}
+  addControls(field:any){
+    field.addControl("rule", this.fb.control(false));
+  }
+
+
+  valid(){
+    console.log("llega");
+  }
 
 
   showModal(title:any,field:any, message: string) {

@@ -13,6 +13,7 @@ export interface Product{
 export interface ContentProduct{
     initialParameters: InitialParameters,
     policyData: ComplementaryData[],
-    riskTypes: RiskType[]
+    riskTypes: RiskType[],
+    mdfctnPrcss:any
 }
 
