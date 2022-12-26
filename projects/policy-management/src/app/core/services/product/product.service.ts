@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'commons-lib';
+
 import { map, Observable } from 'rxjs';
 import { ResponseDTO } from '../../interfaces/commun/response';
 import { Product } from '../../interfaces/product/product';
-
+import { DomainList } from '../../interfaces/domainList';
 @Injectable({
   providedIn: 'root',
 })
@@ -59,9 +60,10 @@ export class ProductService {
   };
 
   
-  getApiData = (serviceData: string = '', rlEngnCd: string = '', id:string='') => {
+  getApiData = (serviceData: string = '', rlEngnCd: string = '', id:string=''):Observable<any> => {
     id = (id !== '' ? `/${id}` : '');
-    return this.httpClient.get(`${this.apiUrl}${serviceData}${id}`, { headers: this.headers });
+    return this.httpClient.get<ResponseDTO<DomainList>>
+    (`${this.apiUrl}${serviceData}${id}`, { headers: this.headers });
   };
   
   findPolicyDataById = (idPolicy: number, status: number): Observable<any> => {
