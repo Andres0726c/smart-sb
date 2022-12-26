@@ -109,8 +109,6 @@ export class ModifyPolicyComponent {
   }
 
   ngOnInit(): void {
-
-
     this.getPolicy();
     this.formPolicy.valueChanges.subscribe((v) => {
       this.result = this.validateSaveButton(this.policyData, this.policyDataControls, this.riskData, this.riskTypesControls);
@@ -200,9 +198,11 @@ export class ModifyPolicyComponent {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
         console.log(this.policy);
+        
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
+        
         this.getProduct(this.policy.prdct);
       }
     });
@@ -226,6 +226,7 @@ export class ModifyPolicyComponent {
 
   getProduct(code: string) {
     this.productService.getProductByCode(code).subscribe((res: ResponseDTO<Product>) => {
+      console.log(res.dataHeader.code);
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
          console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp);
@@ -236,7 +237,7 @@ export class ModifyPolicyComponent {
         // console.log('riskData: ', this.riskTypesControls);
         // console.log('policy: ', this.policyDataControls);
         this.isLoading = false;
-        
+
       }
     });
   }
@@ -328,41 +329,41 @@ export class ModifyPolicyComponent {
     return formArrayData;
   }
 
-  validateStateList(parameter: string, type: any, listPet?: any) {
+  // validateStateList(parameter: string, type: any, listPet?: any) {
 
-    let list: any = [], listAux: any = [], options: any = [], optionsAux: any = [];
-    if (type == "city") {
+  //   let list: any = [], listAux: any = [], options: any = [], optionsAux: any = [];
+  //   if (type == "city") {
 
-      list = localStorage.getItem(type);
-      list = JSON.parse(list);
+  //     list = localStorage.getItem(type);
+  //     list = JSON.parse(list);
 
-      for (let list1 of list) {
-        listAux.push(list1.id);
-      }
-      console.log("state: ", parameter, "list: ", list);
+  //     for (let list1 of list) {
+  //       listAux.push(list1.id);
+  //     }
+  //     console.log("state: ", parameter, "list: ", list);
 
-      for (let list1 of listAux) {
-        if (list1.slice(0, 2) == parameter) {
-          options.push(list1);
-        }
-      }
+  //     for (let list1 of listAux) {
+  //       if (list1.slice(0, 2) == parameter) {
+  //         options.push(list1);
+  //       }
+  //     }
 
-      for (let list1 of list) {
-        for (let list2 of options) {
-          if (list2 == list1.id) {
-            optionsAux.push(list1);
-          }
-        }
-      }
-    }
+  //     for (let list1 of list) {
+  //       for (let list2 of options) {
+  //         if (list2 == list1.id) {
+  //           optionsAux.push(list1);
+  //         }
+  //       }
+  //     }
+  //   }
 
-    if (type = "pets" && listPet != undefined) {
-      for (let list1 of listPet) {
-        listAux.push(list1.id);
-      }
-    }
-    return optionsAux;
-  }
+  //   if (type = "pets" && listPet != undefined) {
+  //     for (let list1 of listPet) {
+  //       listAux.push(list1.id);
+  //     }
+  //   }
+  //   return optionsAux;
+  // }
   validateList(list: any, valueObj: any) {
     let listAux: any = [], x = list.find((result: { id: any; }) => result.id == valueObj.value);
     listAux = list;
@@ -509,6 +510,7 @@ export class ModifyPolicyComponent {
     this.productService.saveModify(this.policy)
       .subscribe((resp: any) => {
 
+        console.log(resp);
         if (resp.dataHeader.code != 500) {
          // this.ref.close(true)
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
@@ -548,6 +550,7 @@ export class ModifyPolicyComponent {
   }
 
   showSuccess(status: string, title: string, msg: string) {
+   
     this.messageService.add({
       severity: status,
       summary: title,

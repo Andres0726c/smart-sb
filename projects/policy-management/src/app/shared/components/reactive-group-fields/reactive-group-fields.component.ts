@@ -18,7 +18,7 @@ export class ReactiveGroupFieldsComponent {
   //@Input() validRule: boolean=true;
   @Output() updatePolicy: EventEmitter<any> = new EventEmitter();
   @Output() validRules: EventEmitter<any> = new EventEmitter();
-  
+
   validRule:boolean=true;
 
   constructor(
@@ -31,31 +31,36 @@ export class ReactiveGroupFieldsComponent {
   getFieldsControls(group: any) {
     return group.get('fields') as FormArray;
   }
- 
+
   executeRule(field:any,groupName:any,show:boolean) {
-  
+
     let valueAfter = this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp[groupName.value.code][field.value.businessCode]
     :this.policy.plcy.plcyDtGrp[groupName.value.code][field.value.businessCode];
 
    
+    //let validObj = this.isObject(field.value.value);
+
+
+
     let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.id;
 
     valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id
 
     // console.log(valueCurrent,"actual");
     // console.log(valueAfter,"despues");
-   
+
     if (valueCurrent !== valueAfter || show) {
 
       this.updatePolicy.emit(false);
       this.validRules.emit(true);
-     
 
       this.addControls(field);
+
       // field.addControl("rule", this.fb.control(false));
-       
+      
+
       let levelField:any= [];
-     
+
       if(field.value.initializeRule.length !== 0 && valueCurrent !==''){
 
         levelField= [];
@@ -66,7 +71,7 @@ export class ReactiveGroupFieldsComponent {
           ruleIssue:this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp:this.policy.plcy.plcyDtGrp,
           keysContextVariables:levelField
         }
-  
+
         this.productService.executeRule(obj).subscribe((res: any) => {
 
           let errorRule = res.body;
@@ -86,7 +91,7 @@ export class ReactiveGroupFieldsComponent {
           ruleIssue:this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp:this.policy.plcy.plcyDtGrp,
           keysContextVariables:levelField
         }
-  
+
         this.productService.executeRule(obj).subscribe((res: any) => {
 
           let errorRule = res.body;
@@ -97,18 +102,18 @@ export class ReactiveGroupFieldsComponent {
             console.log (field);
             this.validRules.emit(false);
             errorRule = res.dataHeader!.errorList[0].errorDescription!;
-            
+
           }
 
           if(show)
           this.showModal("Regla de validación",field.value.validateRule[0],errorRule);
 
         });
-       
+
       }
 
     }
-   
+
   }
 
   public isObject(obj: any) {
@@ -141,10 +146,10 @@ export class ReactiveGroupFieldsComponent {
     });
 
     ref.onClose.subscribe((res: boolean) => {
-      
+
     });
   }
 
-  
+
 
 }
