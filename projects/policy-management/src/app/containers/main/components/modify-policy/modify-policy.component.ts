@@ -108,7 +108,7 @@ export class ModifyPolicyComponent {
 
   ngOnInit(): void {
 
-    console.log("antes del show");
+    //console.log("antes del show");
         this.showSuccess("prueba","prueba","prueba");
 
     this.getPolicy();
@@ -197,6 +197,7 @@ export class ModifyPolicyComponent {
         this.policy = res.body;
         console.log(this.policy);
         this.policyData = this.mapData(this.policy.plcy.plcyDtGrp);
+        console.log(this.policy);
         this.riskData = this.mapData(this.policy.plcy.rsk['1'].rskDtGrp);
         this.getProduct(this.policy.prdct);
       }
@@ -221,16 +222,17 @@ export class ModifyPolicyComponent {
 
   getProduct(code: string) {
     this.productService.getProductByCode(code).subscribe((res: ResponseDTO<Product>) => {
+      console.log(res.dataHeader.code);
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-        // console.log(this.product);
+        console.log(this.product);
         this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
 
         // console.log('riskData: ', this.riskTypesControls);
         // console.log('policy: ', this.policyDataControls);
         this.isLoading = false;
-        
+
       }
     });
   }
@@ -322,41 +324,41 @@ export class ModifyPolicyComponent {
     return formArrayData;
   }
 
-  validateStateList(parameter: string, type: any, listPet?: any) {
+  // validateStateList(parameter: string, type: any, listPet?: any) {
 
-    let list: any = [], listAux: any = [], options: any = [], optionsAux: any = [];
-    if (type == "city") {
+  //   let list: any = [], listAux: any = [], options: any = [], optionsAux: any = [];
+  //   if (type == "city") {
 
-      list = localStorage.getItem(type);
-      list = JSON.parse(list);
+  //     list = localStorage.getItem(type);
+  //     list = JSON.parse(list);
 
-      for (let list1 of list) {
-        listAux.push(list1.id);
-      }
-      console.log("state: ", parameter, "list: ", list);
+  //     for (let list1 of list) {
+  //       listAux.push(list1.id);
+  //     }
+  //     console.log("state: ", parameter, "list: ", list);
 
-      for (let list1 of listAux) {
-        if (list1.slice(0, 2) == parameter) {
-          options.push(list1);
-        }
-      }
+  //     for (let list1 of listAux) {
+  //       if (list1.slice(0, 2) == parameter) {
+  //         options.push(list1);
+  //       }
+  //     }
 
-      for (let list1 of list) {
-        for (let list2 of options) {
-          if (list2 == list1.id) {
-            optionsAux.push(list1);
-          }
-        }
-      }
-    }
+  //     for (let list1 of list) {
+  //       for (let list2 of options) {
+  //         if (list2 == list1.id) {
+  //           optionsAux.push(list1);
+  //         }
+  //       }
+  //     }
+  //   }
 
-    if (type = "pets" && listPet != undefined) {
-      for (let list1 of listPet) {
-        listAux.push(list1.id);
-      }
-    }
-    return optionsAux;
-  }
+  //   if (type = "pets" && listPet != undefined) {
+  //     for (let list1 of listPet) {
+  //       listAux.push(list1.id);
+  //     }
+  //   }
+  //   return optionsAux;
+  // }
   validateList(list: any, valueObj: any) {
     let listAux: any = [], x = list.find((result: { id: any; }) => result.id == valueObj.value);
     listAux = list;
@@ -507,6 +509,7 @@ export class ModifyPolicyComponent {
     this.productService.saveModify(this.policy)
       .subscribe((resp: any) => {
 
+        console.log(resp);
         if (resp.dataHeader.code != 500) {
          // this.ref.close(true)
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
@@ -542,7 +545,7 @@ export class ModifyPolicyComponent {
   }
 
   showSuccess(status: string, title: string, msg: string) {
-    console.log("llega a show");
+    //Sconsole.log("llega a show");
     this.messageService.add({
       severity: status,
       summary: title,

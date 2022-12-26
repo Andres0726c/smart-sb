@@ -9,12 +9,15 @@ import { of } from 'rxjs';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { ConsultPolicyService } from '../consult-policy/services/consult-policy.service';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ConfirmationService } from 'primeng/api';
 
 describe('ModifyPolicyComponent', () => {
   let component: ModifyPolicyComponent;
   let fixture: ComponentFixture<ModifyPolicyComponent>;
   let productService: ProductService;
   let consultPolicyService: ConsultPolicyService;
+  let confirmationService:ConfirmationService;
   let formBuilderMock = new FormBuilder();
   let router: Router;
 
@@ -76,6 +79,7 @@ describe('ModifyPolicyComponent', () => {
         ProductService,
         FormBuilder,
         ConsultPolicyService,
+        ConfirmationService,
         {
           provide: FormArray,
           useValue: {},
@@ -84,7 +88,8 @@ describe('ModifyPolicyComponent', () => {
           provide: FormGroup,
           useValue: {},
         },
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
 
     })
       .compileComponents();
@@ -93,6 +98,7 @@ describe('ModifyPolicyComponent', () => {
     fixture = TestBed.createComponent(ModifyPolicyComponent);
     component = fixture.componentInstance;
     productService = TestBed.inject(ProductService);
+    confirmationService = TestBed.inject(ConfirmationService);
     consultPolicyService = TestBed.inject(ConsultPolicyService);
     router = TestBed.inject(Router);
     fixture.detectChanges();
@@ -111,23 +117,17 @@ describe('ModifyPolicyComponent', () => {
   it('getProduct', () => {
 
     const res: ResponseDTO<any> = {
-      body: {
-        id: 72,
-        nmName: "nombre",
-        dsDescription: "descripcion",
-        nmHashCode: 3000,
-        policyData: [ {id: 72,   name: "abc",
-                      code: '300',
-                      fields: [{id: 123,code: "string",name: "string",label: "string",dataTypeGui: "string",dataTypeName: "string",initializeRule: [],validateRule: [],dependency: 23,required: true,visible: true,}],
-                    }],
-        riskTypes:[{id: 1,
-                    code: {businessCode: "abc"},
-                    name: "abd",
-                    description: "description",
-                    complementaryData: {id: 20,name: "fgh",code: "abc", fields: [{id: 123,code: "string",name: "string",label: "string",dataTypeGui: "string",dataTypeName: "string",initializeRule: [],validateRule: [],dependency: 23,required: true,visible: true}]},
-                    businessPlans:[]
-                  }]
-      },
+      body:
+        {
+          id: 72,
+          nmName: 'producto_seguro_diciembre',
+          dsDescription: 'producto_seguro_diciembre',
+          nmHashCode: 200,
+          plcy: [Object],
+          plcyNmbr: '100000000000419',
+          rqstNmbr: '432'
+        }
+      ,
       dataHeader: {
         code: 200,
         status: 'OK',
@@ -138,8 +138,6 @@ describe('ModifyPolicyComponent', () => {
         totalRecords: 106,
       },
     };
-
-    let isLoading = false;
     let idProduct = '72';
     const spy = jest.spyOn(productService, 'getProductById').mockReturnValue(of(res));
     const spy2 = jest.spyOn(component, 'fillGroupData').mockImplementation();
@@ -147,7 +145,8 @@ describe('ModifyPolicyComponent', () => {
     component.policyDataControls;
     component.riskTypesControls;
     const spy1 = component.getProduct(idProduct);
-    console.log(spy2);
+    console.log(spy1);
+    expect(spy2).toBeDefined();
     expect(spy1).toBeUndefined();
   });
   it('getPolicy', () => {
@@ -194,10 +193,13 @@ describe('ModifyPolicyComponent', () => {
 
   it('saveModification', () => {
     let riskTypes = component.fb.array([]);
+
     component.addControls(riskTypes);
     component.getFieldsControls(riskTypes);
     component.getGroupsControls(riskTypes);
-    component.saveModification();
+    //const spy2 = jest.spyOn(ConfirmationService, 'confirm').mockReturnValue(of(res));;
+    expect(component.saveModification()).toBeUndefined();
+
   });
 
 
@@ -287,37 +289,42 @@ describe('ModifyPolicyComponent', () => {
     const spy = component.reverseMap(control, groupData);
     expect(spy).toBeUndefined();
   });
-  // xit('transformData', () => {
-  //   let a =
-  //   {
-  //     plcyDtGrp:
-  //     {
-  //       id: 1,
-  //       name: "Datos básicos",
-  //       code: "datos_basicos",
-  //       fields: [
-  //         {
-  //           id: 67,
-  //           code: { businessCode: "FEC_INI_VIG_POL", version: 1 }
-  //         }]
-  //     }
-  //   }
-  //   component.policy = {
-  //    plcy:{
-  //       plcyDtGrp: {
-  //     id: 1,
-  //     name: "Datos básicos",
-  //     code: "datos_basicos",
-  //      },
-  //     risk:{
-  //     rskDtGrp: {}
-  //   }
-  //   }};
-  //   component.policy.plcy = a;
-  //   const spy2 = jest.spyOn(component, 'reverseMap').mockImplementation();
-  //   component.transformData();
-  //   expect(spy2).toBeCalled();
-  // });
+  it('transformData', () => {
+    let a =
+    {
+      plcyDtGrp:
+      {
+        id: 1,
+        name: "Datos básicos",
+        code: "datos_basicos",
+        fields: [
+          {
+            id: 67,
+            code: { businessCode: "FEC_INI_VIG_POL", version: 1 }
+          }]
+      }
+    }
+    component.policy = {
+     plcy:{
+        plcyDtGrp: {
+      id: 1,
+      name: "Datos básicos",
+      code: "datos_basicos",
+       },
+      risk:{
+      rskDtGrp: {}
+    }
+    }};
+    component.policy.plcy = a;
+    let flag=true;
+    const spy2 = jest.spyOn(component, 'reverseMap').mockImplementation();
+    const spy3= jest.spyOn(component, 'savePolicyModify').mockImplementation();
+    const spy=component.transformData(flag);
+    expect(spy2).toBeCalled();
+    expect(spy3).toBeCalled();
+    expect(spy).toBeUndefined();
+  });
+
   it('getControlValue', () => {
 
     let dataControlsValue = [{
@@ -436,33 +443,83 @@ describe('ModifyPolicyComponent', () => {
 
   });
 
-  it('loadData', () => {
-    let url = 'identificationtype/findAllIdentification',
-      rlEngnCd = 'MTR_SMT', parameters = '';
-    const spy = component.loadData(url, rlEngnCd, parameters);
-    const spy2 = jest.spyOn(component, 'setData').mockImplementation();
-    expect(spy).toBeDefined();
+  describe('loadData', () => {
+    it('/', () => {
+      let url = 'identificationtype/findAllIdentification',
+        rlEngnCd = 'MTR_SMT', type = 'city';
+      const spy = component.loadData(url, rlEngnCd, type);
+      const spy2 = jest.spyOn(component, 'setData').mockImplementation();
+      expect(spy).toBeDefined();
+    });
+
+    it('city/findByState/', () => {
+      let url = 'city/findByState/',
+        rlEngnCd = 'MTR_SMT', type = 'city';
+      const spy = component.loadData(url, rlEngnCd, type);
+      const spy2 = jest.spyOn(component, 'setData').mockImplementation();
+      expect(spy).toBeDefined();
+    });
+    it('state/statefindbycountry/', () => {
+      let url = 'state/statefindbycountry/',
+        rlEngnCd = 'MTR_SMT', type = 'city';
+      const spy = component.loadData(url, rlEngnCd, type);
+      const spy2 = jest.spyOn(component, 'setData').mockImplementation();
+      expect(spy).toBeDefined();
+    });
   });
 
-  it('loadDataElse', () => {
-    let url = 'state/statefindbycountry/',
-      rlEngnCd = 'MTR_SMT', parameters = 'CO';
-    const spy = component.loadData(url, rlEngnCd, parameters);
-    const spy2 = jest.spyOn(component, 'setData').mockImplementation();
-    expect(spy).toBeDefined();
-  });
-
-  xit('setData', () => {
+  it('setData', () => {
     let res: any = { body: { value: '', name: '' } };
-    //const spy = component.setData(res);
+    const spy = component.setData(res,'city');
     const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
+    expect(spy).toBeUndefined();
     expect(spy2).toBeDefined();
   });
 
-  xit('addToElementData', () => {
+  it('addToElementData', () => {
     let res: any = { body: [{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }] };
-    //const spy = component.setData(res);
+    const spy = component.setData(res,'city');
     const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
+    expect(spy).toBeUndefined();
     expect(spy2).toBeDefined();
   });
+
+  it('savePolicyModify',()=>{
+      component.policy=policies;
+      const spy=component.savePolicyModify();
+      const spy2 = jest.spyOn(component, 'showSuccess').mockImplementation();
+      expect(spy).toBeUndefined();
+      expect(spy2).toBeDefined();
+  });
+
+  describe('validRules',()=>{
+    let flag;
+    //component.validRule=true;
+    it('true',()=>{
+      flag=true;
+      const spy =component.validRules(flag);
+      expect(spy).toBeUndefined();
+    });
+    it('false',()=>{
+      flag=false;
+      const spy =component.validRules(flag);
+      expect(spy).toBeUndefined();
+    });
+  });
+
+  it('validateList',()=>{
+
+    let list: any=[{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }];
+    let valueObj: any=[{ code: 'abc', description: 'abc' }];
+    component.validateList(list,valueObj);
+  });
+
+
+  it('orderData',()=>{
+
+    let list: any=[{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }];
+    let valueObj: any=[{ code: 'abc', description: 'abc' }];
+    component.orderData(list,valueObj);
+  });
+
 });
