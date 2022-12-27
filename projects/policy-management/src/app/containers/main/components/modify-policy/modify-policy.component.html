@@ -131,7 +131,7 @@
           <div formArrayName="riskData">
               <p-tabView [scrollable]="false">
                   <p-tabPanel [header]="risk.value.name" *ngFor="let risk of riskTypesControls.controls; let i = index" [selected]="i == 0" formGroupName="{{i}}">
-                      <div formArrayName="complementaryData">
+                      <div formArrayName="rskTypDtGrp">
                           <div class="p-5" *ngFor="let group of getGroupsControls(risk).controls; let i = index" formGroupName="{{i}}">
                             <smartcore-reactive-group-fields [group]="group" [policy]="policy" [level]="'risk'" (validRules)="validRules($event)"  (updatePolicy)="transformData($event)"></smartcore-reactive-group-fields>
                           </div>

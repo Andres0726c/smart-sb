@@ -28,6 +28,10 @@ export class ReactiveGroupFieldsComponent {
     public productService: ProductService
   ) {}
 
+  ngOnInit() {
+    console.log(this.group);
+  }
+
   getFieldsControls(group: any) {
     return group.get('fields') as FormArray;
   }
