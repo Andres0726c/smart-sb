@@ -65,6 +65,7 @@ export class ModifyPolicyComponent {
   policyData: any;
   policyDataPreview: any;
   riskData: any;
+  riskDataPreview: any;
   isNextDisabled = true;
   result: any;
   validRule: boolean = true;
@@ -103,6 +104,7 @@ export class ModifyPolicyComponent {
       policyDataPreview: this.fb.array([]),
       policyData: this.fb.array([]),
       riskData: this.fb.array([]),
+      riskDataPreview: this.fb.array([]),
     });
   }
 
@@ -184,6 +186,10 @@ export class ModifyPolicyComponent {
     return this.formPolicy?.get('policyDataPreview') as FormArray;
   }
 
+  get riskTypesPreviewControls(): FormArray {
+    return this.formPolicy?.get('riskDataPreview') as FormArray;
+  }
+
   get riskTypesControls(): FormArray {
     return this.formPolicy?.get('riskData') as FormArray;
   }
@@ -199,6 +205,7 @@ export class ModifyPolicyComponent {
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
+        this.riskDataPreview = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
        
         this.getProduct(this.policy.prdct);
       }
@@ -225,13 +232,15 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-         console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp);
+         console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp);
          //this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp
-        // this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
+        this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview,false));
+       // this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp,true));
+        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp,false));
         this.formPolicy.setControl('policyData',
          await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp//this.product.nmContent?.policyData
-          , this.policyData));
-        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp));//this.product.nmContent?.riskTypes
+          , this.policyData,true));
+        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp,true));//this.product.nmContent?.riskTypes
 
          console.log('riskData: ', this.riskTypesControls);
         // console.log('policy: ', this.policyDataControls);
@@ -241,8 +250,24 @@ export class ModifyPolicyComponent {
     });
   }
 
-async  fillRiskData(riskTypes: any) {
+async  fillRiskData(riskTypes: any, flag:boolean) {
     let risksArrayData: any = this.fb.array([]);
+
+    console.log('risk',riskTypes);
+
+    if (!flag) {
+
+      let groupRisk = this.fb.group({
+        id: riskTypes.code,
+        name: riskTypes.name,
+        description: riskTypes.description,
+        code: riskTypes.code,
+        rskTypDtGrp: await this.fillGroupData(riskTypes.rskTypDtGrp, this.riskDataPreview,true)
+      });
+
+      (<FormArray>risksArrayData).push(groupRisk);
+
+    } else {
 
     for (let risk of riskTypes) {
       let groupRisk = this.fb.group({
@@ -250,16 +275,18 @@ async  fillRiskData(riskTypes: any) {
         name: risk.name,
         description: risk.description,
         code: risk.code,
-        rskTypDtGrp: await this.fillGroupData(risk.rskTypDtGrp, this.riskData)
+        rskTypDtGrp: await this.fillGroupData(risk.rskTypDtGrp, this.riskData,flag)
       });
 
       (<FormArray>risksArrayData).push(groupRisk);
     }
+  }
+    console.log(risksArrayData)
 
     return risksArrayData;
   }
 
-  async fillGroupData(groupsArray: any, arrayData: any) {
+  async fillGroupData(groupsArray: any, arrayData: any,flag:boolean) {
     let formArrayData: any = this.fb.array([]);
 
     
@@ -290,7 +317,7 @@ async  fillRiskData(riskTypes: any) {
 
           if (field.dataType.guiComponent === 'List box') {
 
-            if (field.domainList) {
+            if (field.domainList && flag) {
               let list: any = [], options: any = [], domainList = field.domainList.valueList;//JSON.parse(field.domainList.valueList);
               
               if (domainList[0].url) {
@@ -408,18 +435,20 @@ async  fillRiskData(riskTypes: any) {
     try {
       let res: any;
       if (url.slice(-1) != '/') {
-        this.productService.getApiData(url, rlEngnCd).subscribe( async (rs)=>{
+        res = await lastValueFrom(this.productService.getApiData(url, rlEngnCd))
+        // this.productService.getApiData(url, rlEngnCd).subscribe( async (rs)=>{
 
-          console.log(rs);
-          res=rs;
+        //   console.log(rs);
+        //   res=rs;
 
           
 
-         //await this.setData(res, type);
-        });
+        //  //await this.setData(res, type);
+        // });
       }
       if (url == "city/findByState/") {
-        res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, '0'))
+         res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, '0'))
+        
       }
       if (url == "state/statefindbycountry/") {
         res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, 'CO'))
