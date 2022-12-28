@@ -68,57 +68,53 @@ export class FilterPolicyTopComponent {
       this.documentsType = data;
     });
 
-    this.productService.getApiData('city/findByState', '','0').subscribe((res) => {
-      this.setData(res, 'city');
-    });
+    this.productService
+      .getApiData('city/findByState', '', '0')
+      .subscribe((res) => {
+        this.setData(res, 'city');
+      });
 
-    this.productService.getApiData('state/statefindbycountry', '','CO').subscribe((res) => {
-      this.setData(res, 'state');
-    });
+    this.productService
+      .getApiData('state/statefindbycountry', '', 'CO')
+      .subscribe((res) => {
+        this.setData(res, 'state');
+      });
 
     this.productService.getApiData('paymentmethod/findAll').subscribe((res) => {
       this.setData(res, 'paymentmethod');
     });
 
-    
-    this.productService.getApiData('identificationtype/findAllIdentification').subscribe((res) => {
-      this.setData(res, 'identificationtype');
+    this.productService
+      .getApiData('identificationtype/findAllIdentification')
+      .subscribe((res) => {
+        this.setData(res, 'identificationtype');
+      });
+  }
+
+  setData(res: any, type: any) {
+    if (Array.isArray(res.body)) {
+      this.addToElementData(res.body, type);
+    } else {
+      this.addToElementData([res.body], type);
+    }
+  }
+
+  addToElementData(res: any[], type: any) {
+    let options: any = [];
+    let list: any = [];
+    let optionsAux: any = [];
+
+    res.forEach((element: any) => {
+      let obj: any = { id: element.code, name: element.description };
+      if (obj.id != '' && obj.id != undefined) {
+        options.push(obj);
+      }
     });
 
+    localStorage.setItem(type, JSON.stringify(options));
+    list = localStorage.getItem(type);
+    optionsAux = JSON.parse(list);
   }
-
-
- setData(res: any, type: any) {
-
-  if (Array.isArray(res.body)) {
-
-     this.addToElementData(res.body, type);
-  } else {
-     this.addToElementData([res.body], type);
-  }
-
-}
-
- addToElementData(res: any[], type: any) {
-  let options: any = [];
-  let list: any = [];
-  let optionsAux: any = [];
-
-  res.forEach((element: any) => {
-    let obj: any = { id: element.code, name: element.description };
-    if (obj.id != '' && obj.id != undefined) {
-      options.push(obj);
-    }
-  });
-
-  localStorage.setItem(type, JSON.stringify(options));
-  list = localStorage.getItem(type);
-  optionsAux = JSON.parse(list);
-  console.log(optionsAux)
-  console.log(type, ": ", localStorage.getItem(type));
-
-
-}
 
   validateFields(field: FieldDocument): boolean {
     let type: number = this.formQueryFilter.get(field.type)?.value ? 1 : 0;
@@ -209,9 +205,9 @@ export class FilterPolicyTopComponent {
     for (const field in this.formQueryFilter.controls) {
       this.formQueryFilter.get(field)?.setValue('');
     }
-    this.toggleRequired(false)
+    this.toggleRequired(false);
     this.errorAllForm = false;
-    this.emitClear.emit()
+    this.emitClear.emit();
   }
 
   onClearField(field: string) {
