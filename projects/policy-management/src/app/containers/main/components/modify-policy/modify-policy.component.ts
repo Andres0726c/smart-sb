@@ -205,7 +205,7 @@ export class ModifyPolicyComponent {
         this.policy = res.body;
         this.policyAux = res.body;
 
-        console.log(this.policyAux,"antes");
+        console.log(this.policyAux, "antes");
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
@@ -236,24 +236,24 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-      //  this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp[0].fields.push(
-      //   {
-      //   businessCode: "PERIODO_FACT",
-      //   code: {version: 1, businessCode: 'PERIODO_FACT'},
-      //   dataType: {code: 'TDL1', name: 'Text box',guiComponent: "Text box"},
-      //   dependency: null,
-      //   domainList: null,
-      //   id: 69,
-      //   label: "PERIODO_FACT",
-      //   name: "PERIODO_FACT",
-      //   required: false,
-      //   validateRule: []
-      // } );
+        //  this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp[0].fields.push(
+        //   {
+        //   businessCode: "PERIODO_FACT",
+        //   code: {version: 1, businessCode: 'PERIODO_FACT'},
+        //   dataType: {code: 'TDL1', name: 'Text box',guiComponent: "Text box"},
+        //   dependency: null,
+        //   domainList: null,
+        //   id: 69,
+        //   label: "PERIODO_FACT",
+        //   name: "PERIODO_FACT",
+        //   required: false,
+        //   validateRule: []
+        // } );
         console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp);
-        this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview,false));
-        console.log(this.formPolicy.get('policyDataPreview'));      
+        this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
+        console.log(this.formPolicy.get('policyDataPreview'));
         // this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp,true));
-        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp,false));
+        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
         console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt);
         //this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp
         this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
@@ -321,14 +321,14 @@ export class ModifyPolicyComponent {
         fields: this.fb.array([])
       });
 
-     
+
       console.log(group)
 
       for (let field of group.fields) {
-        let valueObj:any;
-       
+        let valueObj: any;
+
         valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
-     
+
         if (valueObj) {
           let fieldFG = this.fb.group({});
 
@@ -350,22 +350,9 @@ export class ModifyPolicyComponent {
                 console.log(type);
                 list = localStorage.getItem(type);
                 list = JSON.parse(list);
-                if (list == null) {
-                  // options.push({ id: valueObj.value, name: valueObj.value })
-                  // await this.loadData(url, domainList[0].rlEngnCd, type).then(datos => {
-                  //   // console.log(datos,"datos");  
-                  //   options.push(datos)
-                  //   // console.log(options,"options");
-                  // });
-                  // fieldFG.addControl('options', this.fb.control(options));
-
-                  console.log("entro")
-                }
-                else {
-                  options = this.validateList(list, valueObj);
-                  type == 'state' ? this.state = options.find((result: { id: any; }) => result.id == valueObj.value) : options;
-                  fieldFG.addControl('options', this.fb.control(options));
-                }
+                options = this.validateList(list, valueObj);
+                type == 'state' ? this.state = options.find((result: { id: any; }) => result.id == valueObj.value) : options;
+                fieldFG.addControl('options', this.fb.control(options));
               } else {
                 options = this.orderData(domainList);
                 options = this.validateList(options, valueObj);
@@ -442,69 +429,6 @@ export class ModifyPolicyComponent {
     return options;
   }
 
-
-  async loadData(url: string, rlEngnCd: string, type: any) {
-    try {
-      let res: any;
-      if (url.slice(-1) != '/') {
-        res = await lastValueFrom(this.productService.getApiData(url, rlEngnCd))
-        // this.productService.getApiData(url, rlEngnCd).subscribe( async (rs)=>{
-
-        //   console.log(rs);
-        //   res=rs;
-
-
-
-        //  //await this.setData(res, type);
-        // });
-      }
-      if (url == "city/findByState/") {
-        res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, '0'))
-
-      }
-      if (url == "state/statefindbycountry/") {
-        res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, 'CO'))
-      }
-      if (res.body) {
-        await this.setData(res, type);
-      }
-    } catch (error) {
-      console.log('Hubo un error:', error);
-    }
-  }
-  async setData(res: any, type: any) {
-
-    if (Array.isArray(res.body)) {
-
-      await this.addToElementData(res.body, type);
-    } else {
-      await this.addToElementData([res.body], type);
-    }
-
-  }
-
-  async addToElementData(res: any[], type: any) {
-    let options: any = [];
-    let list: any = [];
-    let optionsAux: any = [];
-
-    res.forEach((element: any) => {
-      let obj: any = { id: element.code, name: element.description };
-      if (obj.id != '' && obj.id != undefined) {
-        options.push(obj);
-      }
-    });
-
-    localStorage.setItem(type, JSON.stringify(options));
-    list = localStorage.getItem(type);
-    optionsAux = JSON.parse(list);
-    //  console.log(optionsAux)
-    //  console.log(type, ": ", localStorage.getItem(type));
-
-
-  }
-
-
   getGroupsControls(risk: any) {
     return risk.get('rskTypDtGrp') as FormArray;
   }
@@ -523,17 +447,17 @@ export class ModifyPolicyComponent {
   getControlValue(dataControlsValue: any, businessCode: string) {
     let value = null;
 
-    console.log(this.policyAux,"policyAux");
+    console.log(this.policyAux, "policyAux");
 
     for (let group of dataControlsValue) {
-     
+
       const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
       if (valueField) {
         value = !this.isObject(valueField.value) ? valueField.value : valueField.value.id;
         break;
-      }else{
-      
-       // value = "Prueba";
+      } else {
+
+        // value = "Prueba";
       }
     }
 
