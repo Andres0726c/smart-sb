@@ -73,7 +73,7 @@ export class ModifyPolicyComponent {
   state: any = [];
   url: any = "";
   types: any = [];
-  optionsAux:any=[];
+  optionsAux: any = [];
   constructor(
     private confirmationService: ConfirmationService,
     public productService: ProductService,
@@ -206,7 +206,7 @@ export class ModifyPolicyComponent {
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
         this.riskDataPreview = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
-       
+
         this.getProduct(this.policy.prdct);
       }
     });
@@ -232,17 +232,17 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-         console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp);
-         //this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp
-        this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview,false));
-       // this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp,true));
-        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp,false));
+        console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt);
+        //this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp
+        this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
+        // this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp,true));
+        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
         this.formPolicy.setControl('policyData',
-         await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp//this.product.nmContent?.policyData
-          , this.policyData,true));
-        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp,true));//this.product.nmContent?.riskTypes
+          await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp//this.product.nmContent?.policyData
+            , this.policyData, true));
+        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
 
-         console.log('riskData: ', this.riskTypesControls);
+        // console.log('riskData: ', this.riskTypesControls);
         // console.log('policy: ', this.policyDataControls);
         this.isLoading = false;
 
@@ -250,46 +250,46 @@ export class ModifyPolicyComponent {
     });
   }
 
-async  fillRiskData(riskTypes: any, flag:boolean) {
+  async fillRiskData(riskTypes: any, flag: boolean) {
     let risksArrayData: any = this.fb.array([]);
 
-    console.log('risk',riskTypes);
 
     if (!flag) {
-
+      console.log('risk', riskTypes.rskTypDtGrp);
+      console.log('riskDataPreview', this.riskDataPreview);
       let groupRisk = this.fb.group({
         id: riskTypes.code,
         name: riskTypes.name,
         description: riskTypes.description,
         code: riskTypes.code,
-        rskTypDtGrp: await this.fillGroupData(riskTypes.rskTypDtGrp, this.riskDataPreview,true)
+        rskTypDtGrp: await this.fillGroupData(riskTypes.rskTypDtGrp, this.riskDataPreview, true)
       });
 
       (<FormArray>risksArrayData).push(groupRisk);
 
     } else {
 
-    for (let risk of riskTypes) {
-      let groupRisk = this.fb.group({
-        id: risk.code,
-        name: risk.name,
-        description: risk.description,
-        code: risk.code,
-        rskTypDtGrp: await this.fillGroupData(risk.rskTypDtGrp, this.riskData,flag)
-      });
+      for (let risk of riskTypes) {
+        let groupRisk = this.fb.group({
+          id: risk.code,
+          name: risk.name,
+          description: risk.description,
+          code: risk.code,
+          rskTypDtGrp: await this.fillGroupData(risk.rskTypDtGrp, this.riskData, flag)
+        });
 
-      (<FormArray>risksArrayData).push(groupRisk);
+        (<FormArray>risksArrayData).push(groupRisk);
+      }
     }
-  }
     console.log(risksArrayData)
 
     return risksArrayData;
   }
 
-  async fillGroupData(groupsArray: any, arrayData: any,flag:boolean) {
+  async fillGroupData(groupsArray: any, arrayData: any, flag: boolean) {
     let formArrayData: any = this.fb.array([]);
+    console.log(groupsArray)
 
-    
 
 
     for (let group of groupsArray) {
@@ -300,7 +300,7 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
         fields: this.fb.array([])
       });
 
-
+      console.log(group)
 
       for (let field of group.fields) {
         let valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
@@ -319,46 +319,33 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
 
             if (field.domainList && flag) {
               let list: any = [], options: any = [], domainList = field.domainList.valueList;//JSON.parse(field.domainList.valueList);
-              
+
               if (domainList[0].url) {
                 let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
                 this.types.push(type);
+                console.log(type);
                 list = localStorage.getItem(type);
                 list = JSON.parse(list);
                 if (list == null) {
-                  options.push({ id: valueObj.value, name: valueObj.value })
-               await  this.loadData(url, domainList[0].rlEngnCd, type).then(datos =>
-                  {
-                  console.log(datos,"datos");  
-                  options.push(datos)
-                  console.log(options,"options");
-                }
-                  
-                 );
-               
-                  // if (url.slice(-1) != '/') {
-                  //   this.optionsAux=[];
-                  //   this.productService.getApiData(url, domainList[0].rlEngnCd).subscribe((res: any) => {
-                  //     let response = res.body;
-                  //    // console.log(res.body);
-                  //     if (res.body != '') {
-                  //       this.optionsAux.res.body;
-                  //     }
-                  //   });
-                  // //  console.log(this.optionsAux);
-                  // }
-                 // console.log(this.optionsAux);
-                  fieldFG.addControl('options', this.fb.control(options));
+                  // options.push({ id: valueObj.value, name: valueObj.value })
+                  // await this.loadData(url, domainList[0].rlEngnCd, type).then(datos => {
+                  //   // console.log(datos,"datos");  
+                  //   options.push(datos)
+                  //   // console.log(options,"options");
+                  // });
+                  // fieldFG.addControl('options', this.fb.control(options));
+
+                  console.log("entro")
                 }
                 else {
                   options = this.validateList(list, valueObj);
                   type == 'state' ? this.state = options.find((result: { id: any; }) => result.id == valueObj.value) : options;
-                  // this.state && type == "city" ? options = this.validateStateList(this.state.id, type) : options;
                   fieldFG.addControl('options', this.fb.control(options));
                 }
               } else {
-               options = this.orderData(domainList);
+                options = this.orderData(domainList);
                 options = this.validateList(options, valueObj);
+                console.log("options: ", options);
                 fieldFG.addControl('options', this.fb.control(options));
               }
             } else {
@@ -427,6 +414,7 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
         options.push(obj);
       }
     });
+    console.log(options);
     return options;
   }
 
@@ -441,14 +429,14 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
         //   console.log(rs);
         //   res=rs;
 
-          
+
 
         //  //await this.setData(res, type);
         // });
       }
       if (url == "city/findByState/") {
-         res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, '0'))
-        
+        res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, '0'))
+
       }
       if (url == "state/statefindbycountry/") {
         res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, 'CO'))
@@ -460,18 +448,18 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
       console.log('Hubo un error:', error);
     }
   }
- async setData(res: any, type: any) {
+  async setData(res: any, type: any) {
 
     if (Array.isArray(res.body)) {
-      
-  await    this.addToElementData(res.body, type);
+
+      await this.addToElementData(res.body, type);
     } else {
-   await   this.addToElementData([res.body], type);
+      await this.addToElementData([res.body], type);
     }
 
   }
 
- async addToElementData(res: any[], type: any) {
+  async addToElementData(res: any[], type: any) {
     let options: any = [];
     let list: any = [];
     let optionsAux: any = [];
@@ -482,8 +470,7 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
         options.push(obj);
       }
     });
-    console.log("options");
-    console.log(options);
+
     localStorage.setItem(type, JSON.stringify(options));
     list = localStorage.getItem(type);
     optionsAux = JSON.parse(list);
@@ -585,10 +572,10 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
         //   this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
         // }
 
-        
+
       );
 
-      
+
   }
 
 
@@ -611,7 +598,7 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
   }
 
   showSuccess(status: string, title: string, msg: string) {
-   
+
     this.messageService.add({
       severity: status,
       summary: title,
