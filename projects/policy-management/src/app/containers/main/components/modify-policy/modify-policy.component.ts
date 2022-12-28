@@ -434,7 +434,7 @@ export class ModifyPolicyComponent {
   }
 
   getFieldsControls(group: any) {
-    // group.disable
+    group.disable();
     return group.get('fields') as FormArray;
   }
 
