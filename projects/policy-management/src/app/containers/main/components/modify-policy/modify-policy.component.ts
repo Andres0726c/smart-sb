@@ -227,6 +227,7 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
+        console.log(this.product);
          console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp);
          //this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp
         // this.formPolicy.setControl('policyDataPreview', this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
@@ -246,6 +247,7 @@ export class ModifyPolicyComponent {
 async  fillRiskData(riskTypes: any) {
     let risksArrayData: any = this.fb.array([]);
 
+    console.log(riskTypes);
     for (let risk of riskTypes) {
       let groupRisk = this.fb.group({
         id: "risk.id",
@@ -307,22 +309,9 @@ async  fillRiskData(riskTypes: any) {
                   console.log(datos,"datos");  
                   options.push(datos)
                   console.log(options,"options");
-                }
-                  
+                }   
                  );
                
-                  // if (url.slice(-1) != '/') {
-                  //   this.optionsAux=[];
-                  //   this.productService.getApiData(url, domainList[0].rlEngnCd).subscribe((res: any) => {
-                  //     let response = res.body;
-                  //    // console.log(res.body);
-                  //     if (res.body != '') {
-                  //       this.optionsAux.res.body;
-                  //     }
-                  //   });
-                  // //  console.log(this.optionsAux);
-                  // }
-                 // console.log(this.optionsAux);
                   fieldFG.addControl('options', this.fb.control(options));
                 }
                 else {
@@ -411,20 +400,25 @@ async  fillRiskData(riskTypes: any) {
       let res: any;
       if (url.slice(-1) != '/') {
         this.productService.getApiData(url, rlEngnCd).subscribe( async (rs)=>{
-
           console.log(rs);
           res=rs;
-
-          
-
          await this.setData(res, type);
         });
       }
       if (url == "city/findByState/") {
-        res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, '0'))
+        this.productService.getApiData(url.slice(0, -1), rlEngnCd,'0').subscribe( async (rs)=>{
+          console.log(rs);
+          res=rs;
+         await this.setData(res, type);
+        });
+        //res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, '0'))
       }
       if (url == "state/statefindbycountry/") {
-        res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, 'CO'))
+        this.productService.getApiData(url.slice(0, -1), rlEngnCd,'CO').subscribe( async (rs)=>{
+          console.log(rs);
+          res=rs;
+          await this.setData(res, type);
+        });
       }
       if (res.body) {
        // await this.setData(res, type);
@@ -448,6 +442,8 @@ async  fillRiskData(riskTypes: any) {
     let options: any = [];
     let list: any = [];
     let optionsAux: any = [];
+    console.log("res");
+    console.log(res);
 
     res.forEach((element: any) => {
       let obj: any = { id: element.code, name: element.description };
@@ -460,8 +456,6 @@ async  fillRiskData(riskTypes: any) {
     localStorage.setItem(type, JSON.stringify(options));
     list = localStorage.getItem(type);
     optionsAux = JSON.parse(list);
-    //  console.log(optionsAux)
-    //  console.log(type, ": ", localStorage.getItem(type));
 
 
   }
