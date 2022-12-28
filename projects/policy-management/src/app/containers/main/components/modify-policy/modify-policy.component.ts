@@ -236,29 +236,12 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-        //  this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp[0].fields.push(
-        //   {
-        //   businessCode: "PERIODO_FACT",
-        //   code: {version: 1, businessCode: 'PERIODO_FACT'},
-        //   dataType: {code: 'TDL1', name: 'Text box',guiComponent: "Text box"},
-        //   dependency: null,
-        //   domainList: null,
-        //   id: 69,
-        //   label: "PERIODO_FACT",
-        //   name: "PERIODO_FACT",
-        //   required: false,
-        //   validateRule: []
-        // } );
-        console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp);
+       
+      
         this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
-        console.log(this.formPolicy.get('policyDataPreview'));
-        // this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp,true));
+       
         this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
-        console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt);
-        //this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp
-        this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
-        // this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp,true));
-        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
+       
         this.formPolicy.setControl('policyData',
           await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp//this.product.nmContent?.policyData
             , this.policyData, true));
