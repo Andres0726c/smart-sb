@@ -8,7 +8,7 @@ import { ProductService } from 'projects/policy-management/src/app/core/services
 
 describe('FilterPolicyTopComponent', () => {
   let component: FilterPolicyTopComponent;
-
+  let productService:ProductService;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -16,20 +16,23 @@ describe('FilterPolicyTopComponent', () => {
       providers: [
         FilterPolicyTopComponent,
         FormBuilder,
+        ProductService,
         {
           provide: ProductService,
           useValue: {
             getAllProductsByCompany: () => of([]),
-          },
+            getApiData: () => of([]),
+          }
         },
         {
           provide: ConsultPolicyService,
           useValue: {
             getDocumentType: () => of([]),
           },
-        },
+        }
       ],
     });
+    productService = TestBed.inject(ProductService);
     component = TestBed.inject(FilterPolicyTopComponent);
   });
 
