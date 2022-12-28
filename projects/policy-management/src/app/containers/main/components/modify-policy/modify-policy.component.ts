@@ -207,6 +207,7 @@ export class ModifyPolicyComponent {
     this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
+       
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
@@ -261,8 +262,8 @@ export class ModifyPolicyComponent {
 
 
     if (!flag) {
-      console.log('risk', riskTypes.rskTypDtGrp);
-      console.log('riskDataPreview', this.riskDataPreview);
+      // console.log('risk', riskTypes.rskTypDtGrp);
+      // console.log('riskDataPreview', this.riskDataPreview);
       let groupRisk = this.fb.group({
         id: riskTypes.code,
         name: riskTypes.name,
@@ -287,16 +288,11 @@ export class ModifyPolicyComponent {
         (<FormArray>risksArrayData).push(groupRisk);
       }
     }
-    console.log(risksArrayData)
-
     return risksArrayData;
   }
 
   async fillGroupData(groupsArray: any, arrayData: any, flag: boolean) {
     let formArrayData: any = this.fb.array([]);
-    console.log(groupsArray)
-
-
     for (let group of groupsArray) {
       let groupFG = this.fb.group({
         id: group.code,
@@ -305,8 +301,6 @@ export class ModifyPolicyComponent {
         fields: this.fb.array([])
       });
 
-
-      
 
       for (let field of group.fields) {
         let valueObj: any;
@@ -323,28 +317,23 @@ export class ModifyPolicyComponent {
 
           fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
 
-          if (field.dataType.guiComponent === 'List box') {
-
-            if (field.domainList && flag) {
-              let list: any = [], options: any = [], domainList = field.domainList.valueList;//JSON.parse(field.domainList.valueList);
-
+          if (field.dataType.guiComponent === 'List box') { 
+            let list: any = [], options: any = [], domainList = field.domainList.valueList;//JSON.parse(field.domainList.valueList);
+            if (field.domainList) {
               if (domainList[0].url) {
                 let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
                 this.types.push(type);
-                console.log(type);
                 list = localStorage.getItem(type);
                 list = JSON.parse(list);
                 options = this.validateList(list, valueObj);
                 type == 'state' ? this.state = options.find((result: { id: any; }) => result.id == valueObj.value) : options;
-                fieldFG.addControl('options', this.fb.control(options));
               } else {
                 options = this.orderData(domainList);
-                options = this.validateList(options, valueObj);
-                console.log("options: ", options);
-                fieldFG.addControl('options', this.fb.control(options));
+                options = this.validateList(options, valueObj); 
               }
+              fieldFG.addControl('options', this.fb.control(options));
             } else {
-              let options = [{ id: valueObj.value, name: valueObj.value }]
+              options= [{ id: valueObj.value, name: valueObj.value }]
               fieldFG.addControl('options', this.fb.control(options));
             }
           }
@@ -409,7 +398,7 @@ export class ModifyPolicyComponent {
         options.push(obj);
       }
     });
-    console.log(options);
+    //console.log(options);
     return options;
   }
 
@@ -431,7 +420,6 @@ export class ModifyPolicyComponent {
   getControlValue(dataControlsValue: any, businessCode: string,level:string) {
     let value = null;
   
-    let va = 0;
     for (let group of dataControlsValue) {
 
       
