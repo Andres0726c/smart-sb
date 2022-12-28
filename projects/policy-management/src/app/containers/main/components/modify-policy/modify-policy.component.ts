@@ -62,6 +62,7 @@ export class ModifyPolicyComponent {
   errorFlag: boolean = false;
 
   policy: any;
+  policyAux: any;
   policyData: any;
   policyDataPreview: any;
   riskData: any;
@@ -202,6 +203,9 @@ export class ModifyPolicyComponent {
     this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
+        this.policyAux = res.body;
+
+        console.log(this.policyAux,"antes");
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
@@ -232,10 +236,23 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-         console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp);
-         //this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp
+      //  this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp[0].fields.push(
+      //   {
+      //   businessCode: "PERIODO_FACT",
+      //   code: {version: 1, businessCode: 'PERIODO_FACT'},
+      //   dataType: {code: 'TDL1', name: 'Text box',guiComponent: "Text box"},
+      //   dependency: null,
+      //   domainList: null,
+      //   id: 69,
+      //   label: "PERIODO_FACT",
+      //   name: "PERIODO_FACT",
+      //   required: false,
+      //   validateRule: []
+      // } );
+        console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp);
         this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview,false));
-       // this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp,true));
+        console.log(this.formPolicy.get('policyDataPreview'));      
+        // this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp,true));
         this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp,false));
         this.formPolicy.setControl('policyData',
          await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp//this.product.nmContent?.policyData
@@ -252,8 +269,6 @@ export class ModifyPolicyComponent {
 
 async  fillRiskData(riskTypes: any, flag:boolean) {
     let risksArrayData: any = this.fb.array([]);
-
-    console.log('risk',riskTypes);
 
     if (!flag) {
 
@@ -281,15 +296,12 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
       (<FormArray>risksArrayData).push(groupRisk);
     }
   }
-    console.log(risksArrayData)
-
+    
     return risksArrayData;
   }
 
   async fillGroupData(groupsArray: any, arrayData: any,flag:boolean) {
     let formArrayData: any = this.fb.array([]);
-
-    
 
 
     for (let group of groupsArray) {
@@ -300,11 +312,13 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
         fields: this.fb.array([])
       });
 
-
+     
 
       for (let field of group.fields) {
-        let valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
-
+        let valueObj:any;
+       
+        valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
+     
         if (valueObj) {
           let fieldFG = this.fb.group({});
 
@@ -512,11 +526,17 @@ async  fillRiskData(riskTypes: any, flag:boolean) {
   getControlValue(dataControlsValue: any, businessCode: string) {
     let value = null;
 
+    console.log(this.policyAux,"policyAux");
+
     for (let group of dataControlsValue) {
+     
       const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
       if (valueField) {
         value = !this.isObject(valueField.value) ? valueField.value : valueField.value.id;
         break;
+      }else{
+      
+       // value = "Prueba";
       }
     }
 

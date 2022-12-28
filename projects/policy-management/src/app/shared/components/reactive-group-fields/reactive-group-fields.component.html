@@ -1,5 +1,5 @@
 <ng-template #inputText let-groupName="groupName" let-field="field">
-    <div [formGroup]="field" class="flex flex-col m-3">
+    <div [hidden]="field.value.label ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
         <label>{{ field.value.label }}</label>
         <input data-qa-id="sc-rsmf-txt-process-field"
             type="text" pInputText formControlName="value"
@@ -11,7 +11,7 @@
 </ng-template>
 
 <ng-template #calendar let-groupName="groupName" let-field="field">
-    <div [formGroup]="field" class="flex flex-col m-3">
+    <div [hidden]="field.value.label ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
         <label>{{ field.value.label }}</label>
         <p-calendar data-qa-id="sc-rsmf-cal-process-field"
             [showIcon]="true" styleClass="w-full" dateFormat="yy-mm-ddT00:00:00-05:00" formControlName="value" (focusout)="executeRule(field,groupName,false)" (click)="executeRule(field,groupName,false)"></p-calendar>
@@ -22,7 +22,7 @@
 </ng-template>
 
 <ng-template #dropDown let-groupName="groupName" let-field="field">
-    <div [formGroup]="field" class="flex flex-col m-3">
+    <div [hidden]="field.value.label ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
         <label>{{ field.value.label }}</label>
         <p-dropdown data-qa-id="sc-rsmf-drpdwn-process-field" 
             [options]="field.value.options" optionLabel="name" styleClass="w-full" formControlName="value" (focusout)="executeRule(field,groupName,false)" ></p-dropdown>
