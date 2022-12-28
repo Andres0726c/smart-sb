@@ -29,7 +29,7 @@ export class ReactiveGroupFieldsComponent {
   ) {}
 
   ngOnInit() {
-    console.log(this.group);
+    
   }
 
   getFieldsControls(group: any) {
@@ -38,20 +38,15 @@ export class ReactiveGroupFieldsComponent {
 
   executeRule(field:any,groupName:any,show:boolean) {
 
-    let valueAfter = this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp[groupName.value.code][field.value.businessCode]
-    :this.policy.plcy.plcyDtGrp[groupName.value.code][field.value.businessCode];
-
-   
-    //let validObj = this.isObject(field.value.value);
-
-
+    let valueAfter = this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp![groupName.value!.code][field.value!.businessCode]
+    :this.policy.plcy.plcyDtGrp![groupName.value!.code][field.value!.businessCode];
 
     let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.id;
 
     valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id
 
-    // console.log(valueCurrent,"actual");
-    // console.log(valueAfter,"despues");
+    //  console.log(valueCurrent,"actual");
+    //  console.log(valueAfter,"despues");
 
     if (valueCurrent !== valueAfter || show) {
 

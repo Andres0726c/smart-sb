@@ -196,8 +196,6 @@ export class ModifyPolicyComponent {
     this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
-        console.log(this.policy);
-        
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
@@ -227,9 +225,9 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-         console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp);
+         console.log(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp);
          //this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp
-        // this.formPolicy.setControl('policyDataPreview', this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
+        // this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
         this.formPolicy.setControl('policyData',
          await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp//this.product.nmContent?.policyData
           , this.policyData));
@@ -248,7 +246,7 @@ async  fillRiskData(riskTypes: any) {
 
     for (let risk of riskTypes) {
       let groupRisk = this.fb.group({
-        id: "risk.id",
+        id: risk.code,
         name: risk.name,
         description: risk.description,
         code: risk.code,
@@ -269,7 +267,7 @@ async  fillRiskData(riskTypes: any) {
 
     for (let group of groupsArray) {
       let groupFG = this.fb.group({
-        id: "group.id",
+        id: group.code,
         code: group.code,
         name: group.name,
         fields: this.fb.array([])
@@ -294,7 +292,7 @@ async  fillRiskData(riskTypes: any) {
 
             if (field.domainList) {
               let list: any = [], options: any = [], domainList = field.domainList.valueList;//JSON.parse(field.domainList.valueList);
-              console.log(domainList[0].url,"list");
+              
               if (domainList[0].url) {
                 let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
                 this.types.push(type);
@@ -417,7 +415,7 @@ async  fillRiskData(riskTypes: any) {
 
           
 
-         await this.setData(res, type);
+         //await this.setData(res, type);
         });
       }
       if (url == "city/findByState/") {
@@ -427,7 +425,7 @@ async  fillRiskData(riskTypes: any) {
         res = await lastValueFrom(this.productService.getApiData(url.slice(0, -1), rlEngnCd, 'CO'))
       }
       if (res.body) {
-       // await this.setData(res, type);
+        await this.setData(res, type);
       }
     } catch (error) {
       console.log('Hubo un error:', error);

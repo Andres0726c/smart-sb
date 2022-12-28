@@ -89,7 +89,7 @@
     </p-divider>
     <div>
       <div formArrayName="policyData">
-          <div class="p-5" *ngFor="let group of policyDataControls.controls; let i = index" formGroupName="{{i}}">
+          <div class="p-5" *ngFor="let group of policyDataPreviewControls.controls; let i = index" formGroupName="{{i}}">
              <ng-container *ngTemplateOutlet="groupFields;context:{group: group, data:false}"></ng-container> 
           </div>
       </div>
