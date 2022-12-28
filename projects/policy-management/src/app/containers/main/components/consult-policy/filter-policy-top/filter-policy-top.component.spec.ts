@@ -138,4 +138,22 @@ describe('FilterPolicyTopComponent', () => {
     component.onClearField('noExist');
     expect(component.formQueryFilter.value.noExist).toEqual(undefined);
   });
+
+
+  
+  it('setData', () => {
+    let res: any = { body:'' };
+    const spy = component.setData(res, 'city');
+    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
+    expect(spy).toBeUndefined();
+    expect(spy2).toBeDefined();
+  });
+
+  it('addToElementData', () => {
+    let res: any = { body: [{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }] };
+    const spy = component.setData(res, 'city');
+    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
+    expect(spy).toBeUndefined();
+    expect(spy2).toBeDefined();
+  });
 });
