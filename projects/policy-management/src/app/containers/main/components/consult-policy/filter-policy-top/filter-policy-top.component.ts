@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Identification } from '../interfaces/identification';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
-
+import { lastValueFrom } from 'rxjs';
 interface FieldDocument {
   type: string;
   number: string;
@@ -57,7 +57,7 @@ export class FilterPolicyTopComponent {
       insuredDocumentType: this.fb.control(''),
       insuredDocumentNumber: this.fb.control(''),
       insuredName: this.fb.control(''),
-      policyNumber: this.fb.control('100000000000426'),
+      policyNumber: this.fb.control(''),
       idProduct: this.fb.control(''),
       startDate: this.fb.control(''),
     });
@@ -67,7 +67,58 @@ export class FilterPolicyTopComponent {
     consultPolicyService.getDocumentType().subscribe((data) => {
       this.documentsType = data;
     });
+
+    this.productService.getApiData('city/findByState', '','0').subscribe((res) => {
+      this.setData(res, 'city');
+    });
+
+    this.productService.getApiData('state/statefindbycountry', '','CO').subscribe((res) => {
+      this.setData(res, 'state');
+    });
+
+    this.productService.getApiData('paymentmethod/findAll').subscribe((res) => {
+      this.setData(res, 'paymentmethod');
+    });
+
+    
+    this.productService.getApiData('identificationtype/findAllIdentification').subscribe((res) => {
+      this.setData(res, 'identificationtype');
+    });
+
   }
+
+
+ setData(res: any, type: any) {
+
+  if (Array.isArray(res.body)) {
+
+     this.addToElementData(res.body, type);
+  } else {
+     this.addToElementData([res.body], type);
+  }
+
+}
+
+ addToElementData(res: any[], type: any) {
+  let options: any = [];
+  let list: any = [];
+  let optionsAux: any = [];
+
+  res.forEach((element: any) => {
+    let obj: any = { id: element.code, name: element.description };
+    if (obj.id != '' && obj.id != undefined) {
+      options.push(obj);
+    }
+  });
+
+  localStorage.setItem(type, JSON.stringify(options));
+  list = localStorage.getItem(type);
+  optionsAux = JSON.parse(list);
+  console.log(optionsAux)
+  console.log(type, ": ", localStorage.getItem(type));
+
+
+}
 
   validateFields(field: FieldDocument): boolean {
     let type: number = this.formQueryFilter.get(field.type)?.value ? 1 : 0;
