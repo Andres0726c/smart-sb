@@ -240,17 +240,16 @@ export class ModifyPolicyComponent {
         this.product = res.body;
        
       
-        this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
+        this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
        
         this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
        
         this.formPolicy.setControl('policyData',
           await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp//this.product.nmContent?.policyData
-            , this.policyData, true));
+            , this.policyData));
         this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
 
-        // console.log('riskData: ', this.riskTypesControls);
-        // console.log('policy: ', this.policyDataControls);
+        
         this.isLoading = false;
 
       }
@@ -262,14 +261,13 @@ export class ModifyPolicyComponent {
 
 
     if (!flag) {
-      // console.log('risk', riskTypes.rskTypDtGrp);
-      // console.log('riskDataPreview', this.riskDataPreview);
+      
       let groupRisk = this.fb.group({
         id: riskTypes.code,
         name: riskTypes.name,
         description: riskTypes.description,
         code: riskTypes.code,
-        rskTypDtGrp: await this.fillGroupData(riskTypes.rskTypDtGrp, this.riskDataPreview, true)
+        rskTypDtGrp: await this.fillGroupData(riskTypes.rskTypDtGrp, this.riskDataPreview)
       });
 
       (<FormArray>risksArrayData).push(groupRisk);
@@ -282,7 +280,7 @@ export class ModifyPolicyComponent {
           name: risk.name,
           description: risk.description,
           code: risk.code,
-          rskTypDtGrp: await this.fillGroupData(risk.rskTypDtGrp, this.riskData, flag)
+          rskTypDtGrp: await this.fillGroupData(risk.rskTypDtGrp, this.riskData)
         });
 
         (<FormArray>risksArrayData).push(groupRisk);
@@ -291,7 +289,7 @@ export class ModifyPolicyComponent {
     return risksArrayData;
   }
 
-  async fillGroupData(groupsArray: any, arrayData: any, flag: boolean) {
+  async fillGroupData(groupsArray: any, arrayData: any) {
     let formArrayData: any = this.fb.array([]);
     for (let group of groupsArray) {
       let groupFG = this.fb.group({
