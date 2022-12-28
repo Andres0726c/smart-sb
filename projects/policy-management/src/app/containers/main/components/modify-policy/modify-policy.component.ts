@@ -107,6 +107,10 @@ export class ModifyPolicyComponent {
       riskData: this.fb.array([]),
       riskDataPreview: this.fb.array([]),
     });
+
+    this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
+      this.policyAux = res.body;
+    });
   }
 
   ngOnInit(): void {
@@ -203,9 +207,6 @@ export class ModifyPolicyComponent {
     this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
-        this.policyAux = res.body;
-
-        console.log(this.policyAux, "antes");
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
@@ -305,7 +306,7 @@ export class ModifyPolicyComponent {
       });
 
 
-      console.log(group)
+      
 
       for (let field of group.fields) {
         let valueObj: any;
@@ -427,40 +428,52 @@ export class ModifyPolicyComponent {
 
   }
 
-  getControlValue(dataControlsValue: any, businessCode: string) {
+  getControlValue(dataControlsValue: any, businessCode: string,level:string) {
     let value = null;
-
-    console.log(this.policyAux, "policyAux");
-
+  
+    let va = 0;
     for (let group of dataControlsValue) {
 
+      
       const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
+     
       if (valueField) {
         value = !this.isObject(valueField.value) ? valueField.value : valueField.value.id;
         break;
-      } else {
+      } else if (!valueField || valueField === undefined) {
+        
+        try{
+        value = level==='policy'?
+          this.policyAux.plcy.plcyDtGrp![group!.code]![businessCode]:this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
+          
+        }catch{
 
-        // value = "Prueba";
-      }
+        }
+         
+       }
     }
-
+    
     return value;
+    
   }
 
-  reverseMap(dataControls: any, groupData: any) {
+  
+
+  reverseMap(dataControls: any, groupData: any, level:string) {
+   
     for (let objKey of Object.keys(groupData)) {
 
       for (let key of Object.keys(groupData[objKey])) {
-        groupData[objKey][key] = this.getControlValue(dataControls.value, key);
+        groupData[objKey][key] = this.getControlValue(dataControls.value, key,level);
       }
     }
   }
 
   transformData(flag: any) {
 
-    this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp);
+    this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp,"policy");
     for (let risk of this.riskTypesControls.controls) {
-      this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp);
+      this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp,"risk");
     }
     if (flag)
 
