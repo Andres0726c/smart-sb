@@ -301,30 +301,12 @@ export class ModifyPolicyComponent {
         fields: this.fb.array([])
       });
 
-
       for (let field of group.fields) {
         let valueObj: any;
-
         valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
 
         if (valueObj) {
-          let fieldFG = this.fb.group({});
-
-          Object.keys(field).forEach(key => {
-            fieldFG.addControl(key, this.fb.control(field[key]));
-
-          });
-
-          fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
-
-          if (field.dataType.guiComponent === 'List box') {
-            let options: any = [], domainList = field.domainList.valueList;
-            field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
-            fieldFG.addControl('options', this.fb.control(options));
-          }
-
-          (<FormArray>groupFG.get('fields')).push(fieldFG);
-
+          (<FormArray>groupFG.get('fields')).push(this.addValue(field, valueObj));
         }
       }
       (<FormArray>formArrayData).push(groupFG);
@@ -332,7 +314,25 @@ export class ModifyPolicyComponent {
 
     return formArrayData;
   }
+  addValue(field:any,valueObj:any ){
 
+    let fieldFG = this.fb.group({});
+
+
+    Object.keys(field).forEach(key => {
+      fieldFG.addControl(key, this.fb.control(field[key]));
+
+    });
+
+    fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
+
+    if (field.dataType.guiComponent === 'List box') {
+      let options: any = [], domainList = field.domainList.valueList;
+      field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
+      fieldFG.addControl('options', this.fb.control(options));
+    }
+    return fieldFG;
+  }
   showDomainList(domainList: any[], valueObj: any) {
     let list: any = [], options = [];
     if (domainList[0].url) {
@@ -398,7 +398,7 @@ export class ModifyPolicyComponent {
 
         try {
           value = level === 'policy' ?
-            this.policyAux.plcy.plcyDtGrp![group!.code]![businessCode] : this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
+            this.policyAux.plcy.plcyDtGrp![group.code]![businessCode] : this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
 
         } catch {
 
