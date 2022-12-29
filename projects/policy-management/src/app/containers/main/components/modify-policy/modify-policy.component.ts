@@ -397,8 +397,18 @@ export class ModifyPolicyComponent {
       } else if (!valueField || valueField === undefined) {
 
         try {
-          console.log(this.policyAux.plcy.plcyDtGrp[group.code][businessCode],"value");
-          value = level === 'policy'?this.policyAux.plcy.plcyDtGrp[group.code][businessCode] : this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
+          console.log(this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode],"value");
+          console.log(this.policyAux.plcy.rsk['1'].rskDtGrp,"risk");
+          console.log(level);
+          console.log(this.policyAux);
+          
+          if (level === "policy"){
+            value = this.policyAux.plcy.plcyDtGrp[group.code][businessCode] ;
+            } else {
+            value =  this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
+          }
+
+          //value = level === "policy" ? this.policyAux.plcy.plcyDtGrp[group.code][businessCode]:this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
 
         } catch {
 
@@ -429,7 +439,7 @@ export class ModifyPolicyComponent {
     for (let risk of this.riskTypesControls.controls) {
       this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp, "risk");
     }
-    if (flag)
+   if (flag)
 
       this.savePolicyModify();
 
