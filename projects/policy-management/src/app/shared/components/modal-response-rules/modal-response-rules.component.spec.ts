@@ -13,7 +13,6 @@ describe('ModalResponseRulesComponent', () => {
   let fixture: ComponentFixture<ModalResponseRulesComponent>;
   let ref: DynamicDialogRef, config: DynamicDialogConfig, dialogService: DialogService, messageService: MessageService;
   let formBuilderMock = new FormBuilder();
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -36,6 +35,10 @@ describe('ModalResponseRulesComponent', () => {
         {
           provide: FormGroup,
           useValue: {},
+        },
+        {
+          provide: DynamicDialogConfig,
+          useValue: { data: { field:{description:"test", code:"3"}, process: 'Cancelar', butttonAction: 'Cancelar póliza' } },
         },
 
       ],
