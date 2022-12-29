@@ -397,8 +397,8 @@ export class ModifyPolicyComponent {
       } else if (!valueField || valueField === undefined) {
 
         try {
-          value = level === 'policy' ?
-            this.policyAux.plcy.plcyDtGrp![group.code]![businessCode] : this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
+          console.log(this.policyAux.plcy.plcyDtGrp[group.code][businessCode],"value");
+          value = level === 'policy'?this.policyAux.plcy.plcyDtGrp[group.code][businessCode] : this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
 
         } catch {
 
