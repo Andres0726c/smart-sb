@@ -294,6 +294,7 @@ export class ModifyPolicyComponent {
   async fillGroupData(groupsArray: any, arrayData: any) {
     let formArrayData: any = this.fb.array([]);
     for (let group of groupsArray) {
+
       let groupFG = this.fb.group({
         id: group.code,
         code: group.code,
@@ -301,37 +302,37 @@ export class ModifyPolicyComponent {
         fields: this.fb.array([])
       });
 
-
-      for (let field of group.fields) {
-        let valueObj: any;
-
-        valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
-
-        if (valueObj) {
-          let fieldFG = this.fb.group({});
-
-          Object.keys(field).forEach(key => {
-            fieldFG.addControl(key, this.fb.control(field[key]));
-
-          });
-
-          fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
-
-          if (field.dataType.guiComponent === 'List box') {
-            let options: any = [], domainList = field.domainList.valueList;
-            field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
-            fieldFG.addControl('options', this.fb.control(options));
-          }
-
-          (<FormArray>groupFG.get('fields')).push(fieldFG);
-
-        }
-      }
-      (<FormArray>formArrayData).push(groupFG);
+      (<FormArray>formArrayData).push(this.validateGroup(group, arrayData,groupFG));
     }
 
     return formArrayData;
   }
+
+  validateGroup(group:any, arrayData: any,groupFG:any){
+    for (let field of group.fields) {
+      let valueObj: any;
+
+      valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
+
+      if (valueObj) {
+        let fieldFG = this.fb.group({});
+        Object.keys(field).forEach(key => {
+          fieldFG.addControl(key, this.fb.control(field[key]));
+        });
+        fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
+
+        if (field.dataType.guiComponent === 'List box') {
+          let options: any = [], domainList = field.domainList.valueList;
+          field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
+          fieldFG.addControl('options', this.fb.control(options));
+        }
+
+        return (<FormArray>groupFG.get('fields')).push(fieldFG);
+
+      }
+    }
+  }
+
 
   showDomainList(domainList: any[], valueObj: any) {
     let list: any = [], options = [];
