@@ -230,7 +230,6 @@ export class ModifyPolicyComponent {
         arrayData.push(obj);
       }
     }
-    //console.log(arrayData);
     return arrayData;
   }
 
@@ -324,8 +323,7 @@ export class ModifyPolicyComponent {
                 list = localStorage.getItem(type);
                 list = JSON.parse(list);
                 options = this.validateList(list, valueObj);
-                type == 'state' ? this.state = options.find((result: { id: any; }) => result.id == valueObj.value) : options;
-              } else {
+                } else {
                 options = this.orderData(domainList);
                 options = this.validateList(options, valueObj); 
               }
@@ -345,42 +343,6 @@ export class ModifyPolicyComponent {
 
     return formArrayData;
   }
-
-  // validateStateList(parameter: string, type: any, listPet?: any) {
-
-  //   let list: any = [], listAux: any = [], options: any = [], optionsAux: any = [];
-  //   if (type == "city") {
-
-  //     list = localStorage.getItem(type);
-  //     list = JSON.parse(list);
-
-  //     for (let list1 of list) {
-  //       listAux.push(list1.id);
-  //     }
-  //     console.log("state: ", parameter, "list: ", list);
-
-  //     for (let list1 of listAux) {
-  //       if (list1.slice(0, 2) == parameter) {
-  //         options.push(list1);
-  //       }
-  //     }
-
-  //     for (let list1 of list) {
-  //       for (let list2 of options) {
-  //         if (list2 == list1.id) {
-  //           optionsAux.push(list1);
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   if (type = "pets" && listPet != undefined) {
-  //     for (let list1 of listPet) {
-  //       listAux.push(list1.id);
-  //     }
-  //   }
-  //   return optionsAux;
-  // }
   validateList(list: any, valueObj: any) {
     let listAux: any = [], x = list.find((result: { id: any; }) => result.id == valueObj.value);
     listAux = list;
@@ -396,7 +358,7 @@ export class ModifyPolicyComponent {
         options.push(obj);
       }
     });
-    //console.log(options);
+
     return options;
   }
 
@@ -496,7 +458,6 @@ export class ModifyPolicyComponent {
       .subscribe((resp: any) => {
 
         if (resp.dataHeader.code != 500) {
-          // this.ref.close(true)
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
         } else {
           this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
@@ -540,13 +501,6 @@ export class ModifyPolicyComponent {
       summary: title,
       detail: msg
     });
-
-    // this.router.navigate(
-    //   [`/polizas/consulta`],
-    // );
-    // for (let type of this.types) {
-    //   localStorage.removeItem(type)
-    // }
   }
 
 
