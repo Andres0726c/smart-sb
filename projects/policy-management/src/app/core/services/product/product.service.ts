@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'commons-lib';
+
 import { map, Observable } from 'rxjs';
 import { ResponseDTO } from '../../interfaces/commun/response';
 import { Product } from '../../interfaces/product/product';
-
+import { DomainList } from '../../interfaces/domainList';
 @Injectable({
   providedIn: 'root',
 })
@@ -58,6 +59,13 @@ export class ProductService {
         })
   };
 
+  
+  getApiData = (serviceData: string = '', rlEngnCd: string = '', id:string=''):Observable<any> => {
+    id = (id !== '' ? `/${id}` : '');
+    return this.httpClient.get<ResponseDTO<DomainList>>
+    (`${this.apiUrl}${serviceData}${id}`, { headers: this.headers });
+  };
+  
   findPolicyDataById = (idPolicy: number, status: number): Observable<any> => {
     return this.httpClient.get<ResponseDTO<Product>>
       (`${this.apiUrl}policy/findPolicyDataById/${idPolicy}/${status}`,
@@ -65,4 +73,15 @@ export class ProductService {
           headers: this.headers,
         })
   };
+
+  executeRule( data: any): Observable<any>{
+    
+    return this.httpClient.post<any>(`${this.apiUrl}rule/executeOneRule`, data, {headers: this.headers});
+  }
+
+  saveModify( data: any): Observable<any>{
+    console.log(data,"data a viajar");
+    
+    return this.httpClient.post<any>(`${this.apiUrl}policy/saveModifyPolicy`, data, {headers: this.headers});
+  }
 }

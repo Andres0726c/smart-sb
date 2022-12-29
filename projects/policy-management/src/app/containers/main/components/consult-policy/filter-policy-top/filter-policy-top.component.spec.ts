@@ -8,7 +8,7 @@ import { ProductService } from 'projects/policy-management/src/app/core/services
 
 describe('FilterPolicyTopComponent', () => {
   let component: FilterPolicyTopComponent;
-
+  let productService:ProductService;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
@@ -16,20 +16,23 @@ describe('FilterPolicyTopComponent', () => {
       providers: [
         FilterPolicyTopComponent,
         FormBuilder,
+        ProductService,
         {
           provide: ProductService,
           useValue: {
             getAllProductsByCompany: () => of([]),
-          },
+            getApiData: () => of([]),
+          }
         },
         {
           provide: ConsultPolicyService,
           useValue: {
             getDocumentType: () => of([]),
           },
-        },
+        }
       ],
     });
+    productService = TestBed.inject(ProductService);
     component = TestBed.inject(FilterPolicyTopComponent);
   });
 
@@ -134,5 +137,23 @@ describe('FilterPolicyTopComponent', () => {
   it('clear dropdown with field doesnt exist', () => {
     component.onClearField('noExist');
     expect(component.formQueryFilter.value.noExist).toEqual(undefined);
+  });
+
+
+  
+  it('setData', () => {
+    let res: any = { body:'' };
+    const spy = component.setData(res, 'city');
+    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
+    expect(spy).toBeUndefined();
+    expect(spy2).toBeDefined();
+  });
+
+  it('addToElementData', () => {
+    let res: any = { body: [{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }] };
+    const spy = component.setData(res, 'city');
+    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
+    expect(spy).toBeUndefined();
+    expect(spy2).toBeDefined();
   });
 });
