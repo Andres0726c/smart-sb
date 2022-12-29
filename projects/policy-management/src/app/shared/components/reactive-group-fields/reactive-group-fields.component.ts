@@ -38,8 +38,8 @@ export class ReactiveGroupFieldsComponent {
 
   executeRule(field:any,groupName:any,show:boolean) {
 
-    let valueAfter = this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp![groupName.value!.code][field.value!.businessCode]
-    :this.policy.plcy.plcyDtGrp![groupName.value!.code][field.value!.businessCode];
+    let valueAfter = this.level==='risk'?this.policy.plcy.rsk['1']?.rskDtGrp[groupName?.value.code][field.value.businessCode]
+    :this.policy.plcy?.plcyDtGrp[groupName.value?.code][field.value?.businessCode];
 
     let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.id;
 
@@ -60,13 +60,13 @@ export class ReactiveGroupFieldsComponent {
 
       let levelField:any= [];
 
-      if(field.value.initializeRule.length !== 0 && valueCurrent !==''){
+      if(field.value?.initializeRule?.length !== 0 && valueCurrent !==''){
 
         levelField= [];
 
         let obj = {
           policyIssueRequestDTO:this.policy,
-          rule:field.value.initializeRule[0],
+          rule:field.value?.initializeRule[0],
           ruleIssue:this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp:this.policy.plcy.plcyDtGrp,
           keysContextVariables:levelField
         }
@@ -79,14 +79,14 @@ export class ReactiveGroupFieldsComponent {
           }
         });
       }
-      if(field.value.validateRule.length !== 0){
+      if(field.value?.validateRule.length !== 0){
 
         console.log("entra validation");
 
         levelField= [];
         let obj = {
           policyIssueRequestDTO:this.policy,
-          rule:field.value.validateRule[0],
+          rule:field.value?.validateRule[0],
           ruleIssue:this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp:this.policy.plcy.plcyDtGrp,
           keysContextVariables:levelField
         }

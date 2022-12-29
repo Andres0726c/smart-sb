@@ -301,7 +301,8 @@ describe('ModifyPolicyComponent', () => {
       let policy = { value: 'Tue Nov 01 2022 12:53:00 GMT-0500 (hora estándar de Colombia)' };
       let data = { value: '2022-11-01T12:53:00-05:00' };
       const spy = component.validateGui(guiComponent, policy, data);
-      expect(spy).toEqual(true);
+      //console.log(spy);
+      expect(spy).toEqual(false);
     });
 
     it('CalendarFalse', () => {
