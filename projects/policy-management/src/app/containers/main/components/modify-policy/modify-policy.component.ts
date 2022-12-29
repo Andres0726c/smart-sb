@@ -118,11 +118,7 @@ export class ModifyPolicyComponent {
     this.getPolicy();
     this.formPolicy.valueChanges.subscribe((v) => {
       this.result = this.validateSaveButton(this.policyData, this.policyDataControls, this.riskData, this.riskTypesControls);
-      if (this.result == false && this.riskTypesControls.status == 'VALID' && this.policyDataControls.status == 'VALID') {
-        this.isNextDisabled = false;
-      } else {
-        this.isNextDisabled = true;
-      }
+      this.result == false && this.riskTypesControls.status == 'VALID' && this.policyDataControls.status == 'VALID' ? this.isNextDisabled = false : this.isNextDisabled = true;
     });
 
 
@@ -144,18 +140,24 @@ export class ModifyPolicyComponent {
     flag == true ? flag = this.validateSaveButtonRisk(riskData, riskTypesControls) : flag = false;
     return flag;
   }
+  validateRiskB(riskData1: any,riskTypesControls:any, j:any, i:any){
+    let flag;
+    for (let riskData of riskData1) {
+      for (let risk of riskTypesControls.value[j].rskTypDtGrp[i].fields) {
+        if (risk.businessCode == riskData.name) {
+          flag = this.validateGui(risk.dataType.guiComponent, risk, riskData)
+          if (flag == false) { return flag; }
+        }
+      }
+    }
+    return flag;
+  }
   validateSaveButtonRisk(riskData1: any, riskTypesControls: any) {
     let flag;
     for (let j = 0; j < riskTypesControls.value.length; j++) {
       for (let i = 0; i < riskTypesControls.value[j].rskTypDtGrp.length; i++) {
-        for (let riskData of riskData1) {
-          for (let risk of riskTypesControls.value[j].rskTypDtGrp[i].fields) {
-            if (risk.businessCode == riskData.name) {
-              flag = this.validateGui(risk.dataType.guiComponent, risk, riskData)
-              if (flag == false) { return flag; }
-            }
-          }
-        }
+        flag= this.validateRiskB(riskData1,riskTypesControls,j,i);
+        if (flag == false) { return flag; }
       }
     }
     return flag;
@@ -207,7 +209,7 @@ export class ModifyPolicyComponent {
     this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
-       
+
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
@@ -237,18 +239,18 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-       
-      
+
+
         this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
-       
+
         this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
-       
+
         this.formPolicy.setControl('policyData',
           await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp//this.product.nmContent?.policyData
             , this.policyData));
         this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
 
-        
+
         this.isLoading = false;
 
       }
@@ -260,7 +262,7 @@ export class ModifyPolicyComponent {
 
 
     if (!flag) {
-      
+
       let groupRisk = this.fb.group({
         id: riskTypes.code,
         name: riskTypes.name,
@@ -314,24 +316,10 @@ export class ModifyPolicyComponent {
 
           fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
 
-          if (field.dataType.guiComponent === 'List box') { 
-            let list: any = [], options: any = [], domainList = field.domainList.valueList;//JSON.parse(field.domainList.valueList);
-            if (field.domainList) {
-              if (domainList[0].url) {
-                let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
-                this.types.push(type);
-                list = localStorage.getItem(type);
-                list = JSON.parse(list);
-                options = this.validateList(list, valueObj);
-                } else {
-                options = this.orderData(domainList);
-                options = this.validateList(options, valueObj); 
-              }
-              fieldFG.addControl('options', this.fb.control(options));
-            } else {
-              options= [{ id: valueObj.value, name: valueObj.value }]
-              fieldFG.addControl('options', this.fb.control(options));
-            }
+          if (field.dataType.guiComponent === 'List box') {
+            let options: any = [], domainList = field.domainList.valueList;//JSON.parse(field.domainList.valueList);
+            field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
+            fieldFG.addControl('options', this.fb.control(options));
           }
 
           (<FormArray>groupFG.get('fields')).push(fieldFG);
@@ -343,6 +331,22 @@ export class ModifyPolicyComponent {
 
     return formArrayData;
   }
+
+  showDomainList(domainList: any[], valueObj: any) {
+    let list: any = [], options = [];
+    if (domainList[0].url) {
+      let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
+      this.types.push(type);
+      list = localStorage.getItem(type);
+      list = JSON.parse(list);
+      options = this.validateList(list, valueObj);
+    } else {
+      options = this.orderData(domainList);
+      options = this.validateList(options, valueObj);
+    }
+    return options;
+  }
+
   validateList(list: any, valueObj: any) {
     let listAux: any = [], x = list.find((result: { id: any; }) => result.id == valueObj.value);
     listAux = list;
@@ -362,6 +366,7 @@ export class ModifyPolicyComponent {
     return options;
   }
 
+
   getGroupsControls(risk: any) {
     return risk.get('rskTypDtGrp') as FormArray;
   }
@@ -377,51 +382,51 @@ export class ModifyPolicyComponent {
 
   }
 
-  getControlValue(dataControlsValue: any, businessCode: string,level:string) {
+  getControlValue(dataControlsValue: any, businessCode: string, level: string) {
     let value = null;
-  
+
     for (let group of dataControlsValue) {
 
-      
+
       const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
-     
+
       if (valueField) {
         value = !this.isObject(valueField.value) ? valueField.value : valueField.value.id;
         break;
       } else if (!valueField || valueField === undefined) {
-        
-        try{
-        value = level==='policy'?
-          this.policyAux.plcy.plcyDtGrp![group!.code]![businessCode]:this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
-          
-        }catch{
+
+        try {
+          value = level === 'policy' ?
+            this.policyAux.plcy.plcyDtGrp![group!.code]![businessCode] : this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
+
+        } catch {
 
         }
-         
-       }
+
+      }
     }
-    
+
     return value;
-    
+
   }
 
-  
 
-  reverseMap(dataControls: any, groupData: any, level:string) {
-   
+
+  reverseMap(dataControls: any, groupData: any, level: string) {
+
     for (let objKey of Object.keys(groupData)) {
 
       for (let key of Object.keys(groupData[objKey])) {
-        groupData[objKey][key] = this.getControlValue(dataControls.value, key,level);
+        groupData[objKey][key] = this.getControlValue(dataControls.value, key, level);
       }
     }
   }
 
   transformData(flag: any) {
 
-    this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp,"policy");
+    this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp, "policy");
     for (let risk of this.riskTypesControls.controls) {
-      this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp,"risk");
+      this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp, "risk");
     }
     if (flag)
 
