@@ -68,7 +68,7 @@ export class ModifyPolicyComponent {
   riskData: any;
   riskDataPreview: any;
   isNextDisabled = true;
-  result: any;
+  result: any=true;
   validRule: boolean = true;
   isSaving = false;
   state: any = [];
@@ -118,11 +118,8 @@ export class ModifyPolicyComponent {
     this.getPolicy();
     this.formPolicy.valueChanges.subscribe((v) => {
       this.result = this.validateSaveButton(this.policyData, this.policyDataControls, this.riskData, this.riskTypesControls);
-      if (this.result == false && this.riskTypesControls.status == 'VALID' && this.policyDataControls.status == 'VALID') {
-        this.isNextDisabled = false;
-      } else {
-        this.isNextDisabled = true;
-      }
+      if(!this.result && this.riskTypesControls.status == 'VALID' && this.policyDataControls.status == 'VALID' )
+      { this.isNextDisabled = false }else{this.isNextDisabled = true} ;
     });
 
 
@@ -130,55 +127,63 @@ export class ModifyPolicyComponent {
 
 
   validateSaveButton(policyData: any, policyDataControls: any, riskData: any, riskTypesControls: any) {
-    let flag;
+    let flag:any=true;
     for (let i = 0; i < policyDataControls.value.length; i++) {
-      for (let data of policyData) {
-        for (let policy of policyDataControls.value[i].fields) {
-          if (policy.businessCode == data.name) {
-            flag = this.validateGui(policy.dataType.guiComponent, policy, data);
-            if (flag == false) { return flag; }
-          }
+      flag= this.activeButtonPol(policyData,policyDataControls,i);
+      if (!flag) { return flag; }
+    }
+    flag? flag = this.validateSaveButtonRisk(riskData, riskTypesControls) : flag = false;
+    return flag;
+  }
+  activeButtonPol(policyData: any, policyDataControls: any, i:any){
+    let flag:any=true;
+    for (let data of policyData) {
+      for (let policy of policyDataControls.value[i].fields) {
+        if (policy.businessCode == data.name) {
+          flag = this.validateGui(policy.dataType.guiComponent, policy, data);
+          if (!flag) { return flag; }
         }
       }
     }
-    flag == true ? flag = this.validateSaveButtonRisk(riskData, riskTypesControls) : flag = false;
+    return flag;
+  }
+  activeButtonRisk(riskData1: any,riskTypesControls:any, j:any, i:any){
+    let flag:any=true;
+    for (let riskData of riskData1) {
+      for (let risk of riskTypesControls.value[j].rskTypDtGrp[i].fields) {
+        if (risk.businessCode == riskData.name) {
+          flag = this.validateGui(risk.dataType.guiComponent, risk, riskData)
+          if (!flag) { return flag; }
+        }
+      }
+    }
     return flag;
   }
   validateSaveButtonRisk(riskData1: any, riskTypesControls: any) {
-    let flag;
+    let flag:any=true;
     for (let j = 0; j < riskTypesControls.value.length; j++) {
       for (let i = 0; i < riskTypesControls.value[j].rskTypDtGrp.length; i++) {
-        for (let riskData of riskData1) {
-          for (let risk of riskTypesControls.value[j].rskTypDtGrp[i].fields) {
-            if (risk.businessCode == riskData.name) {
-              flag = this.validateGui(risk.dataType.guiComponent, risk, riskData)
-              if (flag == false) { return flag; }
-            }
-          }
-        }
+        flag= this.activeButtonRisk(riskData1,riskTypesControls,j,i);
+        if (!flag) { return flag; }
       }
     }
     return flag;
   }
   validateGui(guiComponent: any, policy: any, data: any) {
-    let flag;
+    let flag:any=false;
     if (guiComponent == 'List box' && policy.value.id != undefined) {
-      policy.value.id === data.value ? flag = true : flag = false;
+      if (policy.value.id === data.value ) { flag=true; }
     }
     if (guiComponent == 'List box' && policy.value.id == undefined) {
-      policy.value === data.value ? flag = true : flag = false;
+      if ( policy.value=== data.value ) { flag=true; }
     }
     if (guiComponent == 'Calendar') {
       let dateObject = new Date(data.value);
-      policy.value.toString().slice(0, -46) === dateObject.toString().slice(0, -46) ? flag = true : flag = false;
+      if (policy.value.toString().slice(0, -46) === dateObject.toString().slice(0, -46) ) { flag=true; }
     }
     if (guiComponent == 'Text box') {
-      policy.value === data.value ? flag = true : flag = false;
+      if ( policy.value=== data.value ) { flag=true; }
     }
-    if (flag === false) {
-      return flag;
-    }
-
     return flag;
   }
 
@@ -207,7 +212,6 @@ export class ModifyPolicyComponent {
     this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
-       
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
@@ -237,18 +241,17 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
-       
-      
+
+
         this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
-       
+
         this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
-       
+
         this.formPolicy.setControl('policyData',
-          await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp//this.product.nmContent?.policyData
-            , this.policyData));
+          await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp, this.policyData));
         this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
 
-        
+
         this.isLoading = false;
 
       }
@@ -260,7 +263,7 @@ export class ModifyPolicyComponent {
 
 
     if (!flag) {
-      
+
       let groupRisk = this.fb.group({
         id: riskTypes.code,
         name: riskTypes.name,
@@ -314,24 +317,10 @@ export class ModifyPolicyComponent {
 
           fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
 
-          if (field.dataType.guiComponent === 'List box') { 
-            let list: any = [], options: any = [], domainList = field.domainList.valueList;//JSON.parse(field.domainList.valueList);
-            if (field.domainList) {
-              if (domainList[0].url) {
-                let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
-                this.types.push(type);
-                list = localStorage.getItem(type);
-                list = JSON.parse(list);
-                options = this.validateList(list, valueObj);
-                } else {
-                options = this.orderData(domainList);
-                options = this.validateList(options, valueObj); 
-              }
-              fieldFG.addControl('options', this.fb.control(options));
-            } else {
-              options= [{ id: valueObj.value, name: valueObj.value }]
-              fieldFG.addControl('options', this.fb.control(options));
-            }
+          if (field.dataType.guiComponent === 'List box') {
+            let options: any = [], domainList = field.domainList.valueList;
+            field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
+            fieldFG.addControl('options', this.fb.control(options));
           }
 
           (<FormArray>groupFG.get('fields')).push(fieldFG);
@@ -343,6 +332,22 @@ export class ModifyPolicyComponent {
 
     return formArrayData;
   }
+
+  showDomainList(domainList: any[], valueObj: any) {
+    let list: any = [], options = [];
+    if (domainList[0].url) {
+      let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
+      this.types.push(type);
+      list = localStorage.getItem(type);
+      list = JSON.parse(list);
+      options = this.validateList(list, valueObj);
+    } else {
+      options = this.orderData(domainList);
+      options = this.validateList(options, valueObj);
+    }
+    return options;
+  }
+
   validateList(list: any, valueObj: any) {
     let listAux: any = [], x = list.find((result: { id: any; }) => result.id == valueObj.value);
     listAux = list;
@@ -362,6 +367,7 @@ export class ModifyPolicyComponent {
     return options;
   }
 
+
   getGroupsControls(risk: any) {
     return risk.get('rskTypDtGrp') as FormArray;
   }
@@ -377,51 +383,51 @@ export class ModifyPolicyComponent {
 
   }
 
-  getControlValue(dataControlsValue: any, businessCode: string,level:string) {
+  getControlValue(dataControlsValue: any, businessCode: string, level: string) {
     let value = null;
-  
+
     for (let group of dataControlsValue) {
 
-      
+
       const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
-     
+
       if (valueField) {
         value = !this.isObject(valueField.value) ? valueField.value : valueField.value.id;
         break;
       } else if (!valueField || valueField === undefined) {
-        
-        try{
-        value = level==='policy'?
-          this.policyAux.plcy.plcyDtGrp![group!.code]![businessCode]:this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
-          
-        }catch{
+
+        try {
+          value = level === 'policy' ?
+            this.policyAux.plcy.plcyDtGrp![group!.code]![businessCode] : this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
+
+        } catch {
 
         }
-         
-       }
+
+      }
     }
-    
+
     return value;
-    
+
   }
 
-  
 
-  reverseMap(dataControls: any, groupData: any, level:string) {
-   
+
+  reverseMap(dataControls: any, groupData: any, level: string) {
+
     for (let objKey of Object.keys(groupData)) {
 
       for (let key of Object.keys(groupData[objKey])) {
-        groupData[objKey][key] = this.getControlValue(dataControls.value, key,level);
+        groupData[objKey][key] = this.getControlValue(dataControls.value, key, level);
       }
     }
   }
 
   transformData(flag: any) {
 
-    this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp,"policy");
+    this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp, "policy");
     for (let risk of this.riskTypesControls.controls) {
-      this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp,"risk");
+      this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp, "risk");
     }
     if (flag)
 
@@ -463,13 +469,7 @@ export class ModifyPolicyComponent {
           this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
         }
         this.isSaving = false;
-      },
-        // (error) => {
-        //   this.messageError = true;
-        //   this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
-        // }
-
-
+      }
       );
 
 
