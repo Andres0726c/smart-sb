@@ -1,0 +1,28 @@
+.p-tag {
+	//border-radius: 8px;
+	font-size: 0.75rem;
+	line-height: 120%;
+	padding: 2px 8px;
+	box-shadow: 0px 2px 4px rgba(51, 51, 51, 0.16), 0px 0px 6px rgba(51, 51, 51, 0.16);
+	font-weight: 400;
+	cursor: pointer;
+}
+
+.p-tag .p-tag-icon {
+	margin-right: 0.25rem;
+	font-size: 0.75rem;
+}
+
+.tag__icon.p-tag {
+	width: 1.5rem;
+	height: 1.5rem;
+	border-radius: 50%;
+}
+
+.tag__icon.p-tag .p-tag-icon {
+	margin-right: 0;
+}
+
+.tag__label.p-tag {
+	padding: 0.125rem 1rem;
+}

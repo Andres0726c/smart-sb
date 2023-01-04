@@ -1,0 +1,101 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+.container-tree {
+  min-width: 230px;
+  padding: 24px 8px;
+  background-color: $grayscaleWhite;
+  border-radius: 6px;
+  height: 100%;
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    &__title {
+      font-family: Roboto Condensed;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 23px;
+      color: $grayscaleBlack;;
+    }
+  }
+}
+
+.bt {
+  min-width: 90px;
+  width: 90px;
+  padding: 0;
+  height: 32px;
+}
+.icon-button-add {
+  color: $primaryBase;
+  font-size: 20px;
+  margin-right: 10px;
+}
+.div-button .icon-button-add{
+  margin-right: 0;
+  margin-left: 10px;
+}
+.tree .icon-arrow-tree {
+  color: $primaryBase;
+}
+.title-node {
+  font-family: Roboto Condensed;
+  font-style: normal;
+}
+
+.level-one {
+  .title-node {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    color: $grayscaleLevel-2;
+  }
+  .node-counter {
+    background: #f0f6f3;
+    border-radius: 50px;
+    padding: 0 16px;
+    margin:0 8px;
+    font-family: Roboto Condensed;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    color: $primaryBase;
+  }
+}
+.level-two {
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  .title-node {
+    border-left: 2px solid $primaryBase;
+    padding-left: 20px;
+    height: 100%;
+    font-weight: 400;
+    font-size: 14px;
+    text-anchor: middle;
+    color: $grayscaleLevel-2;
+    cursor: pointer;
+    &:hover {
+      color: $grayscaleBlack;
+      font-weight: 700;
+    }
+    &-selected {
+      color: $primaryDark !important;
+      font-weight: 700;
+    }
+  }
+}
+.icon-delete {
+  color: $alertsError;
+  cursor: pointer;
+  &:hover {
+    font-weight: 700;
+  }
+}

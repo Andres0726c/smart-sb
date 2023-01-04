@@ -1,50 +1,39 @@
 {
     "environment": {
-        "releasePath": "dist",
-        "mainPath": "projects"
+        "releasePath": "dist/browser",
+        "buildAll": "true"
     },
     "s3": {
         "dev": {
-            "name":"s3-name",
+            "name": "refactoring-dev-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         },
         "stage":{
-            "name":"xx-stage",
+            "name": "refactoring-stage-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         },
         "prod":{
-            "name":"xx-prod",
+            "name": "refactoring-prod-smartcore-web-frontend-mf-monorepo",
             "acl": "public-read"
         }
     },
-    "sites": {
-        "dev":[
-            {
-                "name": "site1",
-                "path": "site1",
-                "build": "site1",
-                "test": "site1"
-            },
-            {
-                "name": "site2",
-                "path": "site2",
-                "build": "site2",
-                "test": "site2"
-            }
-        ]
-    }
+    "configuration":{
+      "develop": "dev",
+      "stage": "stage",
+      "master": "prod"
+   },
     "cloudfront": {
         "dev": {
-            "distributionId":"EDFDVBD6EXAMPLE",
-            "invalidationPaths":"/*"
+            "distributionId": "E1CCWIH2SORIT0",
+            "invalidationPaths": "/*"
         },
         "stage":{
-            "distributionId":"EDFDVBD6EXAMPLE",
-            "invalidationPaths":"/*"
+            "distributionId": "E2WT09UZ68RGXT",
+            "invalidationPaths": "/*"
         },
         "prod":{
-            "distributionId":"EDFDVBD6EXAMPLE",
-            "invalidationPaths":"/*"
+            "distributionId": "ENNCWX7XR8Q1U",
+            "invalidationPaths": "/*"
         }
     }
 }

@@ -1,0 +1,70 @@
+<div class="flex h-full justify-center items-center">
+    <form [formGroup]="formData" class="flex flex-col bg-white rounded-xl shadow-xl p-7 items-center w-[400px]">
+        <img src="smartcore-commons/assets/img/sign-in-logo.svg" alt="sign-in-logo" width="162" height="68">
+        <div class="text-primary font-bold text-5xl">Bienvenido</div>
+        <div class="text-neutral-600 font-bold text-2xl">Ingrese sus credenciales</div>
+        <div class="flex flex-col gap-5 my-8 w-full">
+            <div class="container-alert" *ngIf = "!isDataValid">
+                <em class="pi pi-info-circle"></em>
+                Los datos ingresados no son válidos
+            </div>
+            <div>
+                <label>Usuario</label>
+                <span class="p-input-icon-right flex flex-col">
+                    <em class="pi pi-user"></em>
+                    <input data-qa-id="sc-rpmf-input_email" 
+                        type="email" pInputText formControlName="email" (keydown)="hasEnterKey($event)" class="block text-base" placeholder="usuario" class="w-full" required>
+                </span>
+                <div *ngIf="formData.get('email')?.touched || formData.get('email')?.dirty">
+                    <small class="p-error block" *ngIf="formData.get('email')?.hasError('pattern')">Ingrese un correo electrónico.</small>
+                    <small class="p-error block" *ngIf="formData.get('email')?.hasError('required')">Ingrese un correo valido.</small>
+                </div>
+            </div>
+            <div>
+                <label>Contraseña</label>
+                <p-password data-qa-id="sc-rpmf-input_password" 
+                    [toggleMask]="true" formControlName="password" (keydown)="hasEnterKey($event)" class="block" placeholder="contraseña" [feedback]="false" styleClass="w-full p-input-icon-right" inputStyleClass="w-full text-base" required></p-password>
+                <small class="p-error block" *ngIf="formData.get('password')?.hasError('required')&&(formData.get('password')?.touched || formData.get('password')?.dirty)">Ingrese su contraseña.</small>
+            </div>
+        </div>
+        <div class="pt-3 h-[70px]">
+            <p-button data-qa-id="sc-rpmf-login" 
+                *ngIf="!isLoading" (click)="logIn()" label="Iniciar sesión" styleClass="p-button"></p-button>
+            <smartcore-loading-spinner *ngIf="isLoading && !showCompanySelection" [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
+        </div>
+    </form>
+</div>
+
+<p-dialog data-qa-id="sc-rpmf-modal-select-company" 
+    header="Compañía" [(visible)]="showCompanySelection" [modal]="true" [draggable]="false" styleClass="w-[400px]"
+    (onShow)="drpdwnCompany.focus()" (onHide)="closeModalCompany()">
+    <div class="flex justify-center mt-5 mb-3">
+        Seleccione la compañía a la que desea ingresar
+    </div>
+    <form [formGroup]="formCompany">
+        <p-dropdown #drpdwnCompany data-qa-id="sc-rpmf-mat-select-company"
+            [options]="companies" formControlName="company" optionLabel="businessName" class="block" placeholder="Seleccione la compañía" styleClass="w-full"
+            (keyup.enter)="$event.stopImmediatePropagation(); formCompany.valid ? setCompany(formCompany.get('company')?.value) : null"></p-dropdown>
+    </form>
+    <div class="flex justify-center pt-5 pb-3">
+        <p-button data-qa-id="sc-rpmf-btm-add-company" 
+            (click)="setCompany(formCompany.get('company')?.value)" label="Aceptar" styleClass="p-button" [disabled]="!formCompany.valid"></p-button>
+    </div>
+</p-dialog>
+
+<p-dialog data-qa-id="sc-rpmf-modal-forbhidden" 
+    header="Sin acceso" [(visible)]="showModalForbhidden" [modal]="true" [draggable]="false" [closable]="true" styleClass="w-[400px]">
+    <div class="flex justify-center pt-5 pb-3">
+        <img src="smartcore-commons/assets/styles/material-theme/icons/picto-alert.svg" alt="icon-warning">
+    </div>
+    <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl font-bold text-black">
+        <p class="w-full text-center">
+            El usuario no cuenta con los permisos para ingresar a la aplicación.
+            Por favor contacte al administrador del sistema.
+        </p>
+    </div>
+    <div class="flex justify-center pt-5 pb-3">
+        <p-button data-qa-id="sc-rpmf-btm-close-modal-dorbhidden" 
+            (click)="showModalForbhidden=false" label="Aceptar" styleClass="p-button"></p-button>
+    </div>
+</p-dialog>

@@ -1,0 +1,51 @@
+<ng-template #inputText let-groupName="groupName" let-field="field">
+    <div [hidden]="field.value.label ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.label }}</label>
+        <input data-qa-id="sc-rsmf-txt-process-field"
+            type="text" pInputText formControlName="value"
+            (focusout)="executeRule(field,groupName,false)">
+        <div *ngIf="(field.get('value')?.touched || field.get('value')?.dirty)">
+            <small *ngIf="field.value!.rule" class="p-error block">¡Error en regla! &nbsp; &nbsp; <em class="pi pi-eye iconEye"  pTooltip=" ver detalles" (click)="executeRule(field,groupName,true);"></em> </small> 
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #calendar let-groupName="groupName" let-field="field">
+    <div [hidden]="field.value.label ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.label }}</label>
+        <p-calendar data-qa-id="sc-rsmf-cal-process-field"
+            [showIcon]="true" styleClass="w-full" dateFormat="yy-mm-ddT00:00:00-05:00" formControlName="value" (focusout)="executeRule(field,groupName,false)" (click)="executeRule(field,groupName,false)"></p-calendar>
+        <div *ngIf="(field.get('value')?.touched || field.get('value')?.dirty)">
+            <small class="flex justify-left" *ngIf="field.value!.rule" class="p-error block">¡Error en regla! &nbsp; &nbsp; <em class="pi pi-eye iconEye" pTooltip=" ver detalles" (click)="executeRule(field,groupName,true);"></em> </small> 
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #dropDown let-groupName="groupName" let-field="field">
+    <div [hidden]="field.value.label ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.label }}</label>
+        <p-dropdown data-qa-id="sc-rsmf-drpdwn-process-field" 
+            [options]="field.value.options" optionLabel="name" styleClass="w-full" formControlName="value" (focusout)="executeRule(field,groupName,false)" ></p-dropdown>
+        <div *ngIf="(field.get('value')?.touched || field.get('value')?.dirty)">
+            <small *ngIf="field.value!.rule" class="p-error block">¡Error en regla! &nbsp; &nbsp; <em class="pi pi-eye iconEye"  pTooltip=" ver detalles" (click)="executeRule(field,groupName,true);"></em> </small> 
+        </div>
+    </div>
+</ng-template>
+
+<div [formGroup]="group">
+    <p-accordion>
+        <p-accordionTab [selected]="true">
+            <ng-template pTemplate="header">
+                <span class="text-primary mr-2">Grupo:</span> {{ group.value.name }}
+            </ng-template>
+            <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
+                <div *ngFor="let field of getFieldsControls(group)?.controls; let j = index;" formGroupName="{{j}}">
+                    <ng-container
+                        [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataType.guiComponent]"
+                        [ngTemplateOutletContext]="{ field: field,groupName:group }"
+                    ></ng-container>
+                </div>
+            </div>
+        </p-accordionTab>
+    </p-accordion>
+</div>

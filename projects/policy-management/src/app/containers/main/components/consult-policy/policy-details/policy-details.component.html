@@ -1,0 +1,145 @@
+<div>
+  <section *ngIf="isLoading" class="w-full text-center py-8">
+    <div
+      class="p-progress-spinner lib-progress-indicator__infinite text-center"
+      [style]="{ width: '50px', height: '50px' }"
+    >
+      <svg
+        class="p-progress-spinner-svg"
+        viewBox="25 25 50 50"
+        [style.animation-duration]="'.5s'"
+      >
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="20%" x2="50%" y2="150%">
+            <stop offset="25%" stop-color="#6FD940"></stop>
+            <stop offset="45%" stop-color="#DBDC11"></stop>
+          </linearGradient>
+        </defs>
+        <circle
+          stroke="url(#gradient)"
+          class="p-progress-spinner-circle"
+          cx="50"
+          cy="50"
+          [attr.r]="21"
+          fill="none"
+          [attr.stroke-width]="6"
+          stroke-miterlimit="10"
+        />
+      </svg>
+    </div>
+  </section>
+  <p-messages *ngIf="!isLoading && !policy" severity="error">
+    <ng-template pTemplate> Hubo un error. Vuelva a intentarlo. </ng-template>
+  </p-messages>
+
+  <div *ngIf="!isLoading && policy" class="pt-5 flex flex-col gap-y-4">
+    <fieldset class="border-dashed rounded-md border px-2">
+      <legend class="font-bold px-2">Póliza</legend>
+      <div class="flex flex-col gap-y-4">
+        <section class="w-full flex flex-col sm:flex-row gap-x-4">
+          <div class="w-full sm:w-1/3">
+            <label class="font-bold text-base">Número</label> <br />
+            <span class="pl-1 text-base text-gray">{{ policy.policyNumber }}</span>
+          </div>
+          <div class="w-full sm:w-1/3">
+            <label class="font-bold text-base">Producto seleccionado</label
+            ><br />
+            <span class="pl-1 text-base text-gray">{{ policy.productName }}</span>
+          </div>
+          <div class="w-full sm:w-1/3">
+            <label class="font-bold text-base">Inicio vigencia</label><br />
+            <span class="pl-1 text-base text-gray">{{
+              policy.effectiveStartDatePolicy | date: "yyyy-MM-dd"
+            }}</span>
+          </div>
+        </section>
+        <section class="w-full flex flex-col sm:flex-row gap-x-4">
+          <div class="w-full sm:w-1/3">
+            <label class="font-bold text-base">Fin de vigencia</label><br />
+            <span class="pl-1 text-base text-gray">{{
+              policy.expirationDate | date: "yyyy-MM-dd"
+            }}</span>
+          </div>
+          <div class="w-full sm:w-1/3">
+            <label class="font-bold text-base">Valor prima</label><br />
+            <span class="pl-1 text-base text-gray">{{ policy.premiumValue }} COP</span>
+          </div>
+          <div class="w-full sm:w-1/3">
+            <label class="font-bold text-base">Agente</label><br />
+            <span class="pl-1 text-base text-gray">{{ policy.agent }}</span>
+          </div>
+        </section>
+        <section class="w-full flex flex-col sm:flex-row gap-x-4">
+          <div class="w-full sm:w-1/3">
+            <label class="font-bold text-base">Método de pago</label><br />
+            <span class="pl-1 text-base text-gray">{{ policy.payment.method }}</span>
+          </div>
+          <div class="w-full sm:w-1/3">
+            <label class="font-bold text-base">Fecha emisión</label><br />
+            <span class="pl-1 text-base text-gray">{{
+              policy.inceptionDate | date: "yyyy-MM-dd"
+            }}</span>
+          </div>
+          <div class="w-full sm:w-1/3">
+            <label class="font-bold text-base">Plan adquirido</label><br />
+            <span class="pl-1 text-base text-gray">{{ policy.servicePlan.name }}</span>
+          </div>
+        </section>
+      </div>
+    </fieldset>
+    <fieldset class="border-dashed rounded-md border px-2">
+      <legend class="font-bold px-2">Mascota</legend>
+      <section class="w-full flex flex-col sm:flex-row gap-x-4">
+        <div class="w-full sm:w-1/3">
+          <label class="font-bold text-base">Tipo</label><br />
+          <span class="pl-1 text-base text-gray">{{
+            policy.complementaryData.petType? policy.complementaryData.petType: 'No aplica'
+          }}</span>
+        </div>
+        <div class="w-full sm:w-1/3">
+          <label class="font-bold text-base">Nombre</label><br />
+          <span class="pl-1 text-base text-gray">{{
+            policy.complementaryData.petName? policy.complementaryData.petName: 'No aplica'
+          }}</span>
+        </div>
+        <div class="w-full sm:w-1/3">
+          <label class="font-bold text-base">Edad</label><br />
+          <span class="pl-1 text-base text-gray">{{
+            policy.complementaryData.petAge? policy.complementaryData.petAge: 'No aplica'
+          }}</span>
+        </div>
+        <div class="w-full sm:w-1/3">
+          <label class="font-bold text-base">Raza</label><br />
+          <span class="pl-1 text-base text-gray">{{
+            policy.complementaryData.petBrand? policy.complementaryData.petBrand : 'No aplica'
+          }}</span>
+        </div>
+      </section>
+    </fieldset>
+    <fieldset class="border-dashed rounded-md border px-2">
+      <legend class="font-bold px-2">Otros</legend>
+      <section class="w-full flex flex-col sm:flex-row gap-x-4">
+        <div class="w-full sm:w-1/3">
+          <label class="font-bold text-base"
+            >Correo electronico registrado</label
+          ><br />
+          <span class="pl-1 text-base text-gray">{{ policy.policyEmail? policy.policyEmail: 'No aplica' }}</span>
+        </div>
+        <div class="w-full sm:w-1/3">
+          <label class="font-bold text-base">Medio de pago</label><br />
+          <span class="pl-1 text-base text-gray">{{ policy.payment.type? policy.payment.type: 'No aplica' }}</span>
+        </div>
+        <div class="w-full sm:w-1/3">
+          <label class="font-bold text-base">Número</label><br />
+          <span class="pl-1 text-base text-gray">{{ policy.payment.account? policy.payment.account: 'No aplica'  }}</span>
+        </div>
+      </section>
+    </fieldset>
+  </div>
+  <section
+    *ngIf="!isLoading && policy"
+    class="sticky bottom-0 bg-white pb-6 pt-4 text-center"
+  >
+    <button pButton type="submit" label="Cerrar" class="min-w-max" (click)="close()"></button>
+  </section>
+</div>

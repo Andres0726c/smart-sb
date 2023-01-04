@@ -1,0 +1,276 @@
+<mat-card *ngIf="isLoading || flagServiceError" style="margin: 10px;">
+  <mat-card-content>
+      <div *ngIf="isLoading" style="display: flex; justify-content: center; height: 300px; align-items: center">
+          <mat-progress-spinner
+            color="primary"
+            mode="indeterminate">
+          </mat-progress-spinner>
+      </div>
+      <div *ngIf="flagServiceError" style="display: flex; flex-direction: column; justify-content: center; align-items: center; border-left: solid 5px red; border-right: solid 5px red; color: red; background-color: #FDEDEC; height: 50px;">
+          Ha ocurrido un error cargando los datos necesarios
+      </div>
+  </mat-card-content>
+</mat-card>
+
+<div class="content" *ngIf="!isLoading && !flagServiceError">
+  <div class="content_title">
+    <h3 class="title">
+      Parámetros generales
+    </h3>
+    <h4 class="subtitle">Especifique y defina los datos  básicos del producto</h4>
+  </div>
+
+  <form class="form" [formGroup]="service.initialParameters" (ngSubmit)="onFormSubmit()" ngNativeValidate autocomplete="off">
+    <div class="div-container-form">
+      <div class="div-container-form__left">
+        <div class="container_form">
+      <div class="container_form__form">
+        <section class="input">
+          <mat-label>Nombre del producto</mat-label>
+          <mat-form-field appearance="outline" disabled>
+            <input matInput type="text" formControlName="productName" readonly [errorStateMatcher]="matcher" data-qa-id="sc-rpmf-input_productName">
+            <mat-error *ngIf="service.initialParameters.get('productName')?.errors?.['required']">Ingrese el nombre del producto.</mat-error>
+          </mat-form-field>
+        </section>
+        <section class="input">
+          <mat-label>Compañía</mat-label>
+          <mat-form-field appearance="outline">
+            <input matInput type="text" formControlName="company" readonly [errorStateMatcher]="matcher" data-qa-id="sc-rpmf-input_company">
+            <mat-error *ngIf="service.initialParameters.get('company')?.errors?.['required']">Ingrese la compañia.</mat-error>
+          </mat-form-field>
+        </section>
+        <section class="input">
+          <mat-label>Tipo de póliza</mat-label>
+          <mat-form-field appearance="outline">
+            <mat-select placeholder="Seleccione el tipo de póliza." formControlName="policyType" [errorStateMatcher]="matcher" tabindex="2" data-qa-id="sc-rpmf-select-policy">
+              <mat-option *ngFor="let policy of policyTypes" [value]="policy.id" >
+                {{policy.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="service.initialParameters.get('policyType')?.errors?.['required']">Seleccione el tipo de póliza.</mat-error>
+          </mat-form-field>
+        </section>
+        <section class="input">
+          <mat-label>Días de retroactividad</mat-label>
+          <div class="div-content-count">
+            <mat-form-field appearance="outline">
+              <input class="input-number" matInput type="number" formControlName="dayRetroactivity" (keyup)="changeInputNumber('dayRetroactivity')" [errorStateMatcher]="matcher" tabindex="4" data-qa-id="sc-rpmf-input_dayRetroactivity">
+              <mat-error *ngIf="service.initialParameters.get('dayRetroactivity')?.errors?.['min']">Días de retroactividad debe ser mayor o igual a 0.</mat-error>
+              <mat-error *ngIf="service.initialParameters.get('dayRetroactivity')?.errors?.['max']">Días de retroactividad debe ser menor o igual a 365.</mat-error>
+            </mat-form-field>
+          </div>
+        </section>
+      </div>
+
+
+      <div class="container_form__form">
+        <section class="input">
+          <mat-label>Nombre comercial</mat-label>
+          <mat-form-field appearance="outline">
+            <input matInput type="text" formControlName="commercialName" [errorStateMatcher]="matcher"  data-qa-id="sc-rpmf-input_commercialName">
+            <mat-error class="text-error" *ngIf="service.initialParameters.get('commercialName')?.errors?.['required']">El campo nombre comercial es obligatorio</mat-error>
+            <mat-error class="text-error" *ngIf="service.initialParameters.get('commercialName')?.errors?.['maxlength']">La longitud debe ser mínimo 4 y máximo 200 caracteres</mat-error>
+            <mat-error class="text-error" *ngIf="service.initialParameters.get('commercialName')?.errors?.['minlength']">La longitud debe ser mínimo 4 y máximo 200 caracteres</mat-error>
+            <mat-error class="text-error" *ngIf="service.initialParameters.get('commercialName')?.errors?.['pattern']">El campo nombre comercial solo recibe letras</mat-error>
+          </mat-form-field>
+        </section>
+        <section class="input">
+          <mat-label>
+            Ramo
+          </mat-label>
+          <mat-form-field  appearance="outline">
+            <mat-select placeholder="Seleccione el ramo." formControlName="insuranceLine" [errorStateMatcher]="matcher" (focus)="keepFocus()" (selectionChange)="confirmSelectInsurenceLine($event.value)" data-qa-id="sc-rpmf-select-ramo">
+              <mat-option *ngFor="let ramos of ramo" [value]="ramos.id">
+                {{ramos.nmName }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="service.initialParameters.get('insuranceLine')?.errors?.['required']">Seleccione el ramo.</mat-error>
+          </mat-form-field>
+        </section>
+        <section class="input">
+          <mat-label>Período de validez de la cotización (días)</mat-label>
+          <div class="div-content-count">
+            <mat-form-field appearance="outline">
+              <input class="input-number" matInput type="number" formControlName="periodValidity" (keyup)="changeInputNumber('periodValidity')" [errorStateMatcher]="matcher" tabindex="3" data-qa-id="sc-rpmf-input_periodValidity">
+              <mat-error *ngIf="service.initialParameters.get('periodValidity')?.errors?.['min']">Período de validez debe ser mayor a 0.</mat-error>
+              <mat-error *ngIf="service.initialParameters.get('periodValidity')?.errors?.['max']">Período de validez debe ser menor o igual a 365.</mat-error>
+            </mat-form-field>
+          </div>
+        </section>
+        <section class="input">
+            <mat-label>Días máximo de anticipo</mat-label>
+            <div class="div-content-count">
+              <mat-form-field appearance="outline">
+                <input class="input-number" matInput type="number" formControlName="dayMaxAdvance" (keyup)="changeInputNumber('dayMaxAdvance')" [errorStateMatcher]="matcher" tabindex="5" data-qa-id="sc-rpmf-input_dayMaxAdvance">
+                <mat-error *ngIf="service.initialParameters.get('dayMaxAdvance')?.errors?.['min']">Días máximo de anticipo debe ser mayor o igual a 0.</mat-error>
+                <mat-error *ngIf="service.initialParameters.get('dayMaxAdvance')?.errors?.['max']">Días máximo de anticipo debe ser menor o igual a 365.</mat-error>
+              </mat-form-field>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="div-content-chips">
+        <div class="container-chips">
+          <mat-form-field class="example-chip-list" appearance="outline">
+            <mat-label>Tipo de moneda</mat-label>
+            <mat-chip-list #chipListTypeCurrency aria-label="Tipo de moneda" formArrayName="typeCurrency" class="chip-list">
+              <mat-chip *ngFor="let tc of typeCurrencyControls.value" (removed)="remove(tc,'typeCurrency')" class = "chip">
+                <em class="far fa-location-circle chip__icon"></em>
+                {{tc.name }}
+                <button matChipRemove>
+                  <em class="fal fa-times-circle chip__icon"></em>
+                </button>
+              </mat-chip>
+              <input [matChipInputFor]="chipListTypeCurrency"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]="addOnBlur"
+                      disabled
+                      class="chip-list-input"
+                      data-qa-id="sc-rpmf-input_typeCurrency">
+            </mat-chip-list>
+            <mat-error *ngIf="chipListTypeCurrency.errorState">Seleccione un tipo de moneda.</mat-error>
+          </mat-form-field>
+          <button mat-button type='button' class="button-add" (click) = "openDialogToChips('typeCurrencyControls')" tabindex="6" data-qa-id="sc-rpmf-btn_modal_chips"><em class="fal fa-plus-circle icon-button-add"></em>Tipo de moneda</button>
+        </div>
+
+        <div class="container-chips">
+          <mat-form-field class="example-chip-list" appearance="outline">
+            <mat-label>Grupos objetivo</mat-label>
+            <mat-chip-list #chipListObjectiveGroup aria-label="Grupo objetivo" formArrayName="objectiveGroup" class="chip-list">
+              <mat-chip *ngFor="let og of objectiveGroupControls.value" (removed)="remove(og,'objectiveGroup')" class = "chip">
+                <em class="far fa-location-circle chip__icon"></em>
+                {{og.name}}
+                <button matChipRemove>
+                  <em class="fal fa-times-circle chip__icon"></em>
+                </button>
+              </mat-chip>
+              <input [matChipInputFor]="chipListObjectiveGroup"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]="addOnBlur"
+                     disabled
+                     class="chip-list-input"
+                     data-qa-id="sc-rpmf-input_objectiveGroup">
+            </mat-chip-list>
+            <mat-error *ngIf="chipListObjectiveGroup.errorState">Seleccione un grupo objetivo.</mat-error>
+          </mat-form-field>
+          <button mat-button type='button' class="button-add" (click) = "openDialogToChips('objectiveGroupControls')" tabindex="7" data-qa-id="sc-rpmf-btn_modal_chips"><em class="fal fa-plus-circle icon-button-add"></em>Grupo objetivo</button>
+        </div>
+
+        <div class="container-chips">
+          <mat-form-field class="example-chip-list" appearance="outline">
+            <mat-label>Canal de venta</mat-label>
+            <mat-chip-list #chipListSalesChannel aria-label="Canal de venta" formArrayName="salesChannel" class="chip-list">
+              <mat-chip *ngFor="let sc of salesChannelControls.value" (removed)="remove(sc,'salesChannel')" class = "chip">
+                <em class="far fa-location-circle chip__icon"></em>
+                {{sc.name}}
+                <button matChipRemove>
+                  <em class="fal fa-times-circle chip__icon"></em>
+                </button>
+              </mat-chip>
+              <input [matChipInputFor]="chipListSalesChannel"
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]="addOnBlur"
+                     disabled
+                     class="chip-list-input"
+                     data-qa-id="sc-rpmf-input_salesChannel">
+            </mat-chip-list>
+            <mat-error *ngIf="chipListSalesChannel.errorState">Seleccione un canal de venta.</mat-error>
+          </mat-form-field>
+          <button mat-button type='button' class="button-add" (click) = "openDialogToChips('salesChannelControls')" tabindex="8" data-qa-id="sc-rpmf-btn_modal_chips"><em class="fal fa-plus-circle icon-button-add"></em>Canal de venta</button>
+        </div>
+
+      </div>
+      <div class="div-content-option">
+        <div class="div-select input" *ngIf="!service._isCreateProduct">
+            <mat-label>Estado del producto</mat-label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="estateProduct" [errorStateMatcher]="matcher">
+                <mat-option value="Activo">Activo</mat-option>
+                <mat-option value="Inactivo">Inactivo</mat-option>
+              </mat-select>
+              <mat-error *ngIf="service.initialParameters.get('estateProduct')?.errors?.['required']">Seleccione el estado del producto.</mat-error>
+            </mat-form-field>
+        </div>
+
+      <div class="div-opt">
+          <mat-checkbox  formControlName="coinsurance" color ="primary" tabindex="9" data-qa-id="sc-rpmf-check_coinsurance">Permite coaseguro</mat-checkbox>
+        </div>
+    </div>
+  </div>
+
+
+    <div class="div-container-form__right">
+    
+      <section class="input" style="margin-top:-85px">
+        <mat-label>Código de negocio</mat-label>
+        <mat-form-field appearance="outline" disabled>
+          <input class=""  matInput type="text" formControlName="businessCode" readonly [errorStateMatcher]="matcher" data-qa-id="sc-rpmf-input_businessCode" >
+          </mat-form-field>
+      </section>
+  
+        <div class="table">
+          <table class="policity-validity-table">
+          <caption>Período de vigencia de la póliza</caption>
+          <tr class="titles">
+            <th style="width: 70%;">Vigencia por defecto</th>
+            <th style="width: 30%;">Modificable</th>
+          </tr>
+          <tr class="rows">
+
+            <td class="select-validity" style="width: 70%;">
+              <mat-form-field appearance="outline">
+                <mat-select formControlName="policyValidityPeriod" [errorStateMatcher]="matcher" tabindex="10" data-qa-id="sc-rpmf-validity-period">
+                  <mat-option *ngFor="let pvp of policyValidityPeriods" [value]="pvp.id">
+                    {{pvp.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td style="width: 30%;"><mat-checkbox formControlName="policyValidityPeriodModify" color ="primary" tabindex="11"></mat-checkbox></td>
+
+          </tr>
+          <tr class="rows">
+
+            <td class="select-validity" style="width: 70%;">
+              Maneja horas/minutos?
+            </td>
+            <td style="width: 30%;"><mat-checkbox formControlName="policyValidityTimeModify" color ="primary" tabindex="11"></mat-checkbox></td>
+
+          </tr>
+        </table>
+        <mat-error *ngIf=" service.initialParameters.get('policyValidityPeriod')?.touched && service.initialParameters.get('policyValidityPeriod')?.errors?.['required']">Seleccione el  de vigencia.</mat-error>
+      </div>
+
+      <div class="table">
+        <table class="billing-table" aria-describedby="tabla de s de facturación" >
+          <div class="title-table">
+            <caption>Períodos de facturación</caption>
+            <button mat-button type='button' class="button-add" (click) = "openDialogToChips('billingPeriodControls')" tabindex="12" data-qa-id="sc-rpmf-btn_modal_chips"><em class="fal fa-plus-circle icon-button-add"></em>Añadir</button>
+          </div>
+          <tr class="titles">
+            <th style="width: 40%;">Nombre</th>
+            <th>Porcentaje de recargo</th>
+          </tr>
+          <div formArrayName="billingPeriod">
+            <tr class="rows" *ngFor="let bp of billingPeriodControls.controls; index as i;">
+              <div [formGroupName]="i" style="display: flex; width: 100%;">
+                <td class="name">{{bp.value.name}}</td>
+                <td class="surcharge-percentage">
+                  <mat-form-field appearance="outline" class="input-percentage">
+                    <input matInput currencyMask formControlName="percentage" [options]="{prefix:'' , suffix: ' %', precision: 2, thousands: '.', decimal: ',', allowNegative:false, max: 100}" autocomplete="off" required="false" tabindex="12 + (1 + i) "  data-qa-id="sc-rpmf-input_percentage">
+                  </mat-form-field>
+                  <em class="far fa-times-circle icon-delete" (click)="removeBillingPeriod(i)"></em>
+                </td>
+              </div>
+            </tr>
+          </div>
+        </table>
+        <mat-error *ngIf="billingPeriodControls?.touched && billingPeriodControls?.length == 0">Seleccione un  de facturación.</mat-error>
+        <mat-error *ngIf="billingPeriodControls?.touched && billingPeriodControls?.status=='INVALID' && billingPeriodControls?.length != 0">Los porcentajes de recargo son obligatorios</mat-error>
+      </div>
+    </div>
+  </div>
+
+  </form>
+</div>

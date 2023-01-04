@@ -1,0 +1,86 @@
+@use '@angular/material' as mat;
+@include mat.core();
+
+// define a real custom palette (using http://mcg.mbitson.com)
+$my-primary: (
+    50 : #e1ede7,
+    100 : #b3d3c3,
+    200 : #80b69c,
+    300 : #4d9974,
+    400 : #278356,
+    500 : #016d38,
+    600 : #016532,
+    700 : #015a2b,
+    800 : #015024,
+    900 : #003e17,
+    A100 : #74ff98,
+    A200 : #41ff72,
+    A400 : #0eff4d,
+    A700 : #00f33f,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$my-accent: (
+    50 : #fffbec,
+    100 : #fff5ce,
+    200 : #ffeeae,
+    300 : #ffe78e,
+    400 : #ffe175,
+    500 : #ffdc5d,
+    600 : #ffd855,
+    700 : #ffd34b,
+    800 : #ffce41,
+    900 : #ffc530,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #fff4db,
+    A700 : #ffedc2,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+// mandatory stuff for theming
+$my-palette-primary: mat.define-palette($my-primary);
+$my-palette-accent:  mat.define-palette($my-accent);
+
+// include the custom theme components into a theme object;
+$my-theme: mat.define-light-theme((
+ color: (
+   primary: $my-palette-primary,
+   accent: $my-palette-accent,
+ )
+));
+
+// include the custom theme object into the angular material theme
+@include mat.all-component-themes($my-theme);
+
+@import "../material-theme/config/icons"

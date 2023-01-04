@@ -1,0 +1,11 @@
+.picto-delete{
+    &::before{
+        content: url(../icons/picto-delete.svg)
+    }
+}
+
+.picto-alert{
+    &::before{
+        content: url(../icons/picto-alert.svg)
+    }
+}

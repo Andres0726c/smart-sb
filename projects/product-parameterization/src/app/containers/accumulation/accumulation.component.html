@@ -1,0 +1,99 @@
+<app-no-data-screen
+  [emptyTitle]="'Definición de cúmulo'"
+  [emptySubTitle]="'Especifique y defina el cúmulo para un producto'"
+  >
+</app-no-data-screen>
+
+<div class="container-details">
+  <div id="container-accumulation-title">
+    <h4 id="accumulation-title">Configuración de cúmulo para un producto</h4>
+  </div>
+  <form id="form" [formGroup]="productService.accumulation">
+
+    <div id="container-form-input">
+      <div class="container-input">
+        <mat-label>Tipo de acumulación</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="accumulationType" (selectionChange)="changeRequired()" data-qa-id="sc-rpmf-select_accumulation_type">
+            <mat-option *ngIf="dataSource.data.length===0" [value]="null">Seleccione el tipo de acumulación</mat-option>
+            <mat-option *ngFor="let at of accumulationTypeList" [value]="at.id">
+              {{at.nmName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="productService.accumulation.get('accumulationType')?.errors?.['required']">Seleccione el tipo de acumulación.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="container-input">
+        <mat-label>Tope de acumulación</mat-label>
+        <mat-form-field appearance="outline">
+          <input matInput currencyMask formControlName="accumulationTop" data-qa-id="sc-rpmf-input_accumulation_top"
+            [options]="{prefix:'$' , suffix: ' ', precision: 2, thousands: '.', decimal: ',', allowNegative:false, max: 999999999999999.00, min: 1}"
+            autocomplete="off" required="false">
+            <mat-error *ngIf="productService.accumulation.get('accumulationTop')?.errors?.['required']">El campo tope de acumulación es obligatorio.</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div id="container-search" >
+      
+      <div class="content_search_accumulation">
+        <h3 id="coverage-table-title">Coberturas asociadas</h3>
+        <mat-form-field appearance="outline" class="search_input"  *ngIf="CoveragesControls.value.length>0"  >
+          <input matInput placeholder="Buscar" (keyup)="applyFilter($event)" data-qa-id="sc-rpmf-input_search_accumulation" />
+          <mat-icon matSuffix class="icon-search">search</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="div-button">
+        <button mat-raised-button data-qa-id="sc-rpmf-btn_add_accumulation_coverages" color="accent" class="bt" (click)="openDialogCoverages('commertialPlanCoverages')"  [disabled]="this.productService.accumulation.get('accumulationType')?.value===null">
+          <em class="fal fa-plus-circle icon-button-add"></em>
+          Añadir cobertura
+        </button>
+      </div>
+    </div>
+    <table mat-table #clausesTable [dataSource]="dataSource" *ngIf="dataSource">
+      <caption></caption>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+      </ng-container>
+
+      <!-- description Column -->
+      <ng-container matColumnDef="productName">
+        <th mat-header-cell *matHeaderCellDef class="text-center">Producto</th>
+        <td mat-cell *matCellDef="let element">{{element.productName}}</td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions" >
+        <th mat-header-cell *matHeaderCellDef class="text-center w-100">Acciones</th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <div style="display:block; min-width: 120px;">
+            <button mat-icon-button data-qa-id="sc-rpmf-btn_delete_accumulation_coverages" color="warn" type='button'  (click)="deleteCoverage(element)"> 
+              <em class="fal fa-trash text-xl"></em>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <div *ngIf="CoveragesControls.value.length===0" class="not-elements-found">
+      No hay coberturas asociadas
+    </div> 
+
+    <mat-paginator
+      #paginator
+      [hidePageSize]="true"
+      pageSize="5"
+      [showFirstLastButtons]="true"
+      >
+    </mat-paginator>
+
+  </form>
+</div>

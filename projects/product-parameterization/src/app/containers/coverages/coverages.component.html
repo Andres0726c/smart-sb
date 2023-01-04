@@ -1,0 +1,78 @@
+<div>
+  <app-no-data-screen
+    [data]="productService.coverages"
+    [layoutType]="'full'"
+    [emptyTitle]="'Coberturas'"
+    [emptySubTitle]="'Especifique y defina las coberturas'"
+    [emptyText]="'Sin coberturas'"
+    [emptySubText]="'No se han asociado coberturas al producto'"
+    (action)="openToAdd()">
+  </app-no-data-screen>
+
+  <div class="container-boxes" *ngIf="productService.coverages.length>0">
+    <app-coverage-menu (emitSelectedCoverage)="changeCoverage($event)" [edit]="false"></app-coverage-menu>
+
+    <form class="container-details-coverage" [formGroup]="selectedCoverage" *ngIf="selectedCoverage?.get('id')">
+      <div class="container-details-coverage__header">
+        <h5 class="container-details-coverage__title">{{selectedCoverage?.value.name}}</h5>
+        <span class="container-details-coverage__subtitle">{{selectedCoverage?.value.description}}</span>
+      </div>
+      <mat-tab-group #tabGroup mat-align-tabs="center" class="tabs">
+        <mat-tab label="Carencia y eventos" data-qa-id="sc-rpmf-tab-waiting-time-events">
+          <app-waiting-time
+            [formWaitingTime]="selectedCoverage?.get('waitingTime')"
+            [formEvents]="selectedCoverage?.get('events')"
+          ></app-waiting-time>
+        </mat-tab>
+        <mat-tab label="Cláusulas" data-qa-id="sc-rpmf-tab-clauses">
+          <app-clauses
+            [formClauses]="selectedCoverage?.get('clauses')"
+            [emptyText]="'Sin cláusulas'"
+            [emptySubText]="'No se han asociado cláusulas a la cobertura'"
+            [messageText]="''">
+          </app-clauses>
+        </mat-tab>
+        <mat-tab label="Reglas de negocio" data-qa-id="sc-rpmf-tab-rules">
+          <app-coverages-rules [coverageRules]="selectedCoverage?.get('businessRules')"></app-coverages-rules>
+        </mat-tab>
+        <mat-tab label="Datos cobertura"  data-qa-id="sc-rpmf-tab-data-coverages">
+          <app-complementary-data #complementaryDataComponent
+            [applicationLevel]="'Cobertura'"
+            [subtitle]="'Datos cobertura'"
+            [groupName]="'Datos básicos'"
+            [emptyText]="'Sin datos de cobertura'"
+            [emptySubText]="'No se han asociado datos a la cobertura'"
+            [successAddItemMsg]="'Los datos complementarios fueron asociados correctamente.'"
+            [removeItemMsg]="'¿Está seguro de querer desasociar el dato complementario seleccionado?'"
+            [titleModalCompData]="'Seleccione los nuevos datos'"
+            [subtitleModalCompData]="'Seleccione los datos complementarios que desea asociar'"
+            [complementaryData]="selectedCoverage?.get('complementaryData')">
+          </app-complementary-data>
+        </mat-tab>
+        <mat-tab label="Deducible" data-qa-id="sc-rpmf-tab-deductibles">
+          <app-deductibles #deductibleComponent
+            [formDeductibles]="selectedCoverage?.get('deductibles')"
+            [dataSource]="selectedCoverage?.get('deductibles')?.value" >
+          </app-deductibles>
+        </mat-tab>
+        <mat-tab label="Tarifa" data-qa-id="sc-rpmf-tab-rates">
+          <app-coverages-rates [coverageRates]="selectedCoverage?.get('rates')"></app-coverages-rates>
+        </mat-tab>
+        <mat-tab label="Datos de nómina" data-qa-id="sc-rpmf-tab-payRollData">
+          <app-complementary-data #payRollDataComponent
+            [applicationLevel]="'Nómina'"
+            [subtitle]="'Datos de nómina'"
+            [groupName]="'Datos básicos'"
+            [emptyText]="'Sin datos de nómina'"
+            [emptySubText]="'No se han asociado datos de nómina a la cobertura'"
+            [successAddItemMsg]="'Los datos de nómina fueron asociados correctamente.'"
+            [removeItemMsg]="'¿Está seguro de querer desasociar el dato de nómina seleccionado?'"
+            [titleModalCompData]="'Datos de nómina'"
+            [subtitleModalCompData]="'Seleccione los datos de nómina que desea asociar.'"
+            [complementaryData]="selectedCoverage?.get('payRollData')">
+          </app-complementary-data>
+        </mat-tab>
+      </mat-tab-group>
+    </form>
+  </div>
+</div>
