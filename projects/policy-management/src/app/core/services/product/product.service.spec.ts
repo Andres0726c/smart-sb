@@ -47,14 +47,15 @@ describe('ProductService', () => {
     const idCompany = 1;
     const pageNumber = 1;
     const pageSize = 1;
+    const search = "test"
     service
-      .getAllProductsByCompany(idCompany, pageNumber, pageSize)
+      .getAllProductsByCompany(idCompany, search, pageNumber, pageSize)
       .subscribe((res) => {
         expect(res).toEqual(mockProducts);
       });
     const req = httpController.expectOne({
       method: 'GET',
-      url: `${apiUrl}product/findByCompany/${idCompany}/${pageNumber}/${pageSize}`,
+      url: `${apiUrl}product/findByCompany/${idCompany}/${search}/${pageNumber}/${pageSize}`,
     });
     req.flush(mockProducts);
   });
@@ -62,13 +63,14 @@ describe('ProductService', () => {
   it('getAllProducts only idCompany param', () => {
     const idCompany = 1;
     const pageNumber = 0;
-    const pageSize = 100;
+    const pageSize = 50;
+    const search = "0";
     service.getAllProductsByCompany(idCompany).subscribe((res) => {
       expect(res).toEqual(mockProducts);
     });
     const req = httpController.expectOne({
       method: 'GET',
-      url: `${apiUrl}product/findByCompany/${idCompany}/${pageNumber}/${pageSize}`,
+      url: `${apiUrl}product/findByCompany/${idCompany}/${search}/${pageNumber}/${pageSize}`,
     });
     req.flush(mockProducts);
   });
