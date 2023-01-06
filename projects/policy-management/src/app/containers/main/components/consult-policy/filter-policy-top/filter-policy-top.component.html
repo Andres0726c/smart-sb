@@ -19,6 +19,7 @@
                     <p-dropdown #dropdownProduct [options]="products" [styleClass]="'w-full'" formControlName="idProduct"
                         optionLabel="nmName" optionValue="id" appendTo="body" [filter]="true"
                         [showClear]="formQueryFilter.value.idProduct" placeholder="Seleccionar"
+                        [dropdownIcon]="chargeDataDropdownProduct?'pi pi-spin pi-spinner':'pi pi-chevron-down'"
                         (onFilter)="onFilterDropdownProduct($event)"
                         (onClear)="onClearField('idProduct')">
                     </p-dropdown>
