@@ -1,11 +1,12 @@
 import { FilterPolicy } from './../interfaces/consult-policy';
 import { ConsultPolicyService } from './../services/consult-policy.service';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Identification } from '../interfaces/identification';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
-import { lastValueFrom } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { Dropdown } from 'primeng/dropdown';
 interface FieldDocument {
   type: string;
   number: string;
@@ -18,6 +19,11 @@ interface FieldDocument {
 export class FilterPolicyTopComponent {
   @Output() emitSearch = new EventEmitter<FilterPolicy>();
   @Output() emitClear = new EventEmitter();
+  @ViewChild('dropdownProduct') dropdownProduct!: Dropdown;
+
+  chargeDataDropdownProduct: boolean = false;
+  subscription!: Subscription;
+
   formQueryFilter: FormGroup;
 
   holderValid: boolean = false;
@@ -61,9 +67,7 @@ export class FilterPolicyTopComponent {
       idProduct: this.fb.control(''),
       startDate: this.fb.control(''),
     });
-    productService.getAllProductsByCompany(3).subscribe((data) => {
-      this.products = data;
-    });
+    this.getProductsData("")
     consultPolicyService.getDocumentType().subscribe((data) => {
       this.documentsType = data;
     });
@@ -212,5 +216,18 @@ export class FilterPolicyTopComponent {
 
   onClearField(field: string) {
     this.formQueryFilter.get(field)?.setValue('');
+  }
+
+  onFilterDropdownProduct(event:{originalEvent: InputEvent, filter:string}){
+    this.getProductsData(event.filter)
+  }
+
+  getProductsData(filter:string) {
+    this.chargeDataDropdownProduct=true;
+    if(this.subscription) this.subscription.unsubscribe()
+    this.subscription = this.productService.getAllProductsByCompany(3,filter).subscribe((data) => {
+      this.products = data;
+      this.chargeDataDropdownProduct=false;
+    });
   }
 }
