@@ -20,6 +20,9 @@ export class FilterPolicyTopComponent {
   @Output() emitSearch = new EventEmitter<FilterPolicy>();
   @Output() emitClear = new EventEmitter();
   @ViewChild('dropdownProduct') dropdownProduct!: Dropdown;
+
+  chargeDataDropdownProduct: boolean = false;
+
   formQueryFilter: FormGroup;
 
   holderValid: boolean = false;
@@ -219,8 +222,10 @@ export class FilterPolicyTopComponent {
   }
 
   getProductsData(filter:string) {
+    this.chargeDataDropdownProduct=true;
     this.productService.getAllProductsByCompany(3,filter).subscribe((data) => {
       this.products = data;
+      this.chargeDataDropdownProduct=false;
     });
   }
 }
