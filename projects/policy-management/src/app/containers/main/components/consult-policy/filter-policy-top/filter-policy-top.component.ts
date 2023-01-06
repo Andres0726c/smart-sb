@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Identification } from '../interfaces/identification';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
-import { filter, lastValueFrom } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Dropdown } from 'primeng/dropdown';
 interface FieldDocument {
   type: string;
@@ -22,6 +22,7 @@ export class FilterPolicyTopComponent {
   @ViewChild('dropdownProduct') dropdownProduct!: Dropdown;
 
   chargeDataDropdownProduct: boolean = false;
+  subscription!: Subscription;
 
   formQueryFilter: FormGroup;
 
@@ -223,7 +224,8 @@ export class FilterPolicyTopComponent {
 
   getProductsData(filter:string) {
     this.chargeDataDropdownProduct=true;
-    this.productService.getAllProductsByCompany(3,filter).subscribe((data) => {
+    this.subscription? this.subscription.unsubscribe():''
+    this.subscription = this.productService.getAllProductsByCompany(3,filter).subscribe((data) => {
       this.products = data;
       this.chargeDataDropdownProduct=false;
     });

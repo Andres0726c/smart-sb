@@ -1,9 +1,9 @@
 import { ConsultPolicyService } from './../services/consult-policy.service';
 import { FormBuilder } from '@angular/forms';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { FilterPolicyTopComponent } from './filter-policy-top.component';
 import { HttpClientModule } from '@angular/common/http';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 
 describe('FilterPolicyTopComponent', () => {
@@ -163,5 +163,12 @@ describe('FilterPolicyTopComponent', () => {
     const spyGetProductsData = jest.spyOn(component, 'getProductsData').mockImplementation();
     component.onFilterDropdownProduct(event)
     expect(spyGetProductsData).toBeCalled()
+  });
+
+  it('getProductsData unsuscription', () => {
+
+    component.subscription = new Subscription()
+    component.getProductsData("");
+    expect(component.subscription).toBeDefined();
   });
 });
