@@ -214,7 +214,7 @@ export class FilterPolicyTopComponent {
     this.formQueryFilter.get(field)?.setValue('');
   }
 
-  onFilter(event:{originalEvent: InputEvent, filter:string}){
+  onFilterDropdownProduct(event:{originalEvent: InputEvent, filter:string}){
     this.getProductsData(event.filter)
   }
 

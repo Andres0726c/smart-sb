@@ -140,7 +140,7 @@ describe('FilterPolicyTopComponent', () => {
   });
 
 
-  
+
   it('setData', () => {
     let res: any = { body:'' };
     const spy = component.setData(res, 'city');
@@ -155,5 +155,13 @@ describe('FilterPolicyTopComponent', () => {
     const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
     expect(spy).toBeUndefined();
     expect(spy2).toBeDefined();
+  });
+
+  it('filter dropdown product', () => {
+    const event = {originalEvent: new InputEvent('test'),filter:""}
+
+    const spyGetProductsData = jest.spyOn(component, 'getProductsData').mockImplementation();
+    component.onFilterDropdownProduct(event)
+    expect(spyGetProductsData).toBeCalled()
   });
 });

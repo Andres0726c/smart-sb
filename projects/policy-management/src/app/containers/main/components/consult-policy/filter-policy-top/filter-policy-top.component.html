@@ -19,11 +19,8 @@
                     <p-dropdown #dropdownProduct [options]="products" [styleClass]="'w-full'" formControlName="idProduct"
                         optionLabel="nmName" optionValue="id" appendTo="body" [filter]="true"
                         [showClear]="formQueryFilter.value.idProduct" placeholder="Seleccionar"
-                        (onFilter)="onFilter($event)"
+                        (onFilter)="onFilterDropdownProduct($event)"
                         (onClear)="onClearField('idProduct')">
-                        <!-- <ng-template pTemplate="filter">
-                          hola
-                        </ng-template> -->
                     </p-dropdown>
                 </div>
                 <div class="w-full sm:w-1/3">
