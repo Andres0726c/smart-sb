@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { HiddenViewComponent } from './hidden-view.component';
 import { Route, RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
+import { ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+
 
 const routes: Route[] = [
   {
@@ -18,7 +21,9 @@ const routes: Route[] = [
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   exports: [
     HiddenViewComponent
