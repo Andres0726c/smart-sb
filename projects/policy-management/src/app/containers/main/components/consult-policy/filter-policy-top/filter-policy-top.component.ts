@@ -224,7 +224,7 @@ export class FilterPolicyTopComponent {
 
   getProductsData(filter:string) {
     this.chargeDataDropdownProduct=true;
-    this.subscription? this.subscription.unsubscribe():''
+    if(this.subscription) this.subscription.unsubscribe()
     this.subscription = this.productService.getAllProductsByCompany(3,filter).subscribe((data) => {
       this.products = data;
       this.chargeDataDropdownProduct=false;
