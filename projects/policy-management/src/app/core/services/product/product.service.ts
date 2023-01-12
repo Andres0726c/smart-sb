@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'commons-lib';
+
 import { map, Observable } from 'rxjs';
 import { ResponseDTO } from '../../interfaces/commun/response';
 import { Product } from '../../interfaces/product/product';
-
+import { DomainList } from '../../interfaces/domainList';
 @Injectable({
   providedIn: 'root',
 })
@@ -26,9 +27,10 @@ export class ProductService {
       .pipe(map((data: ResponseDTO<Product[]>) => data.body));
   };
 
-  getAllProductsByCompany = (idCompany: number, pageNumber: number = 0, pageSize: number = 100): Observable<Product[]> => {
+  getAllProductsByCompany = (idCompany: number, search: string = "0", pageNumber: number = 0, pageSize: number = 50): Observable<Product[]> => {
+    search = search==""||search ==null?"0":search;
     return this.httpClient
-      .get<any>(`${this.apiUrl}product/findByCompany/${idCompany}/${pageNumber}/${pageSize}`, {
+      .get<any>(`${this.apiUrl}product/findByCompany/${idCompany}/${search}/${pageNumber}/${pageSize}`, {
         headers: this.headers,
       })
       .pipe(map((data: ResponseDTO<Product[]>) => data.body));
@@ -42,6 +44,14 @@ export class ProductService {
         })
   };
 
+  getProductByCode = (code: string): Observable<any> => {
+    return this.httpClient.get<ResponseDTO<Product>>
+      (`${this.apiUrl}product/findByBusinessCode/${code}`,
+        {
+          headers: this.headers,
+        })
+  };
+
   findByIdPolicy = (idPolicy: number): Observable<any> => {
     return this.httpClient.get<ResponseDTO<Product>>
       (`${this.apiUrl}policy/findByIdPolicy/${idPolicy}`,
@@ -49,4 +59,30 @@ export class ProductService {
           headers: this.headers,
         })
   };
+
+
+  getApiData = (serviceData: string = '', rlEngnCd: string = '', id:string=''):Observable<any> => {
+    id = (id !== '' ? `/${id}` : '');
+    return this.httpClient.get<ResponseDTO<DomainList>>
+    (`${this.apiUrl}${serviceData}${id}`, { headers: this.headers });
+  };
+
+  findPolicyDataById = (idPolicy: number, status: number): Observable<any> => {
+    return this.httpClient.get<ResponseDTO<Product>>
+      (`${this.apiUrl}policy/findPolicyDataById/${idPolicy}/${status}`,
+        {
+          headers: this.headers,
+        })
+  };
+
+  executeRule( data: any): Observable<any>{
+
+    return this.httpClient.post<any>(`${this.apiUrl}rule/executeOneRule`, data, {headers: this.headers});
+  }
+
+  saveModify( data: any): Observable<any>{
+    console.log(data,"data a viajar");
+
+    return this.httpClient.post<any>(`${this.apiUrl}policy/saveModifyPolicy`, data, {headers: this.headers});
+  }
 }

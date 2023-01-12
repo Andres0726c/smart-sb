@@ -4,6 +4,7 @@ import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { FormBuilder, Validators } from '@angular/forms';
 import { ModifyDataComponent } from './modify-data.component';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('ModifyDataComponent', () => {
   let component: ModifyDataComponent;
@@ -21,7 +22,8 @@ describe('ModifyDataComponent', () => {
       providers: [
         { provide: FormBuilder, useValue: formBuilderMock },
         ProductService
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
 
@@ -41,7 +43,7 @@ describe('ModifyDataComponent', () => {
     component.test;
     component.getFieldsControls(risk);
     component.dataTypeControls;
-    
+
   });
 
   xit('dataTypeControlsIfPolicyData',()=>{
@@ -49,7 +51,7 @@ describe('ModifyDataComponent', () => {
     //component.modifyData.setControl(Validators.required);
     component.dataType='policyData';
     component.dataTypeControls;
-    
+
   });
 });
 

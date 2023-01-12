@@ -1,11 +1,12 @@
 import { FilterPolicy } from './../interfaces/consult-policy';
 import { ConsultPolicyService } from './../services/consult-policy.service';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Identification } from '../interfaces/identification';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
-
+import { Subscription } from 'rxjs';
+import { Dropdown } from 'primeng/dropdown';
 interface FieldDocument {
   type: string;
   number: string;
@@ -18,6 +19,11 @@ interface FieldDocument {
 export class FilterPolicyTopComponent {
   @Output() emitSearch = new EventEmitter<FilterPolicy>();
   @Output() emitClear = new EventEmitter();
+  @ViewChild('dropdownProduct') dropdownProduct!: Dropdown;
+
+  chargeDataDropdownProduct: boolean = false;
+  subscription!: Subscription;
+
   formQueryFilter: FormGroup;
 
   holderValid: boolean = false;
@@ -61,12 +67,57 @@ export class FilterPolicyTopComponent {
       idProduct: this.fb.control(''),
       startDate: this.fb.control(''),
     });
-    productService.getAllProductsByCompany(3).subscribe((data) => {
-      this.products = data;
-    });
+    this.getProductsData("")
     consultPolicyService.getDocumentType().subscribe((data) => {
       this.documentsType = data;
     });
+
+    this.productService
+      .getApiData('city/findByState', '', '0')
+      .subscribe((res) => {
+        this.setData(res, 'city');
+      });
+
+    this.productService
+      .getApiData('state/statefindbycountry', '', 'CO')
+      .subscribe((res) => {
+        this.setData(res, 'state');
+      });
+
+    this.productService.getApiData('paymentmethod/findAll').subscribe((res) => {
+      this.setData(res, 'paymentmethod');
+    });
+
+    this.productService
+      .getApiData('identificationtype/findAllIdentification')
+      .subscribe((res) => {
+        this.setData(res, 'identificationtype');
+      });
+  }
+
+  setData(res: any, type: any) {
+    if (Array.isArray(res.body)) {
+      this.addToElementData(res.body, type);
+    } else {
+      this.addToElementData([res.body], type);
+    }
+  }
+
+  addToElementData(res: any[], type: any) {
+    let options: any = [];
+    let list: any = [];
+    let optionsAux: any = [];
+
+    res.forEach((element: any) => {
+      let obj: any = { id: element.code, name: element.description };
+      if (obj.id != '' && obj.id != undefined) {
+        options.push(obj);
+      }
+    });
+
+    localStorage.setItem(type, JSON.stringify(options));
+    list = localStorage.getItem(type);
+    optionsAux = JSON.parse(list);
   }
 
   validateFields(field: FieldDocument): boolean {
@@ -158,12 +209,25 @@ export class FilterPolicyTopComponent {
     for (const field in this.formQueryFilter.controls) {
       this.formQueryFilter.get(field)?.setValue('');
     }
-    this.toggleRequired(false)
+    this.toggleRequired(false);
     this.errorAllForm = false;
-    this.emitClear.emit()
+    this.emitClear.emit();
   }
 
   onClearField(field: string) {
     this.formQueryFilter.get(field)?.setValue('');
+  }
+
+  onFilterDropdownProduct(event:{originalEvent: InputEvent, filter:string}){
+    this.getProductsData(event.filter)
+  }
+
+  getProductsData(filter:string) {
+    this.chargeDataDropdownProduct=true;
+    if(this.subscription) this.subscription.unsubscribe()
+    this.subscription = this.productService.getAllProductsByCompany(3,filter).subscribe((data) => {
+      this.products = data;
+      this.chargeDataDropdownProduct=false;
+    });
   }
 }

@@ -20,6 +20,12 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CalendarModule } from 'primeng/calendar';
 import { ReactiveGroupFieldsModule } from 'projects/policy-management/src/app/shared/components/reactive-group-fields/reactive-group-fields.module';
 import { AccordionModule } from 'primeng/accordion';
+import { DialogModule } from 'primeng/dialog';
+import { ModalResponseRulesModule } from 'projects/policy-management/src/app/shared/components/modal-response-rules/modal-response-rules.module';
+import { DialogService } from 'primeng/dynamicdialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { CommonsLibModule } from 'commons-lib';
+import { ToastModule } from 'primeng/toast';
 
 
 const routes: Routes = [
@@ -45,8 +51,7 @@ const routes: Routes = [
     InputNumberModule,
     DropdownModule,
     ReactiveFormsModule,
-    // BrowserModule,
-    // BrowserAnimationsModule,
+    CommonsLibModule,
     MessageModule,
     MenuModule,
     TabMenuModule,
@@ -56,6 +61,10 @@ const routes: Routes = [
     CalendarModule,
     ReactiveGroupFieldsModule,
     AccordionModule,
+    ModalResponseRulesModule,
+    ConfirmDialogModule,
+    DialogModule,
+    ToastModule
   ]
 })
 export class ModifyPolicyModule { }

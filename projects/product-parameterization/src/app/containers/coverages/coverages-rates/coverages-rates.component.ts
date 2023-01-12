@@ -1,5 +1,5 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import { MatChipList } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,7 +17,7 @@ import {RulesWizardComponent} from "../../../shared/complementary-data/rules-wiz
   templateUrl: './coverages-rates.component.html',
   styleUrls: ['./coverages-rates.component.scss']
 })
-export class CoveragesRatesComponent implements OnInit, AfterViewInit {
+export class CoveragesRatesComponent implements AfterViewInit, OnChanges {
 
   @Input() coverageRates: any = new FormArray([]);
   @Input() complementaryData: any = new FormArray([], [Validators.required]);
@@ -40,17 +40,18 @@ export class CoveragesRatesComponent implements OnInit, AfterViewInit {
     private service: ProductService,
     public productService: ProductService,
     private fb: FormBuilder
-  ) {
-  }
-
-  ngOnInit(): void {
-    if (this.coverageRatesControls.controls.length === 0) {
-      this.coverageRatesControls.push(this.fb.group({calculationRule: this.fb.array([])}));
-    }
-  }
+  ) { }
 
   ngAfterViewInit() {
     this.loadContextData();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes) {
+      if (this.coverageRatesControls.controls.length === 0) {
+        this.coverageRatesControls.push(this.fb.group({calculationRule: this.fb.array([])}));
+      }
+    }
   }
 
   /**
