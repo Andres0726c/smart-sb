@@ -1,8 +1,8 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -35,33 +35,36 @@ export class ModalEditProductComponent implements OnInit {
   modal!: SearchModal;
   isLoading = false;
   flagServiceError = false;
-  recallFilter = true;
+  isLoadingInput: boolean = false;
+
 
   @ViewChild('productTable') productTable!: MatTable<any>;
-
+  @ViewChild('paginatorProductTable') paginatorProductTable!: MatPaginator;
 
   displayedColumns: string[] = ['select', 'product', 'ramo'];
   dataSource = new MatTableDataSource<any>(this.product);
   selection = new SelectionModel<any>(false, []);
-  @ViewChild('paginatorproductTable') paginatorproductTable!: MatPaginator;
-  nameInuranceLine: any = '';
+  insuranceLine!: number;
+  totalRecords: number = 0;
 
   constructor(
     public fb: FormBuilder,
     public dialogModal: MatDialog,
     public dialog: MatDialogRef<ModalCreateProductComponent>,
-     @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder,
-    private router: Router, 
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private router: Router,
     public initialDataEditProduct: ModalEditProductService,
     public cognitoService: CognitoService,
-    public service: ProductService, 
+    public service: ProductService
   ) {
-    this.formData = this.formBuilder.group(
-      {
-        ramo: new FormControl('', [Validators.required]),
-        // comercialName: new FormControl('', [Validators.required, Validators.maxLength(200), Validators.minLength(4), Validators.pattern('^[a-zA-ZñÑáéíóúÁÉÍÓÚ \s]+$')])
-      });
+    this.formData = this.fb.group({
+      ramo: this.fb.control('', [Validators.required]),
+      filter: this.fb.control('')
+    });
+    this.formData.get('filter')?.valueChanges.subscribe(()=>{
+      this.applyFilter()
+      this.paginatorProductTable.firstPage()
+    })
   }
 
   ngOnInit(): void {
@@ -71,38 +74,43 @@ export class ModalEditProductComponent implements OnInit {
   getDataInsuranceLine = async (id: string = '3', serviceData: string = '') => {
     this.isLoading = true;
     try {
-      let res = await lastValueFrom(this.initialDataEditProduct.getDataEdit('insuranceLine/findByCompany', this.service.companyId));
+      let res = await lastValueFrom(
+        this.initialDataEditProduct.getDataEdit(
+          'insuranceLine/findByCompany',
+          this.service.companyId
+        )
+      );
       if (res.dataHeader.hasErrors === false) {
         this.ramo = res.body;
       }
     } catch (error) {
       this.flagServiceError = true;
-      console.log('ocurrio un error:', error);
     }
     this.isLoading = false;
   };
 
-  selectInsurenceLine(id: any) {
-    
-    let nameInuranceLine = this.ramo.filter((x: { id: any; }) => x.id == id)
-    if (id)
-      this.product = [];
-      this.selection.clear();
+  async selectInsurenceLine(id: any) {
+    let nameInuranceLine = this.ramo.filter((x: { id: any }) => x.id == id);
+    if (id) this.product = [];
+    this.selection.clear();
 
-      this.ramotable= nameInuranceLine[0].nmName
-      
-    this.getDataEditProduct(id);
-    // this.service.isEnabledSave = false
+    this.ramotable = nameInuranceLine[0].nmName;
+    this.insuranceLine = id;
 
+    this.isLoading = true;
+    await this.getProductsSearch(this.insuranceLine);
+    this.isLoading = false;
   }
 
   addItem(result: any) {
 
     let element: any;
-    
+
 
 
     if (result) {
+
+      this.product = [];
       for (let object of result.body) {
 
         element = {
@@ -113,10 +121,7 @@ export class ModalEditProductComponent implements OnInit {
         this.product.push(element);
       }
 
-
       this.dataSource = new MatTableDataSource<any>(this.product);
-      this.dataSource.paginator = this.paginatorproductTable;
-      
     }
   }
 
@@ -130,48 +135,47 @@ export class ModalEditProductComponent implements OnInit {
     }
     this.service.getProduct(this.element.productJson);
 
-    
+
 
     this.onNoClick();
     this.router.navigate(['productos/parametrizador/parametros-generales']);
 
   }
-  
-  getDataEditProduct = async (id: string, serviceData: string = '') => {
-    this.isLoading = true;
+
+  getProductsSearch = async (id: number, search: string = '0', page:number=0) => {
+
+    if (search == '') search = '0';
     try {
-      let res = await lastValueFrom(this.initialDataEditProduct.getDataEdit('product/findByInsuranceLine', id + '/0/0'));
+      let res = await lastValueFrom(
+        this.initialDataEditProduct.getDataEdit(
+          'product/findByInsuranceLine',
+          `${id}/${page}/5/${search}`
+        )
+      );
       if (res.dataHeader.hasErrors === false) {
         this.addItem(res);
-        
+        this.totalRecords = res.dataHeader.totalRecords
       }
     } catch (error) {
       this.flagServiceError = true;
-      console.log('ocurrio un error:', error);
     }
-    this.isLoading = false;
   };
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
+  async applyFilter(page:number=0){
+    this.isLoadingInput = true;
+    const filter = this.formData.value.filter
+    await this.getProductsSearch(this.insuranceLine,filter,page);
+    this.isLoadingInput = false;
+  }
 
-    this.dataSource.filterPredicate = (data: any, filter) => {
-      const dataStr = data.product.toLowerCase();
-      return dataStr.indexOf(filter) != -1; 
-    }
-
-    if (filterValue.trim().toLowerCase().length >= 3) {
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-    } else {
-      this.dataSource.filter = '';
-
-    }
+  changePage(event: PageEvent){
+   this.applyFilter(event.pageIndex)
   }
 
   /**
    * Evento que cierra el modal..
    */
-   onNoClick(): void {
+  onNoClick(): void {
     this.dialog.close();
   }
 
@@ -181,21 +185,21 @@ export class ModalEditProductComponent implements OnInit {
    * @param errorName       identificador del error que se despliega.
    * @returns TRUE si hay error en la validaci\u00f3n, FALSE en caso contrario.
    */
-   public hasError(formControlName: string, errorName: string) {
+  public hasError(formControlName: string, errorName: string) {
     return this.formData.controls[formControlName].hasError(errorName);
   }
 
-   /**
+  /**
    * Metodo para ordenar los elementos de la tabla en los modales
    * @param sort
    * @returns
    */
     sortData(sort: Sort) {
       let data = this.dataSource.data;
-  
+
       data.sort((a, b) => {
         const isAsc = sort.direction === 'asc';
-        
+
         switch (sort.active) {
           case 'product':
             return isAsc ? a.product.toLowerCase().localeCompare(b.product.toLowerCase()) : b.product.toLowerCase().localeCompare(a.product.toLowerCase());
@@ -207,10 +211,10 @@ export class ModalEditProductComponent implements OnInit {
             return 0;
         }
       });
-  
+
       this.dataSource.data = data;
     }
-  
+
     compare(a: any, b: any, isAsc: boolean) {
       return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
     }
@@ -227,11 +231,9 @@ export class ModalEditProductComponent implements OnInit {
           width: '578px', height: '580px', panelClass: 'modal',
           data: { name: "copy", product: this.element.productJson}
         });
-        
+
       this.onNoClick();
 
     }
 
-  }
-   
-
+}

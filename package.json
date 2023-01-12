@@ -42,6 +42,7 @@
     "aws-amplify": "^4.3.39",
     "concurrently": "^7.4.0",
     "ngx-currency": "^2.5.3",
+    "ngx-soap": "^0.7.0",
     "primeicons": "^6.0.1",
     "primeng": "^14.1.2",
     "rxjs": "~7.5.0",
@@ -71,4 +72,3 @@
     "typescript": "~4.7.2"
   }
 }
-

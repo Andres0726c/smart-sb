@@ -26,14 +26,6 @@ export class ModalEditProductService {
 
   }
 
-   getProductRamo=(serviceData: string='',id:string=''): Observable<any> => {
-    return id!=''?this.httpClient.get<any>(`${this._urlMS}${serviceData}/${id}`,{
-      headers: this._httpHeaders,
-    }) : this.httpClient.get<any>(`${this._urlMS}${serviceData}`,{
-      headers: this._httpHeaders,
-    });
-  }
-
   validProduct=(serviceData: string='',id:string=''): Observable<any> => {
     return id!=''?this.httpClient.get<any>(`${this._urlMS}${serviceData}/${id}`,{
       headers: this._httpHeaders,
