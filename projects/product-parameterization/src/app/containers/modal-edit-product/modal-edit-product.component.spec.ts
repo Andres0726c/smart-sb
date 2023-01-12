@@ -10,9 +10,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { ProductService } from '../../services/product.service';
-import { ModalCreateProductComponent } from '../modal-create-product/modal-create-product.component';
 
 import { ModalEditProductComponent } from './modal-edit-product.component';
+import { PageEvent } from '@angular/material/paginator';
+import { ModalEditProductService } from './services/modal-edit-product.service';
 class dialogMock {
   open() {
     return {
@@ -28,11 +29,12 @@ class dialogMock {
   }
 }
 class toastMock {
-  openFromComponent() {} 
+  openFromComponent() {}
 }
 describe('ModalEditProductComponent', () => {
   let component: ModalEditProductComponent;
   let service: ProductService;
+  let initialDataEditProduct: ModalEditProductService;
   let fixture: ComponentFixture<ModalEditProductComponent>;
 
   beforeEach(async () => {
@@ -75,16 +77,16 @@ describe('ModalEditProductComponent', () => {
       provide: MatSnackBar,
       useValue: new toastMock()
     },
-    ProductService
+    ProductService,
+    ModalEditProductService
     ],
-    
+
     schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
   });
   component = TestBed.inject(ModalEditProductComponent);
   service = TestBed.inject(ProductService);
+  initialDataEditProduct = TestBed.inject(ModalEditProductService)
   });
-
-
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -93,7 +95,7 @@ describe('ModalEditProductComponent', () => {
   it('onNoClick', () => {
     expect(component.onNoClick()).toBeUndefined();
   });
-  
+
   it('addProduct', () => {
     component.selection = new SelectionModel<any>(false, []);
     component.element = {
@@ -115,31 +117,29 @@ describe('ModalEditProductComponent', () => {
         product:'nuevo',
         ramo:'Hogar'
       }]
-      
+
     }
     expect(component.addItem(result)).toBeUndefined();
   });
 
+  it('change input filter', () => {
+    const spy =jest.spyOn(component, 'applyFilter').mockResolvedValue()
+    component.formData.get('filter')?.setValue('hola')
+    expect(spy).toHaveBeenCalled()
+  });
+
   it('applyFilter', () => {
-    let event = { target: { value: 'test' } } as any;
+    const spy =jest.spyOn(component, 'getProductsSearch').mockResolvedValue()
+    component.applyFilter()
+    expect(spy).toHaveBeenCalled()
+    expect(component.isLoadingInput).toBeTruthy()
+  });
 
-    let obj = {
-      id: 1,
-      name: 'test',
-      description: '2',
-    };
-
-    component.dataSource = new MatTableDataSource<any>([obj]);
-
-    component.applyFilter(event);
-
-    expect(component.dataSource.filter).toBe('test');
-
-    event = { target: { value: '' } } as any;
-
-    component.applyFilter(event);
-
-    expect(component.dataSource.filter).toBe('');
+  it('change page', () => {
+    const spy =jest.spyOn(component, 'applyFilter').mockResolvedValue()
+    const page = new PageEvent()
+    component.changePage(page)
+    expect(spy).toHaveBeenCalled()
   });
 
   it('selectInsurenceLine Ok', () => {
@@ -152,7 +152,37 @@ describe('ModalEditProductComponent', () => {
       nmName: 'Accidentes personales individ.',
     };
     component.ramo = [ramo];
-    expect(component.selectInsurenceLine(55)).toBeUndefined();
+    const spy =jest.spyOn(component, 'getProductsSearch').mockResolvedValue()
+    component.selectInsurenceLine(55)
+    expect(spy).toHaveBeenCalledWith(55);
+    expect(component.insuranceLine).toEqual(55);
+  });
+
+  it('getProductsSearch Ok', () => {
+    const response = {dataHeader:{hasErrors:false, totalRecords:20}}
+    jest.spyOn(initialDataEditProduct, 'getDataEdit').mockReturnValue(of(response))
+    jest.spyOn(component, 'addItem').mockReturnValue()
+    component.getProductsSearch(55)
+    expect(component.totalRecords).toBeDefined()
+  });
+
+  it('getProductsSearch Fail', () => {
+    jest.spyOn(initialDataEditProduct, 'getDataEdit').mockReturnValue(of(new Error('error')));
+    component.getProductsSearch(55,'')
+    expect(component.flagServiceError).toBeFalsy();
+  });
+
+  it('getDataInsuranceLine  Ok', () => {
+    const response = {dataHeader:{hasErrors:false}}
+    jest.spyOn(initialDataEditProduct, 'getDataEdit').mockReturnValue(of(response))
+    component.getDataInsuranceLine ()
+    expect(component.ramo).toBeDefined();
+  });
+
+  it('getDataInsuranceLine  Fail', () => {
+    const spy =jest.spyOn(initialDataEditProduct, 'getDataEdit').mockReturnValue(of(new Error('error')));
+    component.getDataInsuranceLine ()
+    expect(component.flagServiceError).toBeDefined();
   });
 
   it('SortData', () => {
@@ -178,7 +208,7 @@ describe('ModalEditProductComponent', () => {
     expect(
       component.sortData({ active: 'id', direction: 'asc' })
     ).toBeUndefined();
-    
+
   });
 
   it('compare', () => {
