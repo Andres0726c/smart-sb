@@ -62,8 +62,8 @@ export class ModalEditProductComponent implements OnInit {
       filter: this.fb.control('')
     });
     this.formData.get('filter')?.valueChanges.subscribe(()=>{
-      this.paginatorProductTable.firstPage()
       this.applyFilter()
+      this.paginatorProductTable.firstPage()
     })
   }
 
