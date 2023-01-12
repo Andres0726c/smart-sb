@@ -45,8 +45,8 @@
 
     <div class="content_search">
       <mat-form-field appearance="outline" class="search_input" *ngIf="!isLoading" style="width: 100%;">
-        <input matInput (keyup)="recallFilter = true; applyFilter($event)" placeholder="Buscar" />
-        <em matSuffix class="far fa-search fa-lg icon-search"></em>
+        <input matInput formControlName = "filter" placeholder="Buscar" />
+        <em matSuffix [class]="isLoadingInput? 'fas fa-circle-notch fa-spin fa-lg icon-search':'far fa-search fa-lg icon-search'"></em>
       </mat-form-field>
     </div>
 
@@ -88,7 +88,8 @@
     <div *ngIf="dataSource.data.length===0" class="not-elements-found">
       No hay productos asociados al ramo seleccionado
     </div>
-    <mat-paginator #paginatorproductTable [hidePageSize]="true" pageSize="5" [showFirstLastButtons]="true">
+    <mat-paginator #paginatorProductTable [hidePageSize]="true" [length]="totalRecords" pageSize="5"
+      (page)="changePage($event)" [showFirstLastButtons]="true">
     </mat-paginator>
 
   </form>
