@@ -93,6 +93,7 @@ describe('FilterPolicyTopComponent', () => {
 
   it('search success', () => {
     component.policyNumber.setValue('100000000000010');
+    component.formQueryFilter.get('startDate')?.setValue(null)
     component.search();
     expect(component.errorAllForm).toBeFalsy();
   });

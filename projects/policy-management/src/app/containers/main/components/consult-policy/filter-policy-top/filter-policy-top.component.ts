@@ -157,7 +157,9 @@ export class FilterPolicyTopComponent {
     this.toggleRequired(true);
     this.errorAllForm = this.validForm();
     if (!this.errorAllForm) {
-      this.emitSearch.emit(this.formQueryFilter.value);
+      let queryFilter = this.formQueryFilter.value;
+      if(queryFilter.startDate==null) queryFilter.startDate = ''
+      this.emitSearch.emit(queryFilter);
     } else {
       this.markAsDirtyForm();
     }
