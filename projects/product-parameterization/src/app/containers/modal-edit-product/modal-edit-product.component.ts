@@ -45,6 +45,7 @@ export class ModalEditProductComponent implements OnInit {
   dataSource = new MatTableDataSource<any>(this.product);
   selection = new SelectionModel<any>(false, []);
   insuranceLine!: number;
+  filterInput:string=''
   totalRecords: number = 0;
 
   constructor(
@@ -59,12 +60,7 @@ export class ModalEditProductComponent implements OnInit {
   ) {
     this.formData = this.fb.group({
       ramo: this.fb.control('', [Validators.required]),
-      filter: this.fb.control('')
     });
-    this.formData.get('filter')?.valueChanges.subscribe(()=>{
-      this.applyFilter()
-      this.paginatorProductTable.firstPage()
-    })
   }
 
   ngOnInit(): void {
@@ -163,13 +159,18 @@ export class ModalEditProductComponent implements OnInit {
 
   async applyFilter(page:number=0){
     this.isLoadingInput = true;
-    const filter = this.formData.value.filter
-    await this.getProductsSearch(this.insuranceLine,filter,page);
+    await this.getProductsSearch(this.insuranceLine,this.filterInput,page);
     this.isLoadingInput = false;
   }
 
   changePage(event: PageEvent){
    this.applyFilter(event.pageIndex)
+  }
+
+  changeFilter(event: Event){
+    this.filterInput = (event.target as HTMLInputElement).value;
+    this.applyFilter()
+    this.paginatorProductTable.firstPage()
   }
 
   /**

@@ -45,7 +45,7 @@
 
     <div class="content_search">
       <mat-form-field appearance="outline" class="search_input" *ngIf="!isLoading" style="width: 100%;">
-        <input matInput formControlName = "filter" placeholder="Buscar" />
+        <input matInput (keyup)="changeFilter($event)" placeholder="Buscar" />
         <em matSuffix [class]="isLoadingInput? 'fas fa-circle-notch fa-spin fa-lg icon-search':'far fa-search fa-lg icon-search'"></em>
       </mat-form-field>
     </div>
