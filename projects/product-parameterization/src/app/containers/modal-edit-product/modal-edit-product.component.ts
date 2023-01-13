@@ -26,7 +26,7 @@ export class ModalEditProductComponent implements OnInit {
   idCompany = null;
   ramo: any = [];
 
-  product: any = [];
+  products: any = [];
 
   ramotable:string='';
 
@@ -37,12 +37,11 @@ export class ModalEditProductComponent implements OnInit {
   flagServiceError = false;
   isLoadingInput: boolean = false;
 
-
   @ViewChild('productTable') productTable!: MatTable<any>;
   @ViewChild('paginatorProductTable') paginatorProductTable!: MatPaginator;
 
   displayedColumns: string[] = ['select', 'product', 'ramo'];
-  dataSource = new MatTableDataSource<any>(this.product);
+  dataSource = new MatTableDataSource<any>(this.products);
   selection = new SelectionModel<any>(false, []);
   insuranceLine!: number;
   filterInput:string=''
@@ -87,7 +86,7 @@ export class ModalEditProductComponent implements OnInit {
 
   async selectInsurenceLine(id: any) {
     let nameInuranceLine = this.ramo.filter((x: { id: any }) => x.id == id);
-    if (id) this.product = [];
+    if (id) this.products = [];
     this.selection.clear();
 
     this.ramotable = nameInuranceLine[0].nmName;
@@ -99,43 +98,30 @@ export class ModalEditProductComponent implements OnInit {
   }
 
   addItem(result: any) {
-
     let element: any;
-
-
-
     if (result) {
-
-      this.product = [];
+      this.products = [];
       for (let object of result.body) {
-
         element = {
           product: object.id,
           ramo: this.ramotable,
           productJson: object.productJson
         };
-        this.product.push(element);
+        this.products.push(element);
       }
-
-      this.dataSource = new MatTableDataSource<any>(this.product);
     }
+    this.dataSource.data = this.products.slice(0,5);
   }
 
   addProduct() {
-
-
     for (let object of this.selection.selected) {
       this.element = {
         productJson: object.productJson,
       };
     }
     this.service.getProduct(this.element.productJson);
-
-
-
     this.onNoClick();
     this.router.navigate(['productos/parametrizador/parametros-generales']);
-
   }
 
   getProductsSearch = async (id: number, search: string = '0', page:number=0) => {
@@ -164,12 +150,17 @@ export class ModalEditProductComponent implements OnInit {
   }
 
   changePage(event: PageEvent){
-   this.applyFilter(event.pageIndex)
+    const page = event.pageIndex
+    if (this.products.length == this.totalRecords) {
+      this.dataSource.data = this.products.slice(page*5, page*5 + 5);
+    } else {
+      this.applyFilter(event.pageIndex);
+    }
   }
 
-  changeFilter(event: Event){
+  async changeFilter(event: Event){
     this.filterInput = (event.target as HTMLInputElement).value;
-    this.applyFilter()
+    await this.applyFilter()
     this.paginatorProductTable.firstPage()
   }
 
