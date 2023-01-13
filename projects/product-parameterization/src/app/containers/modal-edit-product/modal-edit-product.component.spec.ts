@@ -137,9 +137,20 @@ describe('ModalEditProductComponent', () => {
     expect(component.isLoadingInput).toBeTruthy()
   });
 
-  it('change page', () => {
+  it('change page doenst call applyFilter', () => {
+    const page: PageEvent = {pageIndex:0, pageSize:0, length:0}
+    component.totalRecords = 6
+    component.products = [1,2,3,4,5,6]
+    component.dataSource = new MatTableDataSource(component.products)
+    component.changePage(page)
+    expect(component.dataSource.data.length).toEqual(5)
+  });
+
+  it('change page calls applyFilter', () => {
     const spy =jest.spyOn(component, 'applyFilter').mockResolvedValue()
-    const page = new PageEvent()
+    const page: PageEvent = {pageIndex:0, pageSize:0, length:0}
+    component.totalRecords = 10
+    component.products = [1,2,3,4,5]
     component.changePage(page)
     expect(spy).toHaveBeenCalled()
   });
