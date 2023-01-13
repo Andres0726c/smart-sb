@@ -12,7 +12,7 @@ import { of } from 'rxjs';
 import { ProductService } from '../../services/product.service';
 
 import { ModalEditProductComponent } from './modal-edit-product.component';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalEditProductService } from './services/modal-edit-product.service';
 class dialogMock {
   open() {
@@ -41,7 +41,7 @@ describe('ModalEditProductComponent', () => {
    TestBed.configureTestingModule({
     imports: [MatDialogModule, FormsModule, HttpClientModule,HttpClientTestingModule],
     declarations: [],
-    providers: [ModalEditProductComponent, {
+    providers: [ModalEditProductComponent,{
       provide: MAT_DIALOG_DATA,
       useValue: {}
     },
@@ -123,9 +123,11 @@ describe('ModalEditProductComponent', () => {
   });
 
   it('change input filter', () => {
-    const spy =jest.spyOn(component, 'applyFilter').mockResolvedValue()
-    component.formData.get('filter')?.setValue('hola')
-    expect(spy).toHaveBeenCalled()
+    jest.spyOn(component, 'applyFilter').mockResolvedValue()
+    component.paginatorProductTable = MatPaginator.prototype
+    let event = { target: { value: 'test' } } as any;
+    component.changeFilter(event);
+    expect(component.filterInput).toEqual('test')
   });
 
   it('applyFilter', () => {
