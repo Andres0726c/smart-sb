@@ -19,26 +19,25 @@ export class PolicyDetailsComponent implements OnInit {
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, public consultPolicyService: ConsultPolicyService) { }
 
   ngOnInit(): void {
-    this.consultPolicyService.getPolicyById(this.config.data.idPolicy).subscribe({
-      next: (res) => {
-        if (res.body) {
-          this.policy = res.body
+    this.consultPolicyService.getPolicyById(this.config.data.idPolicy).subscribe((res) => {
+      if (res.body) {
+        this.policy = res.body
 
-          let dataRisk = this.policy.productFactory.nmContent?.riskTypes[0].complementaryData[1].fields;
+        let dataRisk = this.policy.productFactory.nmContent?.riskTypes[0].complementaryData[1].fields;
+        console.log('dataRisk', dataRisk);
 
-          let petTypeLst = JSON.parse(dataRisk.find((f:any) => f.businessCode=== "TIPO_MASCOTA")?.domainList.valueList);
-          let petBrandLst = JSON.parse(dataRisk.find((f:any) => f.businessCode=== "RAZA")?.domainList.valueList);
+        let petBrandLst = JSON.parse(dataRisk.find((f:any) => f.businessCode=== "RAZA")?.domainList.valueList);
+        let petTypeLst = JSON.parse(dataRisk.find((e:any) => e.businessCode=== "TIPO_MASCOTA")?.domainList.valueList);
+        
 
-          this.petData={
-            petType: petTypeLst.find((x:any)=>x.code === this.policy.complementaryData.petType)?.description,
-            petBrand: petBrandLst.find((x:any)=>x.code === this.policy.complementaryData.petBrand)?.description,
-          }
-
-         
+        this.petData={
+          petType: petTypeLst.find((x:any)=>x.code === this.policy.complementaryData.petType)?.description,
+          petBrand: petBrandLst.find((x:any)=>x.code === this.policy.complementaryData.petBrand)?.description,
         }
-        this.isLoading = false
-      },
-      error: (err) => this.isLoading = false,
+
+       
+      }
+      this.isLoading = false
     });
   }
 
