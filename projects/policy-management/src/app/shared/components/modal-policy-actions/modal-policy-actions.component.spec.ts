@@ -116,7 +116,7 @@ describe('ModalPolicyActionsComponent', () => {
   };
   const modalActionsService = fixture.debugElement.injector.get(ModalPolicyActionsService);
   const spy1 = jest.spyOn(modalActionsService, 'postCancelPolicy').mockReturnValue(of(res));
-  component.cancelPolicy();
+  component.cancelPolicyConfirm();
   expect(spy1).toHaveBeenCalledTimes(1);
   });
 
@@ -144,14 +144,14 @@ describe('ModalPolicyActionsComponent', () => {
   };
   const modalActionsService = fixture.debugElement.injector.get(ModalPolicyActionsService);
   const spy1 = jest.spyOn(modalActionsService, 'postCancelPolicy').mockReturnValue(of(res));
-  component.cancelPolicy();
+  component.cancelPolicyConfirm();
   expect(spy1).toHaveBeenCalledTimes(1);
   });
 
   it('cancel Policy else', () => {
     component.formProcess.get('processDate')?.setValue(null);
     component.formProcess.get('causeType')?.setValue(138);
-    expect(component.cancelPolicy()).toBeUndefined();
+    expect(component.cancelPolicyConfirm()).toBeUndefined();
   })
 
 

@@ -11,6 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [ModalPolicyActionsComponent],
@@ -26,7 +27,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     ToastModule,
     InputTextModule,
     InputNumberModule,
-    CheckboxModule
+    CheckboxModule,
+    ConfirmDialogModule
   ]
 })
 export class ModalPolicyActionsModule {}
