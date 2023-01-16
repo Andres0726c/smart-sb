@@ -11,34 +11,38 @@ export class PolicyDetailsComponent implements OnInit {
   component: any;
   isLoading = true;
   policy!: Policy
-  petData: any=
-    {
+  petData: any = {
     petType:"",
     petBrand:""
-    };
+  };
+
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, public consultPolicyService: ConsultPolicyService) { }
 
   ngOnInit(): void {
     this.consultPolicyService.getPolicyById(this.config.data.idPolicy).subscribe((res) => {
       if (res.body) {
         this.policy = res.body
-
         let dataRisk = this.policy.productFactory.nmContent?.riskTypes[0].complementaryData[1].fields;
-        console.log('dataRisk', dataRisk);
-
-        let petBrandLst = JSON.parse(dataRisk.find((f:any) => f.businessCode=== "RAZA")?.domainList.valueList);
-        let petTypeLst = JSON.parse(dataRisk.find((e:any) => e.businessCode=== "TIPO_MASCOTA")?.domainList.valueList);
         
-
-        this.petData={
-          petType: petTypeLst.find((x:any)=>x.code === this.policy.complementaryData.petType)?.description,
-          petBrand: petBrandLst.find((x:any)=>x.code === this.policy.complementaryData.petBrand)?.description,
+        this.petData = {
+          petType: this.findDescription(dataRisk, 'TIPO_MASCOTA', this.policy.complementaryData.petType),
+          petBrand: this.findDescription(dataRisk, 'RAZA', this.policy.complementaryData.petBrand)
         }
 
        
       }
       this.isLoading = false
     });
+  }
+
+  findDescription(dataRisk: any, businessCode: string, code: string) {
+    const field = dataRisk.find((f: any) => f.businessCode === businessCode);
+    if(!field) {
+      return 'No aplica';
+    }
+    const valueList = JSON.parse(field.domainList.valueList);
+    const value = valueList.find((x: any) => x.code === code);
+    return value ? value.description : 'No aplica';
   }
 
   close() {

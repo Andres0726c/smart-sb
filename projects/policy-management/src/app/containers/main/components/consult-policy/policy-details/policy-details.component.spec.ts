@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { of } from 'rxjs';
-
 import { PolicyDetailsComponent } from './policy-details.component';
 
 describe('PolicyDetailsComponent', () => {
@@ -86,49 +85,63 @@ describe('PolicyDetailsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('findDescription', () => {
+    let dataRisk = [
+      {
+        businessCode: 'TIPO_MASCOTA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Perro' }])
+        }
+      },
+      {
+        businessCode: 'RAZA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Bóxer' }])
+        }
+      }
+    ];
+    expect(component.findDescription(dataRisk, 'TIPO_MASCOTA', '1')).toEqual('Perro');
+  });
+
+  it('findDescription exception field', () => {
+    let dataRisk = [
+      {
+        businessCode: 'TIPO_MASCOTA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Perro' }])
+        }
+      },
+      {
+        businessCode: 'RAZA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Bóxer' }])
+        }
+      }
+    ];
+    expect(component.findDescription(dataRisk, 'TEST', '1')).toEqual('No aplica');
+  });
+
+  it('findDescription exception', () => {
+    let dataRisk = [
+      {
+        businessCode: 'TIPO_MASCOTA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Perro' }])
+        }
+      },
+      {
+        businessCode: 'RAZA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Bóxer' }])
+        }
+      }
+    ];
+    expect(component.findDescription(dataRisk, 'TIPO_MASCOTA', '2')).toEqual('No aplica');
+  });
+
 
   it('close modal', () => {
     expect(component.close()).toBeUndefined();
   });
 
 });
-
-/*describe('PolicyDetailsComponent', () => {
-  let component: PolicyDetailsComponent;
-  let consultPolicyService: ConsultPolicyService;
-  let ref: DynamicDialogRef;
-  let fixture: ComponentFixture<PolicyDetailsComponent>;
-
-  beforeEach(async () => {
-    consultPolicyService = ConsultPolicyService.prototype;
-    ref = DynamicDialogRef.prototype
-    TestBed.configureTestingModule({
-      declarations: [],
-      providers: [
-        PolicyDetailsComponent,
-        DynamicDialogRef,
-        {
-          provide: DynamicDialogConfig,
-          useValue: { data: { idPolicy: 1 } },
-        },
-      ],
-      imports: [HttpClientTestingModule],
-    });
-    fixture = TestBed.createComponent(PolicyDetailsComponent);
-    component = fixture.componentInstance;
-
-    
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-
-  it('close modal', () => {
-    const refCloseSpy = jest.spyOn(ref, 'close')
-    component.close()
-    expect(refCloseSpy).toHaveBeenCalled();
-  });
-
-});*/
