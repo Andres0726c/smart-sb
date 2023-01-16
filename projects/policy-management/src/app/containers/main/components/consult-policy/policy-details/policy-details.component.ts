@@ -13,7 +13,8 @@ export class PolicyDetailsComponent implements OnInit {
   policy!: Policy
   petData: any = {
     petType:"",
-    petBrand:""
+    petBrand:"",
+    petAge:""
   };
 
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, public consultPolicyService: ConsultPolicyService) { }
@@ -23,10 +24,11 @@ export class PolicyDetailsComponent implements OnInit {
       if (res.body) {
         this.policy = res.body
         let dataRisk = this.policy.productFactory.nmContent?.riskTypes[0].complementaryData[1].fields;
-        
+
         this.petData = {
           petType: this.findDescription(dataRisk, 'TIPO_MASCOTA', this.policy.complementaryData.petType),
-          petBrand: this.findDescription(dataRisk, 'RAZA', this.policy.complementaryData.petBrand)
+          petBrand: this.findDescription(dataRisk, 'RAZA', this.policy.complementaryData.petBrand),
+          petAge: this.findDescription(dataRisk, 'EDAD_MASCOTA', this.policy.complementaryData.petAge)
         }
 
        
