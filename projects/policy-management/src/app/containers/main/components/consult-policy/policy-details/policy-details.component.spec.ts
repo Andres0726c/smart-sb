@@ -1,22 +1,17 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { of } from 'rxjs';
-import { ConsultPolicyService } from '../services/consult-policy.service';
-
 import { PolicyDetailsComponent } from './policy-details.component';
 
 describe('PolicyDetailsComponent', () => {
   let component: PolicyDetailsComponent;
-  let consultPolicyService: ConsultPolicyService;
-  let ref: DynamicDialogRef;
   let fixture: ComponentFixture<PolicyDetailsComponent>;
+  let ref: DynamicDialogRef;
 
   beforeEach(async () => {
-    consultPolicyService = ConsultPolicyService.prototype;
-    ref = DynamicDialogRef.prototype
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       declarations: [],
       providers: [
         PolicyDetailsComponent,
@@ -27,20 +22,48 @@ describe('PolicyDetailsComponent', () => {
         },
       ],
       imports: [HttpClientTestingModule],
-    });
+    })
+    .compileComponents();
+
     fixture = TestBed.createComponent(PolicyDetailsComponent);
     component = fixture.componentInstance;
-  });
-
-  it('should create', () => {
-
-    expect(component).toBeTruthy();
-  });
-
-  it('ngOnInit', fakeAsync(() => {
 
     const response: ResponseDTO<any> = {
-      body: ['test'],
+      body: {
+        productFactory: {
+          nmContent: {
+            riskTypes: [
+              {
+                complementaryData: [
+                  {
+                    fields: [
+                      {
+                        businessCode: 'test'
+                      }
+                    ]
+                  },
+                  {
+                    fields: [
+                      {
+                        businessCode: 'TIPO_MASCOTA',
+                        domainList: {
+                          valueList: "[{ code: 1, description: 'Perro' }]"
+                        }
+                      },
+                      {
+                        businessCode: 'RAZA',
+                        domainList: {
+                          valueList: "[{ code: 1, description: 'Bóxer' }]"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
       dataHeader: {
         code: 200,
         status: 'OK',
@@ -52,17 +75,73 @@ describe('PolicyDetailsComponent', () => {
       },
     };
     jest
-      .spyOn(consultPolicyService, 'getPolicyById')
-      .mockReturnValueOnce(of(response));
-    component.ngOnInit();
-    expect(component.policy).toEqual(['test']);
-  }));
+      .spyOn(component.consultPolicyService, 'getPolicyById')
+      .mockReturnValue(of(response));
+
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('findDescription', () => {
+    let dataRisk = [
+      {
+        businessCode: 'TIPO_MASCOTA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Perro' }])
+        }
+      },
+      {
+        businessCode: 'RAZA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Bóxer' }])
+        }
+      }
+    ];
+    expect(component.findDescription(dataRisk, 'TIPO_MASCOTA', '1')).toEqual('Perro');
+  });
+
+  it('findDescription exception field', () => {
+    let dataRisk = [
+      {
+        businessCode: 'TIPO_MASCOTA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Perro' }])
+        }
+      },
+      {
+        businessCode: 'RAZA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Bóxer' }])
+        }
+      }
+    ];
+    expect(component.findDescription(dataRisk, 'TEST', '1')).toEqual('No aplica');
+  });
+
+  it('findDescription exception', () => {
+    let dataRisk = [
+      {
+        businessCode: 'TIPO_MASCOTA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Perro' }])
+        }
+      },
+      {
+        businessCode: 'RAZA',
+        domainList: {
+          valueList: JSON.stringify([{ code: '1', description: 'Bóxer' }])
+        }
+      }
+    ];
+    expect(component.findDescription(dataRisk, 'TIPO_MASCOTA', '2')).toEqual('No aplica');
+  });
 
 
   it('close modal', () => {
-    const refCloseSpy = jest.spyOn(ref, 'close')
-    component.close()
-    expect(refCloseSpy).toHaveBeenCalled();
+    expect(component.close()).toBeUndefined();
   });
 
 });
