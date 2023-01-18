@@ -7,11 +7,13 @@ import { ConsultPolicyService } from '../../../containers/main/components/consul
 import { PolicyBrief } from '../../../core/interfaces/policy';
 import { ResponseDTO } from '../../../core/interfaces/commun/response';
 import { FilterPolicy } from '../../../containers/main/components/consult-policy/interfaces/consult-policy';
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'modal-policy-actions',
   templateUrl: './modal-policy-actions.component.html',
   styleUrls: ['./modal-policy-actions.component.scss'],
+  providers: [ConfirmationService],
 })
 export class ModalPolicyActionsComponent implements OnInit {
   formProcess: FormGroup;
@@ -30,7 +32,8 @@ export class ModalPolicyActionsComponent implements OnInit {
     public modalAPService: ModalPolicyActionsService,
     public dialogService: DialogService,
     public messageService: MessageService,
-    public consultPolicyService: ConsultPolicyService
+    public consultPolicyService: ConsultPolicyService,
+    private confirmationService: ConfirmationService,
   ) {
     this.formProcess = fb.group({
       processDate: fb.control(null),
@@ -75,7 +78,34 @@ export class ModalPolicyActionsComponent implements OnInit {
   }
 
   cancelPolicy() {
+    this.modalAPService.getExistsPreviousRenewalByIdPolicy(this.config.data.policy.idPolicy).subscribe((res: any) => {
+      if (res.dataHeader.code === 200) {
+        if (res.body.exists) {
+          this.confirmationService.confirm({
+            header: '¿Está seguro de cancelar la póliza?',
+            message: `
+                <div class="flex justify-center pt-5 pb-3">
+                    <img src="smartcore-commons/assets/styles/material-theme/icons/picto-alert.svg" alt="icon-warning">
+                </div>
+                <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl">
+                  <p class="w-full text-center">
+                    La póliza tiene un movimiento pendiente.
+                  </p>
+                </div>
+              `,
+            accept: () => {
+              this.cancelPolicyConfirm();
+            }
+          });
+        }else{
+          this.cancelPolicyConfirm();
+        }
+      }
+    })
+    
+  }
 
+  cancelPolicyConfirm(){
     if (this.formProcess.valid) {
       if(this.formProcess.get('processDate')?.value){
       this.modalAPService
