@@ -56,8 +56,6 @@ export class ModalPolicyActionsComponent implements OnInit {
 
   consultPoliciesById(id: number) {
   this.consultPolicyService.getPolicyById(id).subscribe( policies => {
-    console.log(policies);
-
     this.paymentMethod = policies.body.payment.method;
   });
   }
@@ -161,7 +159,7 @@ export class ModalPolicyActionsComponent implements OnInit {
 
     verifyDate() {
     this.isDateValid = true;
-    const date = new Date(this.formProcess.get('processDate')?.value).toISOString();
+    const date = new Date(new Date(this.formProcess.get('processDate')?.value).toDateString()).toISOString()
     const inceptionDate = new Date(this.config.data.policy.inceptionDate).toISOString();
     const expirationDate = new Date(this.config.data.policy.expirationDate).toISOString();
 
