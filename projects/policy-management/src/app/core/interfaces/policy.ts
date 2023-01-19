@@ -30,6 +30,7 @@ export interface Policy {
   complementaryData: ComplementaryDataPet;
   payment: Payment;
   servicePlan: ServicePlan;
+  productFactory?:any
 }
 
 export interface ComplementaryDataPet {

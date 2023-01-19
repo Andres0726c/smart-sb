@@ -62,4 +62,8 @@ export class ModalPolicyActionsService {
     return this.httpClient.post<any>(`${this.apiUrl}policy/rehabilitation`, sendData, {headers: this.headers});
   }
 
+  getExistsPreviousRenewalByIdPolicy(idPolicy: any){
+    return this.httpClient.get<any>(`${this.apiUrl}policyChangeActivity/existsPreviousRenewalByIdPolicy/${idPolicy}`, {headers: this.headers});
+  }
+
 }

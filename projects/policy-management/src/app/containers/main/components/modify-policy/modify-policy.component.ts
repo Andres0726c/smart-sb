@@ -324,7 +324,7 @@ export class ModifyPolicyComponent {
 
     });
 
-    fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
+    fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
 
     if (field.dataType.guiComponent === 'List box') {
       let options: any = [], domainList = field.domainList.valueList;
@@ -454,7 +454,7 @@ export class ModifyPolicyComponent {
         </div>
         <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl">
           <p class="w-full text-center">
-            Está seguro de realizar esta la modificación?
+            ¿Está seguro de realizar esta modificación?
           </p>
         </div>
       `,
@@ -469,20 +469,19 @@ export class ModifyPolicyComponent {
 
   savePolicyModify() {
     this.isSaving = true
-
     this.productService.saveModify(this.policy)
       .subscribe((resp: any) => {
 
         if (resp.dataHeader.code != 500) {
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
+          setTimeout(() => {this.router.navigate([`/polizas/consulta`]); }, 2000);
         } else {
-          this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
+          this.showSuccess('error', 'Error al Modificar', resp.dataHeader.status);
         }
         this.isSaving = false;
       }
       );
-
-
+      
   }
 
 
@@ -505,7 +504,6 @@ export class ModifyPolicyComponent {
   }
 
   showSuccess(status: string, title: string, msg: string) {
-
     this.messageService.add({
       severity: status,
       summary: title,

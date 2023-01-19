@@ -1,9 +1,15 @@
-.container-alert{
-    background:#F7D4D7;
-    border-radius: 5px;
-    color: #DC3545;
-    height: 40px;
-    text-align: left;
-    padding: 10px;
-    margin-bottom: 5px;
-  }
+.container-alert {
+  background: #f7d4d7;
+  border-radius: 5px;
+  color: #dc3545;
+  height: 40px;
+  text-align: left;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+::ng-deep .p-dialog-cancel .p-dialog-content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
