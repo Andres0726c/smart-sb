@@ -324,7 +324,7 @@ export class ModifyPolicyComponent {
 
     });
 
-    fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, [Validators.required]));
+    fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
 
     if (field.dataType.guiComponent === 'List box') {
       let options: any = [], domainList = field.domainList.valueList;
