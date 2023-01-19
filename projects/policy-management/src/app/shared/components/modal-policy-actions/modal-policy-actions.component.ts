@@ -51,13 +51,11 @@ export class ModalPolicyActionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCauses(this.config.data.process);
-    this.consultPoliciesById(this.config.data.policy.idPolicy)    
+    this.consultPoliciesById(this.config.data.policy.idPolicy)
   }
 
   consultPoliciesById(id: number) {
   this.consultPolicyService.getPolicyById(id).subscribe( policies => {
-    console.log(policies);
-    
     this.paymentMethod = policies.body.payment.method;
   });
   }
@@ -72,7 +70,7 @@ export class ModalPolicyActionsComponent implements OnInit {
   getPremium(idPolicy: any, deletionDate: any){
 
     this.modalAPService.getPremium(idPolicy, deletionDate)
-    .subscribe( premium => {      
+    .subscribe( premium => {
       this.premium = premium.body;
     });
   }
@@ -102,7 +100,7 @@ export class ModalPolicyActionsComponent implements OnInit {
         }
       }
     })
-    
+
   }
 
   cancelPolicyConfirm(){
@@ -160,8 +158,8 @@ export class ModalPolicyActionsComponent implements OnInit {
   }
 
     verifyDate() {
-
-    const date = new Date(this.formProcess.get('processDate')?.value).toISOString();
+    this.isDateValid = true;
+    const date = new Date(new Date(this.formProcess.get('processDate')?.value).toDateString()).toISOString()
     const inceptionDate = new Date(this.config.data.policy.inceptionDate).toISOString();
     const expirationDate = new Date(this.config.data.policy.expirationDate).toISOString();
 
@@ -175,7 +173,7 @@ export class ModalPolicyActionsComponent implements OnInit {
   }
 
   verifyCheck() {
-    
+
     if(this.formProcess.get('checked')?.value === true){
       this.formProcess.get('processDate')?.setValue(new Date(this.config.data.policy.inceptionDate))
       this.formProcess.get('processDate')?.disable();
