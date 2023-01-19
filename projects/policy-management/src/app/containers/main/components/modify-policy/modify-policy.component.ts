@@ -504,8 +504,12 @@ export class ModifyPolicyComponent {
   }
 
   showSuccess(status: string, title: string, msg: string) {
-    this.messageService.add({severity: status,summary: title,detail: msg})
-}
+    this.messageService.add({
+      severity: status,
+      summary: title,
+      detail: msg
+    });
+  }
 
 
 }
