@@ -397,10 +397,10 @@ export class ModifyPolicyComponent {
       } else if (!valueField || valueField === undefined) {
 
         try {
-          /*console.log(this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode],"value");
+          console.log(this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode],"value");
           console.log(this.policyAux.plcy.rsk['1'].rskDtGrp,"risk");
           console.log(level);
-          console.log(this.policyAux);*/
+          console.log(this.policyAux);
           
           if (level === "policy"){
             value = this.policyAux.plcy.plcyDtGrp[group.code][businessCode] ;
