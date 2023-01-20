@@ -476,6 +476,8 @@ export class ModifyPolicyComponent {
     for (let key of Object.values(this.policy.plcy.plcyDtGrp[this.BusinessCode])) {
         if (key !== null){
             flagValid = true;
+            console.log(this.policy.plcy.plcyDtGrp[this.BusinessCode]);  
+            console.log(key);
             break;
         }
     }
@@ -486,12 +488,19 @@ export class ModifyPolicyComponent {
     this.isSaving = true
 
 
-    if(!this.validData()){
+    // if(!this.validData()){
+
+    //   console.log("Valida Regla");
+
+    // this.policy.plcy.plcyDtGrp[this.BusinessCode] = this.policyAux.plcy.plcyDtGrp[this.BusinessCode];
+    // this.policy.plcy.rsk['1'].rskDtGrp[this.BusinessCode] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.BusinessCode];
+   
+    // }
+
+    console.log(this.policy);
 
     this.policy.plcy.plcyDtGrp[this.BusinessCode] = this.policyAux.plcy.plcyDtGrp[this.BusinessCode];
-    this.policy.plcy.rsk['1'].rskDtGrp[this.BusinessCode] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.BusinessCode]
-   
-    }
+    this.policy.plcy.rsk['1'].rskDtGrp[this.BusinessCode] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.BusinessCode];
 
     this.productService.saveModify(this.policy)
     
