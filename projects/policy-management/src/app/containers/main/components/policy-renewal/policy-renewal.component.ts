@@ -166,7 +166,7 @@ export class PolicyRenewalComponent implements OnInit {
 
     Object.keys(field).forEach(key => {
       let keyValue: any = field[key];
-      if(key === 'dataType' && field.businessCode === 'TIPO_MASCOTA') {
+      if(key === 'dataType' && (field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO')) {
         keyValue.guiComponent = 'List box';
       }
       fieldFG.addControl(key, this.fb.control(keyValue));
@@ -175,7 +175,8 @@ export class PolicyRenewalComponent implements OnInit {
     //fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: !field.editable }));
     fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: this.readOnly ?? !field.editable }));
 
-    if (field.dataType.guiComponent === 'List box' || field.businessCode === 'TIPO_MASCOTA') {
+    if (field.dataType.guiComponent === 'List box' || field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO') {
+      console.log('campo', field)
       let options: any = [], domainList = field.domainList?.valueList;
       options = field.domainList ? this.showDomainList(JSON.parse(domainList), value) : [{ id: value.value, name: value.value }];
       fieldFG.addControl('options', this.fb.control(options));
