@@ -75,7 +75,7 @@ export class ModifyPolicyComponent {
   url: any = "";
   types: any = [];
   optionsAux: any = [];
-  BusinessCode ='datos_basicos';
+  Business ='datos_basicos';
   constructor(
     private confirmationService: ConfirmationService,
     public productService: ProductService,
@@ -387,6 +387,8 @@ export class ModifyPolicyComponent {
   getControlValue(dataControlsValue: any, businessCode: string, level: string) {
     let value = null;
 
+    
+
     for (let group of dataControlsValue) {
 
 
@@ -395,28 +397,29 @@ export class ModifyPolicyComponent {
       if (valueField) {
         value = !this.isObject(valueField.value) ? valueField.value : valueField.value.id;
         break;
-      } else if (!valueField || valueField === undefined) {
+      // } else if (!valueField || valueField === undefined) {
+      //   console.log("busiin",)
 
-        try {
-          console.log(this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode],"value");
-          console.log(this.policyAux.plcy.rsk['1'].rskDtGrp,"risk");
-          console.log(level);
-          console.log(this.policyAux);
+      //   try {
+      //     console.log(this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode],"value");
+      //     console.log(this.policyAux.plcy.rsk['1'].rskDtGrp,"risk");
+      //     console.log(level);
+      //     console.log(this.policyAux);
         
           
-          if (level === "policy"){
-            value = this.policyAux.plcy.plcyDtGrp[group.code][businessCode] ;
-            } else {
-            value =  this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
-          }
+      //     if (level === "policy"){
+      //       value = this.policyAux.plcy.plcyDtGrp[group.code][businessCode];
+      //       } else {
+      //       value =  this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
+      //     }
 
-          //value = level === "policy" ? this.policyAux.plcy.plcyDtGrp[group.code][businessCode]:this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
+      //     //value = level === "policy" ? this.policyAux.plcy.plcyDtGrp[group.code][businessCode]:this.policyAux.plcy.rsk['1'].rskDtGrp[group.code][businessCode];
 
-        } catch {
+      //   } catch {
 
-        }
+      //   }
 
-      }
+       }
     }
 
     return value;
@@ -471,16 +474,35 @@ export class ModifyPolicyComponent {
 
   validData(){
 
-    let flagValid = false;
+   
 
-    for (let key of Object.values(this.policy.plcy.plcyDtGrp[this.BusinessCode])) {
-        if (key !== null){
-            flagValid = true;
-            console.log(this.policy.plcy.plcyDtGrp[this.BusinessCode]);  
-            console.log(key);
-            break;
+    for (let key of Object.keys(this.policy.plcy.plcyDtGrp)) {
+        
+        console.log(key,"keyPolicy");
+        for (let value  of Object.keys(this.policy.plcy.plcyDtGrp[key])){
+            if (this.policy.plcy.plcyDtGrp[key][value] == null) {
+              this.policy.plcy.plcyDtGrp[key][value] = this.policyAux.plcy.plcyDtGrp[key][value];
+            }
         }
     }
+    
+   this.validDataRisk();
+  }
+
+  validDataRisk(){
+
+    let flagValid = false;
+
+    for (let key of Object.keys(this.policy.plcy.rsk['1'].rskDtGrp)) {
+        
+        console.log(key,"keyRisk");
+        for (let value  of Object.keys(this.policy.plcy.rsk['1'].rskDtGrp[key])){
+            if (this.policy.plcy.rsk['1'].rskDtGrp[key][value] == null) {
+              this.policy.plcy.rsk['1'].rskDtGrp[key][value] = this.policyAux.plcy.rsk['1'].rskDtGrp[key][value];
+            }
+        }
+    }
+    
     return flagValid;
   }
 
@@ -488,19 +510,13 @@ export class ModifyPolicyComponent {
     this.isSaving = true
 
 
-    // if(!this.validData()){
+    this.validData();
+    
 
-    //   console.log("Valida Regla");
+    this.policy.plcy.plcyDtGrp[this.Business] = this.policyAux.plcy.plcyDtGrp[this.Business];
+    this.policy.plcy.rsk['1'].rskDtGrp[this.Business] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.Business];
 
-    // this.policy.plcy.plcyDtGrp[this.BusinessCode] = this.policyAux.plcy.plcyDtGrp[this.BusinessCode];
-    // this.policy.plcy.rsk['1'].rskDtGrp[this.BusinessCode] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.BusinessCode];
-   
-    // }
-
-    console.log(this.policy);
-
-    this.policy.plcy.plcyDtGrp[this.BusinessCode] = this.policyAux.plcy.plcyDtGrp[this.BusinessCode];
-    this.policy.plcy.rsk['1'].rskDtGrp[this.BusinessCode] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.BusinessCode];
+    console.log(this.policy,"policy");
 
     this.productService.saveModify(this.policy)
     
