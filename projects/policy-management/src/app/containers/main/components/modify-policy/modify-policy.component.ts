@@ -75,6 +75,7 @@ export class ModifyPolicyComponent {
   url: any = "";
   types: any = [];
   optionsAux: any = [];
+  BusinessCode ='datos_basicos';
   constructor(
     private confirmationService: ConfirmationService,
     public productService: ProductService,
@@ -401,6 +402,7 @@ export class ModifyPolicyComponent {
           console.log(this.policyAux.plcy.rsk['1'].rskDtGrp,"risk");
           console.log(level);
           console.log(this.policyAux);
+        
           
           if (level === "policy"){
             value = this.policyAux.plcy.plcyDtGrp[group.code][businessCode] ;
@@ -467,9 +469,41 @@ export class ModifyPolicyComponent {
 
   }
 
+  validData(){
+
+    let flagValid = false;
+
+    for (let key of Object.values(this.policy.plcy.plcyDtGrp[this.BusinessCode])) {
+        if (key !== null){
+            flagValid = true;
+            console.log(this.policy.plcy.plcyDtGrp[this.BusinessCode]);  
+            console.log(key);
+            break;
+        }
+    }
+    return flagValid;
+  }
+
   savePolicyModify() {
     this.isSaving = true
+
+
+    // if(!this.validData()){
+
+    //   console.log("Valida Regla");
+
+    // this.policy.plcy.plcyDtGrp[this.BusinessCode] = this.policyAux.plcy.plcyDtGrp[this.BusinessCode];
+    // this.policy.plcy.rsk['1'].rskDtGrp[this.BusinessCode] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.BusinessCode];
+   
+    // }
+
+    console.log(this.policy);
+
+    this.policy.plcy.plcyDtGrp[this.BusinessCode] = this.policyAux.plcy.plcyDtGrp[this.BusinessCode];
+    this.policy.plcy.rsk['1'].rskDtGrp[this.BusinessCode] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.BusinessCode];
+
     this.productService.saveModify(this.policy)
+    
       .subscribe((resp: any) => {
 
         if (resp.dataHeader.code != 500) {
