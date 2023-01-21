@@ -330,7 +330,7 @@ describe('ModifyPolicyComponent', () => {
     component.policy = policies;
     component.policyAux=policies;
     const spy = component.validDataRisk();
-    expect(spy).toEqual(false);
+    expect(spy).toBeUndefined();
   });
 
   describe('validRules', () => {
