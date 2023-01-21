@@ -480,7 +480,7 @@ export class ModifyPolicyComponent {
         
         console.log(key,"keyPolicy");
         for (let value  of Object.keys(this.policy.plcy.plcyDtGrp[key])){
-            if (this.policy.plcy.plcyDtGrp[key][value] == null) {
+            if (this.policy.plcy.plcyDtGrp[key][value] === null) {
               this.policy.plcy.plcyDtGrp[key][value] = this.policyAux.plcy.plcyDtGrp[key][value];
             }
         }
@@ -491,19 +491,19 @@ export class ModifyPolicyComponent {
 
   validDataRisk(){
 
-    let flagValid = false;
+    
 
     for (let key of Object.keys(this.policy.plcy.rsk['1'].rskDtGrp)) {
         
         console.log(key,"keyRisk");
         for (let value  of Object.keys(this.policy.plcy.rsk['1'].rskDtGrp[key])){
-            if (this.policy.plcy.rsk['1'].rskDtGrp[key][value] == null) {
+            if (this.policy.plcy.rsk['1'].rskDtGrp[key][value] === null) {
               this.policy.plcy.rsk['1'].rskDtGrp[key][value] = this.policyAux.plcy.rsk['1'].rskDtGrp[key][value];
             }
         }
     }
     
-    return flagValid;
+   
   }
 
   savePolicyModify() {
