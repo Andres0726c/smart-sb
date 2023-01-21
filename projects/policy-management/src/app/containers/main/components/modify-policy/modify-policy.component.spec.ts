@@ -313,8 +313,24 @@ describe('ModifyPolicyComponent', () => {
     component.policyAux=policies;
     const spy = component.savePolicyModify();
     const spy2 = jest.spyOn(component, 'showSuccess').mockImplementation();
+    const spy3 = jest.spyOn(component, 'validData').mockImplementation();
     expect(spy).toBeUndefined();
     expect(spy2).toBeDefined();
+  });
+
+  it ('validData',()=>{
+    component.policy = policies;
+    component.policyAux=policies;
+    const spy = component.validData();
+    const spy3 = jest.spyOn(component, 'validDataRisk').mockImplementation();
+    expect(spy).toBeUndefined();
+  });
+
+  it ('validDataRisk',()=>{
+    component.policy = policies;
+    component.policyAux=policies;
+    const spy = component.validDataRisk();
+    expect(spy).toEqual(false);
   });
 
   describe('validRules', () => {
