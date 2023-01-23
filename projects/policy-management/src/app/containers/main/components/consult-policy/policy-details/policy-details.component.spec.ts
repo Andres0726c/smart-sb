@@ -30,6 +30,10 @@ describe('PolicyDetailsComponent', () => {
 
     const response: ResponseDTO<any> = {
       body: {
+        payment: {
+          method: 'test',
+          type: 'test'
+        },
         servicePlan: {
           name: 'test'
         },
@@ -61,6 +65,12 @@ describe('PolicyDetailsComponent', () => {
             ],
             riskTypes: [
               {
+                businessPlans: [
+                  {
+                    id: 0,
+                    name: 'test'
+                  }
+                ],
                 complementaryData: [
                   {
                     fields: [
@@ -81,6 +91,12 @@ describe('PolicyDetailsComponent', () => {
                         businessCode: 'RAZA',
                         domainList: {
                           valueList: "[{ code: 1, description: 'Bóxer' }]"
+                        }
+                      },
+                      {
+                        businessCode: 'EDAD_MASCOTA',
+                        domainList: {
+                          valueList: "[{ code: 1, description: 'De 3 a 5 años' }]"
                         }
                       }
                     ]
