@@ -474,8 +474,6 @@ export class ModifyPolicyComponent {
 
   validData(){
 
-   
-
     for (let key of Object.keys(this.policy.plcy.plcyDtGrp)) {
         
         console.log(key,"keyPolicy");
@@ -490,8 +488,6 @@ export class ModifyPolicyComponent {
   }
 
   validDataRisk(){
-
-    
 
     for (let key of Object.keys(this.policy.plcy.rsk['1'].rskDtGrp)) {
         
