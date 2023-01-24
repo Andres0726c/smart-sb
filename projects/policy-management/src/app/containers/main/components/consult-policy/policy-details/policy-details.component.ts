@@ -16,35 +16,54 @@ export class PolicyDetailsComponent implements OnInit {
     petBrand:"",
     petAge:""
   };
+  businessPlan = 'No aplica';
+  paymentType = 'No aplica';
 
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, public consultPolicyService: ConsultPolicyService) { }
 
   ngOnInit(): void {
     this.consultPolicyService.getPolicyById(this.config.data.idPolicy).subscribe((res) => {
       if (res.body) {
-        this.policy = res.body
-        let dataRisk = this.policy.productFactory.nmContent?.riskTypes[0].complementaryData[1].fields;
+        try {
+          this.policy = res.body
+          let product = this.policy.productFactory.nmContent;
+          let dataRisk = product.riskTypes[0].complementaryData[1].fields;
+          let paymentData = product.policyData[1].fields;
+          let businessPlans = this.getBusinessPlans(product.riskTypes);
 
-        this.petData = {
-          petType: this.findDescription(dataRisk, 'TIPO_MASCOTA', this.policy.complementaryData.petType),
-          petBrand: this.findDescription(dataRisk, 'RAZA', this.policy.complementaryData.petBrand),
-          petAge: this.findDescription(dataRisk, 'EDAD_MASCOTA', this.policy.complementaryData.petAge)
+          this.businessPlan = businessPlans.find((x: any) => x.code === this.policy.servicePlan.name)?.name;
+          this.paymentType = this.findDescription(paymentData, 'MEDIO_PAGO', this.policy.payment.type)
+
+          this.petData = {
+            petType: this.findDescription(dataRisk, 'TIPO_MASCOTA', this.policy.complementaryData.petType),
+            petBrand: this.findDescription(dataRisk, 'RAZA', this.policy.complementaryData.petBrand),
+            petAge: this.findDescription(dataRisk, 'EDAD_MASCOTA', this.policy.complementaryData.petAge)
+          }
+        } catch (error) {
+          console.error('Ha ocurrido un error al procesar los datos, por favor intente nuevamente');
         }
-
-       
       }
-      this.isLoading = false
+      this.isLoading = false;
     });
   }
 
-  findDescription(dataRisk: any, businessCode: string, code: string) {
-    const field = dataRisk.find((f: any) => f.businessCode === businessCode);
+  findDescription(fieldsArray: any, businessCode: string, code: string) {
+    const field = fieldsArray.find((f: any) => f.businessCode === businessCode);
     if(!field) {
       return 'No aplica';
     }
     const valueList = JSON.parse(field.domainList.valueList);
     const value = valueList.find((x: any) => x.code === code);
     return value ? value.description : 'No aplica';
+  }
+
+  getBusinessPlans(riskData: any) {
+    let arrayBusinessPlans: any[] = [];
+    for(let risk of riskData) {
+      arrayBusinessPlans = arrayBusinessPlans.concat(risk.businessPlans)
+    }
+
+    return arrayBusinessPlans;
   }
 
   close() {

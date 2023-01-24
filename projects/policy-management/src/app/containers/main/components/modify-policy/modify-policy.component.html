@@ -35,7 +35,7 @@
 <ng-template #calendar let-groupName="groupName" let-field="field">
   <div [formGroup]="field" class="flex flex-col m-3">
       <label>{{ field.value.label }}</label>
-      <p-calendar [showIcon]="true" styleClass="w-full" dateFormat="yy-mm-ddT00:00:00-05:00" formControlName="value" ></p-calendar>
+      <p-calendar [showIcon]="true" styleClass="w-full" dateFormat="M d,yy" [showTime]="true" hourFormat="12" [showSeconds]="true" formControlName="value" ></p-calendar>
       
     </div>
 </ng-template>

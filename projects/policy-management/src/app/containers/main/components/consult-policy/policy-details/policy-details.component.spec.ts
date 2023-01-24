@@ -30,10 +30,47 @@ describe('PolicyDetailsComponent', () => {
 
     const response: ResponseDTO<any> = {
       body: {
+        payment: {
+          method: 'test',
+          type: 'test'
+        },
+        servicePlan: {
+          name: 'test'
+        },
         productFactory: {
           nmContent: {
+            policyData: [
+              {
+                fields: [
+                  {
+                    businessCode: 'MEDIO_PAGO',
+                    domainList: {
+                      valueList: '[{"code": "mep_efe", "description": "Efectivo"}, {"code": "mep_tcr", "description": "Tarjeta de crédito"}, {"code": "mep_tbc", "description": "Transferencia bancaria"}, {"code": "mep_chq", "description": "Cheque"}, {"code": "mep_agp", "description": "Agente promotor"}, {"code": "mep_dba", "description": "Cuenta de ahorros"}, {"code": "mep_dbc", "description": "Cuenta corriente"}, {"code": "mep_lbz", "description": "Libranza"}, {"code": "mep_dvp", "description": "Daviplata"}]'
+                    }
+                  }
+
+                ]
+              },
+              {
+                fields: [
+                  {
+                    businessCode: 'MEDIO_PAGO',
+                    domainList: {
+                      valueList: '[{"code": "mep_efe", "description": "Efectivo"}, {"code": "mep_tcr", "description": "Tarjeta de crédito"}, {"code": "mep_tbc", "description": "Transferencia bancaria"}, {"code": "mep_chq", "description": "Cheque"}, {"code": "mep_agp", "description": "Agente promotor"}, {"code": "mep_dba", "description": "Cuenta de ahorros"}, {"code": "mep_dbc", "description": "Cuenta corriente"}, {"code": "mep_lbz", "description": "Libranza"}, {"code": "mep_dvp", "description": "Daviplata"}]'
+                    }
+                  }
+
+                ]
+              }
+            ],
             riskTypes: [
               {
+                businessPlans: [
+                  {
+                    id: 0,
+                    name: 'test'
+                  }
+                ],
                 complementaryData: [
                   {
                     fields: [
@@ -54,6 +91,12 @@ describe('PolicyDetailsComponent', () => {
                         businessCode: 'RAZA',
                         domainList: {
                           valueList: "[{ code: 1, description: 'Bóxer' }]"
+                        }
+                      },
+                      {
+                        businessCode: 'EDAD_MASCOTA',
+                        domainList: {
+                          valueList: "[{ code: 1, description: 'De 3 a 5 años' }]"
                         }
                       }
                     ]

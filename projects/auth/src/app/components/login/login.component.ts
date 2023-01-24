@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiRequestsService, CognitoService } from 'commons-lib';
+import { ApiRequestsService, CognitoService, environment } from 'commons-lib';
 import { Dropdown } from 'primeng/dropdown';
 import { lastValueFrom } from 'rxjs';
 
@@ -55,8 +55,10 @@ export class LoginComponent implements OnInit {
         this.formData.get('password')?.value
       )
       .then(async (user) => {
-        const groups =
-          user.signInUserSession.accessToken.payload['cognito:groups'];
+        if (user.challengeName && user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+          window.location.href = environment.urlCognitoHostedUI;
+        }
+        const groups = user.signInUserSession.accessToken.payload['cognito:groups'];
         if (
           groups &&
           groups.includes('TLN') &&
