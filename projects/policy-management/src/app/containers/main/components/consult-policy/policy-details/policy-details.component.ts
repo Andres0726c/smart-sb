@@ -17,6 +17,7 @@ export class PolicyDetailsComponent implements OnInit {
     petAge:""
   };
   businessPlan = 'No aplica';
+  paymentType = 'No aplica';
 
   constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, public consultPolicyService: ConsultPolicyService) { }
 
@@ -25,10 +26,13 @@ export class PolicyDetailsComponent implements OnInit {
       if (res.body) {
         try {
           this.policy = res.body
-          let dataRisk = this.policy.productFactory.nmContent?.riskTypes[0].complementaryData[1].fields;
-          let businessPlans = this.getBusinessPlans(this.policy.productFactory.nmContent?.riskTypes);
+          let product = this.policy.productFactory.nmContent;
+          let dataRisk = product.riskTypes[0].complementaryData[1].fields;
+          let paymentData = product.policyData[1].fields;
+          let businessPlans = this.getBusinessPlans(product.riskTypes);
 
           this.businessPlan = businessPlans.find((x: any) => x.code === this.policy.servicePlan.name)?.name;
+          this.paymentType = this.findDescription(paymentData, 'MEDIO_PAGO', this.policy.payment.type)
 
           this.petData = {
             petType: this.findDescription(dataRisk, 'TIPO_MASCOTA', this.policy.complementaryData.petType),
@@ -43,8 +47,8 @@ export class PolicyDetailsComponent implements OnInit {
     });
   }
 
-  findDescription(dataRisk: any, businessCode: string, code: string) {
-    const field = dataRisk.find((f: any) => f.businessCode === businessCode);
+  findDescription(fieldsArray: any, businessCode: string, code: string) {
+    const field = fieldsArray.find((f: any) => f.businessCode === businessCode);
     if(!field) {
       return 'No aplica';
     }
