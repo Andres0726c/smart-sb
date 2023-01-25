@@ -20,6 +20,7 @@ export class ReactiveGroupFieldsComponent {
   @Output() validRules: EventEmitter<any> = new EventEmitter();
 
   validRule:boolean=true;
+  
 
   constructor(
     public fb : FormBuilder,
@@ -36,84 +37,46 @@ export class ReactiveGroupFieldsComponent {
     return group.get('fields') as FormArray;
   }
 
-  executeRule(field:any,groupName:any,show:boolean) {
+ async executeRule(field:any,groupName:any,show:boolean) {
+    
 
-     let valueAfter ="";//this.level==='risk'?this.policy.plcy.rsk['1']?.rskDtGrp[groupName?.value.code][field.value.businessCode]
-  //   :this.policy.plcy?.plcyDtGrp[groupName.value?.code][field.value?.businessCode];
+     let valueAfter =this.level==='risk'?this.policy.plcy.rsk['1']?.rskDtGrp[groupName?.value.code][field.value.businessCode]
+    :this.policy.plcy?.plcyDtGrp[groupName.value?.code][field.value?.businessCode];
 
-  //  let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.id;
+   let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.id;
 
-  //   valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id
+    valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id
 
-  //    console.log(valueCurrent,"actual");
-  //    console.log(valueAfter,"despues");
-  //    console.log(field.value,"field");
+     console.log(valueCurrent,"actual");
+     console.log(valueAfter,"despues");
+     console.log(field.value,"field");
 
-  //   if (valueCurrent !== valueAfter || show) {
+    if (valueCurrent !== valueAfter || show) {
 
-  //     this.updatePolicy.emit(false);
+      this.updatePolicy.emit(false);
       
-  //     this.validRules.emit(true);
+      this.validRules.emit(true);
 
-  //     this.addControls(field);
+      this.addControls(field);
 
-  //      field.addControl("rule", this.fb.control(false));
+       field.addControl("rule", this.fb.control(false));
+
+      let errorRule = "";
+
+      if(field.value?.initializeRule && field.value?.initializeRule?.length !== 0 && valueCurrent !==''){
+        console.log("entra initial");
+          this.getRule(field,"inicial",show);
+         
+      }
+      if(field.value?.validateRule.length !== 0){
+
       
+        console.log("entra validation");
 
-  //     let levelField:any= [];
+          this.getRule(field,"validacion",show);
+      }
 
-  //     if(field.value?.initializeRule?.length !== 0 && valueCurrent !==''){
-
-  //       levelField= [];
-
-  //       let obj = {
-  //         policyIssueRequestDTO:this.policy,
-  //         rule:field.value?.initializeRule?field.value?.initializeRule[0]:"",
-  //         ruleIssue:this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp:this.policy.plcy.plcyDtGrp,
-  //         keysContextVariables:levelField
-  //       }
-
-  //       this.productService.executeRule(obj).subscribe((res: any) => {
-
-  //         let errorRule = res.body;
-  //         if(res.body ===''){
-  //           errorRule = res.dataHeader!.errorList[0].errorDescription!;
-  //         }
-  //       });
-  //     }
-  //     if(field.value?.validateRule.length !== 0){
-
-  //       console.log("entra validation");
-
-  //       levelField= [];
-  //       let obj = {
-  //         policyIssueRequestDTO:this.policy,
-  //         rule:field.value?.validateRule[0],
-  //         ruleIssue:this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp:this.policy.plcy.plcyDtGrp,
-  //         keysContextVariables:levelField
-  //       }
-
-  //       this.productService.executeRule(obj).subscribe((res: any) => {
-
-  //         let errorRule = res.body;
-  //         if(res.body ===''){
-            
-  //           field.value.rule = true;
-
-  //           console.log (field);
-  //           this.validRules.emit(false);
-  //           errorRule = res.dataHeader!.errorList[0].errorDescription!;
-
-  //         }
-
-  //         if(show)
-  //         this.showModal("Regla de validación",field.value.validateRule[0],errorRule);
-
-  //       });
-
-  //     }
-
-  //   }
+    }
 
   }
 
@@ -126,8 +89,37 @@ export class ReactiveGroupFieldsComponent {
   }
 
 
-  valid(){
-    console.log("llega");
+  getRule(field:any,rule:string,show:boolean){
+
+      let resRul:any;
+      let errorRule:string
+      let levelField:any= [];
+     
+        let obj = {
+          policyIssueRequestDTO:this.policy,
+          rule:rule==="validacion"?field.value?.validateRule[0]:field.value?.initializeRule[0],
+          ruleIssue:this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp:this.policy.plcy.plcyDtGrp,
+          keysContextVariables:levelField,
+          required:field.value?.required
+        }
+
+        this.productService.executeRule(obj).subscribe((res: any) => {
+
+          console.log(res,"res");
+
+          if(res?.dataHeader?.errorList[0]?.errorDescription){
+            
+            field.value.rule = true;
+            this.validRules.emit(false);
+            errorRule = res.dataHeader?.errorList[0]?.errorDescription;
+          }
+
+          if(show)
+          this.showModal("Regla de validación",field.value.validateRule[0],errorRule);
+         
+         
+       });
+    return resRul;
   }
 
 

@@ -444,6 +444,10 @@ export class ModifyPolicyComponent {
     for (let risk of this.riskTypesControls.controls) {
       this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp, "risk");
     }
+
+    this.policy.plcy.plcyDtGrp[this.Business] = this.policyAux.plcy.plcyDtGrp[this.Business];
+    this.policy.plcy.rsk['1'].rskDtGrp[this.Business] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.Business];
+    
    if (flag)
 
       this.savePolicyModify();
