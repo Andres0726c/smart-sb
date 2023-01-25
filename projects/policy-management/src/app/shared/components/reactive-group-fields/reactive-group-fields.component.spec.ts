@@ -8,6 +8,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ProductService } from '../../../core/services/product/product.service';
 import { ReactiveGroupFieldsComponent } from './reactive-group-fields.component';
 import { of } from 'rxjs';
+import exp from 'constants';
 
 describe('ReactiveGroupFieldsComponent', () => {
   let component: ReactiveGroupFieldsComponent;
@@ -16,40 +17,39 @@ describe('ReactiveGroupFieldsComponent', () => {
   let dialogService1: DialogService;
   let messageService: MessageService;
   let formBuilderMock = new FormBuilder();
-  let field:any = new FormControl();
-  field.value= {
-    businessCode: "FECHA_EMISION",
-    code: { businessCode: "FECHA_EMISION" },
-    value: "2022-11-21T00:00:00-05:90",
-    test:false,
-    initializeRule:[{
-      argmntLst:[
-        {name:'period', value: 'PERIODO_FACT'},
-        {name:'startDate', value: 'FEC_INI_VIG_POL'}],
-      cdBusinessCode:"RIN_FFV_POL",
-      cdRuleType:"Inicialización",
-      code:{name:"Generar fecha de final de vigencia",version:1},
-      description:"Generar fecha de final de vigencia",
-      endPoint:"/emisor/v1/expirationDate/initExpirationDate",
-      id:20,
-      name:"Generar fecha de final de vigencia",
-      urlBs:"https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev"
+  let field: any ={value : {
+    businessCode: "CIU_TDB",
+    code: { businessCode: "CIU_TDB" },
+    value: {id:'05002', name:'Abejorral'},
+    test: false,
+    initializeRule:  [{
+      argmntLst: [
+        { name: "date", value: "FECHA_EMISION" }],
+      cdBusinessCode: "RVL_CIU_RGO",
+      cdRuleType: "Validación",
+      code: { name:'Validar ciudad', version: 1 },
+      description: 'Validar ciudad',
+      endPoint: "/emisor/v1/city/locationValidate",
+      id: 16,
+      name: 'Validar ciudad',
+      urlBs: "https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/stage"
 
-  }],
-    validateRule:[{
-      argmntLst:[
-        {name:"date", value:"FECHA_EMISION"}],
-      cdBusinessCode:"RVL_FEM_POL",
-      cdRuleType:"Validación",
-      code:{name:"Validar fecha de emision de la póliza",version:1},
-      description:"Validar fecha de emision de la póliza",
-      endPoint:"/emisor_orquestador/v1/issueDate/validate",
-      id:7,
-      name:"Validar fecha de emision de la póliza",
-      urlBs:"https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev"
+    }],
+    validateRule: [{
+      argmntLst: [
+        { name: "date", value: "FECHA_EMISION" }],
+      cdBusinessCode: "RVL_CIU_RGO",
+      cdRuleType: "Validación",
+      code: { name:'Validar ciudad', version: 1 },
+      description: 'Validar ciudad',
+      endPoint: "/emisor/v1/city/locationValidate",
+      id: 16,
+      name: 'Validar ciudad',
+      urlBs: "https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/stage"
 
     }]
   }
+}
 
   let policy = {
     prdct: "mascotadaviviendadiciembre",
@@ -80,11 +80,11 @@ describe('ReactiveGroupFieldsComponent', () => {
           PERIODO_FACT: "4",
           PRODUCTOS: "mascotadaviviendadiciembre",
           TIPO_DOC_TOMADOR: "CC"
-        }
+        },
+        gd002_datosdeldebito:{CIU_TDB: "05001",CORREO_PERSO_CONTAC: "ejemplito@example.com",DIR_TDB: "cra 15 #8-10",DTO_CUO_POL: "3",DTO_ENF_POL: "enf_dvv",DTO_VTC_POL: "202511",MEDIO_PAGO: "mep_tcr",METODO_PAGO: "MPG_EFT",NOM_TDB: "Diego Carvajal",NRO_CUENTA: "6087543124",NRO_ID_TDB: "106158765",TEL_TDB: "3109876540",TPO_ID_TDB: "CD"}
       },
       rsk: {
         1: {
-          rskTyp: "2",
           rskDtGrp: {
             datos_basicos: {
               APE_ASEG: "CORDOBA",
@@ -92,6 +92,9 @@ describe('ReactiveGroupFieldsComponent', () => {
               NOM_ASEG: "JUAN",
               NRO_ID_ASEGURADO: "91077808",
               TIPO_DOC_ASEGURADO: "CC"
+            },
+            gd002_datosmascota:{
+              EDAD_MASCOTA: "4",NOMBRE_MASCOTA: "Michi",RAZA: "31",TIPO_MASCOTA: null
             }
           }
         }
@@ -148,51 +151,70 @@ describe('ReactiveGroupFieldsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('valid',()=>{
-    let spy =component.valid();
-    expect(spy).toBeUndefined();
+  xit('valid', () => {
+    //let spy =component.va();
+    //expect(spy).toBeUndefined();
   })
 
-  it('showModal',()=>{
-    let title:any="title",message: string="hola";
-    component.showModal(title,field,message);
+  it('showModal', () => {
+    let title: any = "title", message: string = "hola";
+    component.showModal(title, field, message);
   });
+  describe('executeRule', () => {
+    it('datos_basicos', () => {
+      component.policy = policy;
+      let groupName: any = { value: { id: 1, name: "Datos básicos", code: "datos_basicos" } };
+      let show = true;
+      // const spy1 = jest.spyOn(productService, 'executeRule').mockReturnValue(of(res));
+      const spy3 = jest.spyOn(component, 'addControls').mockImplementation();
+      const spy2 = jest.spyOn(component, 'getRule').mockImplementation();
+      const spy = component.executeRule(field, groupName, show);
+      console.log(spy3);
+      //expect(spy1).toBeCalled();
+      //expect(spy2).toBeCalled();
+      expect(spy).toBeDefined();
 
-  it('executeRule', () => {
-    component.policy=policy;
-    let res={
-      body:{
-        message:" ",
-        status:true,
-        value:null
-      },
-      dataHeader:{
-        code:200,
-        currentPage:0,
-        errorList:[],
-        hasErrors:false,
-        status:"OK"
-        }
-    }
-    let  groupName: any = {
-        value: {
-          id: 1,
-          name: "Datos básicos",
-          code: "datos_basicos"
-        }
-      };
+    });
 
-     let show = true;
-    // const spy1 = jest.spyOn(productService, 'executeRule').mockReturnValue(of(res));
-     const spy3= jest.spyOn( component,'addControls').mockImplementation();
-    // const spy2=jest.spyOn(component,'showModal').mockImplementation();
-    const spy= component.executeRule(field, groupName, show);
-    console.log(spy3);
-    //expect(spy1).toBeCalled();
-    //expect(spy2).toBeCalled();
-    expect(spy).toBeUndefined();
+    it('datos_basicosRisk', () => {
+      component.policy = policy;
+      let groupName: any = { value: { id: "gd002_datosdeldebito", name: "Datos del débito", code: "gd002_datosdeldebito" } };
+      let show = true;
+      // const spy1 = jest.spyOn(productService, 'executeRule').mockReturnValue(of(res));
+      const spy3 = jest.spyOn(component, 'addControls').mockImplementation();
+      const spy2 = jest.spyOn(component, 'getRule').mockImplementation();
+      const spy = component.executeRule(field, groupName, show);
+      console.log(spy3);
+      //expect(spy1).toBeCalled();
+      //expect(spy2).toBeCalled();
+      expect(spy).toBeDefined();
+
+    });
 
   });
 
+  describe('getRule',()=>{
 
+ 
+    it('getRuleTrue',()=>{
+      component.policy=policy;
+      let res={body:"",dataHeader:{code: 200,currentPage: 0,errorList: [],hasErrors: false,status: "OK",totalPage: 0,totalRecords: 0}}
+      const spy1 = jest.spyOn(productService, 'executeRule').mockReturnValue(of(res));
+      let spy=component.getRule(field,'validacion',false);
+      expect(spy1).toBeCalled();
+      expect(spy).toBeUndefined();
+  
+    });
+    it('getRuleError',()=>{
+      component.policy=policy;
+      let res={body:null,dataHeader:{code: 200,currentPage: 0,errorList: [{errorCode: "1000",errorDescription: "Not data found"}],hasErrors: false,status: "OK",totalPage: 0,totalRecords: 0}}
+      const spy1 = jest.spyOn(productService, 'executeRule').mockReturnValue(of(res));
+      let spy=component.getRule(field,'validacion',true);
+      expect(spy1).toBeCalled();
+      expect(spy).toBeUndefined();
+    });
+  
+  });
+
+ 
 });

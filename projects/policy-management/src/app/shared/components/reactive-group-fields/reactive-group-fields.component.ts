@@ -47,6 +47,8 @@ export class ReactiveGroupFieldsComponent {
 
     valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id
 
+    console.log(groupName,"numero: ",field.value?.validateRule.length)
+    console.log(this.policy.plcy.rsk);
      console.log(valueCurrent,"actual");
      console.log(valueAfter,"despues");
      console.log(field.value,"field");
@@ -59,10 +61,12 @@ export class ReactiveGroupFieldsComponent {
 
       this.addControls(field);
 
-       field.addControl("rule", this.fb.control(false));
+      //field.addControl("rule", this.fb.control(false));
 
       let errorRule = "";
 
+
+      
       if(field.value?.initializeRule && field.value?.initializeRule?.length !== 0 && valueCurrent !==''){
         console.log("entra initial");
           this.getRule(field,"inicial",show);
