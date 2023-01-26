@@ -169,6 +169,16 @@ export class PolicyRenewalComponent implements OnInit {
       if(key === 'dataType' && (field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO')) {
         keyValue.guiComponent = 'List box';
       }
+      if (key === 'domainList' && field.businessCode === 'PERIODO_FACT') {
+        keyValue = {
+          "code": "LDM_PF",
+          "name": "Periodos de facturación",
+          "description": "Periodos de facturación",
+          "valueList": "[{\"url\": \"/emisor/v1/turnoverperiod/findAll\", \"rlEngnCd\": \"MTR_SMT\"}]"
+        }
+
+        field[key] = keyValue;
+      }
       fieldFG.addControl(key, this.fb.control(keyValue));
     });
 
@@ -176,7 +186,6 @@ export class PolicyRenewalComponent implements OnInit {
     fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: this.readOnly ?? !field.editable }));
 
     if (field.dataType.guiComponent === 'List box' || field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO') {
-      console.log('campo', field)
       let options: any = [], domainList = field.domainList?.valueList;
       options = field.domainList ? this.showDomainList(JSON.parse(domainList), value) : [{ id: value.value, name: value.value }];
       fieldFG.addControl('options', this.fb.control(options));
