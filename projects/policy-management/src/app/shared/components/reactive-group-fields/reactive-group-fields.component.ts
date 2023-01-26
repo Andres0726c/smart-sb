@@ -63,9 +63,6 @@ export class ReactiveGroupFieldsComponent {
 
       //field.addControl("rule", this.fb.control(false));
 
-      let errorRule = "";
-
-
       
       if(field.value?.initializeRule && field.value?.initializeRule?.length !== 0 && valueCurrent !==''){
         console.log("entra initial");
