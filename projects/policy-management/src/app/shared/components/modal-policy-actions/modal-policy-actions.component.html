@@ -48,12 +48,12 @@
     </div>
     <form [formGroup]="formProcess">
         <div class="grid grid-cols-2  gap-10">
-            
+
             <div *ngIf="config.data.process === 'Cancelación'">
                 <label>Fecha aplicación cancelación</label>
                 <span class="p-input-icon-right w-full">
                     <p-calendar formControlName="processDate" (onSelect) = "verifyDate()" dateFormat="yy-mm-dd" appendTo="body" styleClass="w-full" placeholder="aaaa-mm-dd" [showTime]="true" hourFormat="24" [showSeconds]="true"></p-calendar>
-                    <em class="pi pi-calendar"></em> 
+                    <em class="pi pi-calendar"></em>
                 </span>
             </div>
 
@@ -66,7 +66,7 @@
                 <label class="text-primary font-bold">Valor a devolver al cliente</label>
                 <input class="block" [style]="{'width':'100%'}" type="text" pInputText value="{{ premium?.value | currency: 'COP' }}" disabled="true"/>
             </div>
-            
+
             <div>
                 <label>Causa</label>
                 <p-dropdown formControlName="causeType" [options]="causes" optionLabel="description" optionValue="id"
@@ -81,7 +81,7 @@
 
             </div>
 
-            <div *ngIf="config.data.process === 'Rehabilitación'">
+            <div *ngIf="config.data.process === 'Rehabilitación'" class="hidden">
                 <label>Fecha de rehabilitación</label>
                 <span class="p-input-icon-right w-full">
                     <p-calendar formControlName="rehabilitationDate"
