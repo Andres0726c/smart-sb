@@ -169,6 +169,16 @@ export class PolicyRenewalComponent implements OnInit {
       if(key === 'dataType' && (field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO')) {
         keyValue.guiComponent = 'List box';
       }
+      if (key === 'domainList' && field.businessCode === 'PERIODO_FACT') {
+        keyValue = {
+          "code": "LDM_PF",
+          "name": "Periodos de facturación",
+          "description": "Periodos de facturación",
+          "valueList": "[{\"url\": \"/emisor/v1/turnoverperiod/findAll\", \"rlEngnCd\": \"MTR_SMT\"}]"
+        }
+
+        field[key] = keyValue;
+      }
       fieldFG.addControl(key, this.fb.control(keyValue));
     });
 
