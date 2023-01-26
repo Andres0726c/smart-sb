@@ -93,6 +93,12 @@ export class FilterPolicyTopComponent {
       .subscribe((res) => {
         this.setData(res, 'identificationtype');
       });
+
+    this.productService
+      .getApiData('turnoverperiod/findAll')
+      .subscribe((res) => {
+        this.setData(res, 'turnoverperiod');
+      });
   }
 
   setData(res: any, type: any) {
@@ -109,7 +115,7 @@ export class FilterPolicyTopComponent {
     let optionsAux: any = [];
 
     res.forEach((element: any) => {
-      let obj: any = { id: element.code, name: element.description };
+      let obj: any = { id: element.code ?? element.businessCode, name: type === 'turnoverperiod' ? element.name : element.description };
       if (obj.id != '' && obj.id != undefined) {
         options.push(obj);
       }
