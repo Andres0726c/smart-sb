@@ -303,7 +303,7 @@ export class PolicyRenewalComponent implements OnInit {
           </div>
           <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl">
             <p class="w-full text-center">
-              Está seguro de realizar esta renovación?
+              ¿Está seguro de realizar esta renovación?
             </p>
           </div>
         `,
