@@ -1,9 +1,30 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { of } from 'rxjs';
 import { PolicyDetailsComponent } from './policy-details.component';
+
+const localStorageMock = (function() {
+  let store: any = {};
+  return {
+    getItem: function(key: string | number) {
+      return store[key];
+    },
+    setItem: function(key: string | number, value: string) {
+      store[key] = value;
+    },
+    clear: function() {
+      store = {};
+    },
+    removeItem: function(key: string | number) {
+      delete store[key];
+    }
+  };
+})();
+  
+Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 describe('PolicyDetailsComponent', () => {
   let component: PolicyDetailsComponent;
@@ -22,6 +43,7 @@ describe('PolicyDetailsComponent', () => {
         },
       ],
       imports: [HttpClientTestingModule],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
 
@@ -36,6 +58,11 @@ describe('PolicyDetailsComponent', () => {
         },
         servicePlan: {
           name: 'test'
+        },
+        propertiesPolicyData: {
+          datos_basicos: {
+            PERIODO_FACT: '5'
+          }
         },
         productFactory: {
           nmContent: {
@@ -121,6 +148,7 @@ describe('PolicyDetailsComponent', () => {
       .spyOn(component.consultPolicyService, 'getPolicyById')
       .mockReturnValue(of(response));
 
+    localStorageMock.setItem('turnoverperiod', '[{"id": "5", "name": "Anual"}]');
     fixture.detectChanges();
   });
 
