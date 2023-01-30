@@ -159,15 +159,17 @@ export class ModalPolicyActionsComponent implements OnInit {
 
     verifyDate() {
     this.isDateValid = true;
-    const date = new Date(new Date(this.formProcess.get('processDate')?.value).toDateString()).toISOString()
-    const inceptionDate = new Date(this.config.data.policy.inceptionDate).toISOString();
-    const expirationDate = new Date(this.config.data.policy.expirationDate).toISOString();
+    const date = new Date( new Date(this.formProcess.get('processDate')?.value).toDateString());
+    const inceptionDate = new Date( new Date(this.config.data.policy.inceptionDate).toDateString());
+    const expirationDate = new Date (new Date(this.config.data.policy.expirationDate).toDateString());
 
+    const [withoutTime] = date.toISOString().split('T');
     if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
-      this.getPremium(this.config.data.policy.idPolicy, date)
+      this.getPremium(this.config.data.policy.idPolicy, withoutTime)
     } else {
       this.formProcess.get('immediate')?.setValue(0);
-      this.formProcess.get('applicationProcess')?.setValue(this.config.data.process)
+      this.formProcess.get('applicationProcess')?.setValue(this.config.data.process);
+      this.premium = null;
       this.isDateValid = false;
     }
   }
