@@ -112,7 +112,12 @@ export class ModalPolicyActionsComponent implements OnInit {
 
           if(resp.dataHeader.code != 500){
             this.ref.close(true)
-            this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
+            if (resp.body.message === "Cancelación exitosa") {
+              this.showSuccess('success', resp.body.message, 'La póliza ha sido cancelada');
+            } else {
+              this.showSuccess('success', resp.body.message, 'La cancelación se realizará posteriormente');
+            }
+            
           } else  {
               this.messageError = true;
               this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
