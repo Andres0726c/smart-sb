@@ -144,6 +144,32 @@ describe('LoginComponent', () => {
     expect(spySetCompany)
   });
 
+  it('Autenticacion con cambio de password requerido', () => {
+    const spy = jest.fn().mockImplementation(() =>
+      Promise.resolve({
+        challengeName: 'NEW_PASSWORD_REQUIRED',
+        signInUserSession: {
+        },
+        attributes: {
+          'custom:company': '',
+        },
+      })
+    );
+
+    jest.spyOn(component.cognitoService, 'signIn').mockImplementation(spy);
+    
+    const spySetCompany = jest.fn().mockImplementation(()=>Promise.resolve(console.log('JLAKJLKFSADJFLKDSAJ')));
+    jest.spyOn(component, 'setCompany').mockImplementation(spySetCompany)
+    component.setCompany = async () => {
+      component.companies = [1];
+      await Promise.resolve();
+    };
+
+    component.setCompany = () => Promise.resolve();
+    component.logIn();
+    expect(spySetCompany)
+  });
+
   it('getCompanies', async () => {
     const res: any = { 
       dataHeader: {

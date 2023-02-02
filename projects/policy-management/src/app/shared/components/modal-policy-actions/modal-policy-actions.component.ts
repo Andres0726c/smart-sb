@@ -7,11 +7,13 @@ import { ConsultPolicyService } from '../../../containers/main/components/consul
 import { PolicyBrief } from '../../../core/interfaces/policy';
 import { ResponseDTO } from '../../../core/interfaces/commun/response';
 import { FilterPolicy } from '../../../containers/main/components/consult-policy/interfaces/consult-policy';
+import {ConfirmationService} from 'primeng/api';
 
 @Component({
   selector: 'modal-policy-actions',
   templateUrl: './modal-policy-actions.component.html',
   styleUrls: ['./modal-policy-actions.component.scss'],
+  providers: [ConfirmationService],
 })
 export class ModalPolicyActionsComponent implements OnInit {
   formProcess: FormGroup;
@@ -30,7 +32,8 @@ export class ModalPolicyActionsComponent implements OnInit {
     public modalAPService: ModalPolicyActionsService,
     public dialogService: DialogService,
     public messageService: MessageService,
-    public consultPolicyService: ConsultPolicyService
+    public consultPolicyService: ConsultPolicyService,
+    private confirmationService: ConfirmationService,
   ) {
     this.formProcess = fb.group({
       processDate: fb.control(null),
@@ -48,13 +51,11 @@ export class ModalPolicyActionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCauses(this.config.data.process);
-    this.consultPoliciesById(this.config.data.policy.idPolicy)    
+    this.consultPoliciesById(this.config.data.policy.idPolicy)
   }
 
   consultPoliciesById(id: number) {
   this.consultPolicyService.getPolicyById(id).subscribe( policies => {
-    console.log(policies);
-    
     this.paymentMethod = policies.body.payment.method;
   });
   }
@@ -69,13 +70,40 @@ export class ModalPolicyActionsComponent implements OnInit {
   getPremium(idPolicy: any, deletionDate: any){
 
     this.modalAPService.getPremium(idPolicy, deletionDate)
-    .subscribe( premium => {      
+    .subscribe( premium => {
       this.premium = premium.body;
     });
   }
 
   cancelPolicy() {
+    this.modalAPService.getExistsPreviousRenewalByIdPolicy(this.config.data.policy.idPolicy).subscribe((res: any) => {
+      if (res.dataHeader.code === 200) {
+        if (res.body.exists) {
+          this.confirmationService.confirm({
+            header: '¿Está seguro de cancelar la póliza?',
+            message: `
+                <div class="flex justify-center pt-5 pb-3">
+                    <img src="smartcore-commons/assets/styles/material-theme/icons/picto-alert.svg" alt="icon-warning">
+                </div>
+                <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl">
+                  <p class="w-full text-center">
+                    La póliza tiene un movimiento pendiente.
+                  </p>
+                </div>
+              `,
+            accept: () => {
+              this.cancelPolicyConfirm();
+            }
+          });
+        }else{
+          this.cancelPolicyConfirm();
+        }
+      }
+    })
 
+  }
+
+  cancelPolicyConfirm(){
     if (this.formProcess.valid) {
       if(this.formProcess.get('processDate')?.value){
       this.modalAPService
@@ -84,7 +112,12 @@ export class ModalPolicyActionsComponent implements OnInit {
 
           if(resp.dataHeader.code != 500){
             this.ref.close(true)
-            this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
+            if (resp.body.message === "Cancelación exitosa") {
+              this.showSuccess('success', resp.body.message, 'La póliza ha sido cancelada');
+            } else {
+              this.showSuccess('success', resp.body.message, 'La cancelación se realizará posteriormente');
+            }
+            
           } else  {
               this.messageError = true;
               this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
@@ -130,22 +163,24 @@ export class ModalPolicyActionsComponent implements OnInit {
   }
 
     verifyDate() {
+    this.isDateValid = true;
+    const date = new Date( new Date(this.formProcess.get('processDate')?.value).toDateString());
+    const inceptionDate = new Date( new Date(this.config.data.policy.inceptionDate).toDateString());
+    const expirationDate = new Date (new Date(this.config.data.policy.expirationDate).toDateString());
 
-    const date = new Date(this.formProcess.get('processDate')?.value).toISOString();
-    const inceptionDate = new Date(this.config.data.policy.inceptionDate).toISOString();
-    const expirationDate = new Date(this.config.data.policy.expirationDate).toISOString();
-
+    const [withoutTime] = date.toISOString().split('T');
     if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
-      this.getPremium(this.config.data.policy.idPolicy, date)
+      this.getPremium(this.config.data.policy.idPolicy, withoutTime)
     } else {
       this.formProcess.get('immediate')?.setValue(0);
-      this.formProcess.get('applicationProcess')?.setValue(this.config.data.process)
+      this.formProcess.get('applicationProcess')?.setValue(this.config.data.process);
+      this.premium = null;
       this.isDateValid = false;
     }
   }
 
   verifyCheck() {
-    
+
     if(this.formProcess.get('checked')?.value === true){
       this.formProcess.get('processDate')?.setValue(new Date(this.config.data.policy.inceptionDate))
       this.formProcess.get('processDate')?.disable();

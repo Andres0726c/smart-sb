@@ -49,7 +49,7 @@
           <div class="w-full sm:w-1/3">
             <label class="font-bold text-base">Inicio vigencia</label><br />
             <span class="pl-1 text-base text-gray">{{
-              policy.effectiveStartDatePolicy | date: "yyyy-MM-dd"
+              policy.effectiveStartDatePolicy | date: "medium"
             }}</span>
           </div>
         </section>
@@ -57,11 +57,11 @@
           <div class="w-full sm:w-1/3">
             <label class="font-bold text-base">Fin de vigencia</label><br />
             <span class="pl-1 text-base text-gray">{{
-              policy.expirationDate | date: "yyyy-MM-dd"
+              policy.expirationDate | date: "medium"
             }}</span>
           </div>
           <div class="w-full sm:w-1/3">
-            <label class="font-bold text-base">Valor prima</label><br />
+            <label class="font-bold text-base">Prima Total (Sin IVA)</label><br />
             <span class="pl-1 text-base text-gray">{{ policy.premiumValue }} COP</span>
           </div>
           <div class="w-full sm:w-1/3">
@@ -77,12 +77,18 @@
           <div class="w-full sm:w-1/3">
             <label class="font-bold text-base">Fecha emisión</label><br />
             <span class="pl-1 text-base text-gray">{{
-              policy.inceptionDate | date: "yyyy-MM-dd"
+              policy.inceptionDate | date: "medium"
             }}</span>
           </div>
           <div class="w-full sm:w-1/3">
             <label class="font-bold text-base">Plan adquirido</label><br />
-            <span class="pl-1 text-base text-gray">{{ policy.servicePlan.name }}</span>
+            <span class="pl-1 text-base text-gray">{{ businessPlan }}</span>
+          </div>
+        </section>
+        <section class="w-full flex flex-col sm:flex-row gap-x-4">
+          <div class="w-full sm:w-1/3">
+            <label class="font-bold text-base">Periodo de facturación</label><br />
+            <span class="pl-1 text-base text-gray">{{ turnoverPeriod }}</span>
           </div>
         </section>
       </div>
@@ -93,7 +99,7 @@
         <div class="w-full sm:w-1/3">
           <label class="font-bold text-base">Tipo</label><br />
           <span class="pl-1 text-base text-gray">{{
-            policy.complementaryData.petType? policy.complementaryData.petType: 'No aplica'
+            policy.complementaryData.petType? petData.petType: 'No aplica'
           }}</span>
         </div>
         <div class="w-full sm:w-1/3">
@@ -105,13 +111,13 @@
         <div class="w-full sm:w-1/3">
           <label class="font-bold text-base">Edad</label><br />
           <span class="pl-1 text-base text-gray">{{
-            policy.complementaryData.petAge? policy.complementaryData.petAge: 'No aplica'
+            policy.complementaryData.petAge? petData.petAge: 'No aplica'
           }}</span>
         </div>
         <div class="w-full sm:w-1/3">
           <label class="font-bold text-base">Raza</label><br />
           <span class="pl-1 text-base text-gray">{{
-            policy.complementaryData.petBrand? policy.complementaryData.petBrand : 'No aplica'
+            policy.complementaryData.petBrand? petData.petBrand : 'No aplica'
           }}</span>
         </div>
       </section>
@@ -127,7 +133,7 @@
         </div>
         <div class="w-full sm:w-1/3">
           <label class="font-bold text-base">Medio de pago</label><br />
-          <span class="pl-1 text-base text-gray">{{ policy.payment.type? policy.payment.type: 'No aplica' }}</span>
+          <span class="pl-1 text-base text-gray">{{ paymentType }}</span>
         </div>
         <div class="w-full sm:w-1/3">
           <label class="font-bold text-base">Número</label><br />

@@ -14,7 +14,7 @@
     <div [hidden]="field.value.label ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
         <label>{{ field.value.label }}</label>
         <p-calendar data-qa-id="sc-rsmf-cal-process-field"
-            [showIcon]="true" styleClass="w-full" dateFormat="yy-mm-ddT00:00:00-05:00" formControlName="value" (focusout)="executeRule(field,groupName,false)" (click)="executeRule(field,groupName,false)"></p-calendar>
+            [showIcon]="true" styleClass="w-full" dateFormat="M d,yy" [showTime]="true" hourFormat="12" [showSeconds]="true" formControlName="value" (focusout)="executeRule(field,groupName,false)" (click)="executeRule(field,groupName,false)"></p-calendar>
         <div *ngIf="(field.get('value')?.touched || field.get('value')?.dirty)">
             <small class="flex justify-left" *ngIf="field.value!.rule" class="p-error block">¡Error en regla! &nbsp; &nbsp; <em class="pi pi-eye iconEye" pTooltip=" ver detalles" (click)="executeRule(field,groupName,true);"></em> </small> 
         </div>

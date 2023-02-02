@@ -37,6 +37,8 @@ export class PolicyRenewalComponent implements OnInit {
 
   causes: any[] = [];
 
+  types: any = [];
+
   constructor(
     private confirmationService: ConfirmationService,
     public router: Router,
@@ -163,18 +165,68 @@ export class PolicyRenewalComponent implements OnInit {
     let fieldFG = this.fb.group({});
 
     Object.keys(field).forEach(key => {
-      fieldFG.addControl(key, this.fb.control(field[key]));
+      let keyValue: any = field[key];
+      if(key === 'dataType' && (field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO')) {
+        keyValue.guiComponent = 'List box';
+      }
+      if (key === 'domainList' && field.businessCode === 'PERIODO_FACT') {
+        keyValue = {
+          "code": "LDM_PF",
+          "name": "Periodos de facturación",
+          "description": "Periodos de facturación",
+          "valueList": "[{\"url\": \"/emisor/v1/turnoverperiod/findAll\", \"rlEngnCd\": \"MTR_SMT\"}]"
+        }
+
+        field[key] = keyValue;
+      }
+      fieldFG.addControl(key, this.fb.control(keyValue));
     });
 
     //fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: !field.editable }));
     fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: this.readOnly ?? !field.editable }));
 
-    if (field.dataType.guiComponent === 'List box') {
-      let options = [{ id: value.value, name: value.value }]
+    if (field.dataType.guiComponent === 'List box' || field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO') {
+      let options: any = [], domainList = field.domainList?.valueList;
+      options = field.domainList ? this.showDomainList(JSON.parse(domainList), value) : [{ id: value.value, name: value.value }];
       fieldFG.addControl('options', this.fb.control(options));
     }
 
     return fieldFG;
+  }
+
+  showDomainList(domainList: any[], valueObj: any) {
+    let list: any = [], options: any[] = [];
+    if (domainList[0].url) {
+      let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
+      this.types.push(type);
+      list = localStorage.getItem(type);
+      list = JSON.parse(list);
+      options = this.validateList(list, valueObj);
+    } else {
+      options = this.orderData(domainList);
+      options = this.validateList(options, valueObj);
+    }
+    return options;
+  }
+
+  validateList(list: any, valueObj: any) {
+    let listAux: any = [], x = list.find((result: { id: any; }) => result.id == valueObj.value);
+    listAux = list;
+    listAux.splice(listAux.indexOf(x), 1);
+    listAux.splice(0, 0, x);
+    return listAux;
+  }
+
+  orderData(domainList: any, dataList?: any) {
+    let options: any = [];
+    domainList.forEach((element: any) => {
+      let obj: any = { id: element.code, name: element.description }
+      if (obj.id != '' || obj != undefined) {
+        options.push(obj);
+      }
+    });
+
+    return options;
   }
 
   getControlValue(dataControlsValue: any, businessCode: string) {
@@ -251,7 +303,7 @@ export class PolicyRenewalComponent implements OnInit {
           </div>
           <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl">
             <p class="w-full text-center">
-              Está seguro de realizar esta renovación?
+              ¿Está seguro de realizar esta renovación?
             </p>
           </div>
         `,

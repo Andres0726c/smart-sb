@@ -551,4 +551,32 @@ describe('PolicyRenewalComponent', () => {
   it('confirmSave', () => {
     expect(component.confirmSave()).toBeUndefined();
   });
+
+  it('fillRiskData', () => {
+    let riskTypes: any = [{id: 1,code: { businessCode: "aaa" },name: "abc",description: "abcd",complementaryData: {id: 1,name: "string",code: "string",fields: [],},businessPlans: []
+    }];
+    const spy2 = jest.spyOn(component, 'fillGroupData').mockImplementation();
+    component.fillRiskData(riskTypes);
+    expect(spy2).toBeCalled();
+  });
+
+  it('validateList', () => {
+    let list: any = [{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }];
+    let valueObj: any = [{ code: 'abc', description: 'abc' }];
+    component.validateList(list, valueObj);
+  });
+
+  it('orderData', () => {
+    let list: any = [{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }];
+    let valueObj: any = [{ code: 'abc', description: 'abc' }];
+    component.orderData(list, valueObj);
+  });
+
+  it('getControlValue', () => {
+    let dataControlsValue = [{id: 7,code: 7,name: 'abc',fields: [{ code: { businessCode: "abc" } }]}];
+    let businessCode = "abc";
+    const spy = component.getControlValue(dataControlsValue, businessCode);
+    console.log(spy); 
+    //expect(spy).toBeUndefined();
+  });
 });

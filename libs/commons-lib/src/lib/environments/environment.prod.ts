@@ -5,7 +5,7 @@
 export const environment = {
   remote: true,
   production: false,
-  apiKeyServices: 'UPOrFwRWKC1AJtFfkTYUz69XCWQQ48cBalVJ6A85',
+  apiKeyServices: 'UvuASD36aj6TJtuBtdUCO6ZMKh88e4cN3pMjZ7v3',
   urlParameterizerMS: 'https://ohcne9kyt2.execute-api.us-east-1.amazonaws.com/prod/parametrizador/v1/',
   urlPolicyIssuerMS: 'https://ohcne9kyt2.execute-api.us-east-1.amazonaws.com/prod/emisor/v1/',
   cognito: {
@@ -14,7 +14,8 @@ export const environment = {
   },
   productAutosave: false,
   urlParameterizer: 'https://d1p5ro9c86yefs.cloudfront.net/',
-  smartcoreSiteTitle: '(PRD) - Smartcore'
+  smartcoreSiteTitle: '(PRD) - Smartcore',
+  urlCognitoHostedUI: 'https://refactoring-prod-portal-identity-pool.auth.us-east-1.amazoncognito.com/login?client_id=23fhisvmnsa9i120i9i945pr2h&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fsmartcore.bolnet.com.co%2Flogin'
 };
 
 /*

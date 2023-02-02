@@ -14,7 +14,8 @@ export const environment = {
   },
   productAutosave: false,
   urlParameterizer: 'https://d1p5ro9c86yefs.cloudfront.net/',
-  smartcoreSiteTitle: '(STG) - Smartcore'
+  smartcoreSiteTitle: '(STG) - Smartcore',
+  urlCognitoHostedUI: 'https://refactoring-stage-portal-identity-pool.auth.us-east-1.amazoncognito.com/login?client_id=1oklgg9mvl2ivba130lag310e0&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fstg-smartcore.bolnet.com.co%2Flogin'
 };
 
 /*
