@@ -115,7 +115,8 @@ export class CoveragesRatesComponent implements AfterViewInit, OnChanges {
       { name: 'endPoint', displayValue: ['endPoint'] },
       { name: 'nmParameterList', displayValue: ['nmParameterList'] },
       { name: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { name: 'urlBs', displayValue: ['urlBs'] }
+      { name: 'urlBs', displayValue: ['urlBs'] },
+      { name: 'rlEngnCd', displayValue: ['rlEngnCd'] }
     ];
 
     this.openDialogWizard(
@@ -135,6 +136,7 @@ export class CoveragesRatesComponent implements AfterViewInit, OnChanges {
           cdRuleType: response.RulesForm.rule.cdRuleType,
           endPoint: response.RulesForm.rule.endPoint,
           urlBs: response.RulesForm.rule.urlBs,
+          rlEngnCd: response.RulesForm.rule.rlEngnCd,
           argmntLst: response.RulesForm.parameters
         };
 
