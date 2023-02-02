@@ -1,7 +1,7 @@
 import { FilterPolicy } from './../interfaces/consult-policy';
 import { ConsultPolicyService } from './../services/consult-policy.service';
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Identification } from '../interfaces/identification';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
@@ -64,6 +64,7 @@ export class FilterPolicyTopComponent {
       insuredDocumentNumber: this.fb.control(''),
       insuredName: this.fb.control(''),
       policyNumber: this.fb.control(''),
+      externalPolicyNumber: this.fb.control('', Validators.minLength(20)),
       idProduct: this.fb.control(''),
       startDate: this.fb.control(''),
     });
@@ -153,6 +154,10 @@ export class FilterPolicyTopComponent {
 
   get policyNumber(): FormControl {
     return this.formQueryFilter.get('policyNumber') as FormControl;
+  }
+
+  get externalPolicyNumber(): FormControl {
+    return this.formQueryFilter.get('externalPolicyNumber') as FormControl;
   }
 
   seeMore() {
