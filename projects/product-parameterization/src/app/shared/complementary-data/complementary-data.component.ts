@@ -567,7 +567,6 @@ export class ComplementaryDataComponent implements OnInit {
       { name: 'endPoint', displayValue: ['endPoint'] },
       { name: 'nmParameterList', displayValue: ['nmParameterList'] },
       { name: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { name: 'urlBs', displayValue: ['urlBs'] },
       { name: 'rlEngnCd', displayValue: ['rlEngnCd'] }
     ];
 
@@ -587,7 +586,6 @@ export class ComplementaryDataComponent implements OnInit {
           description: response.RulesForm.rule.description,
           cdRuleType: response.RulesForm.rule.cdRuleType,
           endPoint: response.RulesForm.rule.endPoint,
-          urlBs: response.RulesForm.rule.urlBs,
           rlEngnCd: response.RulesForm.rule.rlEngnCd,
           argmntLst:response.RulesForm.parameters
         };
@@ -616,7 +614,6 @@ export class ComplementaryDataComponent implements OnInit {
       { name: 'endPoint', displayValue: ['endPoint'] },
       { name: 'nmParameterList', displayValue: ['nmParameterList'] },
       { name: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { name: 'urlBs', displayValue: ['urlBs'] },
       { name: 'rlEngnCd', displayValue: ['rlEngnCd'] }
     ];
 
@@ -637,7 +634,6 @@ export class ComplementaryDataComponent implements OnInit {
           description: response.RulesForm.rule.description,
           cdRuleType: response.RulesForm.rule.cdRuleType,
           endPoint: response.RulesForm.rule.endPoint,
-          urlBs: response.RulesForm.rule.urlBs,
           rlEngnCd: response.RulesForm.rule.rlEngnCd,
           argmntLst:response.RulesForm.parameters
         };
