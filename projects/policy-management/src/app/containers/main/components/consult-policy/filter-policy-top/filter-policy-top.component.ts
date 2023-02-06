@@ -64,7 +64,7 @@ export class FilterPolicyTopComponent {
       insuredDocumentNumber: this.fb.control(''),
       insuredName: this.fb.control(''),
       policyNumber: this.fb.control(''),
-      externalPolicyNumber: this.fb.control(''),
+      policyExternalNumber: this.fb.control(''),
       idProduct: this.fb.control(''),
       startDate: this.fb.control(''),
     });
@@ -156,8 +156,8 @@ export class FilterPolicyTopComponent {
     return this.formQueryFilter.get('policyNumber') as FormControl;
   }
 
-  get externalPolicyNumber(): FormControl {
-    return this.formQueryFilter.get('externalPolicyNumber') as FormControl;
+  get policyExternalNumber(): FormControl {
+    return this.formQueryFilter.get('policyExternalNumber') as FormControl;
   }
 
   seeMore() {
