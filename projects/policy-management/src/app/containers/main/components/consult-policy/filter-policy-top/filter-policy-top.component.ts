@@ -38,6 +38,7 @@ export class FilterPolicyTopComponent {
 
   isRequired: { [key: string]: boolean } = {
     policyNumber: true,
+    policyExternalNumber: true,
     holderDocument: true,
     insuredDocument: true,
   };
@@ -207,6 +208,9 @@ export class FilterPolicyTopComponent {
       this.toggleRequired(false);
       return false;
     } else if (this.insuredValid) {
+      this.toggleRequired(false);
+      return false;
+    } else if(this.policyExternalNumber.value){
       this.toggleRequired(false);
       return false;
     }

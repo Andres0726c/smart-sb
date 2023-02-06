@@ -17,7 +17,7 @@
                     </div>
                     <div>
                         <label>Número externo</label>
-                        <input type="text" pInputText formControlName="policyExternalNumber" maxlength="20" placeholder="Número externo" class="w-full">
+                        <input type="text" pInputText formControlName="policyExternalNumber" [required]="isRequired['policyExternalNumber']" maxlength="20" placeholder="Número externo" class="w-full">
                     </div>
                 </div>
 
