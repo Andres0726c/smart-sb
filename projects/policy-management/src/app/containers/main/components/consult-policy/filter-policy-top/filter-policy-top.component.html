@@ -8,20 +8,20 @@
             </p-divider>
             <section class="w-full flex flex-col sm:flex-row gap-x-4">
 
-                <div class="w-full sm:w-1/4">
-                    <label>Póliza</label>
-                    <p-inputMask styleClass="w-full" formControlName="policyNumber" placeholder="12345-67891-23456"
-                        mask="999999999999999" [autoClear]="false" [slotChar]="''" [required]="isRequired['policyNumber']">
-                    </p-inputMask>
+                <div class="flex w-full sm:w-1/3 gap-x-4">
+                    <div>
+                        <label>Póliza</label>
+                        <p-inputMask styleClass="w-full" formControlName="policyNumber" placeholder="12345-67891-23456"
+                            mask="999999999999999" [autoClear]="false" [slotChar]="''" [required]="isRequired['policyNumber']">
+                        </p-inputMask>
+                    </div>
+                    <div>
+                        <label>Número externo</label>
+                        <input type="text" pInputText formControlName="externalPolicyNumber" maxlength="20" placeholder="Número externo" class="w-full pr-4">
+                    </div>
                 </div>
-                <div class="w-full sm:w-1/4">
-                  <label>Número externo</label>
-                  <input type="text" pInputText formControlName="externalPolicyNumber" maxlength="20" placeholder="Número externo" class="w-full">
-                  <small *ngIf="externalPolicyNumber.hasError('minlength')" class="p-error w-full">
-                    La longitud debe ser de 20.
-                  </small>
-                </div>
-                <div class="w-full sm:w-1/4">
+
+                <div class="w-full sm:w-1/3">
                     <label>Producto</label>
                     <p-dropdown #dropdownProduct [options]="products" [styleClass]="'w-full'" formControlName="idProduct"
                         optionLabel="nmName" optionValue="id" appendTo="body" [filter]="true"
@@ -31,7 +31,7 @@
                         (onClear)="onClearField('idProduct')">
                     </p-dropdown>
                 </div>
-                <div class="w-full sm:w-1/4">
+                <div class="w-full sm:w-1/3">
                     <span>Vigente desde</span>
                     <span class="p-input-icon-right w-full">
                         <p-calendar formControlName="startDate" dateFormat="yy-mm-dd" appendTo="body" styleClass="w-full" placeholder="aaaa-mm-dd"></p-calendar>

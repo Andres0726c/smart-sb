@@ -64,7 +64,7 @@ export class FilterPolicyTopComponent {
       insuredDocumentNumber: this.fb.control(''),
       insuredName: this.fb.control(''),
       policyNumber: this.fb.control(''),
-      externalPolicyNumber: this.fb.control('', Validators.minLength(20)),
+      externalPolicyNumber: this.fb.control(''),
       idProduct: this.fb.control(''),
       startDate: this.fb.control(''),
     });
