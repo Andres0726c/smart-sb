@@ -58,10 +58,7 @@
               policy.expirationDate | date: "d MMM y, HH:mm:ss"
             }}</span>
           </div>
-          <div class="w-full sm:w-1/3">
-            <label class="font-bold text-base">Prima total (Sin IVA)</label><br />
-            <span class="pl-1 text-base text-gray"> $ {{ policy.premiumValue | currency:'COP' }} </span>
-          </div>
+
           <div>
             <label class="font-bold text-base">Producto seleccionado</label
             ><br />
@@ -71,18 +68,18 @@
             <label class="font-bold text-base">Agente</label><br />
             <span class="pl-1 text-base text-gray">{{ policy.agent }}</span>
           </div>
-
-
           <div>
             <label class="font-bold text-base">Método de pago</label><br />
             <span class="pl-1 text-base text-gray">{{ policy.payment.method }}</span>
           </div>
           <div>
+            <label class="font-bold text-base">Prima total (Sin IVA)</label><br />
+            <span class="pl-1 text-base text-gray"> $ {{ policy.premiumValue | currency:'COP' }} </span>
+          </div>
+          <div>
             <label class="font-bold text-base">Plan adquirido</label><br />
             <span class="pl-1 text-base text-gray">{{ businessPlan }}</span>
           </div>
-
-
           <div>
             <label class="font-bold text-base">Periodo de facturación</label><br />
             <span class="pl-1 text-base text-gray">{{ turnoverPeriod }}</span>
