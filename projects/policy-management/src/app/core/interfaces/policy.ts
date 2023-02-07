@@ -21,6 +21,7 @@ export interface Policy {
   productName: string;
   idPolicy: number;
   policyNumber: string;
+  externalPolicyNumber: string;
   inceptionDate: string;
   effectiveStartDatePolicy: string;
   expirationDate: string;

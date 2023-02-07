@@ -12,6 +12,7 @@ export interface FilterPolicy {
   insuredDocumentNumber?: string;
   insuredName?: string;
   policyNumber?: string;
+  policyExternalNumber?: string;
   idProduct?: string;
   startDate?: string;
 }
