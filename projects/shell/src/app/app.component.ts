@@ -26,7 +26,7 @@ export class AppComponent {
     this.config.setTranslation({
       dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sá"],
       monthNames: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
-      monthNamesShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun","Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun","jul", "ago", "sep", "oct", "nov", "dic"],
   });
 
     cognitoService.authenticationSubject.subscribe((valueSession) => {
