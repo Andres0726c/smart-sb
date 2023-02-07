@@ -130,3 +130,8 @@ td.mat-cell {
     font-size: 15px;
   }
 }
+
+::ng-deep .mat-dialog-container .content{
+  min-height: 40vh;
+  max-height: 64vh;
+}
