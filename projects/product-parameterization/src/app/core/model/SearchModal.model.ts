@@ -114,7 +114,7 @@ export const search: SearchModal[] = [
   },
   {
     code: 'ruleValidationControls',
-    title: 'Reglas de Validación',
+    title: 'Reglas de validación',
     subtitle: 'Seleccione la regla de validación que desea asociar',
     service: 'rule/findAllByCdRuleType/Validación',
     remotePaginator: true
@@ -143,7 +143,7 @@ export const search: SearchModal[] = [
   {
     code: 'coverageDataControls',
     title: 'Coberturas',
-    subtitle: 'Seleccione las cobeturas que desea asociar',
+    subtitle: 'Seleccione las coberturas que desea asociar',
     service: 'coverage/findByInsuranceLine',
     remotePaginator: true
   },

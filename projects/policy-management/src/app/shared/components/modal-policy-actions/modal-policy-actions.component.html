@@ -22,12 +22,12 @@
 
         <div>
             <span class="text-primary">Inicio de póliza:</span>
-            {{ config.data.policy.inceptionDate | date:'medium'}}
+            {{ config.data.policy.inceptionDate | date:'d MMM y, HH:mm:ss'}}
         </div>
 
         <div>
             <span class="text-primary">Fin de póliza:</span>
-            {{ config.data.policy.expirationDate | date:'medium'}}
+            {{ config.data.policy.expirationDate | date:'d MMM y, HH:mm:ss'}}
         </div>
 
         <div>
