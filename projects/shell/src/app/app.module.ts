@@ -13,6 +13,11 @@ import { SharedModule } from 'projects/product-parameterization/src/app/shared/s
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getPaginatorIntl } from '../assets/lang/paginator-intl';
+import {LOCALE_ID } from '@angular/core';
+import localeEs from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeEs, 'es');
 
 @NgModule({
   declarations: [
@@ -33,7 +38,8 @@ import { getPaginatorIntl } from '../assets/lang/paginator-intl';
   providers: [
     FormBuilder,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500, horizontalPosition:'right', verticalPosition:'bottom' } },
-    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() }
+    { provide: MatPaginatorIntl, useValue: getPaginatorIntl() },
+    { provide: LOCALE_ID, useValue: 'es' }
   ],
   bootstrap: [AppComponent]
 })

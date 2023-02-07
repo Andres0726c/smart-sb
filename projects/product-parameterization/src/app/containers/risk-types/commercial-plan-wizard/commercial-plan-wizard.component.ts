@@ -173,7 +173,6 @@ export class CommercialPlanComponentWizard implements OnInit {
     const columns = [
       { name: 'name', header: 'Nombre', displayValue: ['name'] },
       { name: 'description', header: 'Descripción', displayValue: ['description'] },
-      { name: 'code', header: 'code', displayValue: ['code'] },
       { name: 'element', displayValue: ['element'] },
     ];
 
@@ -277,7 +276,6 @@ export class CommercialPlanComponentWizard implements OnInit {
     
     const columns = [
       { name: 'name', header: 'Nombre', displayValue: ['name'] },
-      { name: 'code', header: 'code', displayValue: ['code'] },
       { name: 'description', header: 'Descripción', displayValue: ['description'] }
     ];
 
