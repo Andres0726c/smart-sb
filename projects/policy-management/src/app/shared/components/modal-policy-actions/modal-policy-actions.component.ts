@@ -115,7 +115,7 @@ export class ModalPolicyActionsComponent implements OnInit {
             if (resp.body.message === "Cancelación exitosa") {
               this.showSuccess('success', resp.body.message, 'La póliza ha sido cancelada');
             } else {
-              this.showSuccess('success', resp.body.message, 'La cancelación se realizará posteriormente');
+              this.showSuccess('success', resp.body.message, 'La cancelación fue agendada y se hará efectiva en la fecha seleccionada');
             }
             
           } else  {
@@ -196,7 +196,9 @@ export class ModalPolicyActionsComponent implements OnInit {
     this.messageService.add({
       severity: status,
       summary: title,
-      detail: msg
+      detail: msg,
+      sticky: true,
+      contentStyleClass: "message-succes-alert"
     });
   }
 }
