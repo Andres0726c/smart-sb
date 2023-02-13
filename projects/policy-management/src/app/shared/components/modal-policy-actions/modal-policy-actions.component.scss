@@ -8,8 +8,17 @@
   margin-bottom: 5px;
 }
 
-::ng-deep .p-dialog-cancel .p-dialog-content{
+::ng-deep .p-dialog-cancel .p-dialog-content {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+::ng-deep p-toast .p-toast {
+  position: fixed;
+  width: auto;
+}
+
+::ng-deep .message-succes-alert .alert-description{
+  margin-right: 20px;
 }
