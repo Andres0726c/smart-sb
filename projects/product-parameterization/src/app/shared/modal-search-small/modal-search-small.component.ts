@@ -66,11 +66,16 @@ export class ModalSearchSmallComponent implements OnInit {
     try {
       this.modal = search.filter((item: SearchModal) => item.code === this.data.code)[0];
 
+
+
       // seteamos columnas por default
       this.modal.columns = [
         { name: 'name', header: 'Nombre', displayValue: [''] },
         { name: 'description', header: 'Descripción', displayValue: [''] },
       ];
+     console.log(this.modal.sortField," " ,this.modal.sortDirectionField )
+      if(this.modal.sortField){this.sortColumn=this.modal.sortField; }
+      if(this.modal.sortDirectionField){this.sortDirection=this.modal.sortDirectionField; }
 
       //seteamos las columnas que llegan como parámetro
       if (this.data.columns) {
@@ -110,7 +115,6 @@ export class ModalSearchSmallComponent implements OnInit {
 
       // llamamos a la carga de datos
       await this.loadData('0', this.currentPage, this.pageSize,this.sortColumn,this.sortDirection)
-
     } catch (error) {
       this.flagServiceError = true;
 
@@ -147,6 +151,7 @@ export class ModalSearchSmallComponent implements OnInit {
             res = await lastValueFrom(this.productService.getApiData(this.modal.service, this.data.parameter + `/${search}/${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`));
 
           } else {
+            
             res = await lastValueFrom(this.productService.getApiData(this.modal.service, `${search}/${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`));
 
           }

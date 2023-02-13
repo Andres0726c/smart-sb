@@ -24,6 +24,7 @@ export interface SearchParameters {
   multiSelect?: boolean;
   complementaryData?: any;
   contextData?: any;
+
 }
 
 @Component({
@@ -82,6 +83,7 @@ export class RulesWizardComponent implements OnInit {
       this.EmptyData=true;
       this.rulesModal = search.filter((item: SearchModal) => item.code === this.data.code)[0];
 
+      console.log(this.rulesModal)
       // seteamos columnas por default
       this.rulesModal.columns = [
         { name: 'name', header: 'Nombre', displayValue: [''] },
@@ -92,6 +94,9 @@ export class RulesWizardComponent implements OnInit {
       if (this.data.columns) {
         this.rulesModal.columns = this.data.columns;
       }
+
+      if(this.rulesModal.sortField){this.sortColumns=this.rulesModal.sortField;}
+      if(this.rulesModal.sortDirectionField){this.sortingDirection=this.rulesModal.sortDirectionField;}
 
       this.displayedModalColumns = ['select'];
 
