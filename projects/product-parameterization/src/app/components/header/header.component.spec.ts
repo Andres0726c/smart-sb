@@ -106,10 +106,18 @@ describe('HeaderComponent', () => {
   });
 
   it('signOut OK', () => {
+    component.service.initialParameters.get('productName')?.setValue('test');
+    component.service.initialParameters.get('insuranceLine')?.setValue('test');
     expect(component.signOut()).toBeUndefined();
   });
 
   it('go to Home', () => {
+    component.service.initialParameters.get('productName')?.setValue('test');
+    component.service.initialParameters.get('insuranceLine')?.setValue('test');
+    expect(component.goToHome()).toBeUndefined();
+  });
+
+  it('go to Home invalid product for save', () => {
     expect(component.goToHome()).toBeUndefined();
   });
 });
