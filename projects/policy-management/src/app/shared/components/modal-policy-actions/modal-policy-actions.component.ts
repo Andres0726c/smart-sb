@@ -197,7 +197,6 @@ export class ModalPolicyActionsComponent implements OnInit {
       severity: status,
       summary: title,
       detail: msg,
-      sticky: true,
       contentStyleClass: "message-succes-alert"
     });
   }
