@@ -91,7 +91,7 @@ export class HeaderComponent implements OnInit {
     
     if (!flagValidProductForSave) {
       message = 'Será redirigido a la página inicial';
-      subMessage = 'El producto no será almacenado porque no tiene un ramo definido, ¿Desea continuar?';
+      subMessage = 'El producto no será almacenado porque no tiene un ramo definido. ¿Desea continuar?';
     }
     
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
