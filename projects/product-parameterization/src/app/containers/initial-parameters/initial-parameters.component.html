@@ -196,19 +196,22 @@
       <div class="div-opt">
           <mat-checkbox  formControlName="coinsurance" color ="primary" tabindex="9" data-qa-id="sc-rpmf-check_coinsurance">Permite coaseguro</mat-checkbox>
         </div>
+        <div class="div-opt">
+          <mat-checkbox  formControlName="modification" color ="primary" tabindex="10" data-qa-id="sc-rpmf-check_modification">Permite modificaciones</mat-checkbox>
+        </div>
     </div>
   </div>
 
 
     <div class="div-container-form__right">
-    
+
       <section class="input" style="margin-top:-85px">
         <mat-label>Código de negocio</mat-label>
         <mat-form-field appearance="outline" disabled>
           <input class=""  matInput type="text" formControlName="businessCode" readonly [errorStateMatcher]="matcher" data-qa-id="sc-rpmf-input_businessCode" >
           </mat-form-field>
       </section>
-  
+
         <div class="table">
           <table class="policity-validity-table">
           <caption>Período de vigencia de la póliza</caption>

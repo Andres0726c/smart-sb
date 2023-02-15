@@ -150,6 +150,7 @@ export class ProductService {
       billingPeriod: this.fb.array([], [Validators.required]),
       estateProduct: this.fb.control({ value: 'Activo', disabled: true }, [Validators.required]),
       coinsurance: this.fb.control(false),
+      modification: this.fb.control(false)
     });
     this.policyData = this.fb.array([], [Validators.required]);
     this.coverages = this.fb.array([], [Validators.required]);
