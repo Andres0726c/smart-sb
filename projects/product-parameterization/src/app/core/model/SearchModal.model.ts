@@ -74,6 +74,8 @@ export interface SearchModal {
   multiSelect?: boolean;
   remotePaginator: boolean;
   search?: boolean;
+  sortField?:string;
+  sortDirectionField?:string;
 }
 
 export const search: SearchModal[] = [
@@ -82,6 +84,8 @@ export const search: SearchModal[] = [
     title: 'Periodos de facturación',
     subtitle: 'Seleccione los periodos de facturación que desea asociar',
     service: 'turnoverPeriod',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: false
   },
   {
@@ -103,6 +107,8 @@ export const search: SearchModal[] = [
     title: 'Canales de venta',
     subtitle: 'Seleccione los canales de venta que desea asociar',
     service: 'distributionChannel',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: false
   },
   {
@@ -110,6 +116,8 @@ export const search: SearchModal[] = [
     title: 'Seleccionar nuevos datos complementarios',
     subtitle: 'Seleccione los datos complementarios que desea asociar',
     service: 'complementaryData/findByInsuranceLine',
+    sortField:'nmLabel',
+    sortDirectionField:'asc',
     remotePaginator: true
   },
   {
@@ -117,6 +125,8 @@ export const search: SearchModal[] = [
     title: 'Reglas de validación',
     subtitle: 'Seleccione la regla de validación que desea asociar',
     service: 'rule/findAllByCdRuleType/Validación',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: true
   },
   {
@@ -131,6 +141,8 @@ export const search: SearchModal[] = [
     title: 'Cláusulas',
     subtitle: 'Seleccione las cláusulas que desea asociar',
     service: 'clause/findByInsuranceLine',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: true
   },
   {
@@ -145,6 +157,8 @@ export const search: SearchModal[] = [
     title: 'Coberturas',
     subtitle: 'Seleccione las coberturas que desea asociar',
     service: 'coverage/findByInsuranceLine',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: true
   },
   {
@@ -159,6 +173,8 @@ export const search: SearchModal[] = [
     title: 'Reglas de inicialización',
     subtitle: 'Seleccione la regla de inicialización que desea asociar',
     service: 'rule/findAllByCdRuleType/Inicialización',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: true
   },
   {
@@ -208,6 +224,8 @@ export const search: SearchModal[] = [
     title: 'Planes de servicio',
     subtitle: 'Seleccione el plan de servicio que desea asociar',
     service: 'servicePlan/findByInsuranceLine',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: true,
   },
   {
@@ -215,6 +233,8 @@ export const search: SearchModal[] = [
     title: 'Controles técnicos',
     subtitle: 'Seleccione los controles técnicos que desea asociar',
     service: 'technicalcontrol/findByApplicationLevel',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: true,
   },
   {
@@ -229,6 +249,8 @@ export const search: SearchModal[] = [
     title: 'Conceptos de liquidación',
     subtitle: 'Seleccione los conceptos de liquidación que desea asociar',
     service: 'liquidationconcept/findByInsuranceLine',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: true,
   },
   {
@@ -236,6 +258,8 @@ export const search: SearchModal[] = [
     title: 'Concepto de reserva',
     subtitle: 'Seleccione el concepto de reclamación',
     service: 'reserveConcept/findByCompanyAndInsuranceLine',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: true
   },
   {
@@ -243,6 +267,8 @@ export const search: SearchModal[] = [
     title: 'Tipos de modificación',
     subtitle: 'Seleccione el tipo de modificación que desea añadir',
     service: 'activityType/findActiveActivityTypes',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: true,
   },
 ];
