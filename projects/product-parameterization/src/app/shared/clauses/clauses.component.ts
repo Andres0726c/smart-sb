@@ -81,10 +81,12 @@ export class ClausesComponent implements OnInit, AfterViewInit {
     multiSelect: boolean,
     parameter?: string,
     title?: string,
-    subtitle?: string
+    subtitle?: string,
+    sortField?:string,
+    sortDirectionField?:string,
   ): Observable<ElementReturn[]> {
     const dialogRef = this.dialog.open(ModalSearchSmallComponent, {
-      data: { code: code, columns: columns, list: list, parameter: parameter, title: title, subtitle: subtitle, multiSelect: multiSelect },
+      data: { code: code, columns: columns, list: list, parameter: parameter, title: title, subtitle: subtitle, multiSelect: multiSelect,sortField:sortField, sortDirectionField:sortDirectionField},
       panelClass: 'custom-dialog-container'
     });
     return dialogRef.afterClosed();
@@ -116,7 +118,7 @@ export class ClausesComponent implements OnInit, AfterViewInit {
       : '0';
 
     const columns = [
-      { name: 'name', header: 'Nombre', displayValue: ['name'], dbColumnName:['name'] },
+      { name: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname'] },
       { name: 'description', header: 'Descripción', displayValue: ['description'], dbColumnName:['description'] },
       { name: 'details', displayValue: ['legalText'] }
     ];
