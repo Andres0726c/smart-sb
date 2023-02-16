@@ -21,6 +21,7 @@ export interface Policy {
   productName: string;
   idPolicy: number;
   policyNumber: string;
+  policyExternalNumber: string;
   inceptionDate: string;
   effectiveStartDatePolicy: string;
   expirationDate: string;
@@ -30,7 +31,8 @@ export interface Policy {
   complementaryData: ComplementaryDataPet;
   payment: Payment;
   servicePlan: ServicePlan;
-  productFactory?:any
+  productFactory?: any;
+  propertiesPolicyData?: any
 }
 
 export interface ComplementaryDataPet {

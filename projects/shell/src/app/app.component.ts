@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CognitoService, environment } from 'commons-lib';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -17,9 +18,16 @@ export class AppComponent {
   constructor(
     private titleService: Title,
     public router: Router,
-    public cognitoService: CognitoService
+    public cognitoService: CognitoService,
+    private config: PrimeNGConfig
   ) {
     this.titleService.setTitle(environment.smartcoreSiteTitle);
+
+    this.config.setTranslation({
+      dayNamesMin: ["Do","Lu","Ma","Mi","Ju","Vi","Sá"],
+      monthNames: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+      monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun","jul", "ago", "sep", "oct", "nov", "dic"],
+  });
 
     cognitoService.authenticationSubject.subscribe((valueSession) => {
       if (!valueSession && !router.url.includes('/productos')) {

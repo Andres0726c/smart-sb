@@ -72,7 +72,7 @@ export class HeaderComponent implements OnInit {
 
   signOut(): void {
     this.closing = true;
-    if(this.service.initialParameters.get('productName')?.value !== "") {
+    if(this.service.initialParameters.get('productName')?.value !== "" && this.service.initialParameters.get('insuranceLine')?.value !== "") {
       this.saveProduct(false);        
     }        
 
@@ -86,15 +86,26 @@ export class HeaderComponent implements OnInit {
    * Event to confirm go to home and save the product
    */
   goToHome():void{
+    let message = '¿Está seguro de querer regresar a la página inicial?', subMessage = '';
+    const flagValidProductForSave = this.service.initialParameters.get('productName')?.value !== "" && this.service.initialParameters.get('insuranceLine')?.value !== "";
+    
+    if (!flagValidProductForSave) {
+      message = 'Será redirigido a la página inicial';
+      subMessage = 'El producto no será almacenado porque no tiene un ramo definido. ¿Desea continuar?';
+    }
+    
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-alert',
-        message: `¿Está seguro de querer regresar a la pagina inicial?`,
+        message: message,
+        subMessage: subMessage
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
       if(res){
-        this.saveProduct(false)
+        if(flagValidProductForSave) {
+          this.saveProduct(false);
+        }
         this.router.navigate(['productos/menu-productos'])
       }
     })

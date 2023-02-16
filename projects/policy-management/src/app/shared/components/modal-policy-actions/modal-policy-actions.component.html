@@ -22,16 +22,16 @@
 
         <div>
             <span class="text-primary">Inicio de póliza:</span>
-            {{ config.data.policy.inceptionDate | date:'medium' }}
+            {{ config.data.policy.inceptionDate | date:'d MMM y, HH:mm:ss'}}
         </div>
 
         <div>
             <span class="text-primary">Fin de póliza:</span>
-            {{ config.data.policy.expirationDate | date:'medium'}}
+            {{ config.data.policy.expirationDate | date:'d MMM y, HH:mm:ss'}}
         </div>
 
         <div>
-            <span class="text-primary">Valor total prima:</span>
+            <span class="text-primary">Valor total prima (Sin IVA):</span>
             {{config.data.policy.premiumValue | currency: 'COP'}}
         </div>
 
@@ -48,12 +48,12 @@
     </div>
     <form [formGroup]="formProcess">
         <div class="grid grid-cols-2  gap-10">
-            
+
             <div *ngIf="config.data.process === 'Cancelación'">
                 <label>Fecha aplicación cancelación</label>
                 <span class="p-input-icon-right w-full">
-                    <p-calendar formControlName="processDate" (onSelect) = "verifyDate()" dateFormat="yy-mm-dd" appendTo="body" styleClass="w-full" placeholder="aaaa-mm-dd" [showTime]="true" hourFormat="24" [showSeconds]="true"></p-calendar>
-                    <em class="pi pi-calendar"></em> 
+                    <p-calendar formControlName="processDate" (onSelect) = "verifyDate()" dateFormat="d M yy," appendTo="body" styleClass="w-full" placeholder="dd-mm-aaaa" [showTime]="true" [showSeconds]="true"></p-calendar>
+                    <em class="pi pi-calendar"></em>
                 </span>
             </div>
 
@@ -63,15 +63,15 @@
             </div>
 
             <div *ngIf="config.data.process === 'Cancelación'">
-                <label class="text-primary font-bold">Valor a devolver al cliente</label>
+                <label class="text-primary font-bold">Valor a devolver al cliente (Sin IVA)</label>
                 <input class="block" [style]="{'width':'100%'}" type="text" pInputText value="{{ premium?.value | currency: 'COP' }}" disabled="true"/>
             </div>
-            
+
             <div>
                 <label>Causa</label>
                 <p-dropdown formControlName="causeType" [options]="causes" optionLabel="description" optionValue="id"
                 [filter]="true" filterBy="description" [showClear]="true" placeholder="Seleccione la causa"
-                class="block" [style]="{'width':'100%'}">
+                class="block" [style]="{'width':'100%'}" appendTo="body">
                     <ng-template let-cause pTemplate="item">
                         <div>
                             <div>{{cause.name}}</div>
@@ -81,14 +81,14 @@
 
             </div>
 
-            <div *ngIf="config.data.process === 'Rehabilitación'">
+            <div *ngIf="config.data.process === 'Rehabilitación'" class="hidden">
                 <label>Fecha de rehabilitación</label>
                 <span class="p-input-icon-right w-full">
                     <p-calendar formControlName="rehabilitationDate"
-                        dateFormat="yy-mm-dd"
+                        dateFormat="d M yy,"
                         appendTo="body"
                         styleClass="w-full"
-                        placeholder="aaaa-mm-dd"
+                        placeholder="dd-mm-aaaa"
                         [showTime]="true"
                         hourFormat="24"
                         [showSeconds]="true"
@@ -104,7 +104,13 @@
             </div>
 
             <div class="col-span-2 ml-auto">
-                <p-button [label]="config.data.buttonAction" [disabled]="!(formProcess.valid)" (click)="config.data.buttonAction === 'Cancelar Póliza' ? cancelPolicy() : rehabilitatePolicy()"></p-button>
+                <button
+                pButton
+                class="p-button p-component ml-5 w-[150px]"
+                [disabled]="!(formProcess.valid) || !isDateValid" (click)="config.data.buttonAction === 'Cancelar Póliza' ? cancelPolicy() : rehabilitatePolicy()"
+              >
+                <span class="p-button-label">{{ config.data.buttonAction }}</span>
+              </button>
             </div>
         </div>
     </form>

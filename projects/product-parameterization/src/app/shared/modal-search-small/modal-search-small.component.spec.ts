@@ -422,6 +422,8 @@ describe('ModalSearchSmallComponent', () => {
 
     jest.spyOn(productService, 'getApiData').mockReturnValue( of(res) );
     component.modal.remotePaginator = true;
+    component.modal.sortField='nmname';
+    component.modal.sortDirectionField='asc'
 
     expect(component.loadData('0', 0, 0,'0','0')).toBeDefined();
 

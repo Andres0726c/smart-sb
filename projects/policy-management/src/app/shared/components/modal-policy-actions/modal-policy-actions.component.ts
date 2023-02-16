@@ -112,7 +112,12 @@ export class ModalPolicyActionsComponent implements OnInit {
 
           if(resp.dataHeader.code != 500){
             this.ref.close(true)
-            this.showSuccess('success', 'Cancelación Exitosa', 'La póliza ha sido cancelada');
+            if (resp.body.message === "Cancelación exitosa") {
+              this.showSuccess('success', resp.body.message, 'La póliza ha sido cancelada');
+            } else {
+              this.showSuccess('success', resp.body.message, 'La cancelación fue agendada y se hará efectiva en la fecha seleccionada');
+            }
+            
           } else  {
               this.messageError = true;
               this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
@@ -159,15 +164,17 @@ export class ModalPolicyActionsComponent implements OnInit {
 
     verifyDate() {
     this.isDateValid = true;
-    const date = new Date(new Date(this.formProcess.get('processDate')?.value).toDateString()).toISOString()
-    const inceptionDate = new Date(this.config.data.policy.inceptionDate).toISOString();
-    const expirationDate = new Date(this.config.data.policy.expirationDate).toISOString();
+    const date = new Date( new Date(this.formProcess.get('processDate')?.value).toDateString());
+    const inceptionDate = new Date( new Date(this.config.data.policy.inceptionDate).toDateString());
+    const expirationDate = new Date (new Date(this.config.data.policy.expirationDate).toDateString());
 
+    const [withoutTime] = date.toISOString().split('T');
     if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
-      this.getPremium(this.config.data.policy.idPolicy, date)
+      this.getPremium(this.config.data.policy.idPolicy, withoutTime)
     } else {
       this.formProcess.get('immediate')?.setValue(0);
-      this.formProcess.get('applicationProcess')?.setValue(this.config.data.process)
+      this.formProcess.get('applicationProcess')?.setValue(this.config.data.process);
+      this.premium = null;
       this.isDateValid = false;
     }
   }
@@ -189,7 +196,8 @@ export class ModalPolicyActionsComponent implements OnInit {
     this.messageService.add({
       severity: status,
       summary: title,
-      detail: msg
+      detail: msg,
+      contentStyleClass: "message-succes-alert"
     });
   }
 }

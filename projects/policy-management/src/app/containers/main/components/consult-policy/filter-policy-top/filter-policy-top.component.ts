@@ -1,7 +1,7 @@
 import { FilterPolicy } from './../interfaces/consult-policy';
 import { ConsultPolicyService } from './../services/consult-policy.service';
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Identification } from '../interfaces/identification';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
@@ -38,6 +38,7 @@ export class FilterPolicyTopComponent {
 
   isRequired: { [key: string]: boolean } = {
     policyNumber: true,
+    policyExternalNumber: true,
     holderDocument: true,
     insuredDocument: true,
   };
@@ -64,6 +65,7 @@ export class FilterPolicyTopComponent {
       insuredDocumentNumber: this.fb.control(''),
       insuredName: this.fb.control(''),
       policyNumber: this.fb.control(''),
+      policyExternalNumber: this.fb.control(''),
       idProduct: this.fb.control(''),
       startDate: this.fb.control(''),
     });
@@ -93,6 +95,12 @@ export class FilterPolicyTopComponent {
       .subscribe((res) => {
         this.setData(res, 'identificationtype');
       });
+
+    this.productService
+      .getApiData('turnoverperiod/findAll')
+      .subscribe((res) => {
+        this.setData(res, 'turnoverperiod');
+      });
   }
 
   setData(res: any, type: any) {
@@ -109,7 +117,7 @@ export class FilterPolicyTopComponent {
     let optionsAux: any = [];
 
     res.forEach((element: any) => {
-      let obj: any = { id: element.code, name: element.description };
+      let obj: any = { id: element.code ?? element.businessCode, name: type === 'turnoverperiod' ? element.name : element.description };
       if (obj.id != '' && obj.id != undefined) {
         options.push(obj);
       }
@@ -147,6 +155,10 @@ export class FilterPolicyTopComponent {
 
   get policyNumber(): FormControl {
     return this.formQueryFilter.get('policyNumber') as FormControl;
+  }
+
+  get policyExternalNumber(): FormControl {
+    return this.formQueryFilter.get('policyExternalNumber') as FormControl;
   }
 
   seeMore() {
@@ -196,6 +208,9 @@ export class FilterPolicyTopComponent {
       this.toggleRequired(false);
       return false;
     } else if (this.insuredValid) {
+      this.toggleRequired(false);
+      return false;
+    } else if(this.policyExternalNumber.value){
       this.toggleRequired(false);
       return false;
     }

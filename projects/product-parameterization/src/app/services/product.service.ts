@@ -83,7 +83,7 @@ export class ProductService {
 
     { field: 'quantityEvents', validators: [Validators.required, Validators.min(1), Validators.max(999)] },
     { field: 'periodEvents', validators: [Validators.required] },
-    
+
     /* Risk types */
     { field: 'riskTypes', validators: [Validators.required] },
 
@@ -98,7 +98,7 @@ export class ProductService {
 
     /* Claim data */
     { field: 'claimData', validators: [Validators.required] },
-    
+
     /* Claim Tecnical Controls */
     { field: 'claimTechnicalControls', validators: [] },
 
@@ -179,7 +179,7 @@ export class ProductService {
   getServicePlanById = (id: number) => {
     return this.servicePlansControls.value.find((x: { id: number; }) => x.id === id);
   }
-  
+
   getConceptReservationById = (id: number) => {
     return this.conceptReservationControls.value.find((x: { id: number; }) => x.id === id);
   }
@@ -278,7 +278,7 @@ export class ProductService {
                 if(!this.noProductChanges(obj1[objKey], obj2[objKey])) {
                     return false;
                 }
-            } 
+            }
             else {
                 return false;
             }
@@ -300,17 +300,17 @@ export class ProductService {
       insuranceLine: this.initialParameters.get("insuranceLine")?.value,
       productJson: JSON.stringify(this.getProductObject())
     }
-    
+
     this.httpClient.post<AppHttpResponse<any>>(`${this.apiUrl}product/save`,  product, { headers: this.headers }).subscribe((response) => {
       let jsonString: string = response.body.Product.productJson;
       let parseString: string = jsonString.replace(/=/g, ':');
       this.productBk = JSON.parse(parseString);
-      
+
       if (showAlerts) {
         if (this.isSomeRelationEmpty(this.productBk)) {
           this.showErrorMessage('No se podrá exportar', 'Tener en cuenta que se creó una<br>relación causa-concepto de reserva sin datos');
         }
-  
+
         if (!this.isSomeRelationEmpty(this.productBk) && this.isSomeRelationIncomplete(this.productBk)) {
           this.showErrorMessage('No se podrá exportar', 'La relación causa-concepto de reserva está incompleta');
         }
@@ -379,7 +379,7 @@ export class ProductService {
 
       this.initialParameters.get('productName')?.disable();
       this.initialParameters.get('company')?.disable();
-      
+
       if (!this.initialParameters.contains('businessCode')){
         this.initialParameters.addControl('businessCode',this.fb.control( this.initialParameters.get('productName')?.value,
           Validators.compose( [Validators.required, Validators.maxLength(30), Validators.minLength(4), Validators.pattern('^([a-zA-Z0-9_])*([a-zA-Z0-9s][a-zA-Z0-9_]*)+$')])))
@@ -394,7 +394,7 @@ export class ProductService {
         for (const coverage of this.coverages.controls) {
           let complementaryData: any = (<FormArray>coverage.get('complementaryData'));
           let payRollData: any = (<FormArray>coverage.get('payRollData'));
-          
+
           if (complementaryData.length > 0 && !(<FormGroup>complementaryData.controls[0]).contains('code')){
             (<FormGroup>complementaryData.controls[0]).addControl('code', this.fb.control('datos_basicos'));
           }
@@ -465,11 +465,11 @@ export class ProductService {
    * Recursive and aux function that sets forms, controls, values and validators for all product data
    * @param fieldKey control name
    * @param obj control value
-   * @returns control, formGroup or formArray depending on parent control value 
+   * @returns control, formGroup or formArray depending on parent control value
    */
   public setFormArrayValue(fieldKey: string, obj: any) {
-    let retorno = null; 
-    
+    let retorno = null;
+
     if (this.isArray(obj)) {
       if (this.defaultArrays.find(x => x === fieldKey)) {
         retorno = this.fb.control(obj, this.setFieldValidators(fieldKey));
@@ -482,7 +482,7 @@ export class ProductService {
             formGroup.addControl(key, this.setFormArrayValue(key, element[key]));
           });
           retorno.push(formGroup);
-        } 
+        }
         });
       }
     } else {
@@ -504,7 +504,7 @@ export class ProductService {
    * Recursive function that sets forms, controls, values and validators for all product data
    * @param fieldKey control name
    * @param obj control value
-   * @returns control, formGroup or formArray depending on parent control value 
+   * @returns control, formGroup or formArray depending on parent control value
    */
   public setFields(fieldKey: string, obj: any): any {
 
@@ -513,7 +513,7 @@ export class ProductService {
     if (this.isArray(obj)) {
       control = this.setFormArrayValue(fieldKey, obj);
     } else {
-      
+
       if (this.isObject(obj) && !this.defaultControls.find(x => x === fieldKey)) {
         control = this.fb.group({});
         Object.keys(obj).forEach(key => {
@@ -522,7 +522,7 @@ export class ProductService {
       } else {
         control = this.fb.control(obj, this.setFieldValidators(fieldKey));
       }
-      
+
     }
 
     return control;
@@ -546,32 +546,41 @@ export class ProductService {
    */
   public downloadFile(productName:string = 'product'){
 
-   
-      this.httpClient.get(`${this.apiUrl}product/exportArtifact/${productName}`,{headers: this.headers } 
+
+      this.httpClient.get(`${this.apiUrl}product/exportArtifact/${productName}`,{headers: this.headers }
        ).subscribe({
-        next: (response: any) => {  
-          if(response.dataHeader && response.dataHeader.code !== 200){
-           let text = response.dataHeader.errorList[0].errorDescription;
-            this.showErrorMessage('No se puede exportar.', text);
-          }else{
-            const newBlob = new Blob([JSON.stringify(response, null, 2)], { type: "application/json" });
-            const downloadURL = window.URL.createObjectURL(newBlob);
-          
-            const link = document.createElement('a');
-            link.href = downloadURL;
-            link.download = productName+'.json';
-    
-            link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-          }
-          }
-        /*, error: (error) => {  
-            console.log('error', error)
-             if( error.status===400 ){
-               this.showErrorMessage(error.error.dataHeader.errorList[0].errorDescription);
-             }
-         }*/
-      });  
-    
+        next: (response: any) => {
+            if (response.dataHeader && response.dataHeader.code !== 200) {
+              let text = response.dataHeader.errorList[0].errorDescription;
+              this.showErrorMessage('No se puede exportar.', text);
+            } else {
+              const newBlob = new Blob([JSON.stringify(response, null, 2)], {
+                type: 'application/json',
+              });
+              const downloadURL = window.URL.createObjectURL(newBlob);
+
+              const link = document.createElement('a');
+              link.href = downloadURL;
+              link.download = productName + '.json';
+
+              link.dispatchEvent(
+                new MouseEvent('click', {
+                  bubbles: true,
+                  cancelable: true,
+                  view: window,
+                })
+              );
+            }
+          },
+          error: (error) => {
+            console.log('error', error);
+            if (error.status === 400 && error.error.dataHeader.hasErrors
+            ) {
+              const msg: string = error.error.dataHeader.errorList[0].errorDescription;
+              this.showErrorMessage('No se puede exportar.', msg);
+            }
+          },
+        });
   }
 
   showErrorMessage(message: string, text: string){
@@ -583,7 +592,7 @@ export class ProductService {
       },
     });
   }
-  
+
   valid ():boolean {
     return this.initialParameters.valid && this.accumulation.valid;
  }
@@ -610,7 +619,7 @@ export class ProductService {
  {
      formInstance.forEach((element)=>
      {
-          element.valueChanges.pipe(map(value => { return value; })).subscribe(() => 
+          element.valueChanges.pipe(map(value => { return value; })).subscribe(() =>
           {
             if(element.valid === true)
             {
