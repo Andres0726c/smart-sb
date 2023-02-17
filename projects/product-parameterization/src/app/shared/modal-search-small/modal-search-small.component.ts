@@ -148,11 +148,11 @@ export class ModalSearchSmallComponent implements OnInit {
         if (this.modal.remotePaginator) {
 
           if (this.data.parameter) {
-            res = await lastValueFrom(this.productService.getApiData(this.modal.service, this.data.parameter + `/${search}/${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`));
+            res = await lastValueFrom(this.productService.getApiData(this.modal.service, this.data.parameter + `/${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`, search));
 
           } else {
             
-            res = await lastValueFrom(this.productService.getApiData(this.modal.service, `${search}/${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`));
+            res = await lastValueFrom(this.productService.getApiData(this.modal.service, `${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`, search));
 
           }
 
