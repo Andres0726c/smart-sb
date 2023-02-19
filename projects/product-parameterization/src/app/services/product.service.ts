@@ -232,9 +232,19 @@ export class ProductService {
   /**
    * Function that returns data from general microservices
    */
-  getApiData = (serviceData: string = '', id: string = '') => {
+  getApiData = (serviceData: string = '', id: string = '', search: string = '') => {
     id = (id !== '' ? `/${id}` : '');
-    return this.httpClient.get(`${this.apiUrl}${serviceData}${id}`, { headers: this.headers });
+
+    let contentType:any = this.headers.get('Content-Type');
+    let xApiKey:any = this.headers.get('x-api-key');
+
+    let header = new HttpHeaders({
+      'Content-Type': contentType,
+      'x-api-key': xApiKey,
+      'search': search
+    })
+
+    return this.httpClient.get(`${this.apiUrl}${serviceData}${id}`, { headers: header });
   };
 
   getProductObject() {
