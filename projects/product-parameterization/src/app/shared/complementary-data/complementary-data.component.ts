@@ -109,6 +109,7 @@ export class ComplementaryDataComponent implements OnInit {
     }
 
     this.setEssentialData(this.essentialData);
+    this.updateEssentialDataProperties();
   }
 
   async loadContextData() {
@@ -796,4 +797,21 @@ export class ComplementaryDataComponent implements OnInit {
     }
     return res;
   }
+
+  updateEssentialDataProperties() {
+
+    for (const group of this.complementaryDataControls.controls) {
+      
+      (<FormArray>group.get('fields')).controls.forEach((controlsGroup) => {
+
+        const essentialField = this.essentialData.find((obj: any) => obj.id === controlsGroup.get('id')?.value);
+
+        if (essentialField) {
+          (<FormGroup>controlsGroup).controls['dataType'].setValue(essentialField.dataType);
+        }
+
+      });
+    }
+  }
+  
 }
