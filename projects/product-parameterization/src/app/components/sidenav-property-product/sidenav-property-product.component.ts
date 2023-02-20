@@ -33,6 +33,7 @@ export class SidenavPropertyProductComponent implements OnInit
   menus = [
     {
       name: "Emisión",
+      showEnable:false,
       show: true,
       isExpanded: true,
       submenus:[
@@ -49,6 +50,7 @@ export class SidenavPropertyProductComponent implements OnInit
     },
     {
       name: "Modificación",
+      showEnable:true,
       show: true,
       isExpanded: true,
       submenus:[
@@ -57,7 +59,29 @@ export class SidenavPropertyProductComponent implements OnInit
       ]
     },
     {
+      name: "Cancelación",
+      showEnable:true,
+      show: false,
+      isExpanded: true,
+      submenus:[]
+    },
+    {
+      name: "Rehabilitación",
+      showEnable:true,
+      show: false,
+      isExpanded: true,
+      submenus:[]
+    },
+    {
+      name: "Renovación",
+      showEnable:true,
+      show: false,
+      isExpanded: true,
+      submenus:[]
+    },
+    {
       name: "Reclamación",
+      showEnable:false,
       show: true,
       isExpanded: true,
       submenus:[
@@ -66,7 +90,8 @@ export class SidenavPropertyProductComponent implements OnInit
         { name: "Datos de la reclamación",    routerLink: "datos-reclamacion"},
         { name: "Control técnico",            routerLink: "control-tecnico-reclamacion"},
       ]
-    }
+    },
+    
   ]
 
 }

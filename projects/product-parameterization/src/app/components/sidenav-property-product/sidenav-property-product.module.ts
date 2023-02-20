@@ -3,13 +3,16 @@ import { CommonModule } from '@angular/common';
 import { SidenavPropertyProductComponent } from './sidenav-property-product.component';
 import { RouterModule } from '@angular/router';
 import { AngularMaterialModule } from '../../material.module';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 @NgModule({
   declarations: [SidenavPropertyProductComponent],
   imports: [
     CommonModule,
     RouterModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    MatCheckboxModule
   ],
   exports: [
     SidenavPropertyProductComponent
