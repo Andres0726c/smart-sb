@@ -232,7 +232,7 @@ export class ProductService {
   /**
    * Function that returns data from general microservices
    */
-  getApiData = (serviceData: string = '', id: string = '', search: string = '') => {
+  getApiData = (serviceData: string = '', id: string = '', search: string = '0') => {
     id = (id !== '' ? `/${id}` : '');
 
     let contentType:any = this.headers.get('Content-Type');
