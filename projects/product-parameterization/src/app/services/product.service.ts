@@ -180,6 +180,18 @@ export class ProductService {
     this.claimTechnicalControls = this.fb.array([], []);
     this.claimData = this.fb.array([], [Validators.required]);
     this.modificationTypes = this.fb.array([], [Validators.required]);
+    this.modification = new FormGroup({
+      isEnabled: new FormControl(false),
+    });
+    this.cancelation = new FormGroup({
+      isEnabled: new FormControl(false),
+    });
+    this.rehabilitation = new FormGroup({
+      isEnabled: new FormControl(false),
+    });
+    this.renewal = new FormGroup({
+      isEnabled: new FormControl(false),
+    });
       //autosave enabled
       // this.autoSaveProduct();
   }
@@ -314,6 +326,7 @@ export class ProductService {
    * Function that saves all data for the current product
    */
   public saveProduct(showAlerts: boolean): void {
+    console.log("modification",this.modification)
     this.saving = true;
     let product = {
       nombre: this.initialParameters.get("productName")?.value,

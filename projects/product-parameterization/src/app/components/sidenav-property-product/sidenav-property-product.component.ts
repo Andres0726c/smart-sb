@@ -3,6 +3,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -13,8 +14,16 @@ import { ProductService } from '../../services/product.service';
 export class SidenavPropertyProductComponent implements OnInit 
 {
   productName!:string;
+  formProcess!: FormGroup;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, public productService:ProductService) { }
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, public productService:ProductService, public fb: FormBuilder) { 
+    this.formProcess = this.fb.group({
+      modification: this.productService.modification,
+      cancelation: this.productService.cancelation,
+      rehabilitation: this.productService.rehabilitation,
+      renewal: this.productService.renewal
+    })
+  }
 
   ngOnInit(): void 
   {
@@ -50,6 +59,7 @@ export class SidenavPropertyProductComponent implements OnInit
     },
     {
       name: "Modificación",
+      formControlName: "modification",
       showEnable:true,
       show: true,
       isExpanded: true,
@@ -60,6 +70,7 @@ export class SidenavPropertyProductComponent implements OnInit
     },
     {
       name: "Cancelación",
+      formControlName: "cancelation",
       showEnable:true,
       show: false,
       isExpanded: true,
@@ -67,6 +78,7 @@ export class SidenavPropertyProductComponent implements OnInit
     },
     {
       name: "Rehabilitación",
+      formControlName: "rehabilitation",
       showEnable:true,
       show: false,
       isExpanded: true,
@@ -74,6 +86,7 @@ export class SidenavPropertyProductComponent implements OnInit
     },
     {
       name: "Renovación",
+      formControlName: "renewal",
       showEnable:true,
       show: false,
       isExpanded: true,
