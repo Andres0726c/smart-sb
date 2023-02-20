@@ -247,6 +247,15 @@ export class ProductService {
     return this.httpClient.get(`${this.apiUrl}${serviceData}${id}`, { headers: header });
   };
 
+  /**
+   * Function that returns data from general microservices
+   */
+  getApiDataWithoutSearch = (serviceData: string = '', id: string = '') => {
+    id = (id !== '' ? `/${id}` : '');
+
+    return this.httpClient.get(`${this.apiUrl}${serviceData}${id}`, { headers: this.headers });
+  };
+
   getProductObject() {
 
     return {
