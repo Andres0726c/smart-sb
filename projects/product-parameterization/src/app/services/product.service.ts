@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { environment } from 'commons-lib';
@@ -36,6 +36,18 @@ export class ProductService {
   claimTechnicalControls: any = new FormArray<any>([]);
   claimData: any = new FormArray<any>([]);
   modificationTypes: any = new FormArray<any>([]);
+  modification: FormGroup = new FormGroup({
+    isEnabled: new FormControl(false),
+  });
+  cancelation:FormGroup = new FormGroup({
+    isEnabled: new FormControl(false),
+  });
+  rehabilitation:FormGroup = new FormGroup({
+    isEnabled: new FormControl(false),
+  });
+  renewal:FormGroup = new FormGroup({
+    isEnabled: new FormControl(false),
+  });
 
   defaultArrays = [
     'selectedProcess',
