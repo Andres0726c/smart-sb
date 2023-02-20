@@ -18,8 +18,8 @@ export class SidenavPropertyProductComponent implements OnInit
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, public productService:ProductService, public fb: FormBuilder) { 
     this.formProcess = this.fb.group({
-      modification: this.productService.modification,
-      cancelation: this.productService.cancelation,
+      modification: this.productService.mdfctnPrcss,
+      cancellation: this.productService.cancellation,
       rehabilitation: this.productService.rehabilitation,
       renewal: this.productService.renewal
     })
@@ -59,6 +59,7 @@ export class SidenavPropertyProductComponent implements OnInit
     },
     {
       name: "Modificación",
+      formGroupName: "modificationControls",
       formControlName: "modification",
       showEnable:true,
       show: true,
@@ -70,7 +71,7 @@ export class SidenavPropertyProductComponent implements OnInit
     },
     {
       name: "Cancelación",
-      formControlName: "cancelation",
+      formControlName: "cancellation",
       showEnable:true,
       show: false,
       isExpanded: true,

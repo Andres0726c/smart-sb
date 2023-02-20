@@ -20,31 +20,34 @@
             <span class="text-format" *ngIf="isExpanded">Producto {{ productService.initialParameters.get('productName')?.value }}</span>
           </div>
         </div>
-        
-        <div *ngFor="let menu of menus">
-          <div (click)="menu.show = !menu.show">
-            <div class="fill-select product-menu" *ngIf="menu.isExpanded">
-              <em
-                id="angle-double-icon"
-                class="fal fa-angle-double-down"
-                [ngClass]="{ 'rotate-row': menu.show }"
-              ></em>
-              <span>{{menu.name}}</span>
-              <mat-checkbox *ngIf="menu.showEnable" class="example-margin"></mat-checkbox>
+          <form [formGroup]="formProcess">
+            <div *ngFor="let menu of menus">
+              <div (click)="menu.show = !menu.show">
+                <div class="fill-select product-menu" *ngIf="menu.isExpanded">
+                  <em
+                    id="angle-double-icon"
+                    class="fal fa-angle-double-down"
+                    [ngClass]="{ 'rotate-row': menu.show }"
+                  ></em>
+                  <span>{{menu.name}}</span>
+                  <div *ngIf="menu.showEnable" [formGroupName]="menu.formControlName?menu.formControlName:''">
+                    <mat-checkbox  class="example-margin" formControlName="isEnabled"></mat-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div class="canvas" *ngIf="menu.isExpanded" [hidden]="!menu.show">
+                <ul class="submenu" [ngClass]="{ expanded: menu.show }">
+                  <li *ngFor="let submenu of menu.submenus" routerLinkActive="fill-select" >
+                    <a [routerLink]="submenu.routerLink">
+                      <span>{{submenu.name}}</span>
+                      <em class="fal fa-angle-right"></em>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              
             </div>
-          </div>
-          <div class="canvas" *ngIf="menu.isExpanded" [hidden]="!menu.show">
-            <ul class="submenu" [ngClass]="{ expanded: menu.show }">
-              <li *ngFor="let submenu of menu.submenus" routerLinkActive="fill-select" >
-                <a [routerLink]="submenu.routerLink">
-                  <span>{{submenu.name}}</span>
-                  <em class="fal fa-angle-right"></em>
-                </a>
-              </li>
-            </ul>
-          </div>
-          
-        </div>
+          </form>
         
       </div>
     </div>

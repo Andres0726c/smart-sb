@@ -36,10 +36,10 @@ export class ProductService {
   claimTechnicalControls: any = new FormArray<any>([]);
   claimData: any = new FormArray<any>([]);
   modificationTypes: any = new FormArray<any>([]);
-  modification: FormGroup = new FormGroup({
+  mdfctnPrcss: FormGroup = new FormGroup({
     isEnabled: new FormControl(false),
   });
-  cancelation:FormGroup = new FormGroup({
+  cancellation:FormGroup = new FormGroup({
     isEnabled: new FormControl(false),
   });
   rehabilitation:FormGroup = new FormGroup({
@@ -180,10 +180,10 @@ export class ProductService {
     this.claimTechnicalControls = this.fb.array([], []);
     this.claimData = this.fb.array([], [Validators.required]);
     this.modificationTypes = this.fb.array([], [Validators.required]);
-    this.modification = new FormGroup({
+    this.mdfctnPrcss = new FormGroup({
       isEnabled: new FormControl(false),
     });
-    this.cancelation = new FormGroup({
+    this.cancellation = new FormGroup({
       isEnabled: new FormControl(false),
     });
     this.rehabilitation = new FormGroup({
@@ -326,7 +326,10 @@ export class ProductService {
    * Function that saves all data for the current product
    */
   public saveProduct(showAlerts: boolean): void {
-    console.log("modification",this.modification)
+    console.log("mdfctnPrcss",this.mdfctnPrcss)
+    console.log("cancellation",this.cancellation)
+    console.log("rehabilitation",this.rehabilitation)
+    console.log("renewal",this.renewal)
     this.saving = true;
     let product = {
       nombre: this.initialParameters.get("productName")?.value,
@@ -640,7 +643,7 @@ export class ProductService {
     if(environment.productAutosave)
     {
       let formArrayList: any[] = [this.coverages, this.policyData, this.clauses, this.riskTypes, this.servicePlans, this.taxesCategories, this.technicalControls, this.conceptReservation, this.claimData, this.claimTechnicalControls, this.modificationTypes];
-      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters];
+      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cancellation, this.rehabilitation, this.renewal];
          this.registerFormEvent(formArrayList);
          this.registerFormEvent(formGroupList);
     }

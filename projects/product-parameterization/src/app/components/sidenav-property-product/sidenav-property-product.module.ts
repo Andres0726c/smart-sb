@@ -4,7 +4,7 @@ import { SidenavPropertyProductComponent } from './sidenav-property-product.comp
 import { RouterModule } from '@angular/router';
 import { AngularMaterialModule } from '../../material.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [SidenavPropertyProductComponent],
@@ -12,7 +12,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CommonModule,
     RouterModule,
     AngularMaterialModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     SidenavPropertyProductComponent
