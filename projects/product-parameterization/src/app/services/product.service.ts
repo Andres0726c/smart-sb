@@ -36,7 +36,13 @@ export class ProductService {
   claimTechnicalControls: any = new FormArray<any>([]);
   claimData: any = new FormArray<any>([]);
   modificationTypes: any = new FormArray<any>([]);
-  mdfctnPrcss: FormGroup = new FormGroup({
+  // policyProcess: FormGroup = new FormGroup({
+  //   mdfctnPrcss: new FormControl(false),
+  //   cancellation: new FormControl(false), 
+  //   rehabilitation: new FormControl(false),
+  //   renewal: new FormControl(false)
+  // })
+  mdfctnPrcss:FormGroup = new FormGroup({
     isEnabled: new FormControl(false),
   });
   cancellation:FormGroup = new FormGroup({
@@ -287,6 +293,10 @@ export class ProductService {
       claimTechnicalControls: this.claimTechnicalControls.getRawValue(),
       conceptReservation: this.conceptReservation.value,
       modificationTypes: this.modificationTypes.getRawValue(),
+      mdfctnPrcss: this.mdfctnPrcss.getRawValue(),
+      cancellation: this.cancellation.getRawValue(),
+      rehabilitation: this.rehabilitation.getRawValue(),
+      renewal: this.renewal.getRawValue()
     };
   }
 

@@ -62,7 +62,7 @@ export class SidenavPropertyProductComponent implements OnInit
       formGroupName: "modificationControls",
       formControlName: "modification",
       showEnable:true,
-      show: true,
+      show: false,
       isExpanded: true,
       submenus:[
         { name: "Tipos de modificación",  routerLink: "tipos-modificacion"},
@@ -96,7 +96,7 @@ export class SidenavPropertyProductComponent implements OnInit
     {
       name: "Reclamación",
       showEnable:false,
-      show: true,
+      show: false,
       isExpanded: true,
       submenus:[
         { name: "Concepto de reserva",        routerLink: "reserva-reclamacion"},
