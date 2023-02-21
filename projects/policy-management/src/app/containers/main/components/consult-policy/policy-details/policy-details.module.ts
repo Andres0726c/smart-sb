@@ -5,6 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessagesModule } from 'primeng/messages';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
   declarations: [
     PolicyDetailsComponent
@@ -14,7 +15,8 @@ import { ToastModule } from 'primeng/toast';
     ButtonModule,
     ProgressSpinnerModule,
     MessagesModule,
-    ToastModule
+    ToastModule,
+    TooltipModule
   ],
   exports: []
 })

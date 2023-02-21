@@ -42,7 +42,8 @@
                             <button type="button" pButton pRipple class="p-button p-button-secondary bg-white hover:"
                                 icon="pi pi-ellipsis-v" (click)="selectedPolicy=rowData; menu.toggle($event); disabledItem(rowData.policyStatus)">
                             </button>
-                            <p-menu #menu [popup]="true" [model]="items" appendTo="body"></p-menu>
+                            <p-menu #menu [popup]="true" [model]="items" appendTo="body">
+                            </p-menu>
                         </td>
                     </tr>
                 </ng-template>
