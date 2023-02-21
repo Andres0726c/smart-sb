@@ -154,7 +154,7 @@
   display: flex;
   cursor: pointer;
   span {
-    flex: grow;
+    flex-grow: 0.95;
     margin-left: 20px;
   }
 }
