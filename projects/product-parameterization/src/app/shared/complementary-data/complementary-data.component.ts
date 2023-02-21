@@ -88,7 +88,7 @@ export class ComplementaryDataComponent implements OnInit {
       let res: any
 
       if (this.modifyData && this.productService.policyData.value.length > 0 && this.productService.policyData.value[0].fields.length > 0) {
-        res = await lastValueFrom(this.productService.getApiData(`displayEssential/findByProcess/`+this.productService.initialParameters?.get('insuranceLine')?.value+`/0/0/0/0`));
+        res = await lastValueFrom(this.productService.getApiData(`displayEssential/findByProcess/`+this.productService.initialParameters?.get('insuranceLine')?.value+`/0/0/0`));
       } else if(!this.modifyData) {
         res = await lastValueFrom(this.productService.getApiData(`complementaryData/findEssentialDataByInsuranceLineApplicationLevel/${parameters}`));
       }
@@ -109,6 +109,7 @@ export class ComplementaryDataComponent implements OnInit {
     }
 
     this.setEssentialData(this.essentialData);
+    this.updateEssentialDataProperties();
   }
 
   async loadContextData() {
@@ -796,4 +797,21 @@ export class ComplementaryDataComponent implements OnInit {
     }
     return res;
   }
+
+  updateEssentialDataProperties() {
+
+    for (const group of this.complementaryDataControls.controls) {
+      
+      (<FormArray>group.get('fields')).controls.forEach((controlsGroup) => {
+
+        const essentialField = this.essentialData.find((obj: any) => obj.id === controlsGroup.get('id')?.value);
+
+        if (essentialField) {
+          (<FormGroup>controlsGroup).controls['dataType'].setValue(essentialField.dataType);
+        }
+
+      });
+    }
+  }
+  
 }

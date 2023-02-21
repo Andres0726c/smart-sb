@@ -186,9 +186,9 @@ export class RulesWizardComponent implements OnInit {
         if (this.rulesModal.remotePaginator) {
 
           if (this.data.parameter) {
-            res = await lastValueFrom(this.productService.getApiData(this.rulesModal.service, this.data.parameter + `/${search}/${page}/${pageSize}/${selectedIds}/${sortColumns}/${sortingDirection}`));
+            res = await lastValueFrom(this.productService.getApiData(this.rulesModal.service, this.data.parameter + `${page}/${pageSize}/${selectedIds}/${sortColumns}/${sortingDirection}`, search));
           } else {
-            res = await lastValueFrom(this.productService.getApiData(this.rulesModal.service, `${search}/${page}/${pageSize}/${selectedIds}/${sortColumns}/${sortingDirection}`));
+            res = await lastValueFrom(this.productService.getApiData(this.rulesModal.service, `${page}/${pageSize}/${selectedIds}/${sortColumns}/${sortingDirection}`, search));
           }
 
         } else {
