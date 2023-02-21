@@ -8,6 +8,7 @@ import { PolicyBrief } from '../../../core/interfaces/policy';
 import { ResponseDTO } from '../../../core/interfaces/commun/response';
 import { FilterPolicy } from '../../../containers/main/components/consult-policy/interfaces/consult-policy';
 import {ConfirmationService} from 'primeng/api';
+import { ProductService } from '../../../core/services/product/product.service';
 
 @Component({
   selector: 'modal-policy-actions',
@@ -23,6 +24,7 @@ export class ModalPolicyActionsComponent implements OnInit {
   isDateValid = true;
   policies: any;
   paymentMethod: string = '';
+  premiumData: any = {};
 
 
   constructor(
@@ -33,8 +35,10 @@ export class ModalPolicyActionsComponent implements OnInit {
     public dialogService: DialogService,
     public messageService: MessageService,
     public consultPolicyService: ConsultPolicyService,
+    public productService: ProductService,
     private confirmationService: ConfirmationService,
   ) {
+    this.premiumData = this.config.data.premiumData;
     this.formProcess = fb.group({
       processDate: fb.control(null),
       rehabilitationDate: fb.control(null),
@@ -50,8 +54,16 @@ export class ModalPolicyActionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getPremiumData(this.config.data.policy);
     this.getCauses(this.config.data.process);
     this.consultPoliciesById(this.config.data.policy.idPolicy)
+  }
+
+  getPremiumData(policy: any) {
+    this.premiumData = {};
+    this.productService.getPremiumData(policy.policyNumber, policy.endorsementNumber).subscribe((res: any) => {
+      this.premiumData = res.body;
+    });
   }
 
   consultPoliciesById(id: number) {
@@ -67,12 +79,29 @@ export class ModalPolicyActionsComponent implements OnInit {
       });
     }
 
-  getPremium(idPolicy: any, deletionDate: any){
+  /*getPremium(idPolicy: any, deletionDate: any){
 
     this.modalAPService.getPremium(idPolicy, deletionDate)
     .subscribe( premium => {
-      this.premium = premium.body;
+      //this.premium = premium.body;
     });
+  }*/
+
+  /**
+   * Method for calculate ammount to return, based on selected process date
+   * @param inceptionDate policy start date
+   * @param expirationDate policy end date
+   * @param processDate selected process date
+   */
+  getAmountToReturn(inceptionDate: any, expirationDate: any, processDate: any) {
+    inceptionDate = new Date(inceptionDate);
+    expirationDate = new Date(expirationDate);
+    processDate = new Date(processDate);
+    const policyDays = Math.round((expirationDate - inceptionDate) / (1000 * 60 * 60 * 24));
+    const diffDays = Math.round((expirationDate - processDate) / (1000 * 60 * 60 * 24));
+    const premium = 363025.8;
+    const dayValue = premium / policyDays;
+    this.premium = Number((dayValue * diffDays).toFixed(2));
   }
 
   cancelPolicy() {
@@ -170,7 +199,8 @@ export class ModalPolicyActionsComponent implements OnInit {
 
     const [withoutTime] = date.toISOString().split('T');
     if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
-      this.getPremium(this.config.data.policy.idPolicy, withoutTime)
+      //this.getPremium(this.config.data.policy.idPolicy, withoutTime);
+      this.getAmountToReturn(inceptionDate, expirationDate, withoutTime);
     } else {
       this.formProcess.get('immediate')?.setValue(0);
       this.formProcess.get('applicationProcess')?.setValue(this.config.data.process);

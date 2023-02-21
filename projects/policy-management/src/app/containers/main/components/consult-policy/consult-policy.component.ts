@@ -5,7 +5,7 @@ import {
 import { PolicyBrief } from './../../../../core/interfaces/policy';
 import { ConsultPolicyService } from './services/consult-policy.service';
 import { FilterPolicy } from './interfaces/consult-policy';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -15,6 +15,7 @@ import { PolicyDetailsComponent } from './policy-details/policy-details.componen
 import { Router } from '@angular/router';
 import { PolicyRenewalComponent } from '../policy-renewal/policy-renewal.component';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
+import { Menu } from 'primeng/menu';
 
 @Component({
   selector: 'app-consult-policy',
@@ -23,6 +24,7 @@ import { ProductService } from 'projects/policy-management/src/app/core/services
   providers: [MessageService, DialogService],
 })
 export class ConsultPolicyComponent implements OnDestroy {
+  @ViewChild('menu') menu!: Menu; 
   policies: PolicyBrief[] = [];
   cols: any[] = [];
   filters: FilterPolicy = {
@@ -53,7 +55,10 @@ export class ConsultPolicyComponent implements OnDestroy {
   first: number = 0;
   es: any;
 
+  premiumData: any = {};
+
   loading: boolean = false;
+  loadingMenu: boolean = false;
 
   constructor(
     public consultPolicyService: ConsultPolicyService,
@@ -225,7 +230,8 @@ export class ConsultPolicyComponent implements OnDestroy {
   showModalConsulDetails(){
     this.dialogService.open(PolicyDetailsComponent,{
       data: {
-        idPolicy: this.selectedPolicy.idPolicy
+        idPolicy: this.selectedPolicy.idPolicy,
+        policy: this.selectedPolicy
       },
       header: 'Consulta detalle póliza',
       modal: true,

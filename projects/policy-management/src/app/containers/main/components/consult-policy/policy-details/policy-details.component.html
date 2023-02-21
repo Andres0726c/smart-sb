@@ -73,8 +73,27 @@
             <span class="pl-1 text-base text-gray">{{ policy.payment.method }}</span>
           </div>
           <div>
-            <label class="font-bold text-base">Prima total (Sin IVA)</label><br />
-            <span class="pl-1 text-base text-gray"> $ {{ policy.premiumValue | currency:'COP' }} </span>
+            <label class="font-bold text-base">Prima total</label><br />
+            <span class="pl-1 text-base text-gray" *ngIf="premiumData"> $ {{ premiumData.totalPremiumValue | currency:'COP' }} </span>
+            <button pButton pRipple type="button" icon="fas fa-info-circle" *ngIf="premiumData"
+              class="p-button-rounded p-button-text h-[16px] w-[18px]"
+              pTooltip="
+                <div class='ml-[10px] grid grid-cols-2 w-full'>
+                  <div class='w-full col-span-2 text-center font-bold text-xl text-yellow-200 mb-5 ml-[-12px]'>Detalle de prima</div>
+                  <span class='font-bold'>Valor prima:</span>
+                  <span class='text-green-100 text-right mr-[20px]'> $ {{ premiumData.premiumValue | currency:'COP' }} </span>
+                  <span class='font-bold'>Valor impuesto:</span>
+                  <span class='text-green-100 text-right mr-[20px]'> $ {{ premiumData.taxValue | currency:'COP' }} </span>
+                  <div class='col-span-2 mr-[20px]'>
+                    <hr class='h-[5px]'>
+                  </div>
+                  <span class='font-bold'>Valor total:</span>
+                  <span class='text-green-200 text-right mr-[20px]'> $ {{ premiumData.totalPremiumValue | currency:'COP' }} </span>
+                </div>
+              "
+              tooltipEvent="focus"
+              [escape]="false">
+            </button>
           </div>
           <div>
             <label class="font-bold text-base">Plan adquirido</label><br />

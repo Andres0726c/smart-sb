@@ -12,6 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [ModalPolicyActionsComponent],
@@ -28,7 +29,8 @@ import {ConfirmDialogModule} from 'primeng/confirmdialog';
     InputTextModule,
     InputNumberModule,
     CheckboxModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    TooltipModule
   ]
 })
 export class ModalPolicyActionsModule {}

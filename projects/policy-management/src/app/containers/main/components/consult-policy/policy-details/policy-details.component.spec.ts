@@ -149,6 +149,8 @@ describe('PolicyDetailsComponent', () => {
       .mockReturnValue(of(response));
 
     localStorageMock.setItem('turnoverperiod', '[{"id": "5", "name": "Anual"}]');
+    component.config.data.policy = {};
+    jest.spyOn(component.productService, 'getPremiumData').mockReturnValue(of({dataHeader: {code: 200}, body: {}}));
     fixture.detectChanges();
   });
 
