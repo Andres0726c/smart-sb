@@ -1,0 +1,26 @@
+.content_title{
+    flex-direction: column;
+}
+.title{
+    font-family: "Roboto condensed"!important;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height:35px;
+    display: flex;
+    align-items: center;
+    margin: 0 0 16px 20px;
+    color: black;
+}
+
+.subtitle{
+    font-family: "Roboto condensed"!important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height:20px;
+    display: flex;
+    align-items: center;
+    margin: 0 0 16px 20px;
+    color: gray;
+}

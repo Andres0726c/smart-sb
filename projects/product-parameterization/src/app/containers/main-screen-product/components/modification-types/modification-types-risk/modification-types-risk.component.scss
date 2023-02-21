@@ -1,0 +1,47 @@
+.header{
+    align-items: center;
+}
+.container-boxes {
+    gap: 12px;
+    display: flex;
+    height: 515px;
+    min-height: 515px;
+    .container-table {
+        height: 100%;
+        border-radius: 10px;
+        background-color: #fff;
+    }
+    .container-table {
+        flex: 1;
+        .coverages .p-tabview .p-tabview-nav {
+            gap: 24px;
+        }
+        .table-wrapper {
+            padding-top: 20px;
+        }
+        .permissions-col {
+            display: flex;
+            gap: 12px;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
