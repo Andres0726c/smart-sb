@@ -65,8 +65,8 @@ export class SidenavPropertyProductComponent implements OnInit
       show: false,
       isExpanded: true,
       submenus:[
-        { name: "Tipos de modificación",  routerLink: "tipos-modificacion"},
-        { name: "Controles técnicos",     routerLink: "control-tecnico-modificacion"},
+        { name: "Datos a modificar",  routerLink: "datos-modificar"},
+        { name: "Control técnico",     routerLink: "control-tecnico-modificacion"},
       ]
     },
     {
