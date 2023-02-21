@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Policy } from 'projects/policy-management/src/app/core/interfaces/policy';
+import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { ConsultPolicyService } from '../services/consult-policy.service';
 @Component({
   selector: 'app-policy-details',
@@ -19,10 +20,17 @@ export class PolicyDetailsComponent implements OnInit {
   businessPlan = 'No aplica';
   paymentType = 'No aplica';
   turnoverPeriod = 'No Aplica';
+  premiumData: any = null;
 
-  constructor(public ref: DynamicDialogRef, public config: DynamicDialogConfig, public consultPolicyService: ConsultPolicyService) { }
+  constructor(
+    public ref: DynamicDialogRef, 
+    public config: DynamicDialogConfig, 
+    public consultPolicyService: ConsultPolicyService,
+    public productService: ProductService
+  ) { }
 
   ngOnInit(): void {
+    this.getPremiumData(this.config.data.policy);
     this.consultPolicyService.getPolicyById(this.config.data.idPolicy).subscribe((res) => {
       if (res.body) {
         try {
@@ -48,6 +56,13 @@ export class PolicyDetailsComponent implements OnInit {
         }
       }
       this.isLoading = false;
+    });
+  }
+
+  getPremiumData(policy: any) {
+    this.premiumData = null;
+    this.productService.getPremiumData(policy.policyNumber, policy.endorsementNumber).subscribe((res: any) => {
+      this.premiumData = res.body;
     });
   }
 
