@@ -82,7 +82,7 @@
             </div>
 
             <div *ngIf="config.data.process === 'Cancelación'">
-                <label class="text-primary font-bold">Valor a devolver al cliente (Sin IVA)</label>
+                <label class="text-primary font-bold">Valor a devolver al cliente</label>
                 <input class="block" [style]="{'width':'100%'}" type="text" pInputText value="{{ premium | currency: 'COP' }}" disabled="true"/>
             </div>
 
