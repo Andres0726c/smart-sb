@@ -20,7 +20,7 @@ export class PolicyDetailsComponent implements OnInit {
   businessPlan = 'No aplica';
   paymentType = 'No aplica';
   turnoverPeriod = 'No Aplica';
-  premiumData: any = {};
+  premiumData: any = null;
 
   constructor(
     public ref: DynamicDialogRef, 
@@ -60,7 +60,7 @@ export class PolicyDetailsComponent implements OnInit {
   }
 
   getPremiumData(policy: any) {
-    this.premiumData = {};
+    this.premiumData = null;
     this.productService.getPremiumData(policy.policyNumber, policy.endorsementNumber).subscribe((res: any) => {
       this.premiumData = res.body;
     });

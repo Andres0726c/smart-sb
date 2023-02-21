@@ -24,7 +24,7 @@ export class ModalPolicyActionsComponent implements OnInit {
   isDateValid = true;
   policies: any;
   paymentMethod: string = '';
-  premiumData: any = {};
+  premiumData: any = null;
 
 
   constructor(
@@ -60,7 +60,7 @@ export class ModalPolicyActionsComponent implements OnInit {
   }
 
   getPremiumData(policy: any) {
-    this.premiumData = {};
+    this.premiumData = null;
     this.productService.getPremiumData(policy.policyNumber, policy.endorsementNumber).subscribe((res: any) => {
       this.premiumData = res.body;
     });

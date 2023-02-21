@@ -32,7 +32,7 @@
 
         <div>
             <span class="text-primary">Valor total prima:</span>
-            {{premiumData ? premiumData.totalPremiumValue : '' | currency: 'COP'}}
+            <span *ngIf="premiumData"> $ {{ premiumData.totalPremiumValue | currency: 'COP' }} </span>
             <button pButton pRipple type="button" icon="fas fa-info-circle" *ngIf="premiumData"
               class="p-button-rounded p-button-text h-[16px] w-[18px]"
               pTooltip="
