@@ -1,4 +1,5 @@
 
+
 <div class="container-boxes">
   <section class="container-table">
     <p-breadcrumb [model]="items"></p-breadcrumb>
@@ -6,15 +7,16 @@
       <p-table [value]="tableData">
         <ng-template pTemplate="header">
           <tr>
-            <th>Planes comerciales</th>
+            <th>Coberturas</th>
             <th>Permisos</th>
+            <th>Acciones</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-data>
           <tr>
             <td>{{ data.name }}</td>
             <td>
-              <div *ngFor="let option of optionsCommercialP" class="field-checkbox">
+              <div *ngFor="let option of optionsCoverages" class="field-checkbox">
                 <label>
                   <p-checkbox
                     (onChange)="changeCheck()"
@@ -24,6 +26,14 @@
                   {{ option.name }}
                 </label>
               </div>
+            </td>
+            <td>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-warning"
+              >Editar datos</button>
             </td>
           </tr>
         </ng-template>

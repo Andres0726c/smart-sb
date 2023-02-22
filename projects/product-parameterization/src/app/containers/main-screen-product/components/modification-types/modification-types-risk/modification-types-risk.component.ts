@@ -1,40 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 
+interface OptionsCommercialP {
+  name: string;
+  key: string;
+}
+interface Coverages {
+  id: number;
+  required: boolean;
+}
+interface BusinessPlans {
+  code: string;
+  coverages: Coverages[];
+  description: string;
+  name: string;
+  servicePlans: Coverages[];
+  optionsCommercialP?: OptionsCommercialP[];
+}
+
 @Component({
   selector: 'refactoring-smartcore-mf-modification-types-risk',
   templateUrl: './modification-types-risk.component.html',
-  styleUrls: ['./modification-types-risk.component.scss']
+  styleUrls: ['./modification-types-risk.component.scss'],
 })
 export class ModificationTypesRiskComponent implements OnInit {
-  items = [
-    { label: 'Mascotas' },
-    { label: 'Planes comerciales' },
-    { label: 'Plan premium' }
-  ];
+  items = [{ label: 'Mascotas' }, { label: 'Planes comerciales' }];
   home = { icon: 'pi pi-home', routerLink: '/' };
-  tableData =[];
-  breadcrumb:any;
-  showCommercialPlans:boolean=false;
-  selectedCategories: any[] = ['Technology', 'Sports'];
-  categories: any[] = [{name: 'Reemplazar', key: 'A'}, {name: 'Modificar', key: 'M'}];
+  breadcrumb: any;
 
-  constructor(private productService:ProductService) { }
+  tableData: BusinessPlans[] = [];
+  optionsCommercialP: OptionsCommercialP[] = [
+    { name: 'Reemplazar', key: 'R' },
+    { name: 'Modificar', key: 'M' },
+  ];
+
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.selectedCategories = this.categories.slice(1,3);
-    console.log(this.selectedCategories)
-  }
-  changeView(){
-    this.tableData=this.productService.getProductObject().servicePlans;
-    this.showCommercialPlans=!this.showCommercialPlans;
+    this.tableData =
+      this.productService.getProductObject().riskTypes[0].businessPlans;
   }
 
-  checked: boolean = false;
-  
-  public changeCheck() {
-    console.log(this.categories);
-    console.log(this.categories ? "Checked" : "Unchecked");
-  }
+  changeView() {}
 
+  changeCheck() {
+    console.log(this.tableData);
+  }
 }

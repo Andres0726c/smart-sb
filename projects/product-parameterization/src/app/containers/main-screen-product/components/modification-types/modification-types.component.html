@@ -3,11 +3,13 @@
     <h4 class="subtitle">Especifique y defina los datos a modificar</h4>
 </div>
 <div style="display:flex; flex-direction:row; ">
-    <div>
-        menu
-    </div>
-    <div>
-        <refactoring-smartcore-mf-modification-types-risk></refactoring-smartcore-mf-modification-types-risk>
+<div>
+  <button (click)="changeViewCommercial()">Planes comerciales</button>
+  <button (click)="changeViewCommercialTypes()">Plan básico</button>
+</div>
+    <div class="p-1" style="width: 1180px;">
+        <refactoring-smartcore-mf-modification-types-risk *ngIf="showCommercialPlans" ></refactoring-smartcore-mf-modification-types-risk>
+        <refactoring-smartcore-mf-commercial-plan-type *ngIf="showCommercialPlansTypes" ></refactoring-smartcore-mf-commercial-plan-type>
     </div>
 </div>
 

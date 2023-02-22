@@ -10,44 +10,25 @@ import {DialogService} from 'primeng/dynamicdialog';
 })
 export class ModificationTypesComponent implements OnInit {
 
+  showCommercialPlans:boolean=false;
+  showCommercialPlansTypes:boolean=false;
   constructor(private productService:ProductService,public dialogService: DialogService) { }
 
   ngOnInit(): void {
   }
-  // openToAdd(): void {
-
-  //   const columns = [
-  //     { name: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname'] },
-  //     { name: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription'] },
-  //     { name: 'element', displayValue: ['element'] },
-  //   ];
-    
-  //   let parameter =
-  //     this.productService.initialParameters?.get('insuranceLine')?.value !== null
-  //       ? this.productService.initialParameters?.get('insuranceLine')?.value + ''
-  //       : '0';
-      
-  //   const dialogRef = this.dialog.open(ModalSearchSmallComponent, {
-  //     data: {
-  //       code: 'riskTypeDataControls',
-  //       columns: columns,
-  //       list: this.productService.riskTypes.value,
-  //       parameter,
-  //     },
-  //     panelClass: 'custom-dialog-container',
-  //   });
-  //   dialogRef.afterClosed().subscribe((res) => {
-  //     if (this.productService.riskTypes.length == 0) {
-  //       this.addRiskType(res);
-  //       this.index = 0;
-  //       this.selectedRiskType = this.riskTypeGroup;
-  //     } else {
-  //       this.addRiskType(res);
-  //     }
-  //   });
-  // }
+  
   openToAdd(){
 
   }
+  changeViewCommercial() {
+    this.showCommercialPlans = !this.showCommercialPlans;
+    if(this.showCommercialPlansTypes)
+    this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
+  }
+  changeViewCommercialTypes() {
+    this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
+    if(this.showCommercialPlans)
+    this.showCommercialPlans = !this.showCommercialPlans;
 
+  }
 }
