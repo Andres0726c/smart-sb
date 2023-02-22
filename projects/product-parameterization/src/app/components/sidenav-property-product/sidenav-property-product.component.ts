@@ -59,7 +59,6 @@ export class SidenavPropertyProductComponent implements OnInit
     },
     {
       name: "Modificación",
-      formGroupName: "modificationControls",
       formControlName: "modification",
       showEnable:true,
       show: false,
@@ -74,7 +73,7 @@ export class SidenavPropertyProductComponent implements OnInit
       formControlName: "cancellation",
       showEnable:true,
       show: false,
-      isExpanded: true,
+      isExpanded: false,
       submenus:[]
     },
     {
@@ -82,7 +81,7 @@ export class SidenavPropertyProductComponent implements OnInit
       formControlName: "rehabilitation",
       showEnable:true,
       show: false,
-      isExpanded: true,
+      isExpanded: false,
       submenus:[]
     },
     {
@@ -90,7 +89,7 @@ export class SidenavPropertyProductComponent implements OnInit
       formControlName: "renewal",
       showEnable:true,
       show: false,
-      isExpanded: true,
+      isExpanded: false,
       submenus:[]
     },
     {
@@ -107,5 +106,15 @@ export class SidenavPropertyProductComponent implements OnInit
     },
     
   ]
+
+  validateShow(menu: any) {
+    if(menu.formControlName){
+      if(this.formProcess.get(menu.formControlName)?.value.isEnabled){
+        menu.show = !menu.show
+      }
+    }else{
+      menu.show = !menu.show
+    }
+  }
 
 }
