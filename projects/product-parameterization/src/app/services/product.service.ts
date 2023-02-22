@@ -43,16 +43,16 @@ export class ProductService {
   //   renewal: new FormControl(false)
   // })
   mdfctnPrcss:FormGroup = new FormGroup({
-    isEnabled: new FormControl(false),
+    enabled: new FormControl(false),
   });
   cancellation:FormGroup = new FormGroup({
-    isEnabled: new FormControl(false),
+    enabled: new FormControl(false),
   });
   rehabilitation:FormGroup = new FormGroup({
-    isEnabled: new FormControl(false),
+    enabled: new FormControl(false),
   });
   renewal:FormGroup = new FormGroup({
-    isEnabled: new FormControl(false),
+    enabled: new FormControl(false),
   });
 
   defaultArrays = [
@@ -187,16 +187,16 @@ export class ProductService {
     this.claimData = this.fb.array([], [Validators.required]);
     this.modificationTypes = this.fb.array([], [Validators.required]);
     this.mdfctnPrcss = new FormGroup({
-      isEnabled: new FormControl(false),
+      enabled: new FormControl(false),
     });
     this.cancellation = new FormGroup({
-      isEnabled: new FormControl(false),
+      enabled: new FormControl(false),
     });
     this.rehabilitation = new FormGroup({
-      isEnabled: new FormControl(false),
+      enabled: new FormControl(false),
     });
     this.renewal = new FormGroup({
-      isEnabled: new FormControl(false),
+      enabled: new FormControl(false),
     });
       //autosave enabled
       // this.autoSaveProduct();
@@ -424,6 +424,12 @@ export class ProductService {
       this.claimData = product.claimData ? (this.setFields('claimData', product.claimData)) : new FormArray<any>([]);
       this.claimTechnicalControls = product.claimTechnicalControls ? (this.setFields('claimTechnicalControls', product.claimTechnicalControls)) : new FormArray<any>([]);
       this.modificationTypes = product.modificationTypes ? (this.setFields('modificationTypes', product.modificationTypes)) : new FormArray<any>([]);
+      this.mdfctnPrcss = product.mdfctnPrcss ? this.setFields('mdfctnPrcss', product.mdfctnPrcss) : new FormGroup({});
+      this.cancellation = product.mdfctnPrcss ? this.setFields('cancellation', product.cancellation) : new FormGroup({});
+      this.rehabilitation = product.mdfctnPrcss ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({});
+      this.renewal = product.mdfctnPrcss ? this.setFields('renewal', product.renewal) : new FormGroup({});
+      
+      
 
       this.initialParameters.get('productName')?.disable();
       this.initialParameters.get('company')?.disable();

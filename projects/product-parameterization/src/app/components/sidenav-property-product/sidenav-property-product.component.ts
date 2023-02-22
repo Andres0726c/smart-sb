@@ -109,7 +109,7 @@ export class SidenavPropertyProductComponent implements OnInit
 
   validateShow(menu: any) {
     if(menu.formControlName){
-      if(this.formProcess.get(menu.formControlName)?.value.isEnabled){
+      if(this.formProcess.get(menu.formControlName)?.value.enabled){
         menu.show = !menu.show
       }
     }else{
