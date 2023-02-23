@@ -6118,6 +6118,36 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   line-height: 120%;
 }
 
+.p-tooltip {
+  max-width: fit-content !important;
+}
+
+/*::ng-deep {
+  .p-tooltip {
+      max-width: fit-content;
+   }
+} */
+
+.p-tooltip .p-tooltip-text {
+  background: #4c4c4c;
+  color: #dedede;
+  padding: 0.429rem 0.429rem;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  border-radius: 3px;
+}
+.p-tooltip.p-tooltip-right .p-tooltip-arrow {
+  border-right-color: #4c4c4c;
+}
+.p-tooltip.p-tooltip-left .p-tooltip-arrow {
+  border-left-color: #4c4c4c;
+}
+.p-tooltip.p-tooltip-top .p-tooltip-arrow {
+  border-top-color: #4c4c4c;
+}
+.p-tooltip.p-tooltip-bottom .p-tooltip-arrow {
+  border-bottom-color: #4c4c4c;
+}
+
 /****  ****/
 
 /** General **/

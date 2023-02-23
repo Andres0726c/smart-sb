@@ -31,8 +31,27 @@
         </div>
 
         <div>
-            <span class="text-primary">Valor total prima (Sin IVA):</span>
-            {{config.data.policy.premiumValue | currency: 'COP'}}
+            <span class="text-primary">Valor total prima:</span>
+            <span *ngIf="premiumData"> $ {{ premiumData.totalPremiumValue | currency: 'COP' }} </span>
+            <button pButton pRipple type="button" icon="fas fa-info-circle" *ngIf="premiumData"
+              class="p-button-rounded p-button-text h-[16px] w-[18px]"
+              pTooltip="
+                <div class='ml-[10px] grid grid-cols-2 w-full'>
+                  <div class='w-full col-span-2 text-center font-bold text-xl text-yellow-200 mb-5 ml-[-12px]'>Detalle de prima</div>
+                  <span class='font-bold'>Valor prima:</span>
+                  <span class='text-green-100 text-right mr-[20px]'> $ {{ premiumData.premiumValue | currency:'COP' }} </span>
+                  <span class='font-bold'>Valor impuesto:</span>
+                  <span class='text-green-100 text-right mr-[20px]'> $ {{ premiumData.taxValue | currency:'COP' }} </span>
+                  <div class='col-span-2 mr-[20px]'>
+                    <hr class='h-[5px]'>
+                  </div>
+                  <span class='font-bold'>Valor total:</span>
+                  <span class='text-green-200 text-right mr-[20px]'> $ {{ premiumData.totalPremiumValue | currency:'COP' }} </span>
+                </div>
+              "
+              tooltipEvent="focus"
+              [escape]="false">
+            </button>
         </div>
 
         <div *ngIf="config.data.process === 'Cancelación'">
@@ -63,8 +82,8 @@
             </div>
 
             <div *ngIf="config.data.process === 'Cancelación'">
-                <label class="text-primary font-bold">Valor a devolver al cliente (Sin IVA)</label>
-                <input class="block" [style]="{'width':'100%'}" type="text" pInputText value="{{ premium?.value | currency: 'COP' }}" disabled="true"/>
+                <label class="text-primary font-bold">Valor a devolver al cliente</label>
+                <input class="block" [style]="{'width':'100%'}" type="text" pInputText value="{{ premium | currency: 'COP' }}" disabled="true"/>
             </div>
 
             <div>
