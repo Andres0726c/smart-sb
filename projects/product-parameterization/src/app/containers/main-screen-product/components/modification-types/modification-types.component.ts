@@ -46,6 +46,7 @@ export class ModificationTypesComponent implements OnInit {
   policyData:boolean=false;
   showCommercialPlans: boolean = false;
   showCommercialPlansTypes: boolean = false;
+  showRisk:boolean=false;
   nameBrach: string = '';
   
   constructor(
@@ -53,21 +54,9 @@ export class ModificationTypesComponent implements OnInit {
     public fb: FormBuilder,
     public toastMessage: MatSnackBar,
     public productService: ProductService,) { this.calledMenu();}
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+  ngOnInit(): void { }
 
-  // changeViewCommercial() {
-  //   this.showCommercialPlans = !this.showCommercialPlans;
-  //   if(this.showCommercialPlansTypes)
-  //   this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
-  // }
-  // changeViewCommercialTypes() {
-  //   this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
-  //   if(this.showCommercialPlans)
-  //   this.showCommercialPlans = !this.showCommercialPlans;
 
-  // }
 
 
   // nodeSelect(event:any) {
@@ -122,17 +111,6 @@ export class ModificationTypesComponent implements OnInit {
   // }
   
 
-  // changeViewCommercial() {
-  //   this.showCommercialPlans = !this.showCommercialPlans;
-  //   if(this.showCommercialPlansTypes)
-  //   this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
-  // }
-  // changeViewCommercialTypes() {
-  //   this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
-  //   if(this.showCommercialPlans)
-  //   this.showCommercialPlans = !this.showCommercialPlans;
-
-  // }
   getGroupArrayById(id: number) {
     return (<FormArray>this.complementaryDataControls.controls.find((x: { value: { id: number; }; }) => x.value.id === id)?.get('fields'));
   //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
@@ -325,18 +303,7 @@ export class ModificationTypesComponent implements OnInit {
   }
   
 
-  // changeViewCommercial() {
-  //   this.showCommercialPlans = !this.showCommercialPlans;
-  //   if(this.showCommercialPlansTypes)
-  //   this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
-  // }
-  // changeViewCommercialTypes() {
-  //   this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
-  //   if(this.showCommercialPlans)
-  //   this.showCommercialPlans = !this.showCommercialPlans;
-
-  // }
-
+ 
 
   addBranch(items: any, showMenu?:BussinesPlans[]): MenuItem[] {
     let list: MenuItem[] = [];
@@ -347,18 +314,21 @@ export class ModificationTypesComponent implements OnInit {
           label: label1,
           icon: 'pi pi-fw',
           expanded: true,
+          // disabled:this.riskData,
           items: [
             {
               label: 'Planes comerciales',
               icon: 'pi pi-fw',
-              items: this.addBussinesPlan(itempush.businessPlans,showMenu),
-              disabled: false,
-              expanded:true,
+              // disabled:this.riskData,
               command: (event: any) => {
                 this.showCommercialPlans = true;
                 if (this.showCommercialPlansTypes)
                   this.showCommercialPlansTypes = false;
+                  this.showRisk=false;
               },
+              items: this.addBussinesPlan(itempush.businessPlans,showMenu),             
+              // expanded:true              
+
             },
           ],
         };
@@ -379,26 +349,29 @@ export class ModificationTypesComponent implements OnInit {
         label: label1,
         icon: 'pi pi-fw',
         disabled: this.addBranchCoverage(showMenu,itempush), //cambiar
-        expanded: false,
+        // expanded: false,
         items: [
           {
             id: '1',
             label: 'coberturas',
-            disabled: false,
+            // disabled:  this.riskData,
             command: (event: any) => {
               this.showCommercialPlansTypes = true;
               if (this.showCommercialPlans || this.bussinesPlans)
                 this.showCommercialPlans = false;
+                this.showRisk=false;
             }
           },
           {
             id: '2',
             label: 'Planes de servicio',
             icon: 'pi pi-fw',
+            // disabled:this.riskData,
             command: (event: any) => {
               this.showCommercialPlansTypes = true;
               if (this.showCommercialPlans || this.coverages)
                 this.showCommercialPlans = false;
+                this.showRisk=false;
             }
           },
         ],
@@ -409,22 +382,9 @@ export class ModificationTypesComponent implements OnInit {
   }
 
 
-  changeViewCommercial() {
-    this.showCommercialPlans = !this.showCommercialPlans;
-    if (this.showCommercialPlansTypes)
-      this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
-  }
-  changeViewCommercialTypes() {
-    this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
-    if (this.showCommercialPlans)
-      this.showCommercialPlans = !this.showCommercialPlans;
-  }
 
   onAddBranch(showMenu: BussinesPlans[]) {
-    let plans: BussinesPlans[]=[];
-    let x=showMenu.find(({athrzdOprtn})=>athrzdOprtn);
-    if(x!=undefined) {plans.push(x);   this.calledMenu(plans); }
-  
+    this.calledMenu(showMenu); 
   }
 
 
@@ -433,7 +393,7 @@ export class ModificationTypesComponent implements OnInit {
       {
         label: 'Datos de la póliza',
         icon: 'pi pi-fw',
-        expanded: true,
+        // expanded: true,
         command: (event: any) => {
           this.policyData=true;
           if(this.riskData)
@@ -443,11 +403,14 @@ export class ModificationTypesComponent implements OnInit {
       {
         label: 'Tipos de riesgo',
         icon: 'pi pi-fw',
-        expanded: true,
+        // expanded: true,
         command: (event: any) => {
           this.riskData=true;
+          this.showRisk=true;
           if(this.policyData)
           this.policyData=false;
+          this.showCommercialPlans=false;
+          this.showCommercialPlansTypes=false;
         },
         items: [
           ...this.addBranch(this.productService.getProductObject().riskTypes,showMenu),
@@ -456,27 +419,12 @@ export class ModificationTypesComponent implements OnInit {
     ];
   }
   addBranchCoverage(showMenu:BussinesPlans[], itempush:any) {
-    console.log(itempush.code);
-    console.log(showMenu);
-
-    let validate;
-
-    for(let bussines of showMenu){
-      validate = (bussines.code===itempush.code);
-      const result= bussines.athrzdOprtn?.find(({key})=>key==="MDF");
-      const exist= this.showBranch.find(({name})=>name===bussines.name);
-      if(result && !exist){
-        this.showBranch.push(bussines);
-      }
-      if(!result && exist){
-        const i= this.showBranch.findIndex(({name})=>name===bussines.name);
-        this.showBranch.splice(i,1);
-      }
-    }  
-    console.log("Branch: ",this.showBranch, validate, itempush.code );
-    if(validate && this.showBranch.length>0 ){ return false;} else { return true;}
-
-
-
+    let validate:boolean=true;
+    for(let onOption of showMenu){
+      const result= onOption.athrzdOprtn?.find(({key})=>key==="MDF"),
+      exist= this.showBranch.find(({name})=>name===onOption.name);
+      if(onOption.code===itempush.code && (result)){return validate=false;}
+    }
+ return validate;
 }
 }
