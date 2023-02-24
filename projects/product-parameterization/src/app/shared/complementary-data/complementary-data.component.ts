@@ -1,5 +1,5 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, Input, OnInit, QueryList, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators, AbstractControl, ValidationErrors, ValidatorFn, } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -33,6 +33,7 @@ export class ComplementaryDataComponent implements OnInit {
   @Input() complementaryData: any = new FormArray([], [Validators.required]);
   @Input() modifyData: boolean = false;
   @Input() policyData: boolean = false;
+  @Output() action: EventEmitter<ElementTableSearch> = new EventEmitter();
 
   selectedField: any = new FormGroup({});
   selectedGroup = new FormGroup({});
@@ -64,6 +65,7 @@ export class ComplementaryDataComponent implements OnInit {
 
   ngOnInit() {
     //
+    console.log(this.complementaryData);
   }
 
   ngAfterViewInit() {
@@ -74,6 +76,10 @@ export class ComplementaryDataComponent implements OnInit {
   ngOnChanges() {
     this.loadData();
     this.loadContextData();
+  }
+
+  shootAction(){
+    this.action.emit()
   }
 
   async loadData() {
@@ -87,11 +93,14 @@ export class ComplementaryDataComponent implements OnInit {
 
       let res: any
 
-      if (this.modifyData && this.productService.policyData.value.length > 0 && this.productService.policyData.value[0].fields.length > 0) {
-        res = await lastValueFrom(this.productService.getApiData(`displayEssential/findByProcess/`+this.productService.initialParameters?.get('insuranceLine')?.value+`/0/0/0/0`));
-      } else if(!this.modifyData) {
-        res = await lastValueFrom(this.productService.getApiData(`complementaryData/findEssentialDataByInsuranceLineApplicationLevel/${parameters}`));
-      }
+      // if (this.modifyData && this.productService.policyData.value.length > 0 && this.productService.policyData.value[0].fields.length > 0) {
+      //   res = await lastValueFrom(this.productService.getApiData(`displayEssential/findByProcess/`+this.productService.initialParameters?.get('insuranceLine')?.value+`/0/0/0/0`));
+      //  } 
+      //else if(!this.modifyData) {
+      //   res = await lastValueFrom(this.productService.getApiData(`complementaryData/findEssentialDataByInsuranceLineApplicationLevel/${parameters}`));
+      // }
+
+      res = await lastValueFrom(this.productService.getApiData(`complementaryData/findEssentialDataByInsuranceLineApplicationLevel/${parameters}`));
 
       this.isLoading = false;
 
@@ -320,26 +329,26 @@ export class ComplementaryDataComponent implements OnInit {
       for (let object of obj) {
         const index = this.getAllFields().findIndex((x: { id: number; }) => x.id === object.id);
 
-        if (this.modifyData) {
+       // if (this.modifyData) {
 
-          if (index === -1) {
-            this.getGroupArrayById(group).push(new FormGroup({
-              id: this.fb.control(object.id, [Validators.required]),
-              name: this.fb.control(object.name, [Validators.required]),
-              label: this.fb.control(object.element.nmLabel ? object.element.nmLabel : object.element.label, [Validators.required]),
-              dataType: this.fb.control(object.element.dataType),
-              shouldDelete: this.fb.control(object.shouldDelete, [Validators.required]),
-              businessCode:this.fb.control(object.element.businessCode),
-              domainList:this.fb.control(object.element.domainList)
-            }));
+          // if (index === -1) {
+          //   this.getGroupArrayById(group).push(new FormGroup({
+          //     id: this.fb.control(object.id, [Validators.required]),
+          //     name: this.fb.control(object.name, [Validators.required]),
+          //     label: this.fb.control(object.element.nmLabel ? object.element.nmLabel : object.element.label, [Validators.required]),
+          //     dataType: this.fb.control(object.element.dataType),
+          //     shouldDelete: this.fb.control(object.shouldDelete, [Validators.required]),
+          //     businessCode:this.fb.control(object.element.businessCode),
+          //     domainList:this.fb.control(object.element.domainList)
+          //   }));
 
-            if (this.getGroupArrayById(1).length > 0 && this.getGroupArrayById(1).controls.length === 1) {
-              this.selectComplementaryData(<FormGroup>this.getGroupArrayById(1).controls[0])
-            }
-          }
+          //   if (this.getGroupArrayById(1).length > 0 && this.getGroupArrayById(1).controls.length === 1) {
+          //     this.selectComplementaryData(<FormGroup>this.getGroupArrayById(1).controls[0])
+          //   }
+          // }
 
-        }
-        else {
+        // }
+        // else {
 
           if (index === -1) {
 
@@ -382,7 +391,7 @@ export class ComplementaryDataComponent implements OnInit {
             }
           }
         }
-      }
+    //  }
 
       if (this.getGroupArrayById(1).length > 0 && !this.selectedField?.get('id')) {
         this.selectComplementaryData(<FormGroup>this.getGroupArrayById(1).controls[0])
@@ -471,6 +480,8 @@ export class ComplementaryDataComponent implements OnInit {
   selectComplementaryData(itemParam: any) {
     this.selectedField = itemParam;
     this.dependsArray = [];
+
+    console.log(this.selectedField);
 
 
 

@@ -36,6 +36,7 @@ export class ProductService {
   claimTechnicalControls: any = new FormArray<any>([]);
   claimData: any = new FormArray<any>([]);
   modificationTypes: any = new FormArray<any>([]);
+  modificationProcess: FormGroup =new FormGroup({});
 
   defaultArrays = [
     'selectedProcess',
@@ -104,6 +105,8 @@ export class ProductService {
 
     /* Modification Types */
     { field: 'modificationTypes', validators: [] },
+
+    { field: 'modificationProcess', validators: [] },
   ]
 
   constructor(
@@ -168,6 +171,14 @@ export class ProductService {
     this.claimTechnicalControls = this.fb.array([], []);
     this.claimData = this.fb.array([], [Validators.required]);
     this.modificationTypes = this.fb.array([], [Validators.required]);
+    this.modificationProcess = this.fb.group ({ 
+      mdfcblDt: this.fb.group ({ 
+          plcyDtGrp:this.fb.array([]),
+          rskTyp:this.fb.array([]),
+          cls:this.fb.array([])
+        }),
+      mdfctnTchnclCntrl:this.fb.array([])
+     })
       //autosave enabled
       // this.autoSaveProduct();
   }
@@ -263,6 +274,7 @@ export class ProductService {
       claimTechnicalControls: this.claimTechnicalControls.getRawValue(),
       conceptReservation: this.conceptReservation.value,
       modificationTypes: this.modificationTypes.getRawValue(),
+      modificationProcess: this.modificationProcess.getRawValue(),
     };
   }
 
@@ -386,7 +398,8 @@ export class ProductService {
       this.claimData = product.claimData ? (this.setFields('claimData', product.claimData)) : new FormArray<any>([]);
       this.claimTechnicalControls = product.claimTechnicalControls ? (this.setFields('claimTechnicalControls', product.claimTechnicalControls)) : new FormArray<any>([]);
       this.modificationTypes = product.modificationTypes ? (this.setFields('modificationTypes', product.modificationTypes)) : new FormArray<any>([]);
-
+      this.modificationProcess = product.modificationProcess ? (this.setFields('modificationProcess', product.modificationProcess)) :new FormGroup({});
+      
       this.initialParameters.get('productName')?.disable();
       this.initialParameters.get('company')?.disable();
 
@@ -448,6 +461,15 @@ export class ProductService {
           }
         }
       }
+
+      // if (this.modificationProcess.length > 0) {
+      //   for (const modificationProcess of this.modificationProcess.controls) {
+      //     let modificationProcess: any = (<FormArray>this.modificationProcess.get('visibleNonModificableData'));
+      //     if (modificationProcess.length > 0 && !(<FormGroup>modificationProcess.controls[0]).contains('code')) {
+      //       (<FormGroup>modificationProcess.controls[0]).addControl('code', this.fb.control('datos_basicos'));
+      //     }
+      //   }
+      // }
 
       this.modificationTypes = product.modificationTypes ? this.setFields('modificationTypes', product.modificationTypes) : new FormArray<any>([]);
       this.isEnabledSave = false;

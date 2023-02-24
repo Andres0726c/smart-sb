@@ -10,6 +10,7 @@ import { ModalCreateProductModule } from '../modal-create-product/modal-create-p
 import { HeaderModule } from '../../components/header/header.module';
 import { ToastMessageModule } from '../../shared/toast-message/toast-message.module';
 import { ModificationTypesComponent } from './components/modification-types/modification-types.component';
+import { NoDataScreenModule } from '../../shared/no-data-screen/no-data-screen.module';
 
 const routes: Route[] = [
   {
@@ -19,7 +20,7 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-  declarations: [MainScreenProductComponent, ModificationTypesComponent],
+  declarations: [MainScreenProductComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
@@ -28,7 +29,8 @@ const routes: Route[] = [
     ModalCreateProductModule,
     ModalEditProductModule,
     ToastMessageModule,
-    SharedModule
+    SharedModule,
+    NoDataScreenModule
   ],
   providers:[
    MatSnackBar

@@ -1,0 +1,60 @@
+@import "../../../../../assets/styles/config/variables";
+@import "../../../../../assets/styles/config/mixins";
+@import "../../../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+::ng-deep .p-tree{
+  width: max-content;  
+}
+
+.content_title {
+  flex-direction: column;
+  padding: 1rem 0;
+}
+.title {
+font-family: "Roboto Condensed"!important;
+font-style: normal;
+font-weight: bold;
+font-size: 30px;
+line-height: 35px;
+display: flex;
+align-items: center;
+margin: 0 0 16px 20px;
+color: $titleSubtitle;
+}
+.subtitle {
+font-family: "Roboto Condensed"!important;
+font-style: normal;
+font-weight: normal;
+font-size: 17px;
+line-height: 20px;
+display: flex;
+align-items: center;
+margin: 0 0 16px 20px;
+color: $titleSubtitle;
+}
+
+.div-button {
+  position: relative;
+  margin-top: 10px;
+  .bt {
+    font-weight: bold;
+    height: 40px;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: $primaryBase;
+    border-radius: 50px;
+  }
+  
+}
+
+.icon-button-add {
+  color: $primaryBase;
+  font-size: 20px;
+  margin-right: 10px;
+  @include mq-max(md) {
+      margin-right: 5px;
+  }
+}
