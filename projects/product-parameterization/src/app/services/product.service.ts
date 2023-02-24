@@ -428,9 +428,9 @@ export class ProductService {
       this.claimTechnicalControls = product.claimTechnicalControls ? (this.setFields('claimTechnicalControls', product.claimTechnicalControls)) : new FormArray<any>([]);
       this.modificationTypes = product.modificationTypes ? (this.setFields('modificationTypes', product.modificationTypes)) : new FormArray<any>([]);
       this.mdfctnPrcss = product.mdfctnPrcss ? this.setFields('mdfctnPrcss', product.mdfctnPrcss) : new FormGroup({});
-      this.cancellation = product.mdfctnPrcss ? this.setFields('cancellation', product.cancellation) : new FormGroup({});
-      this.rehabilitation = product.mdfctnPrcss ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({});
-      this.renewal = product.mdfctnPrcss ? this.setFields('renewal', product.renewal) : new FormGroup({});
+      this.cancellation = product.cancellation ? this.setFields('cancellation', product.cancellation) : new FormGroup({});
+      this.rehabilitation = product.rehabilitation ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({});
+      this.renewal = product.renewal ? this.setFields('renewal', product.renewal) : new FormGroup({});
       
       
 
