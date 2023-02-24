@@ -1,68 +1,90 @@
-<div>
-    <div class="content_title">
-        <h3 class="title">sd</h3>
-        <h4 class="subtitle">sdfds</h4>
-      </div>
 
-      <div>
-
+<div class="content_title">
+  <h3 class="title">Modificación</h3>
+  <h4 class="subtitle">Especifique y defina los datos a modificar</h4>
+</div>
+<div style="display: flex; flex-direction: row">
+  <div *ngIf="items1">
+    <p-panelMenu [model]="items1" [style]="{ width: '300px' }"></p-panelMenu>
+  </div>
+  <div class="p-1" style="width: 1180px">
+    
+    <div *ngIf="false">
         <h4>Datos</h4>
         <div class="div-button">
-            <button mat-button class="bt bt-primary" (click)="openToAdd()" data-qa-id="sc-rpmf-btn_add-element">
-              <em class="fal fa-plus-circle icon-button-add"></em>
-              Añadir
-            </button>
-          </div>
+          <button
+            mat-button
+            class="bt bt-primary"
+            (click)="openToAdd()"
+            data-qa-id="sc-rpmf-btn_add-element"
+          >
+            <em class="fal fa-plus-circle icon-button-add"></em>
+            Añadir
+          </button>
+        </div>
+      </div>
+    
+      <div style="display: flex; padding: 10px; justify-content: space-between">
+        <!-- <div style="max-width: 240px;">
+            <p-tree [value]="data" selectionMode="single" [(selection)]="selectedNode" style="width: max-content;"
+            (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+        
+        </div> -->
+    
+        <!-- <div  style="width: 90%;"> -->
+    
+        <!--  -->
+        <!-- </div> -->
+    
+        <div style="width: 90%">
+          <!-- <app-no-data-screen 
+                    [data]="productService.modificationTypes" 
+                    [layoutType]="'full'" 
+                    [emptyTitle]="''"
+                    [emptySubTitle]="''" 
+                    [emptyText]="'Sin datos de poliza'"
+                    [emptySubText]="'No se ha asociado ningún dato de poliza'" 
+                    (action)="openToAdd()">
+                </app-no-data-screen>  -->
+    
+          <app-complementary-data
+            [applicationLevel]="'types'"
+            [title]="''"
+            [subtitle]="''"
+            [groupName]="'Datos básicos'"
+            [emptyText]="'Sin datos de la póliza'"
+            [emptySubText]="'No se han asociado datos de la póliza al producto'"
+            [successAddItemMsg]="
+              'Los datos de la póliza fueron asociados correctamente.'
+            "
+            [removeItemMsg]="
+              '¿Está seguro de querer desasociar el dato de la póliza seleccionado?'
+            "
+            [titleModalCompData]="'Seleccionar nuevos datos de la póliza'"
+            [subtitleModalCompData]="
+              'Seleccione los datos de la póliza que desea asociar'
+            "
+            [complementaryData]="complementaryDataControls"
+            (action)="openToAdd()"
+            [modifyData]="true"
+          >
+          </app-complementary-data>
+        </div>
       </div>
 
-    
-
-    <div style="display:flex; padding:10px; justify-content: space-between;">
-
-    <div style="max-width: 240px;">
-        <p-tree [value]="data" selectionMode="single" [(selection)]="selectedNode" style="width: max-content;"
-        (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
-    
-    </div>
-
-    <!-- <div  style="width: 90%;"> -->
-
-            <!--  -->
-    <!-- </div> -->
-    
-    <div  style="width: 90%;">
-
-        <!-- <app-no-data-screen 
-                [data]="productService.modificationTypes" 
-                [layoutType]="'full'" 
-                [emptyTitle]="''"
-                [emptySubTitle]="''" 
-                [emptyText]="'Sin datos de poliza'"
-                [emptySubText]="'No se ha asociado ningún dato de poliza'" 
-                (action)="openToAdd()">
-            </app-no-data-screen>  -->
-
-
-        <app-complementary-data
-    [applicationLevel]="'types'" 
-    [title]="''"
-    [subtitle]="''"
-    [groupName]="'Datos básicos'"
-    [emptyText]="'Sin datos de la póliza'"
-    [emptySubText]="'No se han asociado datos de la póliza al producto'"
-    [successAddItemMsg]="'Los datos de la póliza fueron asociados correctamente.'"
-    [removeItemMsg]="'¿Está seguro de querer desasociar el dato de la póliza seleccionado?'"
-    [titleModalCompData]="'Seleccionar nuevos datos de la póliza'"
-    [subtitleModalCompData]="'Seleccione los datos de la póliza que desea asociar'"
-    [complementaryData]="complementaryDataControls"
-    (action)="openToAdd()"
-    [modifyData]="true"
-
-    >
-  </app-complementary-data>
-</div>
-
-    </div>
+    <refactoring-smartcore-mf-modification-types-risk
+      [indexRiskType]="indexRiskType"
+      [indexServicePlan]="indexServicePlan"
+      (addBranch)="onAddBranch($event)"
+      *ngIf="showCommercialPlans"
+    ></refactoring-smartcore-mf-modification-types-risk>
+    <refactoring-smartcore-mf-commercial-plan-type
+      [titleBussinesPlan]="titleBussinesPlan"
+      [coverages]="coverages"
+      [bussinesPlans]="bussinesPlans"
+      *ngIf="showCommercialPlansTypes"
+    ></refactoring-smartcore-mf-commercial-plan-type>
+  </div>
 </div>
 <!-- <div class="content_title">
     <h3 class="title">Modificación</h3>

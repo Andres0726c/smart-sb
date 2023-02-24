@@ -16,6 +16,7 @@ import {BreadcrumbModule} from 'primeng/breadcrumb';
 import {CheckboxModule} from 'primeng/checkbox';
 import { TableModule } from 'primeng/table';
 import { CommercialPlanTypeComponent } from './modification-types-risk/commercial-plan-type/commercial-plan-type.component';
+import { TabViewModule } from 'primeng/tabview';
 
 const routes: Route[] = [
   {
@@ -41,7 +42,9 @@ const routes: Route[] = [
     BreadcrumbModule,
     CheckboxModule,
     TableModule,
-    FormsModule
+    FormsModule,
+    TabViewModule,
+
   ]
 })
 export class ModificationTypesModule { }

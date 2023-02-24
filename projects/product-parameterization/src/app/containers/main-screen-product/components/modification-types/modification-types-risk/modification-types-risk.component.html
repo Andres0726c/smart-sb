@@ -14,12 +14,12 @@
           <tr>
             <td>{{ data.name }}</td>
             <td>
-              <div *ngFor="let option of optionsCommercialP" class="field-checkbox">
+              <div *ngFor="let option of athrzdOprtn" class="field-checkbox">
                 <label>
                   <p-checkbox
                     (onChange)="changeCheck()"
                     [value]="option"
-                    [(ngModel)]="data.servicePlan"
+                    [(ngModel)]="data.athrzdOprtn"
                   ></p-checkbox>
                   {{ option.name }}
                 </label>
