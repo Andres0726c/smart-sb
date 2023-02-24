@@ -31,7 +31,7 @@
                   ></em>
                   <span>{{menu.name}}</span>
                   <div *ngIf="menu.showEnable" [formGroupName]="menu.formControlName || ''" class="grid justify-items-end">
-                    <mat-checkbox (click)=" formProcess.get(menu.formControlName || '')?.value.enabled? menu.show = false: menu.show = true; $event.stopImmediatePropagation()" formControlName="enabled"></mat-checkbox>
+                    <mat-checkbox (click)="menu.show = !formProcess.get(menu.formControlName || '')?.value.enabled; $event.stopImmediatePropagation()" formControlName="enabled"></mat-checkbox>
                   </div>
                 </div>
               </div>
