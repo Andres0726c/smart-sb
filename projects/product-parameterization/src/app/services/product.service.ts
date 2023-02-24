@@ -36,12 +36,6 @@ export class ProductService {
   claimTechnicalControls: any = new FormArray<any>([]);
   claimData: any = new FormArray<any>([]);
   modificationTypes: any = new FormArray<any>([]);
-  // policyProcess: FormGroup = new FormGroup({
-  //   mdfctnPrcss: new FormControl(false),
-  //   cancellation: new FormControl(false), 
-  //   rehabilitation: new FormControl(false),
-  //   renewal: new FormControl(false)
-  // })
   mdfctnPrcss:FormGroup = new FormGroup({
     enabled: new FormControl(false),
   });
