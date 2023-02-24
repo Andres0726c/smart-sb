@@ -238,6 +238,5 @@ describe('ConsultPolicyComponent', () => {
     jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
     expect(component.getPolicy()).toBeUndefined();
   });
-
   
 });

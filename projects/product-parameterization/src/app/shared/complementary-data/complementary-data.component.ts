@@ -101,6 +101,11 @@ export class ComplementaryDataComponent implements OnInit {
       // }
 
       res = await lastValueFrom(this.productService.getApiData(`complementaryData/findEssentialDataByInsuranceLineApplicationLevel/${parameters}`));
+      if (this.modifyData && this.productService.policyData.value.length > 0 && this.productService.policyData.value[0].fields.length > 0) {
+        res = await lastValueFrom(this.productService.getApiData(`displayEssential/findByProcess/`+this.productService.initialParameters?.get('insuranceLine')?.value+`/0/0/0`));
+      } else if(!this.modifyData) {
+        res = await lastValueFrom(this.productService.getApiData(`complementaryData/findEssentialDataByInsuranceLineApplicationLevel/${parameters}`));
+      }
 
       this.isLoading = false;
 

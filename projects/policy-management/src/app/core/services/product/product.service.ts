@@ -12,6 +12,7 @@ import { DomainList } from '../../interfaces/domainList';
 export class ProductService {
   /* Get data variables */
   private apiUrl: string = environment.urlPolicyIssuerMS;
+  private apiUrlAdapter: string = environment.urlAdapterMS;
 
   private headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -60,7 +61,6 @@ export class ProductService {
         })
   };
 
-
   getApiData = (serviceData: string = '', rlEngnCd: string = '', id:string=''):Observable<any> => {
     id = (id !== '' ? `/${id}` : '');
     return this.httpClient.get<ResponseDTO<DomainList>>
@@ -73,6 +73,14 @@ export class ProductService {
         {
           headers: this.headers,
         })
+  };
+
+  getPremiumData = (policyNumber: number, endorsementNumber: number): Observable<any> => {
+    return this.httpClient.get<ResponseDTO<any>>
+      (`${this.apiUrlAdapter}policy/taxes?smartCorePolicyNumber=${policyNumber}&endorsementNumber=${endorsementNumber}`,
+        {
+          headers: this.headers,
+        });
   };
 
   executeRule( data: any): Observable<any>{
