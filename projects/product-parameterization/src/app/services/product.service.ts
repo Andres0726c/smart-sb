@@ -339,10 +339,6 @@ export class ProductService {
    * Function that saves all data for the current product
    */
   public saveProduct(showAlerts: boolean): void {
-    console.log("mdfctnPrcss",this.mdfctnPrcss)
-    console.log("cancellation",this.cancellation)
-    console.log("rehabilitation",this.rehabilitation)
-    console.log("renewal",this.renewal)
     this.saving = true;
     let product = {
       nombre: this.initialParameters.get("productName")?.value,
@@ -427,10 +423,18 @@ export class ProductService {
       this.claimData = product.claimData ? (this.setFields('claimData', product.claimData)) : new FormArray<any>([]);
       this.claimTechnicalControls = product.claimTechnicalControls ? (this.setFields('claimTechnicalControls', product.claimTechnicalControls)) : new FormArray<any>([]);
       this.modificationTypes = product.modificationTypes ? (this.setFields('modificationTypes', product.modificationTypes)) : new FormArray<any>([]);
-      this.mdfctnPrcss = product.mdfctnPrcss ? this.setFields('mdfctnPrcss', product.mdfctnPrcss) : new FormGroup({});
-      this.cancellation = product.cancellation ? this.setFields('cancellation', product.cancellation) : new FormGroup({});
-      this.rehabilitation = product.rehabilitation ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({});
-      this.renewal = product.renewal ? this.setFields('renewal', product.renewal) : new FormGroup({});
+      this.mdfctnPrcss = product.mdfctnPrcss ? this.setFields('mdfctnPrcss', product.mdfctnPrcss) : new FormGroup({
+        enabled: new FormControl(false),
+      });
+      this.cancellation = product.cancellation ? this.setFields('cancellation', product.cancellation) : new FormGroup({
+        enabled: new FormControl(false),
+      });
+      this.rehabilitation = product.rehabilitation ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({
+        enabled: new FormControl(false),
+      });
+      this.renewal = product.renewal ? this.setFields('renewal', product.renewal) : new FormGroup({
+        enabled: new FormControl(false),
+      });
       
       
 
