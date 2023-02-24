@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input,EventEmitter,Output } from '@angular/core';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 
 interface OptionsCommercialP {
@@ -15,7 +15,7 @@ interface BusinessPlans {
   description: string;
   name: string;
   servicePlans: Coverages[];
-  optionsCommercialP?: OptionsCommercialP[];
+  athrzdOprtn?: OptionsCommercialP[];
 }
 
 @Component({
@@ -24,19 +24,23 @@ interface BusinessPlans {
   styleUrls: ['./modification-types-risk.component.scss'],
 })
 export class ModificationTypesRiskComponent implements OnInit {
+  @Output() addBranch  =new EventEmitter<BusinessPlans[]>();
+  @Input() indexServicePlan:number=0; 
+  @Input() indexRiskType:number=0;
   items = [{ label: 'Mascotas' }, { label: 'Planes comerciales' }];
   home = { icon: 'pi pi-home', routerLink: '/' };
   breadcrumb: any;
-
+  showBranch:BusinessPlans[]=[];
   tableData: BusinessPlans[] = [];
-  optionsCommercialP: OptionsCommercialP[] = [
-    { name: 'Reemplazar', key: 'R' },
-    { name: 'Modificar', key: 'M' },
+  athrzdOprtn: OptionsCommercialP[] = [
+    { name: 'Reemplazar', key: 'RMP' },
+    { name: 'Modificar', key: 'MDF' },
   ];
-
+  // "athrzdOprtn": ["RMP","MDF"]
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
+    console.log(this.indexRiskType);
     this.tableData =
       this.productService.getProductObject().riskTypes[0].businessPlans;
   }
@@ -44,6 +48,9 @@ export class ModificationTypesRiskComponent implements OnInit {
   changeView() {}
 
   changeCheck() {
-    console.log(this.tableData);
+
+    this.addBranch.emit(this.tableData);
   }
+
+  
 }
