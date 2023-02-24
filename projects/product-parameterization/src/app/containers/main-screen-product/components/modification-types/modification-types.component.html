@@ -9,7 +9,7 @@
   </div>
   <div class="p-1" style="width: 1180px">
     
-    <div *ngIf="false">
+    <div *ngIf="policyData">
         <h4>Datos</h4>
         <div class="div-button">
           <button
@@ -24,7 +24,7 @@
         </div>
       </div>
     
-      <div style="display: flex; padding: 10px; justify-content: space-between">
+      <div style="display: flex; padding: 10px; justify-content: space-between" *ngIf="policyData">
         <!-- <div style="max-width: 240px;">
             <p-tree [value]="data" selectionMode="single" [(selection)]="selectedNode" style="width: max-content;"
             (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
@@ -71,20 +71,23 @@
           </app-complementary-data>
         </div>
       </div>
+<!-- <div *ngIf="true"> -->
+
 
     <refactoring-smartcore-mf-modification-types-risk
       [indexRiskType]="indexRiskType"
       [indexServicePlan]="indexServicePlan"
       (addBranch)="onAddBranch($event)"
-      *ngIf="showCommercialPlans"
+      *ngIf="showCommercialPlans && riskData"
     ></refactoring-smartcore-mf-modification-types-risk>
     <refactoring-smartcore-mf-commercial-plan-type
       [titleBussinesPlan]="titleBussinesPlan"
       [coverages]="coverages"
       [bussinesPlans]="bussinesPlans"
-      *ngIf="showCommercialPlansTypes"
+      *ngIf="showCommercialPlansTypes && riskData"
     ></refactoring-smartcore-mf-commercial-plan-type>
-  </div>
+  <!-- </div> -->
+</div>
 </div>
 <!-- <div class="content_title">
     <h3 class="title">Modificación</h3>

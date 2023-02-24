@@ -42,6 +42,8 @@ export class ModificationTypesComponent implements OnInit {
   bussinesPlans: boolean = false;
   coverages: boolean = false;
   showBranch:BussinesPlans[]=[];
+  riskData:boolean=false;
+  policyData:boolean=false;
   showCommercialPlans: boolean = false;
   showCommercialPlansTypes: boolean = false;
   nameBrach: string = '';
@@ -432,12 +434,21 @@ export class ModificationTypesComponent implements OnInit {
         label: 'Datos de la póliza',
         icon: 'pi pi-fw',
         expanded: true,
+        command: (event: any) => {
+          this.policyData=true;
+          if(this.riskData)
+          this.riskData=false;
+        },
       },
       {
         label: 'Tipos de riesgo',
         icon: 'pi pi-fw',
         expanded: true,
-        disabled: true,
+        command: (event: any) => {
+          this.riskData=true;
+          if(this.policyData)
+          this.policyData=false;
+        },
         items: [
           ...this.addBranch(this.productService.getProductObject().riskTypes,showMenu),
         ],
