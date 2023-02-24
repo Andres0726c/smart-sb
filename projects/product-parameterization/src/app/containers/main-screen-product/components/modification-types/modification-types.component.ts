@@ -348,7 +348,7 @@ export class ModificationTypesComponent implements OnInit {
         id: itempush.code,
         label: label1,
         icon: 'pi pi-fw',
-        disabled: this.addBranchCoverage(showMenu,itempush), //cambiar
+        disabled: this.addBranchCoverage(showMenu,itempush), 
         // expanded: false,
         items: [
           {
@@ -365,7 +365,6 @@ export class ModificationTypesComponent implements OnInit {
           {
             id: '2',
             label: 'Planes de servicio',
-            icon: 'pi pi-fw',
             // disabled:this.riskData,
             command: (event: any) => {
               this.showCommercialPlansTypes = true;
