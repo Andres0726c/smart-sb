@@ -9,6 +9,8 @@ import { ModalSearchSmallComponent } from 'projects/product-parameterization/src
 import { NoDataScreenComponent } from 'projects/product-parameterization/src/app/shared/no-data-screen/no-data-screen.component';
 import { NoDataScreenModule } from 'projects/product-parameterization/src/app/shared/no-data-screen/no-data-screen.module';
 import { DataToast, STATES } from 'projects/product-parameterization/src/app/shared/toast-message/toast-message.component';
+//import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
+import {DialogService} from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'refactoring-smartcore-mf-modification-types',
@@ -48,6 +50,13 @@ data:TreeNode[] = [
     public toastMessage: MatSnackBar,
     public productService: ProductService,
   ){}
+  
+
+
+
+  // showCommercialPlans:boolean=false;
+  // showCommercialPlansTypes:boolean=false;
+  // constructor(private productService:ProductService,public dialogService: DialogService) { }
 
   ngOnInit(): void {
     console.log(this.productService.modificationProcess);
@@ -64,7 +73,6 @@ data:TreeNode[] = [
 
 
   openToAdd(): void {
-
 
     let sendData = [];
     sendData = this.productService.policyData?.value[0].fields;
@@ -253,5 +261,17 @@ data:TreeNode[] = [
       return objGruop;
 
   }
+  
 
+  // changeViewCommercial() {
+  //   this.showCommercialPlans = !this.showCommercialPlans;
+  //   if(this.showCommercialPlansTypes)
+  //   this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
+  // }
+  // changeViewCommercialTypes() {
+  //   this.showCommercialPlansTypes = !this.showCommercialPlansTypes;
+  //   if(this.showCommercialPlans)
+  //   this.showCommercialPlans = !this.showCommercialPlans;
+
+  // }
 }

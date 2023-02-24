@@ -1,0 +1,37 @@
+.container-table {
+    height: 100%;
+    border-radius: 10px;
+    background-color: #fff;
+    th:nth-child(2){
+        text-align: center
+    }
+    td{
+        gap: 1rem;
+        justify-content: center;
+    }
+    td:nth-child(2){
+        display: flex; 
+    }
+    .field-checkbox label{
+        
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

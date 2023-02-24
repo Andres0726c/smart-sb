@@ -9,6 +9,14 @@ import { NoDataScreenModule } from 'projects/product-parameterization/src/app/sh
 import {TreeModule} from 'primeng/tree';
 import {ToastModule} from 'primeng/toast';
 import { FormsModule } from '@angular/forms';
+import { ModificationTypesRiskComponent } from './modification-types-risk/modification-types-risk.component';
+import {PanelMenuModule} from 'primeng/panelmenu';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import {BreadcrumbModule} from 'primeng/breadcrumb';
+import {CheckboxModule} from 'primeng/checkbox';
+import { TableModule } from 'primeng/table';
+import { CommercialPlanTypeComponent } from './modification-types-risk/commercial-plan-type/commercial-plan-type.component';
+
 const routes: Route[] = [
   {
       path     : '',
@@ -17,7 +25,7 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-  declarations: [ModificationTypesComponent],
+  declarations: [ModificationTypesComponent,CommercialPlanTypeComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
@@ -27,7 +35,13 @@ const routes: Route[] = [
     NoDataScreenModule,
     FormsModule,
     TreeModule,
-    ToastModule
+    ToastModule,
+    PanelMenuModule,
+    DynamicDialogModule,
+    BreadcrumbModule,
+    CheckboxModule,
+    TableModule,
+    FormsModule
   ]
 })
 export class ModificationTypesModule { }
