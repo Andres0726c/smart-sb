@@ -25,7 +25,7 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-  declarations: [ModificationTypesComponent,CommercialPlanTypeComponent],
+  declarations: [ModificationTypesComponent,CommercialPlanTypeComponent,ModificationTypesRiskComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,

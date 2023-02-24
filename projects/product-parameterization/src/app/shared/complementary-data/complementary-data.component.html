@@ -64,8 +64,9 @@
                 *ngIf="complementaryDataControls.length === 1 && getGroupArrayById(1).length === 0">
                 <mat-expansion-panel [expanded]="true" [hideToggle]="true">
                     <app-no-data-screen [data]="complementaryData" [emptyText]="emptyText" [emptySubText]="emptySubText"
-                        [ShowButton]="!modifyData"
-                        (action)="shootAction()">
+                        [ShowButton]="true"
+                        (action)="modifyData?shootAction():openDialogPolicyData('complementaryDataControls')">
+                      >
                     </app-no-data-screen>
                 </mat-expansion-panel>
             </mat-accordion>
