@@ -43,7 +43,7 @@ export class ModificationTypesComponent implements OnInit {
   coverages: boolean = false;
   showBranch:BussinesPlans[]=[];
   riskData:boolean=false;
-  policyData:boolean=false;
+  policyData:boolean=true;
   showCommercialPlans: boolean = false;
   showCommercialPlansTypes: boolean = false;
   showRisk:boolean=false;
