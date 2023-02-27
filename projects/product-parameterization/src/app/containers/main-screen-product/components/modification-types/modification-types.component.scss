@@ -84,3 +84,21 @@ color: $titleSubtitle;
     margin: 0 0 16px 20px;
     color: gray;
 }
+.subHeader{
+  padding: 5px;
+  display: flex;
+  /* flex-direction: row; */
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  h4{
+    padding-top:10px
+  }
+  .div-button{
+    display: contents;
+    .bt {
+      width: 100px;
+    }
+
+  }
+}

@@ -47,6 +47,7 @@ export class ModificationTypesComponent implements OnInit {
   showCommercialPlans: boolean = false;
   showCommercialPlansTypes: boolean = false;
   nameBrach: string = '';
+  titleCurrent: any = 'Datos de la póliza';
   
   constructor(
     public dialog: MatDialog,
@@ -273,31 +274,6 @@ export class ModificationTypesComponent implements OnInit {
       }
     }
 
-  nodeSelect(event:any) {
-    console.log(event);
-  }
-
-  nodeUnselect(event:any) {
-    console.log(event);
-  }
-
-  
-
-  selectGroup() {
-    let newGroupName = 'Nuevo grupo';
-   
-    const Group = this.fb.group({
-      id: "this.getMax(this.complementaryDataControls.value, 'id') + 1,",
-      name: newGroupName,
-      code: null,
-      fields: this.fb.array([], Validators.required),
-      isEditing: this.fb.control(false)
-    });
-
-    
-   
-   // this.startGroupEdit(this.complementaryData.controls[this.complementaryData.length - 1]);
-  }
 
   getNameGroup(name:any){
 
@@ -356,6 +332,8 @@ export class ModificationTypesComponent implements OnInit {
               expanded:true,
               command: (event: any) => {
                 this.showCommercialPlans = true;
+                this.riskData=false;
+                this.policyData=false;
                 if (this.showCommercialPlansTypes)
                   this.showCommercialPlansTypes = false;
               },
@@ -397,6 +375,8 @@ export class ModificationTypesComponent implements OnInit {
             icon: 'pi pi-fw',
             command: (event: any) => {
               this.showCommercialPlansTypes = true;
+              this.riskData=false;
+              this.policyData=false;
               if (this.showCommercialPlans || this.coverages)
                 this.showCommercialPlans = false;
             }
@@ -436,6 +416,9 @@ export class ModificationTypesComponent implements OnInit {
         expanded: true,
         command: (event: any) => {
           this.policyData=true;
+          this.showCommercialPlansTypes = false;
+          this.showCommercialPlans = false;
+          this.titleCurrent =  this.items1[0]?.label;
           if(this.riskData)
           this.riskData=false;
         },
@@ -446,6 +429,7 @@ export class ModificationTypesComponent implements OnInit {
         expanded: true,
         command: (event: any) => {
           this.riskData=true;
+          this.titleCurrent =  this.items1[1]?.label;
           if(this.policyData)
           this.policyData=false;
         },
