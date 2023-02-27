@@ -45,6 +45,11 @@ export const screenManagementRoutes: Route[] = [
                 path: 'cumulos',
                 loadChildren: () => import('../../../containers/accumulation/accumulation.module').then(m => m.AccumulationModule)
             },
+            /* Previsualización campos */
+            {
+                path: 'previsualizar-datos-poliza',
+                loadChildren: () => import('../../../containers/preview-policy-data/preview-policy-data.module').then(m => m.PreviewPolicyDataModule)
+            },
             /* Modificación */
             {
                 path: 'datos-modificar',
@@ -72,8 +77,8 @@ export const screenManagementRoutes: Route[] = [
                 loadChildren: () => import('../../../containers/claim-technical-control/claim-technical-control.module').then(m => m.ClaimTechnicalControlModule)
             },
             {
-              path: 'hidden-view',
-              loadChildren: () => import('../../../containers/hidden-view/hidden-view.module').then(m => m.HiddenViewModule)
+                path: 'hidden-view',
+                loadChildren: () => import('../../../containers/hidden-view/hidden-view.module').then(m => m.HiddenViewModule)
             }
         ]
     }
