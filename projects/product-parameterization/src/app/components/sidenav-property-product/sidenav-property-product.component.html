@@ -38,7 +38,6 @@
               <div class="canvas" *ngIf="menu.isExpanded" [hidden]="!menu.show">
                 <ul class="submenu" [ngClass]="{ expanded: menu.show }">
                   <li *ngFor="let submenu of menu.submenus" routerLinkActive="fill-select">
-                    <!-- TODO: deshabilitar la opción cuando submenu.disabled = true -->
                     <a [routerLink]="submenu.routerLink">
                       <span>{{submenu.name}}</span>
                       <em class="fal fa-angle-right"></em>

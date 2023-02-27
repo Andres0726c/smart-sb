@@ -16,7 +16,12 @@ export class SidenavPropertyProductComponent implements OnInit
   productName!:string;
   formProcess!: FormGroup;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, public productService:ProductService, public fb: FormBuilder) { 
+  constructor(
+    public dialog: MatDialog, 
+    private route: ActivatedRoute, 
+    public productService:ProductService, 
+    public fb: FormBuilder
+  ) { 
     this.formProcess = this.fb.group({
       modification: this.productService.mdfctnPrcss,
       cancellation: this.productService.cancellation,
@@ -27,7 +32,7 @@ export class SidenavPropertyProductComponent implements OnInit
 
   ngOnInit(): void 
   {
-    this.productName = this.productService.initialParameters.get('productName')?.value;    
+    this.productName = this.productService.initialParameters.get('productName')?.value;
   }
 
   @ViewChild('sidenav')
@@ -38,7 +43,6 @@ export class SidenavPropertyProductComponent implements OnInit
   isExpandedClaim = true;
   showSubmenuClaim: boolean = true;
   
-
   menus = [
     {
       name: "Emisión",
@@ -63,9 +67,9 @@ export class SidenavPropertyProductComponent implements OnInit
       show: true,
       isExpanded: true,
       submenus:[
-        { name: "Datos de póliza",    disabled: false, routerLink: "previsualizar-datos-poliza"},
-        { name: "Datos de riesgo",    disabled: true,  routerLink: "previsualizar-datos-riesgo"},
-        { name: "Datos de cobertura", disabled: true,  routerLink: "previsualizar-datos-cobertura"},
+        { name: "Datos de póliza",    routerLink: "previsualizar-datos-poliza"},
+        { name: "Datos de riesgo",    routerLink: "previsualizar-datos-riesgo"},
+        { name: "Datos de cobertura", routerLink: "previsualizar-datos-cobertura"},
       ]
     },
     {
@@ -127,5 +131,4 @@ export class SidenavPropertyProductComponent implements OnInit
       menu.show = !menu.show
     }
   }
-
 }

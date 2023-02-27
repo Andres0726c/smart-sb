@@ -104,8 +104,7 @@ export class ModificationTypesComponent implements OnInit {
   openToAdd(): void {
 
     const columns = [
-      { name: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname']
-       },
+      { name: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname'] },
       { name: 'description', header: 'Descripción', displayValue: ['dsDescription'],dbColumnName:['dsdescription'] },
       { name: 'element', displayValue: ['element'] },
     ];
