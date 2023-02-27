@@ -63,14 +63,16 @@
     </div>
 
         <refactoring-smartcore-mf-modification-types-risk
-          [indexRiskType]="indexRiskType"
-          [indexServicePlan]="indexServicePlan"
+          [titleCommercialPlan]="titleCommercialPlan"
+        [titleRisk]="titleRisk"
+          [riskType]="riskType"
           (addBranch)="onAddBranch($event)"
           *ngIf="showCommercialPlans && !riskData"
         ></refactoring-smartcore-mf-modification-types-risk>
         <refactoring-smartcore-mf-commercial-plan-type
           [titleBussinesPlan]="titleBussinesPlan"
-          [coverages]="coverages"
+          [data]="data"
+        [riskDataCode]="riskDataCode"
           [bussinesPlans]="bussinesPlans"
           *ngIf="showCommercialPlansTypes && !riskData"
         ></refactoring-smartcore-mf-commercial-plan-type>

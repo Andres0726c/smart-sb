@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,EventEmitter,Output } from '@angular/core';
+import { Component, OnInit, Input,EventEmitter,Output,OnChanges,SimpleChanges } from '@angular/core';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 
 interface OptionsCommercialP {
@@ -23,10 +23,11 @@ interface BusinessPlans {
   templateUrl: './modification-types-risk.component.html',
   styleUrls: ['./modification-types-risk.component.scss'],
 })
-export class ModificationTypesRiskComponent implements OnInit {
+export class ModificationTypesRiskComponent implements OnInit,OnChanges {
   @Output() addBranch  =new EventEmitter<BusinessPlans[]>();
-  @Input() indexServicePlan:number=0; 
-  @Input() indexRiskType:number=0;
+  @Input() riskType:string='';
+  @Input() titleRisk:string='';
+  @Input() titleCommercialPlan='';
   items = [{ label: 'Mascotas' }, { label: 'Planes comerciales' }];
   home = { icon: 'pi pi-home', routerLink: '/' };
   breadcrumb: any;
@@ -40,12 +41,18 @@ export class ModificationTypesRiskComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    console.log(this.indexRiskType);
-    this.tableData =
-      this.productService.getProductObject().riskTypes[0].businessPlans;
-  }
 
-  changeView() {}
+  }
+  ngOnChanges(changes: SimpleChanges){
+    console.log(changes);
+    // this.items = [{ label: changes['titleRisk'].currentValue }, { label: 'Planes comerciales' }];
+  if(changes['riskType'].currentValue){this.changeView(changes['riskType'].currentValue)};
+  }
+  changeView(riskType:string) {
+    let dataRisk:any=localStorage.getItem(riskType);
+    dataRisk= JSON.parse(dataRisk);
+    this.tableData=dataRisk.businessPlans;
+  }
 
   changeCheck() {
 
@@ -53,13 +60,10 @@ export class ModificationTypesRiskComponent implements OnInit {
       const result= bussines.athrzdOprtn?.find(({key})=>key==="MDF"), 
       result1=bussines.athrzdOprtn?.find(({key})=>key==="RMP"),
       exist= this.showBranch.find(({name})=>name===bussines.name);
-      console.log("existe:   ",exist,"result:   ",result);
       if(result!=undefined && exist==undefined){
         this.showBranch.push(bussines);    
       }
-      if(this.showBranch){console.log("entro show:  ", this.showBranch)}
       if((result==undefined && exist!=undefined)){
-        console.log("rama*:     ",this.showBranch)
         const i= this.showBranch.findIndex(({name})=>name===bussines.name);
         this.showBranch.splice(i,1);
       }
@@ -67,17 +71,10 @@ export class ModificationTypesRiskComponent implements OnInit {
         this.addBranch.emit(this.tableData);
       }
     } 
-
-    console.log("branchh*** :",this.showBranch);
       if(this.showBranch){
         this.addBranch.emit(this.showBranch);
       }else{
         this.addBranch.emit([]);
       }
-    
-
-
   }
-
-  
 }

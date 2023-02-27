@@ -10,11 +10,11 @@
             <th>Permisos</th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-data>
+        <ng-template pTemplate="body" let-data let-rowIndex="rowIndex">
           <tr>
             <td>{{ data.name }}</td>
             <td>
-              <div *ngFor="let option of athrzdOprtn" class="field-checkbox">
+              <div *ngFor="let option of athrzdOprtn; let i = index" class="field-checkbox">
                 <label>
                   <p-checkbox
                     (onChange)="changeCheck()"

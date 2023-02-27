@@ -1,4 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 
 interface OptionsCoverages {
@@ -22,6 +29,7 @@ interface Coverages {
   payRollData: any[];
   rates: [];
   waitingTime: any;
+  required: boolean;
   athrzdOprtnCoverages?: OptionsCoverages[];
 }
 
@@ -30,11 +38,11 @@ interface Coverages {
   templateUrl: './commercial-plan-type.component.html',
   styleUrls: ['./commercial-plan-type.component.scss'],
 })
-export class CommercialPlanTypeComponent implements OnInit {
+export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   @Input() titleBussinesPlan: string = '';
-  @Input() coverages: boolean = false;
+  @Input() data: string = '';
   @Input() bussinesPlans: boolean = false;
-
+  @Input() riskDataCode: string = '';
   items = [
     { label: 'Mascotas' },
     { label: 'Planes comerciales' },
@@ -45,15 +53,18 @@ export class CommercialPlanTypeComponent implements OnInit {
   breadcrumb: any;
   showBranch: Coverages[] = [];
   tableData: Coverages[] = [];
+  dataAux: any;
   disabled: boolean = true;
+  product: any;
+  risk: any;
   athrzdOprtnCoverages: OptionsCoverages[] = [
-    { name: 'Remover', key: 'RMP' },
-    { name: 'Añadir', key: 'A' },
+    { name: 'Remover', key: 'RMV' },
+    { name: 'Añadir', key: 'ADD' },
     { name: 'Modificar', key: 'MDF' },
   ];
   athrzdOprtnService: OptionsCoverages[] = [
     { name: 'Remover', key: 'RMP' },
-    { name: 'Añadir', key: 'A' },
+    { name: 'Añadir', key: 'ADD' },
   ];
   idCoverages: IdCoverages[] = [];
   idServicePlans: IdCoverages[] = [];
@@ -61,48 +72,58 @@ export class CommercialPlanTypeComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    //this.tableData = this.productService.getProductObject().servicePlans;
-    this.idCoverages =
-      this.productService.getProductObject().riskTypes[0].businessPlans[0].coverages;
-    for (let coverage of this.idCoverages) {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.addDataTable(changes['data'].currentValue);
+  }
+  addDataTable( riskCode: string) {
+    let dataRisk:any = localStorage.getItem(riskCode);
+    dataRisk = JSON.parse(dataRisk);
+    for (let data of dataRisk) {
+      console.log(data.code == this.data);
+      if (data.code == this.data) {
+        dataRisk = data;
+      }
+    }
+    this.fillTableData(dataRisk);
+  }
+
+
+  fillTableData(data: any) {
+    this.tableData = [];
+    this.tableDataService = [];
+    let idCoverages = data.coverages,
+      idServicePlans = data.servicePlans;
+    for (let coverage of idCoverages) {
+      coverage = this.productService.getCoverageById(coverage.id);
+      coverage.required = idCoverages.find(
+        (data: any) => data.id === coverage.id
+      );
       this.tableData.push(this.productService.getCoverageById(coverage.id));
     }
-    this.idServicePlans =
-      this.productService.getProductObject().riskTypes[0].businessPlans[0].servicePlans;
-    for (let servicePlans of this.idServicePlans) {
+
+    for (let servicePlans of idServicePlans) {
       this.tableDataService.push(
         this.productService.getServicePlanById(servicePlans.id)
       );
     }
     console.log(this.tableData);
   }
-
-  changeCheck(i: number) {
-    console.log('i: ', i);
-    for (let bussines of this.tableData) {
-      const result = bussines.athrzdOprtnCoverages?.find(({ name }) => name === 'Modificar'), exist = this.showBranch.find(({ name }) => name === bussines.name);
-      if (result && !exist) {
-        this.showBranch.push(bussines);
-      }
-      if (!result && exist) {
-        const i = this.showBranch.findIndex(
-          ({ name }) => name === bussines.name
-        );
-        this.showBranch.splice(i, 1);
-      }
-    }
-    console.log(this.tableData);
+  onDisabled() {}
+  changeCheck(data: any) {
+    console.log(data);
   }
   changeCheckServices() {
     console.log(this.tableDataService);
   }
   activeButton(data: Coverages) {
-    let btn:boolean;
+    let btn: boolean;
     const result = data.athrzdOprtnCoverages?.find(({ key }) => key === 'MDF');
     result ? (btn = false) : (btn = true);
     return btn;
   }
-  editData(data: Coverages){
-    console.log(data)
+  editData(data: Coverages) {
+    console.log(data);
   }
 }

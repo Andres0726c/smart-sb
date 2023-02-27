@@ -22,7 +22,8 @@
                   >
                     <label>
                       <p-checkbox
-                        (onChange)="changeCheck(i)"
+                        [disabled]="data.required.required && option.key=='RMV'"
+                        (onChange)="changeCheck(data)"
                         [value]="option"
                         [(ngModel)]="data.athrzdOprtnCoverages"
                       ></p-checkbox>
