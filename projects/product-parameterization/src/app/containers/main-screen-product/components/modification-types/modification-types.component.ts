@@ -2,14 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TreeNode } from 'primeng/api';
 import { ElementReturn } from 'projects/product-parameterization/src/app/core/model/SearchModal.model';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 import { MenuItem } from 'primeng/api';
 
 import { ModalSearchSmallComponent } from 'projects/product-parameterization/src/app/shared/modal-search-small/modal-search-small.component';
-import { NoDataScreenComponent } from 'projects/product-parameterization/src/app/shared/no-data-screen/no-data-screen.component';
-import { NoDataScreenModule } from 'projects/product-parameterization/src/app/shared/no-data-screen/no-data-screen.module';
+
 import {
   DataToast,
   STATES,
@@ -198,14 +196,6 @@ export class ModificationTypesComponent implements OnInit, OnDestroy {
       // console.log(this.complementaryDataControls,"test");
     }
   };
-
-  nodeSelect(event:any) {
-    console.log(event);
-  }
-
-  nodeUnselect(event:any) {
-    console.log(event);
-  }
 
   
 
