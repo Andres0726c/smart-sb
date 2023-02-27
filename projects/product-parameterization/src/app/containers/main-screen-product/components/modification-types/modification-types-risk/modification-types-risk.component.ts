@@ -49,7 +49,34 @@ export class ModificationTypesRiskComponent implements OnInit {
 
   changeCheck() {
 
-    this.addBranch.emit(this.tableData);
+    for(let bussines of this.tableData){
+      const result= bussines.athrzdOprtn?.find(({key})=>key==="MDF"), 
+      result1=bussines.athrzdOprtn?.find(({key})=>key==="RMP"),
+      exist= this.showBranch.find(({name})=>name===bussines.name);
+      console.log("existe:   ",exist,"result:   ",result);
+      if(result!=undefined && exist==undefined){
+        this.showBranch.push(bussines);    
+      }
+      if(this.showBranch){console.log("entro show:  ", this.showBranch)}
+      if((result==undefined && exist!=undefined)){
+        console.log("rama*:     ",this.showBranch)
+        const i= this.showBranch.findIndex(({name})=>name===bussines.name);
+        this.showBranch.splice(i,1);
+      }
+      if(result1!=undefined){
+        this.addBranch.emit(this.tableData);
+      }
+    } 
+
+    console.log("branchh*** :",this.showBranch);
+      if(this.showBranch){
+        this.addBranch.emit(this.showBranch);
+      }else{
+        this.addBranch.emit([]);
+      }
+    
+
+
   }
 
   
