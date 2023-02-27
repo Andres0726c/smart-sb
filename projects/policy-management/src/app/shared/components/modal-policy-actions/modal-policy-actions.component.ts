@@ -98,7 +98,7 @@ export class ModalPolicyActionsComponent implements OnInit {
     processDate = new Date(processDate);
     const policyDays = Math.round((expirationDate - inceptionDate) / (1000 * 60 * 60 * 24));
     const diffDays = Math.round((expirationDate - processDate) / (1000 * 60 * 60 * 24));
-    const premium = this.premiumData ? Number(this.premiumData.totalPremiumValue) : 0;
+    const premium = this.premiumData ? Number(this.premiumData.premiumEndValue) : 0;
     const dayValue = premium / policyDays;
     this.premium = this.premiumData ? Number((dayValue * diffDays).toFixed(2)): null;
   }
