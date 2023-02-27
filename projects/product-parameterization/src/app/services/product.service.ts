@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { environment } from 'commons-lib';
@@ -36,6 +36,18 @@ export class ProductService {
   claimTechnicalControls: any = new FormArray<any>([]);
   claimData: any = new FormArray<any>([]);
   modificationTypes: any = new FormArray<any>([]);
+  mdfctnPrcss:FormGroup = new FormGroup({
+    enabled: new FormControl(false),
+  });
+  cancellation:FormGroup = new FormGroup({
+    enabled: new FormControl(false),
+  });
+  rehabilitation:FormGroup = new FormGroup({
+    enabled: new FormControl(false),
+  });
+  renewal:FormGroup = new FormGroup({
+    enabled: new FormControl(false),
+  });
 
   defaultArrays = [
     'selectedProcess',
@@ -168,6 +180,18 @@ export class ProductService {
     this.claimTechnicalControls = this.fb.array([], []);
     this.claimData = this.fb.array([], [Validators.required]);
     this.modificationTypes = this.fb.array([], [Validators.required]);
+    this.mdfctnPrcss = new FormGroup({
+      enabled: new FormControl(false),
+    });
+    this.cancellation = new FormGroup({
+      enabled: new FormControl(false),
+    });
+    this.rehabilitation = new FormGroup({
+      enabled: new FormControl(false),
+    });
+    this.renewal = new FormGroup({
+      enabled: new FormControl(false),
+    });
       //autosave enabled
       // this.autoSaveProduct();
   }
@@ -272,6 +296,10 @@ export class ProductService {
       claimTechnicalControls: this.claimTechnicalControls.getRawValue(),
       conceptReservation: this.conceptReservation.value,
       modificationTypes: this.modificationTypes.getRawValue(),
+      mdfctnPrcss: this.mdfctnPrcss.getRawValue(),
+      cancellation: this.cancellation.getRawValue(),
+      rehabilitation: this.rehabilitation.getRawValue(),
+      renewal: this.renewal.getRawValue()
     };
   }
 
@@ -395,6 +423,20 @@ export class ProductService {
       this.claimData = product.claimData ? (this.setFields('claimData', product.claimData)) : new FormArray<any>([]);
       this.claimTechnicalControls = product.claimTechnicalControls ? (this.setFields('claimTechnicalControls', product.claimTechnicalControls)) : new FormArray<any>([]);
       this.modificationTypes = product.modificationTypes ? (this.setFields('modificationTypes', product.modificationTypes)) : new FormArray<any>([]);
+      this.mdfctnPrcss = product.mdfctnPrcss ? this.setFields('mdfctnPrcss', product.mdfctnPrcss) : new FormGroup({
+        enabled: new FormControl(false),
+      });
+      this.cancellation = product.cancellation ? this.setFields('cancellation', product.cancellation) : new FormGroup({
+        enabled: new FormControl(false),
+      });
+      this.rehabilitation = product.rehabilitation ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({
+        enabled: new FormControl(false),
+      });
+      this.renewal = product.renewal ? this.setFields('renewal', product.renewal) : new FormGroup({
+        enabled: new FormControl(false),
+      });
+      
+      
 
       this.initialParameters.get('productName')?.disable();
       this.initialParameters.get('company')?.disable();
@@ -624,7 +666,7 @@ export class ProductService {
     if(environment.productAutosave)
     {
       let formArrayList: any[] = [this.coverages, this.policyData, this.clauses, this.riskTypes, this.servicePlans, this.taxesCategories, this.technicalControls, this.conceptReservation, this.claimData, this.claimTechnicalControls, this.modificationTypes];
-      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters];
+      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cancellation, this.rehabilitation, this.renewal];
          this.registerFormEvent(formArrayList);
          this.registerFormEvent(formGroupList);
     }
