@@ -3,6 +3,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -13,8 +14,16 @@ import { ProductService } from '../../services/product.service';
 export class SidenavPropertyProductComponent implements OnInit 
 {
   productName!:string;
+  formProcess!: FormGroup;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, public productService:ProductService) { }
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, public productService:ProductService, public fb: FormBuilder) { 
+    this.formProcess = this.fb.group({
+      modification: this.productService.mdfctnPrcss,
+      cancellation: this.productService.cancellation,
+      rehabilitation: this.productService.rehabilitation,
+      renewal: this.productService.renewal
+    })
+  }
 
   ngOnInit(): void 
   {
@@ -33,6 +42,7 @@ export class SidenavPropertyProductComponent implements OnInit
   menus = [
     {
       name: "Emisión",
+      showEnable:false,
       show: true,
       isExpanded: true,
       submenus:[
@@ -49,16 +59,43 @@ export class SidenavPropertyProductComponent implements OnInit
     },
     {
       name: "Modificación",
-      show: true,
+      formControlName: "modification",
+      showEnable:true,
+      show: false,
       isExpanded: true,
       submenus:[
-        { name: "Tipos de modificación",  routerLink: "tipos-modificacion"},
-        { name: "Controles técnicos",     routerLink: "control-tecnico-modificacion"},
+        { name: "Datos a modificar",  routerLink: "datos-modificar"},
+        { name: "Control técnico",     routerLink: "control-tecnico-modificacion"},
       ]
     },
     {
+      name: "Cancelación",
+      formControlName: "cancellation",
+      showEnable:true,
+      show: false,
+      isExpanded: false,
+      submenus:[]
+    },
+    {
+      name: "Rehabilitación",
+      formControlName: "rehabilitation",
+      showEnable:true,
+      show: false,
+      isExpanded: false,
+      submenus:[]
+    },
+    {
+      name: "Renovación",
+      formControlName: "renewal",
+      showEnable:true,
+      show: false,
+      isExpanded: false,
+      submenus:[]
+    },
+    {
       name: "Reclamación",
-      show: true,
+      showEnable:false,
+      show: false,
       isExpanded: true,
       submenus:[
         { name: "Concepto de reserva",        routerLink: "reserva-reclamacion"},
@@ -66,7 +103,18 @@ export class SidenavPropertyProductComponent implements OnInit
         { name: "Datos de la reclamación",    routerLink: "datos-reclamacion"},
         { name: "Control técnico",            routerLink: "control-tecnico-reclamacion"},
       ]
-    }
+    },
+    
   ]
+
+  validateShow(menu: any) {
+    if(menu.formControlName){
+      if(this.formProcess.get(menu.formControlName)?.value.enabled){
+        menu.show = !menu.show
+      }
+    }else{
+      menu.show = !menu.show
+    }
+  }
 
 }
