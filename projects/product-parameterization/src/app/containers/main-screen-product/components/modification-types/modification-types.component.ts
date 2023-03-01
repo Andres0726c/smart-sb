@@ -38,8 +38,8 @@ interface BussinesPlans {
 export class ModificationTypesComponent implements OnInit, OnDestroy {
   items1: MenuItem[] = [];
   titleBussinesPlan: string = '';
-  titleRisk:string='';
-  titleCommercialPlan:string='';
+  titleRisk: string = '';
+  titleCommercialPlan: string = '';
   bussinesPlans: boolean = false;
   data: string = '';
   riskDataCode: string = '';
@@ -197,26 +197,21 @@ export class ModificationTypesComponent implements OnInit, OnDestroy {
     }
   };
 
-  
-
   selectGroup() {
     let newGroupName = 'Nuevo grupo';
-   
+
     const Group = this.fb.group({
       id: "this.getMax(this.complementaryDataControls.value, 'id') + 1,",
       name: newGroupName,
       code: null,
       fields: this.fb.array([], Validators.required),
-      isEditing: this.fb.control(false)
+      isEditing: this.fb.control(false),
     });
 
-    
-   
-   // this.startGroupEdit(this.complementaryData.controls[this.complementaryData.length - 1]);
+    // this.startGroupEdit(this.complementaryData.controls[this.complementaryData.length - 1]);
   }
 
-  getNameGroup(name:any){
-
+  getNameGroup(name: any) {
     let objGruop;
 
     for (let groups of this.productService.policyData.value) {
@@ -246,32 +241,14 @@ export class ModificationTypesComponent implements OnInit, OnDestroy {
           label: label1,
           icon: 'pi pi-fw',
           command: (event: any) => {
-            localStorage.setItem(
-              itempush.name,
-              JSON.stringify(
-                this.productService
-                  .getProductObject()
-                  .riskTypes.find((product: any) => product.id === itempush.id)
-              )
-            );
-            this.riskDataCode = itempush.name;
-            this.riskType = itempush.name;
-            this.titleRisk=itempush.name;
-            console.log(this.riskType);
+            this.dataSet(itempush);
           },
           items: [
             {
               label: 'Planes comerciales',
               icon: 'pi pi-fw',
               command: (event: any) => {
-                console.log(event);
-                this.titleRisk=itempush.name;
-                this.showCommercialPlans = true;
-                this.riskData=false;
-                this.policyData=false;
-                if (this.showCommercialPlansTypes)
-                  this.showCommercialPlansTypes = false;
-                this.showRisk = false;
+                this.showCommercialPlan(itempush);
               },
               items: this.addBusinessPlan(itempush.businessPlans, showMenu),
             },
@@ -297,8 +274,7 @@ export class ModificationTypesComponent implements OnInit, OnDestroy {
         expanded: false,
         disabled: this.addBranchCoverage(showMenu, itempush),
         command: (event: any) => {
-          console.log('event: ', event);
-          this.titleCommercialPlan=itempush.name;
+          this.titleCommercialPlan = itempush.name;
           this.sendData(event.item.id);
         },
       };
@@ -327,12 +303,7 @@ export class ModificationTypesComponent implements OnInit, OnDestroy {
         icon: 'pi pi-fw',
         expanded: true,
         command: (event: any) => {
-          this.riskData = true;
-          this.titleCurrent =  this.items1[1]?.label;
-          this.showRisk = true;
-          if (this.policyData) this.policyData = false;
-          this.showCommercialPlans = false;
-          this.showCommercialPlansTypes = false;
+          this.showRiskType();
         },
         items: [
           ...this.addBranch(
@@ -362,11 +333,40 @@ export class ModificationTypesComponent implements OnInit, OnDestroy {
     if (idCommercialPlan) {
       this.data = idCommercialPlan;
     }
-
-    console.log(this.data);
     this.showCommercialPlansTypes = true;
     if (this.showCommercialPlans || this.bussinesPlans)
       this.showCommercialPlans = false;
+    this.showRisk = false;
+  }
+  dataSet(itempush: any) {
+    console.log(itempush);
+    localStorage.setItem(
+      itempush.name,
+      JSON.stringify(
+        this.productService
+          .getProductObject()
+          .riskTypes.find((product: any) => product.id === itempush.id)
+      )
+    );
+    this.riskDataCode = itempush.name;
+    this.riskType = itempush.name;
+    this.titleRisk = itempush.name;
+  }
+  showRiskType() {
+    this.riskData = true;
+    this.titleCurrent = this.items1[1]?.label;
+    this.showRisk = true;
+    if (this.policyData) this.policyData = false;
+    this.showCommercialPlans = false;
+    this.showCommercialPlansTypes = false;
+  }
+
+  showCommercialPlan(itempush:any) {
+    this.titleRisk = itempush.name;
+    this.showCommercialPlans = true;
+    this.riskData = false;
+    this.policyData = false;
+    if (this.showCommercialPlansTypes) this.showCommercialPlansTypes = false;
     this.showRisk = false;
   }
 }

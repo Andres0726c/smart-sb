@@ -110,9 +110,8 @@ fdescribe('ModificationTypesComponent', () => {
   });
   it('getNameGroup', () => {
     let complementaryData = {value:[{code: 'datos_basicos',fields: [{businessCode: 'FECHA_EMISION',dataType: {code: 'TDT13',name: 'Fecha y Hora',description:'Campo para seleccionar una fecha y hora desde un calendario',bdFieldType: 'Date',guiComponent: 'Calendar',},dependency: null,domainList: null,editable: true,fieldGroup: 1,id: 62,initializeRule: [],label: 'Fecha de emisión',name: 'Fecha de emisión',required: false,requiredEssential: false,shouldDelete: true,validateRule: [],},],id: 1,isEditing: false,name: 'Datos básicos',}]};
-    // let fields= [{businessCode: 'FECHA_EMISION',dataType: {code: 'TDT13',name: 'Fecha y Hora',description:'Campo para seleccionar una fecha y hora desde un calendario',bdFieldType: 'Date',guiComponent: 'Calendar',},dependency: null,domainList: null,editable: true,fieldGroup: 1,id: 62,initializeRule: [],label: 'Fecha de emisión',name: 'Fecha de emisión',required: false,requiredEssential: false,shouldDelete: true,validateRule: [],},];
     component.productService.policyData = complementaryData;
-    component.getNameGroup('FECHA_EMISION');
+    expect(component.getNameGroup('FECHA_EMISION')).toBeDefined();
   });
 
   it('selectGroup',()=>{
@@ -129,37 +128,30 @@ fdescribe('ModificationTypesComponent', () => {
     component.onAddBranch(menu);
   });
 
-  // it('',()=>{
-  //   et viewApplicantWithdrawspy= jest.spyOn(ApplicantSubmissionSearchComponent.prototype as any, 'viewApplicantWithdraw').mockReturnValue(true);
-  //   let getRequisitionSubmissionStatusHistoryByIdspy= jest.spyOn(ApplicantSubmissionSearchComponent.prototype as any, 'getRequisitionSubmissionStatusHistoryById').mockReturnValue(true);
-  //   this.selectedGridMenuItem={reqTpsReferenceId:1,submissionId:2,appTpsReferenceId: 3, submissionReferenceId: 4,applicantId:5,companyId:6}
-  //   let isMspUserSpy = jest.spyOn(sharedServiceMock, 'isMspUser').mockReturnValue(true);
-
-  //   this.itemsWithdrawMock = [
-  //     {
-  //       label:'Withdraw Applicant',
-  //       icon:'pi pi-fw pi-pencil',
-  //       command: jest.fn((event?: any) => {}),
-  //       disabled: isMspUserSpy
-  //      },
-
-  //      {
-  //       label:'History',
-  //       icon:'pi pi-eye',
-  //       command: jest.fn((event?: any) => {})
-  //      }
-
-  //   ];
-  //   this.itemsWithdraw[0].command();
-  //   this.itemsWithdraw[1].command();
-  // expect(viewApplicantWithdrawspy).toHaveBeenCalledWith(1);
-  // expect(getRequisitionSubmissionStatusHistoryByIdspy).toHaveBeenCalledWith(2)
-  //     expect(isMspUserSpy).toBeCalled();
-
-  // });
+it('addBranchCoverage',()=>{
+  let menu= [{ code: 'a',coverages: [],description: '',name: 'aa',servicePlans: [],athrzdOprtn: [{name: 'Modificacion', key: 'MDF'}]}], itemPush={code:'a'};
+  component.showBranch=menu; 
+  component.addBranchCoverage(menu,itemPush);
+})
   it('sendData',()=>{
     component.showCommercialPlans=true;
     component.bussinesPlans=true;
     component.sendData('p001_planA');
   });
+
+  it('dataSet',()=>{
+    let data={businessPlans: [],complementaryData: [],description: "Tipo de riesgo Mascota",id: 2,name: "Mascota"};
+    expect(component.dataSet(data)).toBeUndefined();
+  });
+  it('showRiskType',()=>{
+    component.policyData =true;
+    component.showRiskType();
+    expect(component.showRiskType()).toBeUndefined();
+
+  });
+  it('showCommercialPlan',()=>{
+    let data={businessPlans: [],complementaryData: [],description: "Tipo de riesgo Mascota",id: 2,name: "Mascota"};
+    component.showCommercialPlansTypes  =true;
+    expect(component.showCommercialPlan(data)).toBeUndefined();
+  })
 });

@@ -44,11 +44,10 @@ export class ModificationTypesRiskComponent implements OnInit,OnChanges {
 
   }
   ngOnChanges(changes: SimpleChanges){
-    console.log(changes);
-    // this.items = [{ label: changes['titleRisk'].currentValue }, { label: 'Planes comerciales' }];
-  if(changes['riskType'].currentValue){this.changeView(changes['riskType'].currentValue)};
+      this.changeView(changes['riskType'].currentValue);
   }
   changeView(riskType:string) {
+    console.log(riskType);
     let dataRisk:any=localStorage.getItem(riskType);
     dataRisk= JSON.parse(dataRisk);
     this.tableData=dataRisk.businessPlans;
