@@ -124,7 +124,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   }
   activeButton(data: any) {
     let btn: boolean;
-    const result = data.athrzdOprtnCoverages?.find((key:any ) => key === 'MDF');
+    const result = data.athrzdOprtnCoverages?.find((key:any ) => key.key === 'MDF');
     result ? (btn = false) : (btn = true);
     return btn;
   }
