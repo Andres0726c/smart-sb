@@ -186,19 +186,6 @@ export class ProductService {
     this.modificationTypes = this.fb.array([], [Validators.required]);
     this.mdfctnPrcss = this.fb.group ({ 
       enabled: new FormControl(false),
-    // this.mdfctnPrcss = new FormGroup({
-    //   enabled: new FormControl(false),
-    // });
-    // this.cancellation = new FormGroup({
-    //   enabled: new FormControl(false),
-    // });
-    // this.rehabilitation = new FormGroup({
-    //   enabled: new FormControl(false),
-    // });
-    // this.renewal = new FormGroup({
-    //   enabled: new FormControl(false),
-    // });
- 
       mdfcblDt: this.fb.group ({ 
           plcyDtGrp:this.fb.array([]),
           rskTyp:this.fb.array([]),
@@ -447,7 +434,7 @@ export class ProductService {
       this.claimData = product.claimData ? (this.setFields('claimData', product.claimData)) : new FormArray<any>([]);
       this.claimTechnicalControls = product.claimTechnicalControls ? (this.setFields('claimTechnicalControls', product.claimTechnicalControls)) : new FormArray<any>([]);
       this.modificationTypes = product.modificationTypes ? (this.setFields('modificationTypes', product.modificationTypes)) : new FormArray<any>([]);
-      this.mdfctnPrcss = product.mdfctnPrcss ? (this.setFields('mdfctnPrcss', product.mdfctnPrcss)) :new FormGroup({});
+     // this.mdfctnPrcss = product.mdfctnPrcss ? (this.setFields('mdfctnPrcss', product.mdfctnPrcss)) :new FormGroup({});
      
       this.mdfctnPrcss = product.mdfctnPrcss ? this.setFields('mdfctnPrcss', product.mdfctnPrcss) : new FormGroup({
          enabled: new FormControl(false),
