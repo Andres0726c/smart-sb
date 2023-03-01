@@ -36,7 +36,7 @@ export class ProductService {
   claimTechnicalControls: any = new FormArray<any>([]);
   claimData: any = new FormArray<any>([]);
   modificationTypes: any = new FormArray<any>([]);
-  modificationProcess: FormGroup =new FormGroup({});
+  mdfctnPrcss: FormGroup =new FormGroup({});
 
   defaultArrays = [
     'selectedProcess',
@@ -106,7 +106,7 @@ export class ProductService {
     /* Modification Types */
     { field: 'modificationTypes', validators: [] },
 
-    { field: 'modificationProcess', validators: [] },
+    { field: 'mdfctnPrcss', validators: [] },
   ]
 
   constructor(
@@ -171,7 +171,7 @@ export class ProductService {
     this.claimTechnicalControls = this.fb.array([], []);
     this.claimData = this.fb.array([], [Validators.required]);
     this.modificationTypes = this.fb.array([], [Validators.required]);
-    this.modificationProcess = this.fb.group ({ 
+    this.mdfctnPrcss = this.fb.group ({ 
       mdfcblDt: this.fb.group ({ 
           plcyDtGrp:this.fb.array([]),
           rskTyp:this.fb.array([]),
@@ -283,7 +283,7 @@ export class ProductService {
       claimTechnicalControls: this.claimTechnicalControls.getRawValue(),
       conceptReservation: this.conceptReservation.value,
       modificationTypes: this.modificationTypes.getRawValue(),
-      modificationProcess: this.modificationProcess.getRawValue(),
+      mdfctnPrcss: this.mdfctnPrcss.getRawValue(),
     };
   }
 
@@ -407,7 +407,7 @@ export class ProductService {
       this.claimData = product.claimData ? (this.setFields('claimData', product.claimData)) : new FormArray<any>([]);
       this.claimTechnicalControls = product.claimTechnicalControls ? (this.setFields('claimTechnicalControls', product.claimTechnicalControls)) : new FormArray<any>([]);
       this.modificationTypes = product.modificationTypes ? (this.setFields('modificationTypes', product.modificationTypes)) : new FormArray<any>([]);
-      this.modificationProcess = product.modificationProcess ? (this.setFields('modificationProcess', product.modificationProcess)) :new FormGroup({});
+      this.mdfctnPrcss = product.mdfctnPrcss ? (this.setFields('mdfctnPrcss', product.mdfctnPrcss)) :new FormGroup({});
       
       this.initialParameters.get('productName')?.disable();
       this.initialParameters.get('company')?.disable();

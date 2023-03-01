@@ -119,7 +119,7 @@ export class ModificationTypesComponent implements OnInit, OnDestroy {
 
   get complementaryDataControls(): FormArray {
     return (<FormArray>(
-      this.productService.modificationProcess?.get('mdfcblDt')?.get('plcyDtGrp')
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
     )) as FormArray;
   }
 
