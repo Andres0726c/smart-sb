@@ -33,15 +33,15 @@
                             </mat-icon>
                         </button>
                         <span class="title-node" [class]="classToModificationTypeSelected(node)? 'title-node-selected':''"
-                            (click)="viewModificationType(node)">{{node.name}}</span>
+                            (click)="viewPolicyData(node)">{{node.name}}</span>
                     </div>
-                    <em class="fal fa-trash icon-delete" (click)="viewModificationType(node);removeModificationType(node)"></em>
+                    <em class="fal fa-trash icon-delete" (click)="viewPolicyData(node);removePolicyData(node)"></em>
                 </mat-tree-node>
             </mat-tree>
         </section>
-        <form class="container-details-coverage" [formGroup]="selectedModificationType" *ngIf="selectedModificationType?.get('id')">
+        <form class="container-details-coverage" [formGroup]="selectedPreviewData" *ngIf="selectedPreviewData?.get('id')">
             <div class="container-details-coverage__header">
-                <h5 class="container-details-coverage__title">{{selectedModificationType.value.name}}</h5>
+                <h5 class="container-details-coverage__title">{{selectedPreviewData.value.name}}</h5>
             </div>
             <mat-tab-group #tabGroup mat-stretch-tabs class="tabs">
                 <mat-tab label="Datos a previsualizar">
@@ -55,7 +55,7 @@
                         [removeItemMsg]="'¿Está seguro de querer desasociar el dato seleccionado?'"
                         [titleModalCompData]="'Seleccione los nuevos datos'"
                         [subtitleModalCompData]="'Seleccione los datos complementarios que desea asociar'"
-                        [complementaryData]="selectedModificationType?.get('visibleNonModificableData')"
+                        [complementaryData]="selectedPreviewData?.get('visibleNonModificableData')"
                         [modifyData]="true">
                     </app-complementary-data>
                 </mat-tab>

@@ -10,10 +10,10 @@ import { DataToast, STATES, ToastMessageComponent } from '../../shared/toast-mes
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalConfirmDeleteComponent } from '../../shared/modal-confirm-delete/modal-confirm-delete.component';
 
-interface ModificationTypeNode {
+interface PreviewPolicyTypeNode {
   name: string;
   id?: number;
-  children?: ModificationTypeNode[];
+  children?: PreviewPolicyTypeNode[];
 }
 
 interface ExampleFlatNode {
@@ -22,7 +22,7 @@ interface ExampleFlatNode {
   level: number;
 }
 
-interface SubItemsModificationType {
+interface SubItemsPreviewType {
   name: string,
   formArray: string,
   distance: number,
@@ -35,9 +35,9 @@ interface SubItemsModificationType {
 })
 export class PreviewPolicyDataComponent implements OnInit {
 
-  flatNodeMap = new Map<ModificationTypeNode, ModificationTypeNode>();
+  flatNodeMap = new Map<PreviewPolicyTypeNode, PreviewPolicyTypeNode>();
 
-  private _transformer = (node: ModificationTypeNode, level: number) => {
+  private _transformer = (node: PreviewPolicyTypeNode, level: number) => {
     const flatNode = {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
@@ -54,23 +54,23 @@ export class PreviewPolicyDataComponent implements OnInit {
     (node) => node.expandable
   );
 
-  treeFlattener = new MatTreeFlattener<ModificationTypeNode, ExampleFlatNode>(
+  treeFlattener = new MatTreeFlattener<PreviewPolicyTypeNode, ExampleFlatNode>(
     this._transformer,
     (node) => node.level,
     (node) => node.expandable,
     (node) => node.children
   );
 
-  dataSource: MatTreeFlatDataSource<ModificationTypeNode, ExampleFlatNode> =
+  dataSource: MatTreeFlatDataSource<PreviewPolicyTypeNode, ExampleFlatNode> =
     new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
-  subItemsModificationTypes: SubItemsModificationType[] = [
+  subItemsPreviewTypes: SubItemsPreviewType[] = [
     { name: 'Datos a previsualizar', formArray: 'visibleNonModificableData', distance: 1 }
   ];
 
-  selectedModificationType: any = new FormGroup({});
+  selectedPreviewData: any = new FormGroup({});
   index: number = 0;
   
   constructor(
@@ -86,7 +86,7 @@ export class PreviewPolicyDataComponent implements OnInit {
     //
   }
 
-  get modificationTypeGroup(): FormGroup {
+  get previewPolicyGroup(): FormGroup {
     return this.previewPolicyData.controls[this.index] as FormGroup;
   }
 
@@ -112,7 +112,7 @@ export class PreviewPolicyDataComponent implements OnInit {
       if (this.previewPolicyData.length == 0) {
         this.addPreview(res);
         this.index = 0;
-        this.selectedModificationType = this.modificationTypeGroup;
+        this.selectedPreviewData = this.previewPolicyGroup;
       } else {
         this.addPreview(res);
       }
@@ -162,53 +162,53 @@ export class PreviewPolicyDataComponent implements OnInit {
 
   quantityItems = (node: ExampleFlatNode): number => {
     const startIndex = this.treeControl.dataNodes.indexOf(node);
-    const subItemsModificationType: SubItemsModificationType = this.subItemsModificationTypes.filter(item => item.name == this.flatNodeMap.get(node)?.name)[0]
-    const currentNode = this.treeControl.dataNodes[startIndex-subItemsModificationType.distance];
-    const index = this.findIndexModificationType(currentNode);
-    if(node.name==="Datos a previsualizar" && this.previewPolicyData.controls[index].get(subItemsModificationType.formArray)?.value[0]){
-      return this.previewPolicyData.controls[index].get(subItemsModificationType.formArray)?.value[0].fields.length;
+    const subItemsPreviewType: SubItemsPreviewType = this.subItemsPreviewTypes.filter(item => item.name == this.flatNodeMap.get(node)?.name)[0]
+    const currentNode = this.treeControl.dataNodes[startIndex-subItemsPreviewType.distance];
+    const index = this.findIndexPolicyData(currentNode);
+    if(node.name==="Datos a previsualizar" && this.previewPolicyData.controls[index].get(subItemsPreviewType.formArray)?.value[0]){
+      return this.previewPolicyData.controls[index].get(subItemsPreviewType.formArray)?.value[0].fields.length;
     } else{
       return 0;
     }
   };
 
   classToModificationTypeSelected(node: ExampleFlatNode): boolean {
-    return this.flatNodeMap.get(node)?.id == this.selectedModificationType?.value.id;
+    return this.flatNodeMap.get(node)?.id == this.selectedPreviewData?.value.id;
   }
 
-  viewModificationType = (node: ExampleFlatNode): void => {
-    this.index = this.findIndexModificationType(node);
-    if(node.name !== this.selectedModificationType.get('name')?.value){
-      this.selectedModificationType = this.modificationTypeGroup;
+  viewPolicyData = (node: ExampleFlatNode): void => {
+    this.index = this.findIndexPolicyData(node);
+    if(node.name !== this.selectedPreviewData.get('name')?.value){
+      this.selectedPreviewData = this.previewPolicyGroup;
     }
   };
 
-  removeModificationType = (node: ExampleFlatNode): void => {
+  removePolicyData = (node: ExampleFlatNode): void => {
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
-        message: '¿Está seguro de querer desasociar el tipo de modificación seleccionado?',
+        message: '¿Está seguro de querer desasociar el dato seleccionado?',
         subMessage: 'También se eliminarán los datos a previsualizar asociados.'
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
-        const index = this.findIndexModificationType(node);
+        const index = this.findIndexPolicyData(node);
         const id = this.previewPolicyData.at(index).value.id;
         this.previewPolicyData.removeAt(index);
         this.dataSource.data = this.dataSource.data.filter(
           (item) => item.id != id
         );
-        if (id == this.selectedModificationType.value.id || index == 0) {
+        if (id == this.selectedPreviewData.value.id || index == 0) {
           this.index = 0;
         }
-        this.selectedModificationType = this.modificationTypeGroup;
+        this.selectedPreviewData = this.previewPolicyGroup;
         this.updateTree();
       }
     });
   };
 
-  findIndexModificationType(node: ExampleFlatNode): number {
+  findIndexPolicyData(node: ExampleFlatNode): number {
     return (
       this.dataSource.data.findIndex(
         (item) => item.id == this.flatNodeMap.get(node)?.id
