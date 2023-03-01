@@ -1,1 +1,11 @@
-<p>modification-technical-control works!</p>
+<div class="">
+    <app-no-data-screen 
+        [data]="modificationTechnicalControlsData" 
+        [layoutType]="'full'" 
+        [emptyTitle]="'Control técnico'"
+        [emptySubTitle]="'Especifique y defina el control técnico que desea asociar'" 
+        [emptyText]="'Sin control técnico'"
+        [emptySubText]="'No se han asociado controles técnicos al producto'" 
+        (action)="openToAdd()">
+    </app-no-data-screen>
+</div>
