@@ -72,6 +72,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
+    //ngOnInit()
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -97,7 +98,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     let idCoverages = data.coverages,
       idServicePlans = data.servicePlans;
     for (let coverage of idCoverages) {
-      coverage = this.productService.getCoverageById(coverage.id);
+      //coverage = this.productService.getCoverageById(coverage.id);
       console.log(coverage)
       coverage.required = idCoverages.find(
         (data: any) => data.id === coverage.id
