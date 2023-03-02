@@ -106,3 +106,45 @@ color: $titleSubtitle;
 
   }
 }
+
+::ng-deep{
+  .pi-chevron-down:before{
+    content: "\e902";
+    color: $primaryBase;
+  }
+  .pi-angle-right:before{
+    content: "\e932";
+    color: $primaryBase;
+  }
+
+  .p-panelmenu .p-panelmenu-header > a {
+    padding: 1.25rem;
+     border:none; 
+     color: black; 
+     background:none;
+    font-weight: 700;
+    border-radius: 6px;
+    transition: box-shadow 0.2s;
+    }
+
+    .p-panelmenu .p-panelmenu-content {
+      padding: 0.25rem 0;
+      border: none; 
+      background: #ffffff;
+      color: #495057;
+      margin-bottom: 4px;
+      border-top: 0;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+      border-bottom-right-radius: 6px;
+      border-bottom-left-radius: 6px;
+  }
+
+  .p-panelmenu .p-panelmenu-header.p-highlight > a {
+    background: none; 
+    border-color: none; 
+    color: none; 
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+}

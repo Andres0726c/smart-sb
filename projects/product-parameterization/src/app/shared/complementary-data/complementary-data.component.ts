@@ -64,8 +64,7 @@ export class ComplementaryDataComponent implements OnInit {
   }
 
   ngOnInit() {
-    //
-    console.log(this.complementaryData);
+    // console.log(this.complementaryData);
   }
 
   ngAfterViewInit() {
@@ -122,8 +121,10 @@ export class ComplementaryDataComponent implements OnInit {
       console.log('Hubo un error:', error);
     }
 
+   // if(!this.modifyData){
     this.setEssentialData(this.essentialData);
     this.updateEssentialDataProperties();
+    //}
   }
 
   async loadContextData() {
@@ -413,10 +414,10 @@ export class ComplementaryDataComponent implements OnInit {
 
   removeComplementaryData() {
     let obj = this.getAllFields().find((x: { id: number; }) => x.id === this.selectedField.value.id)
-    console.log(obj.fieldGroup,"grupo");
+   
     let index = this.getGroupArrayById(obj.fieldGroup).value.findIndex((x: { id: number; }) => x.id === this.selectedField.value.id);
 
-    console.log(index,"index")
+ 
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
@@ -454,7 +455,7 @@ export class ComplementaryDataComponent implements OnInit {
   removeGroup(group: any) {
     let index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === group.get('id')?.value);
     
-    console.log(index,"index");
+    
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
@@ -481,7 +482,7 @@ export class ComplementaryDataComponent implements OnInit {
    */
   DeleteCascadeDateModify(id: number,code:any) {
 
-    console.log(this.productService.mdfctnPrcss,"antes");
+   
 
     let mdfctnPrcss =  (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).controls.find(x => x.value.id === id)?.get('fields');
       
@@ -489,7 +490,7 @@ export class ComplementaryDataComponent implements OnInit {
 
      (<FormArray>mdfctnPrcss).removeAt(index);
 
-     console.log(this.productService.mdfctnPrcss,"before");
+    
 
      if ( (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).value[id-1].fields.length === 0){
 
@@ -519,7 +520,7 @@ export class ComplementaryDataComponent implements OnInit {
     this.selectedField = itemParam;
     this.dependsArray = [];
 
-    console.log(this.selectedField);
+   
 
 
 

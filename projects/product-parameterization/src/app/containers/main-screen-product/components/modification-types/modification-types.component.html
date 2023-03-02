@@ -20,10 +20,10 @@
 
 </div>
 <div style="display: flex; flex-direction: row">
-  <div *ngIf="items1">
-    <p-panelMenu [model]="items1" [style]="{ width: '300px' }"></p-panelMenu>
+  <div *ngIf="items1" style="border-radius: 12px; background: white; margin-top:7px">
+    <p-panelMenu [model]="items1" [style]="{ width: '260px' }"></p-panelMenu>
   </div>
-  <div class="p-1" style="width: 1180px">
+  <div class="p-1" style="width: 1230px">
  
     <div style="width: 90%" *ngIf="!policyData && !riskData && !showCommercialPlans && !showCommercialPlansTypes">
       <app-complementary-data
