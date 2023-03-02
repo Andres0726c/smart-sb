@@ -1,0 +1,98 @@
+::ng-deep {
+    .pi.pi-times {
+        color: #1B1B1B;
+    }
+}
+
+.bagde {
+    padding: 4px 8px;
+    border-radius: 2px;
+    font-weight: 700;
+    background-color: var(--greyscale-5);
+    color: var(--greyscale-2);
+}
+
+.status {
+    &-Activa {
+        background-color: var(--success-light);
+        color: var(--success-base);
+    }
+
+    &-Cancelada {
+        background-color: var(--danger-light);
+        color: var(--danger-base);
+    }
+
+    &-Rechazada {
+        background-color: var(--warning-light);
+        color: var(--warning-base);
+    }
+
+    &-Provisoria {
+        background-color: var(--info-light);
+        color: var(--info-base);
+    }
+}
+
+.pi {
+    font-size: 18px;
+}
+.spaces {
+    display: flex;
+    align-items: flex-start;
+}
+.alert-description {
+    font-size: 14px;
+    line-height: 120%;
+    alignment: Left;
+    vertical-align: Top;
+    & h5 {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: var(--greyscale-black);
+    }
+    & p {
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--greyscale-black);
+    }
+}
+.p-component * {
+    padding: 8px (left margin), 16px;
+}
+
+.line-border {
+    border: 3px solid var(--success-base);
+
+    margin-left: 8px;
+    margin-right: 16px;
+    border-radius: 5px;
+    height: 40px;
+    z-index: 9999;
+}
+:host ::ng-deep .p-toast .p-toast-message {
+
+    & .p-toast-message-content {
+        background: var(--greyscale-white);
+        }
+    
+}
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-success {
+    border-style: none !important;
+    border-width: 0px 0px 0px 0.5px !important;
+    color: var(--success-base);
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error {
+    border-style: none !important;
+    border-width: 0px 0px 0px 0.5px !important;
+    color: var(--danger-base);
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-message-content {
+    padding-left: 2px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-width: 0 !important; 
+}
