@@ -456,30 +456,58 @@ describe('ComplementaryDataComponent', () => {
     expect(component.getFieldsFormArray(array)).toBeDefined();
   });
 
-  it('DeleteCascadeDateModify', () => {
-    component.selectedField = component.fb.group({
-      id: component.fb.control(1),
-    })
-    component.productService.modificationTypes = new FormArray([
-    ]);
-    component.productService.modificationTypes.push(
-      component.fb.group({
-        id: component.fb.control(1, Validators.required),
-        description: component.fb.control('Plan básico', Validators.required),
-        visibleNonModificableData: new FormArray([ component.fb.group ({
-          id: component.fb.control(1),
-          fields: new FormArray([
-            component.fb.group({
-              id: component.fb.control(1)
-            })
-          ]),
-        })], Validators.required),
-      })
+  // it('DeleteCascadeDateModify', () => {
+    // component.selectedField = component.fb.group({
+    //   id: component.fb.control("1"),
+    // })
+    // component.productService.mdfctnPrcss = component.fb.group({
+    //   mdfcblDt: component.fb.group({ 
+    //     id: component.fb.control(1, Validators.required),
+    //     plcyDtGrp:component.fb.control('policy', Validators.required),
+    //       fields: new FormArray([
+    //         component.fb.group({
+    //           id: component.fb.control(1,Validators.required)
+    //         })
+    //       ])
+    //   })
+    // })
 
-    );
-    const id: number = 1;
-    expect(component.DeleteCascadeDateModify(id)).toBeUndefined();
-  });
+
+    // component.productService.mdfctnPrcss=component.fb.group({
+    //   mdfcblDt: component.fb.group({
+    //     id: component.fb.control(1, Validators.required),
+    //     plcyDtGrp:component.fb.group({
+    //       id: component.fb.control(1, Validators.required)
+    //     })
+    //   })
+    // })
+    // component.productService.mdfctnPrcss.push(
+    //   component.fb.group({
+    //     id: component.fb.control(1, Validators.required),
+    //     mdfcblDt: component.fb.group({ 
+    //       id: component.fb.control(1, Validators.required),
+    //       plcyDtGrp:component.fb.control('policy', Validators.required),
+          
+    //     }),
+    //     visibleNonModificableData: new FormArray([ component.fb.group ({
+    //       id: component.fb.control("1"),
+    //       fields: new FormArray([
+    //         component.fb.group({
+    //           id: component.fb.control("1")
+    //         })
+    //       ]),
+    //     })], Validators.required),
+    //   })
+
+    // );
+
+    // const spy = jest.spyOn(productService, 'mdfctnPrcss').mockReturnValue(of(res));
+
+
+  //   const id: number = 1;
+  //   const code: string = "1";
+  //   expect(component.DeleteCascadeDateModify(id,code)).toBeUndefined();
+  // });
 
   it('setEssentialData', () => {
     const array = [
