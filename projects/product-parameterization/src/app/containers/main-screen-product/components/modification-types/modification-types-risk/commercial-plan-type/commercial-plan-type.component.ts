@@ -92,29 +92,24 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
 
 
   fillTableData(data: any) {
-    console.log("data: ", data)
     this.tableData = [];
     this.tableDataService = [];
-    let idCoverages = data.coverages,
+    let idCoverages = data.coverages, coverageAux,
       idServicePlans = data.servicePlans;
     for (let coverage of idCoverages) {
-      //coverage = this.productService.getCoverageById(coverage.id);
-      console.log(coverage)
-      coverage.required = idCoverages.find(
+      coverageAux = this.productService.getCoverageById(coverage.id);
+      coverageAux.required = idCoverages.find(
         (data: any) => data.id === coverage.id
       );
-      this.tableData.push(this.productService.getCoverageById(coverage.id));
+      this.tableData.push(coverageAux);
     }
-    console.log()
 
     for (let servicePlans of idServicePlans) {
       this.tableDataService.push(
         this.productService.getServicePlanById(servicePlans.id)
       );
-      console.log(this.productService.getServicePlanById(servicePlans.id))
 
     }
-    console.log(this.tableData);
   }
 
   changeCheck(data: any) {
