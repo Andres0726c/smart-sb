@@ -63,7 +63,7 @@ export class ModificationTypesComponent implements OnInit {
   }
   ngOnInit(): void {
    
-  //this.complementaryDataControls.clear();
+ // console.log(this.complementaryDataControls);
   }
 
   getGroupArrayById(id: number) {
@@ -117,7 +117,10 @@ export class ModificationTypesComponent implements OnInit {
     for (const group of this.complementaryDataControls?.getRawValue()) {
       res = res.concat(group.fields);
     }
+
     return res;
+
+  
   }
 
   get complementaryDataControls(): FormArray {

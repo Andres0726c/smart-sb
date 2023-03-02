@@ -427,7 +427,9 @@ export class ComplementaryDataComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
         if (index >= 0) {
+          if(!this.modifyData){
           this.removeAssociatedReference();
+          }
           this.getGroupArrayById(obj.fieldGroup).removeAt(index);
           if (this.policyData){this.DeleteCascadeDateModify(obj.fieldGroup,obj.businessCode);}
           this.selectedField = new FormGroup({});
@@ -439,6 +441,7 @@ export class ComplementaryDataComponent implements OnInit {
             this.complementaryDataControls.removeAt(obj.fieldGroup-1);
          }
         }
+        
       }
 
       
@@ -854,6 +857,11 @@ export class ComplementaryDataComponent implements OnInit {
 
       });
     }
+
+    // if(this.modifyData && this.getAllFields().length===0)
+    //  console.log("entra")
+    //  console.log(this.complementaryDataControls);
+    //   this.complementaryDataControls.clear();
   }
   
 }
