@@ -413,8 +413,10 @@ export class ComplementaryDataComponent implements OnInit {
 
   removeComplementaryData() {
     let obj = this.getAllFields().find((x: { id: number; }) => x.id === this.selectedField.value.id)
+    console.log(obj.fieldGroup,"grupo");
     let index = this.getGroupArrayById(obj.fieldGroup).value.findIndex((x: { id: number; }) => x.id === this.selectedField.value.id);
 
+    console.log(index,"index")
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
@@ -426,18 +428,33 @@ export class ComplementaryDataComponent implements OnInit {
         if (index >= 0) {
           this.removeAssociatedReference();
           this.getGroupArrayById(obj.fieldGroup).removeAt(index);
-          if (this.policyData){this.DeleteCascadeDateModify(1);}
+          if (this.policyData){this.DeleteCascadeDateModify(obj.fieldGroup,obj.businessCode);}
           this.selectedField = new FormGroup({});
           if (this.getGroupArrayById(1).length > 0) {
             this.selectComplementaryData(<FormGroup>this.getGroupArrayById(1).controls[0]);
           }
+
+          if (this.complementaryDataControls.value[obj.fieldGroup-1].fields.length === 0 && this.modifyData) {
+            this.complementaryDataControls.removeAt(obj.fieldGroup-1);
+         }
         }
       }
+
+      
     });
+
+   
+
+    
+
+   
   }
+  
 
   removeGroup(group: any) {
     let index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === group.get('id')?.value);
+    
+    console.log(index,"index");
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
@@ -462,15 +479,31 @@ export class ComplementaryDataComponent implements OnInit {
  /**
    * remueve la asociación de datos de poliza y tipos de modificación
    */
-  DeleteCascadeDateModify(id: number) {
+  DeleteCascadeDateModify(id: number,code:any) {
 
-    for (let x:number = 0 ; x < this.productService.modificationTypes.length; x++) {
-      for( const obj of this.productService.modificationTypes?.value[x].visibleNonModificableData[0]?.fields.filter((x: { id: number; }) => x.id === this.selectedField.value.id)){
-      let index = this.productService.modificationTypes.value[x].visibleNonModificableData[0]?.fields.indexOf(obj);
-      (<FormArray>(<FormArray> this.productService.modificationTypes.controls[x].get('visibleNonModificableData')).controls[0]?.get('fields')).removeAt(index)
-      }
+    console.log(this.productService.mdfctnPrcss,"antes");
 
-    };
+    let mdfctnPrcss =  (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).controls.find(x => x.value.id === id)?.get('fields');
+      
+      let index:any = (<FormArray>mdfctnPrcss).controls.findIndex(x => x.value.businessCode ===code);
+
+     (<FormArray>mdfctnPrcss).removeAt(index);
+
+     console.log(this.productService.mdfctnPrcss,"before");
+
+     if ( (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).value[id-1].fields.length === 0){
+
+     (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).removeAt(id-1);
+
+    }
+  
+    // for (let x:number = 0 ; x < this.productService.mdfctnPrcss; x++) {
+    //   for( const obj of this.productService.modificationTypes?.value[x].visibleNonModificableData[0]?.fields.filter((x: { id: number; }) => x.id === this.selectedField.value.id)){
+    //   let index = this.productService.modificationTypes.value[x].visibleNonModificableData[0]?.fields.indexOf(obj);
+    //   (<FormArray>(<FormArray> this.productService.modificationTypes.controls[x].get('visibleNonModificableData')).controls[0]?.get('fields')).removeAt(index)
+    //   }
+
+    // };
 
   }
 

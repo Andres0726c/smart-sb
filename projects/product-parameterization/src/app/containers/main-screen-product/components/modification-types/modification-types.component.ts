@@ -61,7 +61,10 @@ export class ModificationTypesComponent implements OnInit {
   ) {
     this.calledMenu();
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+   
+   console.log(this.complementaryDataControls);
+  }
 
   getGroupArrayById(id: number) {
     return <FormArray>(
@@ -183,7 +186,7 @@ export class ModificationTypesComponent implements OnInit {
             ),
             editable: this.fb.control(true, [Validators.required]),
             visible: this.fb.control(true, [Validators.required]),
-            fieldGroup: this.fb.control(1, []),
+            fieldGroup: this.fb.control(index + 1, []),
             shouldDelete: this.fb.control(object.shouldDelete, [
               Validators.required,
             ]),

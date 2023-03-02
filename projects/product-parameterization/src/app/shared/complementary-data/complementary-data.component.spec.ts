@@ -478,7 +478,8 @@ describe('ComplementaryDataComponent', () => {
 
     );
     const id: number = 1;
-    expect(component.DeleteCascadeDateModify(id)).toBeUndefined();
+    const code: string = "1";
+    expect(component.DeleteCascadeDateModify(id,code)).toBeUndefined();
   });
 
   it('setEssentialData', () => {
