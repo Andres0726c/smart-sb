@@ -481,7 +481,6 @@ export class ComplementaryDataComponent implements OnInit {
    */
   DeleteCascadeDateModify(id: number,code:any) {
 
-    console.log(this.productService.mdfctnPrcss,"antes");
 
     let mdfctnPrcss =  (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).controls.find(x => x.value.id === id)?.get('fields');
       
@@ -489,21 +488,12 @@ export class ComplementaryDataComponent implements OnInit {
 
      (<FormArray>mdfctnPrcss).removeAt(index);
 
-     console.log(this.productService.mdfctnPrcss,"before");
 
      if ( (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).value[id-1].fields.length === 0){
 
      (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).removeAt(id-1);
 
     }
-  
-    // for (let x:number = 0 ; x < this.productService.mdfctnPrcss; x++) {
-    //   for( const obj of this.productService.modificationTypes?.value[x].visibleNonModificableData[0]?.fields.filter((x: { id: number; }) => x.id === this.selectedField.value.id)){
-    //   let index = this.productService.modificationTypes.value[x].visibleNonModificableData[0]?.fields.indexOf(obj);
-    //   (<FormArray>(<FormArray> this.productService.modificationTypes.controls[x].get('visibleNonModificableData')).controls[0]?.get('fields')).removeAt(index)
-    //   }
-
-    // };
 
   }
 
