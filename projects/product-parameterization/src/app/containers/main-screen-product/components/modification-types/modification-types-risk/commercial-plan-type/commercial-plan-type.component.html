@@ -7,9 +7,9 @@
           <p-table [value]="tableData"  *ngIf="true">
             <ng-template pTemplate="header">
               <tr>
-                <th>Coberturas</th>
-                <th>Permisos</th>
-                <th>Acciones</th>
+                <th scope="col">Coberturas</th>
+                <th scope="col">Permisos</th>
+                <th scope="col">Acciones</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-data let-rowIndex="rowIndex">
@@ -54,8 +54,8 @@
           <p-table [value]="tableDataService"  *ngIf="true">
             <ng-template pTemplate="header">
               <tr>
-                <th>Planes de servicio</th>
-                <th>Permisos</th>
+                <th scope="col">Planes de servicio</th>
+                <th scope="col">Permisos</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-data>
