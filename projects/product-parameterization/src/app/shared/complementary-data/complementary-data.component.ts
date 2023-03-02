@@ -497,14 +497,6 @@ export class ComplementaryDataComponent implements OnInit {
      (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).removeAt(id-1);
 
     }
-  
-    // for (let x:number = 0 ; x < this.productService.mdfctnPrcss; x++) {
-    //   for( const obj of this.productService.modificationTypes?.value[x].visibleNonModificableData[0]?.fields.filter((x: { id: number; }) => x.id === this.selectedField.value.id)){
-    //   let index = this.productService.modificationTypes.value[x].visibleNonModificableData[0]?.fields.indexOf(obj);
-    //   (<FormArray>(<FormArray> this.productService.modificationTypes.controls[x].get('visibleNonModificableData')).controls[0]?.get('fields')).removeAt(index)
-    //   }
-
-    // };
 
   }
 
