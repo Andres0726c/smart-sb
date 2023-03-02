@@ -59,9 +59,9 @@
 
                 </div>
             </div>
-
+            <!-- !modifyData?complementaryDataControls.length === 1:complementaryDataControls.length === 0 -->
             <mat-accordion class="form"
-                *ngIf="complementaryDataControls.length === 1 && getGroupArrayById(1).length === 0">
+                *ngIf="complementaryDataControls.length === 1 && (!modifyData?getGroupArrayById(1).length === 0:getAllFields().length ===0)">
                 <mat-expansion-panel [expanded]="true" [hideToggle]="true">
                     <app-no-data-screen [data]="complementaryData" [emptyText]="emptyText" [emptySubText]="emptySubText"
                         [ShowButton]="true"
@@ -73,7 +73,7 @@
 
             <!-- Datos con grupos dinámicos -->
             <ng-container
-                *ngIf="complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && getGroupArrayById(1).length > 0)">
+                *ngIf="complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && !modifyData?getGroupArrayById(1).length > 0:getAllFields().length >0)">
                 <ng-container *ngFor="let group of complementaryDataControls.controls">
                     <mat-accordion class="form" *ngIf="true">
                         <mat-expansion-panel [expanded]="getFieldsFormArray(group.get('fields')).controls.length > 0" hideToggle>
@@ -145,8 +145,8 @@
                                                         <div>
                                                             <mat-label>{{item.value.label }} </mat-label>
 
-                                                            <!-- <em *ngIf="!modifyData && isConfigured(item)"
-                                                                class="fas fa-check primary-icon"></em> -->
+                                                             <em *ngIf="!modifyData && isConfigured(item)"
+                                                                class="fas fa-check primary-icon"></em> 
                                                         </div>
                                                         <div class="drag-handle" cdkDragHandle>
                                                             <em class="fas fa-arrows"></em>

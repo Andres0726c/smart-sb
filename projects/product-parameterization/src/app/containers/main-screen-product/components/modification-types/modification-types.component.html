@@ -6,7 +6,7 @@
   
     <h4 class="p-4">{{titleCurrent}}</h4>
      
-        <div class="div-button" *ngIf="complementaryDataControls.length > 0">
+        <div class="div-button" *ngIf="getAll().length > 0">
           <button
             mat-button
             class="bt bt-primary"
@@ -31,8 +31,8 @@
         [title]="''"
         [subtitle]="''"
         [groupName]="'Datos básicos'"
-        [emptyText]="'Sin datos de la póliza'"
-        [emptySubText]="'No se han asociado datos de la póliza al producto'"
+        [emptyText]="'Sin datos a modificar'"
+        [emptySubText]="'No se han asociado datos de la póliza a modificar'"
         [successAddItemMsg]="
           'Los datos de la póliza fueron asociados correctamente.'
         "
