@@ -441,8 +441,7 @@ export class ComplementaryDataComponent implements OnInit {
             this.complementaryDataControls.removeAt(obj.fieldGroup-1);
          }
         }
-        console.log(this.productService.mdfctnPrcss);
-        console.log(this.complementaryDataControls);
+        
       }
 
       

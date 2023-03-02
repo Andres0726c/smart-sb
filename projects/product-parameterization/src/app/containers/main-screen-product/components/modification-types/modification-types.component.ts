@@ -63,7 +63,7 @@ export class ModificationTypesComponent implements OnInit {
   }
   ngOnInit(): void {
    
-  console.log(this.complementaryDataControls);
+ // console.log(this.complementaryDataControls);
   }
 
   getGroupArrayById(id: number) {
