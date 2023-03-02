@@ -315,7 +315,15 @@
                     <mat-error *ngIf="">Seleccione el grupo</mat-error>
                 </mat-form-field>
             </section>
-            <div class="container-bt" *ngIf="selectedField?.get('shouldDelete')?.value && getGroupArrayById(this.selectedField.get('fieldGroup')?.value).length > 1">
+            <div class="container-bt" *ngIf="selectedField?.get('shouldDelete')?.value && getGroupArrayById(this.selectedField.get('fieldGroup')?.value).length > 1 && !modifyData">
+                <button mat-raised-button color="accent" class="bt bt-complementary" (click)="removeComplementaryData()"
+                    data-qa-id="sc-rpmf-btn_remove_complementary_data">
+                    <em class="far fa-minus-circle bt-icon"></em>
+                    Eliminar dato
+                </button>
+            </div>
+
+            <div class="container-bt" *ngIf="modifyData">
                 <button mat-raised-button color="accent" class="bt bt-complementary" (click)="removeComplementaryData()"
                     data-qa-id="sc-rpmf-btn_remove_complementary_data">
                     <em class="far fa-minus-circle bt-icon"></em>
