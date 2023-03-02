@@ -35,7 +35,7 @@ interface BussinesPlans {
   templateUrl: './modification-types.component.html',
   styleUrls: ['./modification-types.component.scss'],
 })
-export class ModificationTypesComponent implements OnInit, OnDestroy {
+export class ModificationTypesComponent implements OnInit {
   items1: MenuItem[] = [];
   titleBussinesPlan: string = '';
   titleRisk: string = '';
@@ -325,9 +325,7 @@ export class ModificationTypesComponent implements OnInit, OnDestroy {
     }
     return validate;
   }
-  ngOnDestroy() {
-    localStorage.clear();
-  }
+
   sendData(idCommercialPlan: string) {
     localStorage.setItem(idCommercialPlan, JSON.stringify(this.showBranch));
     if (idCommercialPlan) {

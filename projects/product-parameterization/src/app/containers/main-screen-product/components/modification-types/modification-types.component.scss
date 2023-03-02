@@ -86,16 +86,20 @@ color: $titleSubtitle;
 }
 .subHeader{
   padding: 5px;
-  display: flex;
-  /* flex-direction: row; */
-  justify-content: space-between;
-  align-items: flex-end;
-  flex-wrap: nowrap;
+  // display: flex;
+  // /* flex-direction: row; */
+  // justify-content: space-between;
+  // align-items: flex-end;
+  // flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
   h4{
     padding-top:10px
   }
   .div-button{
-    display: contents;
+    display: grid;
+    justify-content: end;
     .bt {
       width: 100px;
     }
