@@ -9,6 +9,7 @@ export const environment = {
   urlParameterizerMS: 'https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev/parametrizador/v1/',
   urlPolicyIssuerMS: 'https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev/emisor/v1/',
   urlAdapterMS: 'https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev/adaptador/v1/',
+  urlAdapterNodeMS: 'https://hbk6eaxgcd.execute-api.us-east-1.amazonaws.com/dev/adaptador/node/v1/',
   // urlPolicyIssuerMS:'http://localhost:80/emisor/v1/',
   cognito: {
     userPoolId: 'us-east-1_juYNmSqyl',
