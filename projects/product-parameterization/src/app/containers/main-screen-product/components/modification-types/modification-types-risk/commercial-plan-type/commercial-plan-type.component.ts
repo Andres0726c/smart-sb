@@ -63,7 +63,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     { name: 'Modificar', key: 'MDF' },
   ];
   athrzdOprtnService: OptionsCoverages[] = [
-    { name: 'Remover', key: 'RMP' },
+    { name: 'Remover', key: 'RMV' },
     { name: 'Añadir', key: 'ADD' },
   ];
   idCoverages: IdCoverages[] = [];
@@ -94,7 +94,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   fillTableData(data: any) {
     this.tableData = [];
     this.tableDataService = [];
-    let idCoverages = data.coverages, coverageAux,
+    let idCoverages = data.coverages, coverageAux,servicePlansAux,
       idServicePlans = data.servicePlans;
     for (let coverage of idCoverages) {
       coverageAux = this.productService.getCoverageById(coverage.id);
@@ -103,12 +103,15 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       );
       this.tableData.push(coverageAux);
     }
-
+console.log(idServicePlans)
     for (let servicePlans of idServicePlans) {
-      this.tableDataService.push(
-        this.productService.getServicePlanById(servicePlans.id)
+      servicePlansAux = this.productService.getServicePlanById(servicePlans.id);
+      servicePlansAux.required = idServicePlans.find(
+        (data: any) => data.id === servicePlans.id
       );
+        console.log(servicePlansAux)
 
+      this.tableDataService.push(servicePlansAux);
     }
   }
 
