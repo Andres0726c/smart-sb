@@ -41,7 +41,7 @@ export class ModificationTypesRiskComponent implements OnInit,OnChanges {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-
+      //ngOnInit()
   }
   ngOnChanges(changes: SimpleChanges){
       this.changeView(changes['riskType'].currentValue);
