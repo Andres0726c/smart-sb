@@ -1,0 +1,150 @@
+@import "../../../../../assets/styles/config/variables";
+@import "../../../../../assets/styles/config/mixins";
+@import "../../../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+::ng-deep .p-tree{
+  width: max-content;  
+}
+
+.content_title {
+  flex-direction: column;
+  padding: 1rem 0;
+}
+.title {
+font-family: "Roboto Condensed"!important;
+font-style: normal;
+font-weight: bold;
+font-size: 30px;
+line-height: 35px;
+display: flex;
+align-items: center;
+margin: 0 0 16px 20px;
+color: $titleSubtitle;
+}
+.subtitle {
+font-family: "Roboto Condensed"!important;
+font-style: normal;
+font-weight: normal;
+font-size: 17px;
+line-height: 20px;
+display: flex;
+align-items: center;
+margin: 0 0 16px 20px;
+color: $titleSubtitle;
+}
+
+.div-button {
+  position: relative;
+  margin-top: 10px;
+  .bt {
+    font-weight: bold;
+    height: 40px;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: $primaryBase;
+    border-radius: 50px;
+  }
+  
+}
+
+.icon-button-add {
+  color: $primaryBase;
+  font-size: 20px;
+  margin-right: 10px;
+  @include mq-max(md) {
+      margin-right: 5px;
+  }
+ }
+.content_title{
+    flex-direction: column;
+}
+.title{
+    font-family: "Roboto condensed"!important;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height:35px;
+    display: flex;
+    align-items: center;
+    margin: 0 0 16px 20px;
+    color: black;
+}
+
+.subtitle{
+    font-family: "Roboto condensed"!important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height:20px;
+    display: flex;
+    align-items: center;
+    margin: 0 0 16px 20px;
+    color: gray;
+}
+.subHeader{
+  padding: 5px;
+  // display: flex;
+  // /* flex-direction: row; */
+  // justify-content: space-between;
+  // align-items: flex-end;
+  // flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  h4{
+    padding-top:10px
+  }
+  .div-button{
+    display: grid;
+    justify-content: end;
+    .bt {
+      width: 100px;
+    }
+
+  }
+}
+
+::ng-deep{
+  .pi-chevron-down:before{
+    content: "\e902";
+    color: $primaryBase;
+  }
+  .pi-angle-right:before{
+    content: "\e932";
+    color: $primaryBase;
+  }
+
+  .p-panelmenu .p-panelmenu-header > a {
+    padding: 1.25rem;
+     border:none; 
+     color: black; 
+     background:none;
+    font-weight: 700;
+    border-radius: 6px;
+    transition: box-shadow 0.2s;
+    }
+
+    .p-panelmenu .p-panelmenu-content {
+      padding: 0.25rem 0;
+      border: none; 
+      background: #ffffff;
+      color: #495057;
+      margin-bottom: 4px;
+      border-top: 0;
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+      border-bottom-right-radius: 6px;
+      border-bottom-left-radius: 6px;
+  }
+
+  .p-panelmenu .p-panelmenu-header.p-highlight > a {
+    background: none; 
+    border-color: none; 
+    color: none; 
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+}
