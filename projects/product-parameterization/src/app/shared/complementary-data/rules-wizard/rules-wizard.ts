@@ -83,7 +83,6 @@ export class RulesWizardComponent implements OnInit {
       this.EmptyData=true;
       this.rulesModal = search.filter((item: SearchModal) => item.code === this.data.code)[0];
 
-      console.log(this.rulesModal)
       // seteamos columnas por default
       this.rulesModal.columns = [
         { name: 'name', header: 'Nombre', displayValue: [''] },
@@ -332,7 +331,6 @@ export class RulesWizardComponent implements OnInit {
     for(i in lookupObject) {
       newArray.push(lookupObject[i]);
     }
-    console.log(newArray);
     return newArray;
   }
 
@@ -384,7 +382,6 @@ export class RulesWizardComponent implements OnInit {
       if (map){
          Jsonmap = JSON.parse(map);
          this.stepParameters = this.returnObj(Jsonmap);
-         console.log(this.stepParameters);
          this.EmptyData=false;
       }
       else{
@@ -396,11 +393,9 @@ export class RulesWizardComponent implements OnInit {
       this.stepParameters = this.returnObj({});
     }
 
-    console.log(this.data.complementaryData.value);
     for(let x = 0; x < this.data.complementaryData.length; x++){
       orderList=orderList.concat(this.data.complementaryData.value[x].fields);    
     }
-    console.log(orderList);
 
     this.sortParameterBy('name',orderList)
     this.aditionalData.push(orderList);
@@ -601,7 +596,6 @@ export class RulesWizardComponent implements OnInit {
       // push final
     let ObjForm;
 
-    console.log("parametros: ", this.stepParameters)
     for (let parameter of this.stepParameters) {
       for ( let rule of this.fields.value) {
        if (parameter.name === rule.rule  ) {
