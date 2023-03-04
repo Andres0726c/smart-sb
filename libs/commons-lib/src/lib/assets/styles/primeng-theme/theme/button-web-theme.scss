@@ -259,27 +259,27 @@
 
 .p-button.p-button-text {
   background-color: transparent;
-  color: var(--primary-btn-bg);
+  color: var(--primary-base);
   border-color: transparent;
 }
 
 .p-button.p-button-text:enabled:hover {
   background: transparent;
-  color: var(--primary-btn-bg-hover);
+  color: var(--primary-base);
   border-color: transparent;
 }
 
 .p-button.p-button-text:enabled:focus {
   background: transparent;
-  color: var(--primary-btn-bg);
+  color: var(--primary-base);
   border-color: transparent;
   /* box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 3px var(--primary-btn-focus), 0 1px 2px 0 black; */
-  box-shadow: 0 0 0 3px var(--primary-btn-focus);
+  box-shadow: 0 0 0 0px var(--primary-base);
 }
 
 .p-button.p-button-text:enabled:active {
   background: transparent;
-  color: var(--primary-btn-bg);
+  color: var(--primary-base);
   border-color: transparent;
 }
 

@@ -20,6 +20,13 @@ const routes: Routes = [
                     import(
                         './components/modify-policy/modify-policy.module'
                     ).then((m) => m.ModifyPolicyModule)
+            },
+            {
+                path: 'sincronizar',
+                loadChildren: () =>
+                    import(
+                        './components/sync-policy-failed/sync-policy-failed.module'
+                    ).then((m) => m.SyncPolicyFailedModule)
             }
         ]
     }

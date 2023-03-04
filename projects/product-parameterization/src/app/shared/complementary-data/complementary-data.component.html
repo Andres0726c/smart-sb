@@ -24,7 +24,7 @@
                 (click)="openDialogPolicyData('complementaryDataControls')">
                 <em class="fal fa-plus-circle icon-button-add"></em>
                 Añadir datos
-            </button>
+            </button> 
         </div>
 
     </div>
@@ -59,20 +59,21 @@
 
                 </div>
             </div>
-
+            <!-- !modifyData?complementaryDataControls.length === 1:complementaryDataControls.length === 0 -->
             <mat-accordion class="form"
-                *ngIf="complementaryDataControls.length === 1 && getGroupArrayById(1).length === 0">
+                *ngIf="complementaryDataControls.length === 1 && (!modifyData?getGroupArrayById(1).length === 0:getAllFields().length ===0)">
                 <mat-expansion-panel [expanded]="true" [hideToggle]="true">
                     <app-no-data-screen [data]="complementaryData" [emptyText]="emptyText" [emptySubText]="emptySubText"
-                        [ShowButton]="!modifyData"
-                        (action)="openDialogPolicyData('complementaryDataControls')">
+                        [ShowButton]="true"
+                        (action)="modifyData?shootAction():openDialogPolicyData('complementaryDataControls')">
+                      >
                     </app-no-data-screen>
                 </mat-expansion-panel>
             </mat-accordion>
 
             <!-- Datos con grupos dinámicos -->
             <ng-container
-                *ngIf="complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && getGroupArrayById(1).length > 0)">
+                *ngIf="complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && !modifyData?getGroupArrayById(1).length > 0:getAllFields().length >0)">
                 <ng-container *ngFor="let group of complementaryDataControls.controls">
                     <mat-accordion class="form" *ngIf="true">
                         <mat-expansion-panel [expanded]="getFieldsFormArray(group.get('fields')).controls.length > 0" hideToggle>
@@ -144,8 +145,8 @@
                                                         <div>
                                                             <mat-label>{{item.value.label }} </mat-label>
 
-                                                            <em *ngIf="!modifyData && isConfigured(item)"
-                                                                class="fas fa-check primary-icon"></em>
+                                                             <em *ngIf="!modifyData && isConfigured(item)"
+                                                                class="fas fa-check primary-icon"></em> 
                                                         </div>
                                                         <div class="drag-handle" cdkDragHandle>
                                                             <em class="fas fa-arrows"></em>
@@ -224,12 +225,12 @@
         </div>
         <!-- Panel de propiedades -->
         <form [ngClass]="title ? 'container-box' : 'container-box-shared'" [formGroup]="selectedField"
-            *ngIf="this.selectedField?.get('id') && !modifyData">
+            *ngIf="this.selectedField?.get('id')">
             <h5 class="title"> Propiedades </h5>
             <div class="container-name-variable">
                 <div class="name-variable">{{ selectedField.value.label }}</div>
             </div>
-            <section class="input input-prop">
+            <section class="input input-prop" *ngIf="!modifyData">
                 <mat-label>Regla de inicialización:</mat-label>
                 <mat-form-field class="example-chip-list" appearance="outline" (click)="openModalInitializeRule()"
                     data-qa-id="sc-rpmf-btn_open_initialize_rule_modal">
@@ -272,7 +273,7 @@
                 </mat-form-field>
             </section>
 
-            <section class="input input-prop">
+            <section class="input input-prop" *ngIf="!modifyData">
                 <mat-label>Depende de:</mat-label>
                 <mat-form-field appearance="outline">
                     <mat-select placeholder="Seleccionar" formControlName="dependency"
@@ -287,7 +288,7 @@
                     <mat-error *ngIf="">Seleccione el Estado del Producto.</mat-error>
                 </mat-form-field>
             </section>
-            <section class="container-sliders-toggle">
+            <section class="container-sliders-toggle" *ngIf="!modifyData">
                 <mat-slide-toggle class="example-margin" formControlName="required"
                     data-qa-id="sc-rpmf-toggle_required">
                     Obligatorio
@@ -300,7 +301,7 @@
                     Visible
                 </mat-slide-toggle>
             </section>
-            <section class="input input-prop" *ngIf="getGroupArrayById(this.selectedField.get('fieldGroup')?.value).length > 1">
+            <section class="input input-prop" *ngIf="getGroupArrayById(this.selectedField.get('fieldGroup')?.value).length > 1 && !modifyData">
                 <mat-label>Grupo</mat-label>
                 <mat-form-field appearance="outline">
                     <mat-select placeholder="Seleccionar" formControlName="fieldGroup"
@@ -314,7 +315,15 @@
                     <mat-error *ngIf="">Seleccione el grupo</mat-error>
                 </mat-form-field>
             </section>
-            <div class="container-bt" *ngIf="selectedField?.get('shouldDelete')?.value && getGroupArrayById(this.selectedField.get('fieldGroup')?.value).length > 1">
+            <div class="container-bt" *ngIf="selectedField?.get('shouldDelete')?.value && getGroupArrayById(this.selectedField.get('fieldGroup')?.value).length > 1 && !modifyData">
+                <button mat-raised-button color="accent" class="bt bt-complementary" (click)="removeComplementaryData()"
+                    data-qa-id="sc-rpmf-btn_remove_complementary_data">
+                    <em class="far fa-minus-circle bt-icon"></em>
+                    Eliminar dato
+                </button>
+            </div>
+
+            <div class="container-bt" *ngIf="modifyData">
                 <button mat-raised-button color="accent" class="bt bt-complementary" (click)="removeComplementaryData()"
                     data-qa-id="sc-rpmf-btn_remove_complementary_data">
                     <em class="far fa-minus-circle bt-icon"></em>

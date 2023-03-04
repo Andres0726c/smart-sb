@@ -1,0 +1,47 @@
+<p-card>
+    <form [formGroup]="formQueryFilter">
+        <div class="">
+            <p-divider align="left" type="dashed" styleClass="my-2">
+                <div class="inline-flex align-items-center"><em class="pi pi-user mr-2"></em>
+                    <strong>Póliza</strong>
+                </div>
+            </p-divider>
+            <section class="w-full flex flex-col sm:flex-row gap-x-4">
+
+                <div class="flex w-full sm:w-1/3 gap-x-4">
+                    <div>
+                        <label>Nro. de póliza smartcore</label>
+                        <input type="text" pInputText formControlName="smartCorePolicyNumber" placeholder="12345-67891-23456"
+                          [required]="isRequired['smartCorePolicyNumber']" maxlength="20"  class="w-full">
+                    </div>
+                    <div>
+                        <label>Nro. de póliza externo</label>
+                        <input type="text" pInputText formControlName="tronPolicyNumber" placeholder="12345-67891-23456"
+                          [required]="isRequired['policyExternalNumber']" maxlength="20"  class="w-full">
+                    </div> 
+                </div>
+                <div class="w-full sm:w-1/3">
+                    <label>Proceso</label>
+                    <p-dropdown #dropdownProduct [options]="processPolicy" [styleClass]="'w-full'" formControlName="process"
+                        optionLabel="name" optionValue="value" appendTo="body" placeholder="Seleccionar">
+                    </p-dropdown>
+                </div>
+                <div class="w-full sm:w-1/3">
+                    <span>Vigente desde</span>
+                    <span class="p-input-icon-right w-full">
+                        <p-calendar formControlName="date" dateFormat="yy M d" appendTo="body" styleClass="w-full" placeholder="aaaa-mm-dd"></p-calendar>
+                        <em class="pi pi-calendar"></em>
+                    </span>
+                </div>
+            </section>
+        </div>
+        <br>
+        <div class="flex justify-between">
+            <button pButton type="button" label="Limpiar criterios" (click)="cleanFilter()"
+                class="p-button p-button-secondary min-w-max"></button>
+            <small *ngIf="errorAllForm" class="p-error w-full text-right flex items-center flex-row-reverse mx-4">Debe
+                escoger un criterio válido.</small>
+            <button pButton type="submit" label="Buscar" class="min-w-max" (click)="search()"></button>
+        </div>
+    </form>
+</p-card>
