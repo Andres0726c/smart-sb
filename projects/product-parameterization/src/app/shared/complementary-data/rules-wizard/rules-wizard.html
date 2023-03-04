@@ -149,7 +149,7 @@
                 </div>
                 <mat-form-field appearance="outline">
                   <mat-select  data-qa-id="sc-rpmf-btn_to_select_rules_wizard" >
-                    <div *ngFor="let parameters of aditionalData; let x=index">
+                    <div *ngFor="let parameters of aditionalData">
                       <mat-option (click)="setParameters(parameter, item.name)" *ngFor="let parameter of parameters" [value]="parameter.id">
                         {{parameter.name }}
                       </mat-option>

@@ -271,6 +271,7 @@ export class RulesWizardComponent implements OnInit {
    * Method that insert the information in mat table datasource
    */
   async insertDataToTable() {
+
     if (this.rulesModal.remotePaginator) {
       this.rulesDataSource.data = [...this.dataList];
       this.dataSourceAux.data = [...this.dataListAux];
@@ -331,6 +332,7 @@ export class RulesWizardComponent implements OnInit {
     for(i in lookupObject) {
       newArray.push(lookupObject[i]);
     }
+    console.log(newArray);
     return newArray;
   }
 
@@ -377,11 +379,12 @@ export class RulesWizardComponent implements OnInit {
     this.ParametersForm.get('rule')?.setValue(this.ruleSelection.selected[0]);
 
     let map = this.ParametersForm.get('rule')?.value.nmParameterList;
-    let Jsonmap: any;
+    let Jsonmap: any, orderList: any = [];
     try {
       if (map){
          Jsonmap = JSON.parse(map);
          this.stepParameters = this.returnObj(Jsonmap);
+         console.log(this.stepParameters);
          this.EmptyData=false;
       }
       else{
@@ -393,9 +396,14 @@ export class RulesWizardComponent implements OnInit {
       this.stepParameters = this.returnObj({});
     }
 
+    console.log(this.data.complementaryData.value);
     for(let x = 0; x < this.data.complementaryData.length; x++){
-      this.aditionalData.push(this.data.complementaryData.value[x].fields);
+      orderList=orderList.concat(this.data.complementaryData.value[x].fields);    
     }
+    console.log(orderList);
+
+    this.sortParameterBy('name',orderList)
+    this.aditionalData.push(orderList);
 
     for ( let rule of this.stepParameters) {
        let ObjForm = this.fb.group({
@@ -407,6 +415,13 @@ export class RulesWizardComponent implements OnInit {
      }
   }
 
+  sortParameterBy(property:any, complementaryData:any) {  
+    return complementaryData.sort((a:any, b:any) => {
+      return a[property] >= b[property]
+        ? 1
+        : -1
+    })
+  }
   public isObject(obj: any) {
     return obj !== undefined && obj !== null && obj.constructor == Object;
   }
@@ -586,6 +601,7 @@ export class RulesWizardComponent implements OnInit {
       // push final
     let ObjForm;
 
+    console.log("parametros: ", this.stepParameters)
     for (let parameter of this.stepParameters) {
       for ( let rule of this.fields.value) {
        if (parameter.name === rule.rule  ) {
