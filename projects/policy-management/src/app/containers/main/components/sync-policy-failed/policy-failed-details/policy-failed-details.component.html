@@ -1,0 +1,41 @@
+<div>
+  <div class="pt-5 flex flex-col gap-y-4">
+    <fieldset class="border-dashed rounded-md border px-2">
+      <legend class="font-bold px-2">Póliza</legend>
+      <div class="grid grid-cols-3 gap-4">
+
+          <div>
+            <label class="font-bold text-base">Número poliza smartcore</label> <br />
+            <span class="pl-1 text-base text-gray">{{config.data.policy.smartCorePolicyNumber}}</span>
+          </div>
+          <div>
+            <label class="font-bold text-base">Nro. de póliza externo</label> <br />
+            <span class="pl-1 text-base text-gray">{{config.data.policy.tronPolicyNumber}}</span>
+          </div>
+            <div>
+            <label class="font-bold text-base">Fecha de envio</label><br />
+            <span class="pl-1 text-base text-gray">{{config.data.policy.sendDate}}</span>
+          </div>
+          <div>
+            <label class="font-bold text-base">Proceso</label
+            ><br />
+            <span class="pl-1 text-base text-gray">{{homologateProcess(config.data.policy.process)}}</span>
+          </div>
+          <div></div>
+      </div>
+    </fieldset>
+    <fieldset class="border-dashed rounded-md border px-2">
+      <legend class="font-bold px-2">Comunes</legend>
+      <section class="w-full flex flex-col sm:flex-row gap-x-4">
+        <div>
+          <label class="font-bold text-base">Errores</label> <br />
+          <span class="pl-1 text-base text-gray">{{config.data.policy.errorMessage}}</span>
+        </div>
+      </section>
+    </fieldset>
+  <div></div>
+  </div>
+  <section *ngIf="!isLoading && policy" class="sticky bottom-0 bg-white pb-6 pt-4 text-center">
+    <button pButton type="submit" label="Cerrar" class="min-w-max" (click)="close()"></button>
+  </section>
+</div>

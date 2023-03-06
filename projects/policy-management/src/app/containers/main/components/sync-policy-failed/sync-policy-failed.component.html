@@ -1,0 +1,82 @@
+<div class="mx-1 sm:mx-12 sm:mb-12">
+    <h1>Consulta de pólizas con envio fallido</h1>
+    <span>Criterios de búsqueda</span>
+    <div class="flex flex-col justify-center items-center gap-y-4">
+        <app-filter-policy-failed-top (emitSearch)="search($event)" (emitClear)="clearSearch()" class="w-full">
+        </app-filter-policy-failed-top>
+        <span class="w-full">Resultados de la búsqueda</span>
+        <section class="flex flex-col justify-center w-full">
+            <p-table [columns]="cols" [value]="policies" responsiveLayout="scroll" [rows]="5" 
+                [paginator]="true" [alwaysShowPaginator]="false" [totalRecords]="totalRecords" [loading]="loading">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" scope="col">
+                            {{col.header}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td>
+                            {{homologateProcess(rowData['process'])}}
+                        </td>
+                        <td>
+                            {{rowData['product']}}
+                        </td>
+                        <td>
+                            {{rowData['smartCorePolicyNumber']}}
+                        </td>
+                        <td>
+                            {{rowData['tronPolicyNumber']}}
+                        </td>
+                        <td>
+                            {{rowData['policyHolder']}}
+                        </td>
+                        <td>
+                            {{rowData['policyInsured']}}
+                        </td>
+                        <td>
+                            {{rowData['sendDate'] | date:'d MMM y, HH:mm:ss'}}
+                        </td>
+                        <td>
+                            {{rowData['status']}}
+
+                        </td>
+                        <td>
+                            <button type="button" pButton pRipple class="p-button p-button-secondary bg-white hover:"
+                                icon="pi pi-ellipsis-v" (click)="selectedPolicy=rowData; menu.toggle($event);">
+                            </button>
+                            <p-menu #menu [popup]="true" [model]="items" appendTo="body">
+                            </p-menu>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="9">Pólizas no encontradas</td>
+                    </tr>
+                </ng-template>
+
+            </p-table>
+
+        </section>
+    </div>
+</div>
+
+<p-toast position="bottom-right">
+    <ng-template let-message pTemplate="message">
+        <div class="flex flex-column alert-description" style="flex: 1">
+            <span *ngIf="message.severity === 'success'" style="border: 3px solid var(--success-base);" class="line-border"></span>
+            <span *ngIf="message.severity === 'error'" style="border: 3px solid var(--danger-base);" class="line-border"></span>
+            <div class="flex flex-column text-center">
+                <em *ngIf="message.severity === 'success'" class="fas fa-check-circle"></em>
+                <em *ngIf="message.severity === 'error'" class="fas fa-times-circle"></em>
+            </div>
+            <div class="text-center" style="margin-left: 8px;">
+                <h5 class="spaces" *ngIf="message.severity === 'success'">{{message.summary}}</h5>
+                <h5 class="spaces" *ngIf="message.severity === 'error'">{{message.summary}}</h5>
+                <p>{{message.detail}}</p>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>

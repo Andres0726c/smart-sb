@@ -134,6 +134,8 @@ export const search: SearchModal[] = [
     title: 'Reglas de Cálculo',
     subtitle: 'Seleccione la regla de cálculo que desea asociar',
     service: 'rule/findAllByCdRuleType/Cálculo',
+    sortField:'nmname',
+    sortDirectionField:'asc',
     remotePaginator: true
   },
   {
