@@ -16,7 +16,7 @@ import { SyncPolicyFailedService } from './services/sync-policy-failed.service';
   styleUrls: ['./sync-policy-failed.component.scss'],
   providers: [MessageService, DialogService],
 })
-export class SyncPolicyFailedComponent implements OnInit {
+export class SyncPolicyFailedComponent {
 
   @ViewChild('menu') menu!: Menu; 
   cols: any[] = [];
@@ -36,6 +36,9 @@ export class SyncPolicyFailedComponent implements OnInit {
     date: null,
     subprocess: null,
   };
+  formQueryFilter: any;
+  emitClear: any;
+  isRequired: any;
 
   constructor(
     public syncPolicyFailedService: SyncPolicyFailedService,
@@ -84,11 +87,11 @@ export class SyncPolicyFailedComponent implements OnInit {
 
   sendDataPoliciesFailed(dataPolicies: any){
     this.loading = true;
-    this.syncPolicyFailedService.postSendDataPoliciesFailed(dataPolicies).subscribe({
-      error: (error: ResponseErrorDTO) => {
-        console.error('error', error);
-        this.loading = false;
-      },
+    this.syncPolicyFailedService.postSendDataPoliciesFailed(dataPolicies).subscribe({});
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Información',
+      detail:'La petición fue reenviada. En breve podrá consultar el resultado en Simon-Tronador'
     });
     this.loading = false;
     this.policies = [];
@@ -136,9 +139,6 @@ export class SyncPolicyFailedComponent implements OnInit {
       contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px'},
       baseZIndex: 10000,
     })
-  }
-
-  ngOnInit(): void {
   }
 
   ngOnDestroy(): void {

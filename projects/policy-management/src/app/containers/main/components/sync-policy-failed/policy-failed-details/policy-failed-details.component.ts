@@ -25,4 +25,16 @@ export class PolicyFailedDetailsComponent {
     this.ref.close(true)
   }
 
+  homologateProcess(process: any) {
+    var map: { [key: number]: string; } = {
+      261 : "Emisión",
+      281 : "Modificación",
+      351 : "Cancelación",
+      441 : "Renovación",
+      401 : "Rehabilitación"
+    };
+
+    return map[process];
+  }
+
 }

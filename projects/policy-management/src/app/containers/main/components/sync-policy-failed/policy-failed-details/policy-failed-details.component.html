@@ -1,37 +1,4 @@
 <div>
-  <section *ngIf="isLoading" class="w-full text-center py-8">
-    <div
-      class="p-progress-spinner lib-progress-indicator__infinite text-center"
-      [style]="{ width: '50px', height: '50px' }"
-    >
-      <svg
-        class="p-progress-spinner-svg"
-        viewBox="25 25 50 50"
-        [style.animation-duration]="'.5s'"
-      >
-        <defs>
-          <linearGradient id="gradient" x1="0%" y1="20%" x2="50%" y2="150%">
-            <stop offset="25%" stop-color="#6FD940"></stop>
-            <stop offset="45%" stop-color="#DBDC11"></stop>
-          </linearGradient>
-        </defs>
-        <circle
-          stroke="url(#gradient)"
-          class="p-progress-spinner-circle"
-          cx="50"
-          cy="50"
-          [attr.r]="21"
-          fill="none"
-          [attr.stroke-width]="6"
-          stroke-miterlimit="10"
-        />
-      </svg>
-    </div>
-  </section>
-  <!--<p-messages *ngIf="!isLoading && !policy" severity="error">
-    <ng-template pTemplate> Hubo un error. Vuelva a intentarlo. </ng-template>
-  </p-messages>-->
-
   <div class="pt-5 flex flex-col gap-y-4">
     <fieldset class="border-dashed rounded-md border px-2">
       <legend class="font-bold px-2">Póliza</legend>
@@ -52,7 +19,7 @@
           <div>
             <label class="font-bold text-base">Proceso</label
             ><br />
-            <span class="pl-1 text-base text-gray">{{config.data.policy.process}}</span>
+            <span class="pl-1 text-base text-gray">{{homologateProcess(config.data.policy.process)}}</span>
           </div>
           <div></div>
       </div>
@@ -68,10 +35,7 @@
     </fieldset>
   <div></div>
   </div>
-  <section
-    *ngIf="!isLoading && policy"
-    class="sticky bottom-0 bg-white pb-6 pt-4 text-center"
-  >
+  <section *ngIf="!isLoading && policy" class="sticky bottom-0 bg-white pb-6 pt-4 text-center">
     <button pButton type="submit" label="Cerrar" class="min-w-max" (click)="close()"></button>
   </section>
 </div>

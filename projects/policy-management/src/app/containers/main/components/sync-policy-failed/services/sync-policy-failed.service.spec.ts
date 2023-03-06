@@ -32,7 +32,7 @@ const mockPolicyFailed: FilterPolicyFailed =
     smartCorePolicyNumber: null,
     tronPolicyNumber: null,
     process: null,
-    date: "2023-01-01"
+    date: new Date('2023-03-01')
   };
 
 describe('SyncPolicyFailedService', () => {
