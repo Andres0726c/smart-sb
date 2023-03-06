@@ -73,7 +73,6 @@ export class ModalSearchSmallComponent implements OnInit {
         { name: 'name', header: 'Nombre', displayValue: [''] },
         { name: 'description', header: 'Descripción', displayValue: [''] },
       ];
-     console.log(this.modal.sortField," " ,this.modal.sortDirectionField )
       if(this.modal.sortField){this.sortColumn=this.modal.sortField; }
       if(this.modal.sortDirectionField){this.sortDirection=this.modal.sortDirectionField; }
 

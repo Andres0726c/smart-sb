@@ -48,7 +48,7 @@ export const screenManagementRoutes: Route[] = [
             /* Modificación */
             {
                 path: 'tipos-modificacion',
-                loadChildren: () => import('../../../containers/modification-types/modification-types.module').then(m => m.ModificationTypesModule)
+                loadChildren: () => import('../../../containers/main-screen-product/components/modification-types/modification-types.module').then(m => m.ModificationTypesModule)
             },
             {
                 path: 'control-tecnico-modificacion',

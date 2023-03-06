@@ -456,30 +456,26 @@ describe('ComplementaryDataComponent', () => {
     expect(component.getFieldsFormArray(array)).toBeDefined();
   });
 
-  it('DeleteCascadeDateModify', () => {
-    component.selectedField = component.fb.group({
-      id: component.fb.control(1),
-    })
-    component.productService.modificationTypes = new FormArray([
-    ]);
-    component.productService.modificationTypes.push(
-      component.fb.group({
-        id: component.fb.control(1, Validators.required),
-        description: component.fb.control('Plan básico', Validators.required),
-        visibleNonModificableData: new FormArray([ component.fb.group ({
-          id: component.fb.control(1),
-          fields: new FormArray([
-            component.fb.group({
-              id: component.fb.control(1)
-            })
-          ]),
-        })], Validators.required),
-      })
+  it('DeleteCascadeDateModify',()=>{
 
-    );
-    const id: number = 1;
-    expect(component.DeleteCascadeDateModify(id)).toBeUndefined();
-  });
+    component.productService.mdfctnPrcss=component.fb.group({
+      mdfcblDt:component.fb.group({
+        id: component.fb.control(1, Validators.required),
+        plcyDtGrp:new FormArray([
+          component.fb.group({
+          id: component.fb.control(1,Validators.required),
+          fields:new FormArray([
+           component.fb.group({
+            businessCode:component.fb.control("1",Validators.required)
+           }) 
+          ])
+        })
+      ])
+      })
+    });
+    expect(component.DeleteCascadeDateModify(1,'1')).toBeUndefined();
+  })
+
 
   it('setEssentialData', () => {
     const array = [
