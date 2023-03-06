@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MatTreeFlatDataSource,
   MatTreeFlattener,
@@ -111,11 +111,22 @@ export class RiskTypesComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedRiskType = this.riskTypeGroup;
+
+    console.log(this.selectedRiskType);
+    console.log(this.productService.mdfctnPrcss,"pr");
   }
 
   get riskTypeGroup(): FormGroup {
     return this.productService.riskTypes.controls[this.index] as FormGroup;
   }
+
+  get riskTypeControls(): FormArray {
+    return (<FormArray>(
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
+    )) as FormArray;
+  }
+  
+
 
   openToAdd(): void {
 
@@ -165,6 +176,20 @@ export class RiskTypesComponent implements OnInit {
             businessPlans: this.fb.array([], Validators.required),
           })
         );
+
+        //RiskModify
+        this.riskTypeControls.push(
+        this.fb.group({
+          id: this.fb.control(riskType.id, Validators.required),
+          name: this.fb.control(riskType.name, Validators.required),
+          description: this.fb.control(
+            riskType.description,
+            Validators.required
+          ),
+          rskTypDtGrp:this.fb.array([],Validators.required),
+          cmmrclPln:this.fb.array([],Validators.required)
+        })
+        )
         this.dataSource.data.push({
           name: riskType.name,
           id: riskType.id,

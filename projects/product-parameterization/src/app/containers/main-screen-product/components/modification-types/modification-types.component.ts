@@ -46,7 +46,7 @@ export class ModificationTypesComponent implements OnInit {
   showBranch: BussinesPlans[] = [];
   riskData: boolean = false;
   riskType: string = '';
-  policyData: boolean = false;
+  policyData: boolean = true;
   showCommercialPlans: boolean = false;
   showCommercialPlansTypes: boolean = false;
   showRisk: boolean = false;
@@ -75,10 +75,20 @@ export class ModificationTypesComponent implements OnInit {
     //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
   }
 
-  openToAdd(): void {
+  getGroupArrayByIdRisk(id: number) {
+    return <FormArray>(
+      this.complementaryDataControls.controls
+        .find((x: { value: { id: number } }) => x.value.id === id)
+        ?.get('fields')
+    );
+    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
+  }
+
+  openToAdd(level:any): void {
+    console.log('level',level);
     let sendData = [];
     sendData = this.productService.policyData?.value[0].fields;
-
+    console.log(this.productService.riskTypes.complementaryData);
     const columns = [
       { name: 'name', header: 'Nombre', displayValue: ['label'] },
       {
@@ -95,8 +105,8 @@ export class ModificationTypesComponent implements OnInit {
       data: {
         code: 'emissionData',
         columns: columns,
-        list: this.getAll(),
-        data: this.getAllFields(),
+        list: level==='risk'?[]:this.getAll(),
+        data: level==='risk'?this.getAllRisk():this.getAllFields(),
       },
     });
     dialogRef.afterClosed().subscribe((res: ElementReturn[]) => {
@@ -106,6 +116,7 @@ export class ModificationTypesComponent implements OnInit {
 
   getAllFields() {
     let res: any[] = [];
+ 
     for (const group of this.productService.policyData?.getRawValue()) {
       res = res.concat(group.fields);
     }
@@ -119,6 +130,20 @@ export class ModificationTypesComponent implements OnInit {
     }
 
     return res;
+  
+  }
+
+  getAllRisk() {
+
+
+    let res: any[] = [];
+    
+    for (const group of this.getRiskArraydById(2).getRawValue()) {
+      res = res.concat(group.fields);
+    }
+   
+    return res;
+   
 
   
   }
@@ -128,6 +153,33 @@ export class ModificationTypesComponent implements OnInit {
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
     )) as FormArray;
   }
+
+  get policyDataControls(): FormArray {
+    return (<FormArray>(
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
+    )) as FormArray;
+  }
+
+  getRiskArrayByIdModify(id: number) {
+    return (<FormArray>this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'));
+  }
+
+  getRiskArraydById(id: number) {
+    return (<FormArray>this.productService.riskTypes.controls.find((x: { value: { id: number; }; }) => x.value.id === 2)?.get('complementaryData'));
+  }
+
+  getGroupArrayByIdModify(id: number) {
+    return <FormArray>(
+      this.getRiskArrayByIdModify(2).controls
+        .find((x: { value: { id: number } }) => x.value.id === id)
+        ?.get('fields')
+    );
+    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
+  }
+
+
+
+  
 
   addItem = (obj: ElementReturn[], group: number, showMessage: boolean) => {
     if (obj) {
@@ -142,12 +194,23 @@ export class ModificationTypesComponent implements OnInit {
       for (let object of obj) {
         nameGruop = this.getNameGroup(object.element.businessCode);
 
+        console.log(this.getRiskArrayByIdModify(2),"getRisk");
+        console.log(nameGruop,"grupo");
+
         if (
-          this.complementaryDataControls.value.findIndex(
-            (x: { id: any }) => x.id === nameGruop.id
-          ) === -1
+        this.getRiskArrayByIdModify(2).value.findIndex(
+             (x: { id: any }) => x.id === nameGruop.id
+           ) === -1
+       
+        //  this.getRiskArrayByIdModify(2).value.findIndex(
+         //   (x: { id: any }) => x.id === nameGruop.id
+          //) === -1 
+          // this.complementaryDataControls.value.findIndex(
+          //   (x: { id: any }) => x.id === nameGruop.id
+          // ) === -1
         ) {
-          this.complementaryDataControls.push(
+         //this.complementaryDataControls.push(
+          this.getRiskArrayByIdModify(2).push(
             new FormGroup({
               id: this.fb.control(nameGruop.id),
               code: this.fb.control(nameGruop.code),
@@ -158,14 +221,16 @@ export class ModificationTypesComponent implements OnInit {
           );
         }
 
-        const index = this.complementaryDataControls.value.findIndex(
+        const index = this.getRiskArrayByIdModify(2).value.findIndex(
           (x: { id: any }) => x.id === nameGruop.id
         );
+
+        console.log(index);
         // const index2 = this.getAll().findIndex((x: { id: number; }) => x.id === object.id);
 
         //   if (index2 === -1) {
 
-        this.getGroupArrayById(index + 1).push(
+        this.getGroupArrayByIdModify(index + 1).push(
           new FormGroup({
             id: this.fb.control(object.id, [Validators.required]),
             name: this.fb.control(object.name, [Validators.required]),
@@ -199,7 +264,7 @@ export class ModificationTypesComponent implements OnInit {
         );
       }
 
-      // console.log(this.complementaryDataControls,"test");
+       console.log(this.productService.mdfctnPrcss,"test");
     }
   };
 
@@ -219,8 +284,10 @@ export class ModificationTypesComponent implements OnInit {
 
   getNameGroup(name: any) {
     let objGruop;
-
-    for (let groups of this.productService.policyData.value) {
+console.log(name,"name");
+//getRiskArraydById
+//this.productService.policyData.value
+    for (let groups of this.getRiskArraydById(2).value) {
       for (let key of groups.fields) {
         if (key.businessCode === name) {
           objGruop = {
@@ -295,6 +362,7 @@ export class ModificationTypesComponent implements OnInit {
   }
 
   calledMenu(showMenu?: BussinesPlans[]) {
+    console.log(this.productService.getProductObject().riskTypes,"riskmenu")
     this.items1 = [
       {
         label: 'Datos de la póliza',
@@ -313,7 +381,7 @@ export class ModificationTypesComponent implements OnInit {
         },
         items: [
           ...this.addBranch(
-            this.productService.getProductObject().riskTypes,
+            this.productService.getProductObject().mdfctnPrcss,
             showMenu
           ),
         ],
