@@ -10,7 +10,7 @@ import { ConsultPolicyService } from '../../consult-policy/services/consult-poli
   styleUrls: ['./policy-failed-details.component.scss'],
   providers: [MessageService, DialogService],
 })
-export class PolicyFailedDetailsComponent implements OnInit {
+export class PolicyFailedDetailsComponent {
   component: any;
   isLoading = true;
   policy!: Policy
@@ -20,10 +20,6 @@ export class PolicyFailedDetailsComponent implements OnInit {
     public dialogService: DialogService,
     public config: DynamicDialogConfig
   ) { }
-
-  ngOnInit(): void {
-    
-  }
 
   close() {
     this.ref.close(true)

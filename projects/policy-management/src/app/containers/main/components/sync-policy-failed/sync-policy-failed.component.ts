@@ -141,6 +141,13 @@ export class SyncPolicyFailedComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    // Cerramos todas las modales al cambiar de componente
+    this.dialogService.dialogComponentRefMap.forEach(dialog => {
+      dialog.destroy();
+    });
+  }
+
   homologateProcess(process: any) {
     var map: { [key: number]: string; } = {
       261 : "Emisión",
