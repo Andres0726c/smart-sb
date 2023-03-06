@@ -26,6 +26,7 @@ import {MessageModule} from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { FilterPolicyFailedTopComponent } from './filter-policy-failed-top/filter-policy-failed-top.component';
+import { PolicyFailedDetailsModule } from './policy-failed-details/policy-failed-details.module';
 
 const routes: Routes = [
   {
@@ -66,7 +67,8 @@ const routes: Routes = [
     InputTextareaModule,
     MessagesModule,
     MessageModule,
-    ToastModule
+    ToastModule,
+    PolicyFailedDetailsModule
   ]
 })
 export class SyncPolicyFailedModule { }
