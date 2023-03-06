@@ -26,7 +26,7 @@ export class PolicyFailedDetailsComponent {
   }
 
   homologateProcess(process: any) {
-    var map: { [key: number]: string; } = {
+    let map: { [key: number]: string; } = {
       261 : "Emisión",
       281 : "Modificación",
       351 : "Cancelación",
