@@ -129,7 +129,6 @@ export class RulesWizardComponent implements OnInit {
       this.ruleSelection = new SelectionModel<ElementTableSearch>(this.rulesModal.multiSelect, []);
 
       this.contextData = this.transformContextData(this.data.contextData);
-
       // llamamos a la carga de datos
       await this.loadData('0', this.currentRulesPage, this.rulesPageSize,this.sortColumns,this.sortingDirection);
 
@@ -140,15 +139,15 @@ export class RulesWizardComponent implements OnInit {
   }
 
   transformContextData(dataList:any[]){
+    let contextData: any = [];
+
     //se agrega la propiedad businessCode al arreglo del dominio
-    dataList.forEach(obj =>{
-      obj.businessCode = obj.code;
-      // or via brackets
-      // obj['total'] = 2;
-      return obj;
+    dataList.forEach(element =>{
+    let obj: any = { id:element.code, name : element.description,businessCode:element.code , applctnLvl:element.applctnLvl };
+      contextData.push(obj)
     });
 
-    return dataList;
+    return contextData;
   }
 
   ngAfterViewInit() {
@@ -396,7 +395,7 @@ export class RulesWizardComponent implements OnInit {
     for(let x = 0; x < this.data.complementaryData.length; x++){
       orderList=orderList.concat(this.data.complementaryData.value[x].fields);    
     }
-
+    if(this.contextData){ orderList=orderList.concat(this.contextData);}
     this.sortParameterBy('name',orderList)
     this.aditionalData.push(orderList);
 
