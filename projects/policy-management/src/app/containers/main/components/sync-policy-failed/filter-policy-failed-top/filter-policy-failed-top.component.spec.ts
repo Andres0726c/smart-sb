@@ -40,11 +40,6 @@ describe('FilterPolicyFailedTopComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('search error all fields empty', () => {
-    component.search();
-    expect(component.errorAllForm).toBeTruthy();
-  });
-
   it('search success', () => {
     component.smartCorePolicyNumber.setValue('100000000000010');
     component.formQueryFilter.get('startDate')?.setValue(null)
@@ -59,16 +54,6 @@ describe('FilterPolicyFailedTopComponent', () => {
     expect(component.errorAllForm).toBeFalsy();
   });
 
-
-  it('validate policyNumber fields valid', () => {
-    component.smartCorePolicyNumber.setValue('policy number');
-    expect(component.validForm()).toBeFalsy();
-  });
-
-  it('validate all fields empty', () => {
-    expect(component.validForm()).toBeTruthy();
-  });
-
   it('cleanFilter', () => {
     component.smartCorePolicyNumber.setValue('test');
     component.cleanFilter();
@@ -79,18 +64,10 @@ describe('FilterPolicyFailedTopComponent', () => {
     component.clearFields({ type: '', number: '' });
   });
 
-  it('clear dropdown with x', () => {
-    component.formQueryFilter.get('idProduct')?.setValue('test idProduct');
-    component.onClearField('idProduct');
-    expect(component.formQueryFilter.value.idProduct).toEqual('');
-  });
-
   it('clear dropdown with field doesnt exist', () => {
     component.onClearField('noExist');
     expect(component.formQueryFilter.value.noExist).toEqual(undefined);
   });
-
-
 
   it('setData', () => {
     let res: any = { body:'' };

@@ -25,10 +25,8 @@ export class SyncPolicyFailedService {
 
   postPoliciesFailed(filterPolicy: FilterPolicyFailed): Observable<any> {
     let datestring = null;
-    if (filterPolicy.date == '') {
-      datestring = null;
-    } else {
-      [datestring] = filterPolicy.date == ''?null:filterPolicy.date.toISOString().split('T');
+    if (filterPolicy.date != '') {
+      [datestring] = filterPolicy.date.toISOString().split('T');
     }
     
     const sendData = {
@@ -37,7 +35,7 @@ export class SyncPolicyFailedService {
       process: filterPolicy.process == ""?null:filterPolicy.process,
       date: datestring,
     };
-    return this.httpClient.post<any>(`${this.apiUrl}queue/listfailedmessages`, sendData, { headers: this.headers });
+    return this.httpClient.post<PolicyBrief[]>(`${this.apiUrl}queue/listfailedmessages`, sendData, { headers: this.headers });
   }
 
 

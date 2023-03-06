@@ -10,7 +10,7 @@ import { ConsultPolicyService } from '../../consult-policy/services/consult-poli
   styleUrls: ['./policy-failed-details.component.scss'],
   providers: [MessageService, DialogService],
 })
-export class PolicyFailedDetailsComponent implements OnInit {
+export class PolicyFailedDetailsComponent {
   component: any;
   isLoading = true;
   policy!: Policy
@@ -21,12 +21,20 @@ export class PolicyFailedDetailsComponent implements OnInit {
     public config: DynamicDialogConfig
   ) { }
 
-  ngOnInit(): void {
-    
-  }
-
   close() {
     this.ref.close(true)
+  }
+
+  homologateProcess(process: any) {
+    var map: { [key: number]: string; } = {
+      261 : "Emisión",
+      281 : "Modificación",
+      351 : "Cancelación",
+      441 : "Renovación",
+      401 : "Rehabilitación"
+    };
+
+    return map[process];
   }
 
 }

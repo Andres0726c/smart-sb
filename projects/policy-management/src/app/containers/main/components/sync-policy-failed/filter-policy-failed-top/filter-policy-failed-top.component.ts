@@ -87,30 +87,15 @@ export class FilterPolicyFailedTopComponent {
 
   search() {
     this.toggleRequired(true);
-    this.errorAllForm = this.validForm();
-    if (!this.errorAllForm) {
-      let queryFilter = this.formQueryFilter.value;
+    let queryFilter = this.formQueryFilter.value;
       if(queryFilter.date==null) queryFilter.date = ''
       this.emitSearch.emit(queryFilter);
-    } else {
-      this.markAsDirtyForm();
-    }
-  }
-
-  markAsDirtyForm() {
-    for (const field in this.formQueryFilter.controls) {
-      this.formQueryFilter.get(field)?.markAsDirty();
-    }
   }
 
   toggleRequired(state: boolean) {
     for (const field in this.isRequired) {
       this.isRequired[field] = state;
     }
-  }
-
-  validForm(): boolean {
-    return false;
   }
 
   clearFields(fields: FieldDocument) {
