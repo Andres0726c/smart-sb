@@ -68,6 +68,7 @@
                   >
                     <label>
                       <p-checkbox
+                      [disabled]="data.required.required && option.key=='RMV'"
                         (onChange)="changeCheckServices()"
                         [value]="option"
                         [(ngModel)]="data.athrzdOprtnService"
