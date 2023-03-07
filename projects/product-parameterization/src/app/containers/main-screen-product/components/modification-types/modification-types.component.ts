@@ -63,7 +63,7 @@ export class ModificationTypesComponent implements OnInit {
   }
   ngOnInit(): void {
    
- // console.log(this.complementaryDataControls);
+ console.log(    this.getRiskArrayByIdModify(2).controls);
   }
 
   getGroupArrayById(id: number) {
@@ -75,6 +75,16 @@ export class ModificationTypesComponent implements OnInit {
     //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
   }
 
+  getGroupArrayByIdRisk(id: number) {
+     console.log(id)
+    console.log(this.complementaryDataControls.controls)
+    return <FormArray>(
+      this.complementaryDataControls.controls
+        .find((x: { value: { id: number } }) => x.value.id === id)
+        ?.get('fields')
+    );
+    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
+  }
 
   openToAdd(level:any): void {
     console.log('level',level);
@@ -153,6 +163,7 @@ export class ModificationTypesComponent implements OnInit {
   }
 
   getRiskArrayByIdModify(id: number) {
+    console.log(this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'))
     return (<FormArray>this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'));
   }
 
@@ -160,7 +171,8 @@ export class ModificationTypesComponent implements OnInit {
     return (<FormArray>this.productService.riskTypes.controls.find((x: { value: { id: number; }; }) => x.value.id === 2)?.get('complementaryData'));
   }
 
-  getGroupArrayByIdRisk(id: number) {
+  getGroupArrayByIdModify(id: number) {
+  
     return <FormArray>(
       this.getRiskArrayByIdModify(2).controls
         .find((x: { value: { id: number } }) => x.value.id === id)
@@ -183,16 +195,15 @@ export class ModificationTypesComponent implements OnInit {
 
       let nameGruop: any;
 
+      console.log(obj)
+
       for (let object of obj) {
         nameGruop = this.getNameGroup(object.element.businessCode);
 
         console.log(this.getRiskArrayByIdModify(2),"getRisk");
         console.log(nameGruop,"grupo");
 
-        if (
-        this.getRiskArrayByIdModify(2).value.findIndex(
-             (x: { id: any }) => x.id === nameGruop.id
-           ) === -1
+        if ( this.riskData
        
         //  this.getRiskArrayByIdModify(2).value.findIndex(
          //   (x: { id: any }) => x.id === nameGruop.id
@@ -201,8 +212,14 @@ export class ModificationTypesComponent implements OnInit {
           //   (x: { id: any }) => x.id === nameGruop.id
           // ) === -1
         ) {
+          if(this.getRiskArrayByIdModify(2).value.findIndex(
+            (x: { id: any }) => x.id === nameGruop.id
+          ) === -1) 
+          console.log("que hay?: ",this.getRiskArrayByIdModify(2).value.findIndex(
+            (x: { id: any }) => x.id === nameGruop.id
+          ))
          //this.complementaryDataControls.push(
-          this.getRiskArrayByIdModify(2).push(
+          this.getGroupArrayByIdRisk(2).push(
             new FormGroup({
               id: this.fb.control(nameGruop.id),
               code: this.fb.control(nameGruop.code),
@@ -213,16 +230,38 @@ export class ModificationTypesComponent implements OnInit {
           );
         }
 
+        if ( this.policyData &&
+         
+          //  this.getRiskArrayByIdModify(2).value.findIndex(
+           //   (x: { id: any }) => x.id === nameGruop.id
+            //) === -1 
+            this.complementaryDataControls.value.findIndex(
+              (x: { id: any }) => x.id === nameGruop.id
+            ) === -1
+          ) {
+           //this.complementaryDataControls.push(
+            this.complementaryDataControls.push(
+              new FormGroup({
+                id: this.fb.control(nameGruop.id),
+                code: this.fb.control(nameGruop.code),
+                name: this.fb.control(nameGruop.name),
+                fields: this.fb.array([], Validators.required),
+                isEditing: this.fb.control(nameGruop.isEditing),
+              })
+            );
+          }
+
         const index = this.getRiskArrayByIdModify(2).value.findIndex(
           (x: { id: any }) => x.id === nameGruop.id
         );
 
-        console.log(index);
+        console.log(this.getRiskArrayByIdModify(2).value);
+        console.log(index+1);
         // const index2 = this.getAll().findIndex((x: { id: number; }) => x.id === object.id);
 
         //   if (index2 === -1) {
-          //getGroupArrayById 
-        this.getGroupArrayByIdRisk(index + 1).push(
+
+        this.getGroupArrayByIdModify(index + 1).push(
           new FormGroup({
             id: this.fb.control(object.id, [Validators.required]),
             name: this.fb.control(object.name, [Validators.required]),
@@ -279,6 +318,26 @@ export class ModificationTypesComponent implements OnInit {
 console.log(name,"name");
 //getRiskArraydById
 //this.productService.policyData.value
+if(this.policyData){
+  console.log(this.productService.policyData.value)
+  for (let groups of this.productService.policyData.value) {
+    for (let key of groups.fields) {
+      if (key.businessCode === name) {
+        objGruop = {
+          id: groups.id,
+          code: groups.code,
+          name: groups.name,
+          fields: this.fb.array([], Validators.required),
+          isEditing: groups.isEditing,
+        };
+        break;
+      }
+    }
+  }
+}
+console.log(objGruop)
+
+if(this.riskData){
     for (let groups of this.getRiskArraydById(2).value) {
       for (let key of groups.fields) {
         if (key.businessCode === name) {
@@ -293,7 +352,8 @@ console.log(name,"name");
         }
       }
     }
-
+  }
+console.log(objGruop)
     return objGruop;
   }
 
@@ -306,9 +366,9 @@ console.log(name,"name");
           id: itempush.id,
           label: label1,
           icon: 'pi pi-fw',
-          command: (event: any) => {
-            this.dataSet(itempush);
-          },
+          // command: (event: any) => {
+          //   this.dataSet(itempush);
+          // },
           items: [
             {
               label: 'Planes comerciales',
@@ -394,7 +454,6 @@ console.log(name,"name");
   }
 
   sendData(idCommercialPlan: string) {
-    localStorage.setItem(idCommercialPlan, JSON.stringify(this.showBranch));
     if (idCommercialPlan) {
       this.data = idCommercialPlan;
     }
@@ -403,20 +462,20 @@ console.log(name,"name");
       this.showCommercialPlans = false;
     this.showRisk = false;
   }
-  dataSet(itempush: any) {
-    console.log(itempush);
-    localStorage.setItem(
-      itempush.name,
-      JSON.stringify(
-        this.productService
-          .getProductObject()
-          .riskTypes.find((product: any) => product.id === itempush.id)
-      )
-    );
-    this.riskDataCode = itempush.name;
-    this.riskType = itempush.name;
-    this.titleRisk = itempush.name;
-  }
+  // dataSet(itempush: any) {
+  //   console.log(itempush);
+  //   localStorage.setItem(
+  //     itempush.name,
+  //     JSON.stringify(
+  //       this.productService
+  //         .getProductObject()
+  //         .riskTypes.find((product: any) => product.id === itempush.id)
+  //     )
+  //   );
+  //   this.riskDataCode = itempush.name;
+  //   this.riskType = itempush.name;
+  //   this.titleRisk = itempush.name;
+  // }
   showRiskType() {
     this.riskData = true;
     this.titleCurrent = this.items1[1]?.label;

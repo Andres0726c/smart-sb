@@ -111,7 +111,7 @@
             [subtitleModalCompData]="
               'Seleccione los datos de la póliza que desea asociar'
             "
-            [complementaryData]="getGroupArrayByIdRisk(2)"
+            [complementaryData]="getRiskArrayByIdModify(2)"
             (action)="openToAdd('risk')"
             [modifyData]="true"
           >
@@ -130,7 +130,7 @@
           [data]="data"
         [riskDataCode]="riskDataCode"
           [bussinesPlans]="bussinesPlans"
-          *ngIf="showCommercialPlansTypes && !riskData !policyData"
+          *ngIf="showCommercialPlansTypes && !riskData && !policyData"
         ></refactoring-smartcore-mf-commercial-plan-type>
   <!-- </div> -->
 </div>
