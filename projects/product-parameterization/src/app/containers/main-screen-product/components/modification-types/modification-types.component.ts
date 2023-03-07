@@ -63,7 +63,10 @@ export class ModificationTypesComponent implements OnInit {
   }
   ngOnInit(): void {
    
- // console.log(this.complementaryDataControls);
+  if(this.policyDataControls.length==0){
+    console.log('Entra');
+    this.addRisk();
+    }
   }
 
   getGroupArrayById(id: number) {
@@ -73,6 +76,12 @@ export class ModificationTypesComponent implements OnInit {
         ?.get('fields')
     );
     //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
+  }
+
+  addRisk(){
+    for(const risk of this.productService.riskTypes.values){
+      console.log(risk);
+    }
   }
 
 
@@ -355,6 +364,7 @@ console.log(name,"name");
   }
 
   calledMenu(showMenu?: BussinesPlans[]) {
+    console.log(this.productService.mdfctnPrcss);
     console.log(this.policyDataControls.value ,"riskmenu")
     this.items1 = [
       {
