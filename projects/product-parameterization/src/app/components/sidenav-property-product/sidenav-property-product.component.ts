@@ -73,8 +73,10 @@ export class SidenavPropertyProductComponent implements OnInit
       formControlName: "cancellation",
       showEnable:true,
       show: false,
-      isExpanded: false,
-      submenus:[]
+      isExpanded: true,
+      submenus:[
+        { name: "Datos de cancelación", routerLink: "datos-cancelacion"}
+      ]
     },
     {
       name: "Rehabilitación",

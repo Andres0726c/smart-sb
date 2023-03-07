@@ -1,6 +1,7 @@
 import { Route } from "@angular/router";
 import { AuthGuardParameterizer } from "../../../guard/auth.guard";
 import { ScreenManagementComponent } from "./screen-management.component";
+import { CancellationDataModule } from '../../main-screen-product/components/cancellation-data/cancellation-data.module';
 
 export const screenManagementRoutes: Route[] = [
     {
@@ -72,8 +73,13 @@ export const screenManagementRoutes: Route[] = [
                 loadChildren: () => import('../../../containers/claim-technical-control/claim-technical-control.module').then(m => m.ClaimTechnicalControlModule)
             },
             {
-              path: 'hidden-view',
-              loadChildren: () => import('../../../containers/hidden-view/hidden-view.module').then(m => m.HiddenViewModule)
+                path: 'hidden-view',
+                loadChildren: () => import('../../../containers/hidden-view/hidden-view.module').then(m => m.HiddenViewModule)
+            },
+            /*Cancelación */
+            {
+                path: 'datos-cancelacion',
+                loadChildren: () => import('../../main-screen-product/components/cancellation-data/cancellation-data.module').then(m => m.CancellationDataModule)
             }
         ]
     }
