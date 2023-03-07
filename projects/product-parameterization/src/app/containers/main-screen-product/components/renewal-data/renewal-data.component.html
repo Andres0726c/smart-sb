@@ -10,11 +10,14 @@
         >
             <div class="flex flex-col w-full mb-5">
                 <label class="text-base mb-2">Causas de renovación</label>
-                <p-dropdown data-qa-id="sc-rsmf-drpdwn-process-field" 
+                <p-multiSelect [options]="causes" formControlName="rnwlCsCd"
+                    display="chip" styleClass="w-full" optionLabel="name">
+                </p-multiSelect>
+                <!-- <p-dropdown data-qa-id="sc-rsmf-drpdwn-process-field" 
                     formControlName="rnwlCsCd" [options]="[]"
                     optionLabel="name" optionValue="id" styleClass="w-full"
                     placeholder="Seleccione" [showClear]="true">
-                </p-dropdown>
+                </p-dropdown> -->
             </div>
             <div class="flex flex-col w-full mb-5">
                 <label class="text-base mb-2">Regla de cálculo</label>

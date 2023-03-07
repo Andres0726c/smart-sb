@@ -15,6 +15,12 @@ export class RenewalDataComponent implements OnInit {
   isLoading = false;
   flagError = false;
   applicationLevel = 'Renovación';
+  causes = [
+    {
+      id: 'RNV_CRE_1',
+      name: 'Solicitud del tomador'
+    }
+  ];
 
   constructor(
     public productService: ProductService,

@@ -11,6 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { RulesWizardModule } from 'projects/product-parameterization/src/app/shared/rules-wizard/rules-wizard.module';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 const routes: Route[] = [
   {
@@ -33,7 +34,8 @@ const routes: Route[] = [
     MessageModule,
     RulesWizardModule,
     DropdownModule,
-    CheckboxModule
+    CheckboxModule,
+    MultiSelectModule
   ],
   providers: [
     DialogService,

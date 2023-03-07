@@ -201,7 +201,7 @@ export class ProductService {
       });
       this.rnwlPrcss = new FormGroup({
         enabled: new FormControl(false),
-        rnwlCsCd: new FormControl(null),
+        rnwlCsCd: new FormControl([]),
         clcltnRl: new FormControl([]),
         isNwIssPlcy: new FormControl(false)
       });
