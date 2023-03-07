@@ -75,5 +75,6 @@ export class ModificationTypesRiskComponent implements OnInit,OnChanges {
       }else{
         this.addBranch.emit([]);
       }
+      console.log(this.showBranch);
   }
 }

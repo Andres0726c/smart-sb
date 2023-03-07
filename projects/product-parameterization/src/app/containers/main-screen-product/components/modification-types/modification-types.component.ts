@@ -307,6 +307,7 @@ console.log(name,"name");
 
   addBranch(items: any, showMenu?: BussinesPlans[]): MenuItem[] {
     let list: MenuItem[] = [];
+ 
     for (let itempush of items) {
       let label1 = itempush.name,
         label: MenuItem = {
@@ -323,7 +324,7 @@ console.log(name,"name");
               command: (event: any) => {
                 this.showCommercialPlan(itempush);
               },
-              items: this.addBusinessPlan(itempush.businessPlans, showMenu),
+              items: this.addBusinessPlan(itempush.cmmrclPln, showMenu),
             },
           ],
         };
@@ -362,7 +363,7 @@ console.log(name,"name");
   }
 
   calledMenu(showMenu?: BussinesPlans[]) {
-    console.log(this.productService.getProductObject().riskTypes,"riskmenu")
+    console.log(this.policyDataControls.value ,"riskmenu")
     this.items1 = [
       {
         label: 'Datos de la póliza',
@@ -381,7 +382,7 @@ console.log(name,"name");
         },
         items: [
           ...this.addBranch(
-            this.productService.getProductObject().mdfctnPrcss,
+            this.policyDataControls.value,
             showMenu
           ),
         ],
