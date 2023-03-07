@@ -253,17 +253,15 @@ export class ModificationTypesComponent implements OnInit {
             );
           }
 
-        const index = this.getRiskArrayByIdModify(2).value.findIndex(
+        const index = this.complementaryDataControls.value.findIndex(
           (x: { id: any }) => x.id === nameGruop.id
         );
 
-        console.log(this.getRiskArrayByIdModify(2).value);
-        console.log(index+1);
         // const index2 = this.getAll().findIndex((x: { id: number; }) => x.id === object.id);
 
         //   if (index2 === -1) {
 
-        this.getGroupArrayByIdModify(index + 1).push(
+        this.getGroupArrayById(index + 1).push(
           new FormGroup({
             id: this.fb.control(object.id, [Validators.required]),
             name: this.fb.control(object.name, [Validators.required]),
@@ -301,19 +299,7 @@ export class ModificationTypesComponent implements OnInit {
     }
   };
 
-  selectGroup() {
-    let newGroupName = 'Nuevo grupo';
-
-    const Group = this.fb.group({
-      id: "this.getMax(this.complementaryDataControls.value, 'id') + 1,",
-      name: newGroupName,
-      code: null,
-      fields: this.fb.array([], Validators.required),
-      isEditing: this.fb.control(false),
-    });
-
-    // this.startGroupEdit(this.complementaryData.controls[this.complementaryData.length - 1]);
-  }
+ 
 
   getNameGroup(name: any) {
     let objGruop;

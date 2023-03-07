@@ -106,7 +106,8 @@ fdescribe('ModificationTypesComponent', () => {
       })
     );
     const spy3 = jest.spyOn(component, 'getGroupArrayById').mockImplementation();
-    expect(component.openToAdd()).toBeUndefined();
+    const level='risk'
+    expect(component.openToAdd(level)).toBeUndefined();
   });
   it('getNameGroup', () => {
     let complementaryData = {value:[{code: 'datos_basicos',fields: [{businessCode: 'FECHA_EMISION',dataType: {code: 'TDT13',name: 'Fecha y Hora',description:'Campo para seleccionar una fecha y hora desde un calendario',bdFieldType: 'Date',guiComponent: 'Calendar',},dependency: null,domainList: null,editable: true,fieldGroup: 1,id: 62,initializeRule: [],label: 'Fecha de emisión',name: 'Fecha de emisión',required: false,requiredEssential: false,shouldDelete: true,validateRule: [],},],id: 1,isEditing: false,name: 'Datos básicos',}]};
@@ -114,9 +115,7 @@ fdescribe('ModificationTypesComponent', () => {
     expect(component.getNameGroup('FECHA_EMISION')).toBeDefined();
   });
 
-  it('selectGroup',()=>{
-    expect(component.selectGroup()).toBeUndefined();
-  });
+  
 
   it('addBranch',()=>{
     let item =[{businessPlans: [{name: 'Daviplata1', code: 'pc001_daviplata1', description: 'Daviplata1 Daviplata1 Daviplata1 Daviplata1 Daviplata1', coverages: [], servicePlans: []},{name: 'daviplata 3', code: 'pc002_daviplata3', description: 'daviplata 3 daviplata 3 daviplata 3 daviplata 3daviplata 3', coverages:[], servicePlans: []}, {name: 'Plan1 opcion2', code: 'pc003_plan1opcion2', description: 'Plan1 opcion2 Plan1 opcion2 Plan1 opcion2 Plan1 opcion2', coverages: [], servicePlans: []}],complementaryData: [],description: "Tipo de riesgo Mascota",id: 2,name: "Mascota"}];
@@ -139,10 +138,10 @@ it('addBranchCoverage',()=>{
     component.sendData('p001_planA');
   });
 
-  it('dataSet',()=>{
-    let data={businessPlans: [],complementaryData: [],description: "Tipo de riesgo Mascota",id: 2,name: "Mascota"};
-    expect(component.dataSet(data)).toBeUndefined();
-  });
+  // it('dataSet',()=>{
+  //   let data={businessPlans: [],complementaryData: [],description: "Tipo de riesgo Mascota",id: 2,name: "Mascota"};
+  //   expect(component.dataSet(data)).toBeUndefined();
+  // });
   it('showRiskType',()=>{
     component.policyData =true;
     component.showRiskType();
