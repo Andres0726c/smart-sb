@@ -46,7 +46,7 @@ export class ProductService {
   rehabilitation:FormGroup = new FormGroup({
     enabled: new FormControl(false),
   });
-  renewal:FormGroup = new FormGroup({
+  rnwlPrcss:FormGroup = new FormGroup({
     enabled: new FormControl(false),
   });
 
@@ -199,8 +199,11 @@ export class ProductService {
       this.rehabilitation = new FormGroup({
         enabled: new FormControl(false),
       });
-      this.renewal = new FormGroup({
+      this.rnwlPrcss = new FormGroup({
         enabled: new FormControl(false),
+        rnwlCsCd: new FormControl([]),
+        clcltnRl: new FormControl([]),
+        isNwIssPlcy: new FormControl(false)
       });
       //autosave enabled
       // this.autoSaveProduct();
@@ -309,7 +312,7 @@ export class ProductService {
       mdfctnPrcss: this.mdfctnPrcss.getRawValue(),
       cancellation: this.cancellation.getRawValue(),
       rehabilitation: this.rehabilitation.getRawValue(),
-      renewal: this.renewal.getRawValue(),
+      rnwlPrcss: this.rnwlPrcss.getRawValue(),
     
     };
   }
@@ -445,7 +448,7 @@ export class ProductService {
       this.rehabilitation = product.rehabilitation ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({
         enabled: new FormControl(false),
       });
-      this.renewal = product.renewal ? this.setFields('renewal', product.renewal) : new FormGroup({
+      this.rnwlPrcss = product.rnwlPrcss ? this.setFields('renewal', product.rnwlPrcss) : new FormGroup({
         enabled: new FormControl(false),
       });
       
@@ -688,7 +691,7 @@ export class ProductService {
     if(environment.productAutosave)
     {
       let formArrayList: any[] = [this.coverages, this.policyData, this.clauses, this.riskTypes, this.servicePlans, this.taxesCategories, this.technicalControls, this.conceptReservation, this.claimData, this.claimTechnicalControls, this.modificationTypes];
-      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cancellation, this.rehabilitation, this.renewal];
+      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cancellation, this.rehabilitation, this.rnwlPrcss];
          this.registerFormEvent(formArrayList);
          this.registerFormEvent(formGroupList);
     }

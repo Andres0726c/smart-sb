@@ -4,7 +4,7 @@ export interface tableColumns {
   name: string,
   header?: string,
   displayValue: string[],
-  dbColumnName?:string[];
+  dbColumnName?:string[]
 }
 
 export interface FieldArray {

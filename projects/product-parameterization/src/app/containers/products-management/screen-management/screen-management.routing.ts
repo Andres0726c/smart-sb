@@ -84,7 +84,12 @@ export const screenManagementRoutes: Route[] = [
             {
                 path: 'datos-rehabilitacion',
                 loadChildren: () => import('../../main-screen-product/components/rehabilitation-data/rehabilitation-data.module').then(m => m.RehabilitationDataModule)
-            }
+            },
+            /* Renovación */
+            {
+                path: 'datos-renovacion',
+                loadChildren: () => import('../../../containers/main-screen-product/components/renewal-data/renewal-data.module').then(m => m.RenewalDataModule)
+            },
         ]
     }
 ];

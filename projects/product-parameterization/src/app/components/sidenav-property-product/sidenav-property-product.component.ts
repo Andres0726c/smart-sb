@@ -21,7 +21,7 @@ export class SidenavPropertyProductComponent implements OnInit
       modification: this.productService.mdfctnPrcss,
       cancellation: this.productService.cancellation,
       rehabilitation: this.productService.rehabilitation,
-      renewal: this.productService.renewal
+      renewal: this.productService.rnwlPrcss
     })
   }
 
@@ -91,10 +91,12 @@ export class SidenavPropertyProductComponent implements OnInit
     {
       name: "Renovación",
       formControlName: "renewal",
-      showEnable:true,
+      showEnable: true,
       show: false,
-      isExpanded: false,
-      submenus:[]
+      isExpanded: true,
+      submenus:[
+        { name: "Datos de renovación",  routerLink: "datos-renovacion"},
+      ]
     },
     {
       name: "Reclamación",
