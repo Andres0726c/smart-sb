@@ -75,14 +75,6 @@ export class ModificationTypesComponent implements OnInit {
     //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
   }
 
-  getGroupArrayByIdRisk(id: number) {
-    return <FormArray>(
-      this.complementaryDataControls.controls
-        .find((x: { value: { id: number } }) => x.value.id === id)
-        ?.get('fields')
-    );
-    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
-  }
 
   openToAdd(level:any): void {
     console.log('level',level);
@@ -168,7 +160,7 @@ export class ModificationTypesComponent implements OnInit {
     return (<FormArray>this.productService.riskTypes.controls.find((x: { value: { id: number; }; }) => x.value.id === 2)?.get('complementaryData'));
   }
 
-  getGroupArrayByIdModify(id: number) {
+  getGroupArrayByIdRisk(id: number) {
     return <FormArray>(
       this.getRiskArrayByIdModify(2).controls
         .find((x: { value: { id: number } }) => x.value.id === id)
@@ -229,8 +221,8 @@ export class ModificationTypesComponent implements OnInit {
         // const index2 = this.getAll().findIndex((x: { id: number; }) => x.id === object.id);
 
         //   if (index2 === -1) {
-
-        this.getGroupArrayByIdModify(index + 1).push(
+          //getGroupArrayById 
+        this.getGroupArrayByIdRisk(index + 1).push(
           new FormGroup({
             id: this.fb.control(object.id, [Validators.required]),
             name: this.fb.control(object.name, [Validators.required]),
