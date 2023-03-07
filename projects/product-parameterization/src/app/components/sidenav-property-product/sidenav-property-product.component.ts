@@ -83,8 +83,10 @@ export class SidenavPropertyProductComponent implements OnInit
       formControlName: "rehabilitation",
       showEnable:true,
       show: false,
-      isExpanded: false,
-      submenus:[]
+      isExpanded: true,
+      submenus:[
+        { name: "Datos de rehabilitación", routerLink: "datos-rehabilitacion"}
+      ]
     },
     {
       name: "Renovación",
