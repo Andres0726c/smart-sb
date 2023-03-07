@@ -1,0 +1,40 @@
+<div class="p-5">
+    <div class="flex flex-col">
+        <span class="text-4xl font-bold ml-2"> Renovación </span>
+        <span class="ml-2"> Especifique los datos a definir en la renovación </span>
+    </div>
+    <div class="mt-5 rounded-xl bg-white p-5">
+        <form
+            class="grid grid-cols-3 gap-6"
+            [formGroup]="productService.rnwlPrcss"
+        >
+            <div class="flex flex-col w-full mb-5">
+                <label class="text-base mb-2">Causas de renovación</label>
+                <p-dropdown data-qa-id="sc-rsmf-drpdwn-process-field" 
+                    formControlName="rnwlCsCd" [options]="[]"
+                    optionLabel="name" optionValue="id" styleClass="w-full"
+                    placeholder="Seleccione" [showClear]="true">
+                </p-dropdown>
+            </div>
+            <div class="flex flex-col w-full mb-5">
+                <label class="text-base mb-2">Regla de cálculo</label>
+                <div class="p-inputgroup">
+                    <p-chips
+                        formControlName="clcltnRl"
+                        styleClass="w-full w-full-chips"
+                        inputStyleClass="w-full"
+                        placeholder="Seleccione">
+                        <ng-template let-item pTemplate="item" class="w-full">
+                            <span class="w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ item.name }}</span>
+                        </ng-template>
+                    </p-chips>   
+                    <button type="button" pButton pRipple icon="fal fa-plus-circle" styleClass="p-button-warn" class="h-[37px]" (click)="openRuleWizard('ruleCalculationControls', 'clcltnRl')"></button>      
+                </div>
+            </div>
+            <div class="flex flex-col items-center w-full mb-5">
+                <label class="text-base mb-2">Permite emitir una nueva póliza?</label>
+                <p-checkbox class="mt-2" [formControl]="$any(productService.rnwlPrcss.controls['isNwIssPlcy'])" [binary]="true"></p-checkbox>
+            </div>
+        </form>
+    </div>
+</div>
