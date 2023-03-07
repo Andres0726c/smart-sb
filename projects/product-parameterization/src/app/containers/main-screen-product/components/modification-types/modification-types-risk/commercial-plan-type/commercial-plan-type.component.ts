@@ -7,6 +7,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface OptionsCoverages {
   name: string;
@@ -73,47 +74,108 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     //ngOnInit()
+    this.addDataTable();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.addDataTable(changes['data'].currentValue);
+  getAllFields() {
+    let res: any[] = [];
+
+    for (const group of this.productService.policyData?.getRawValue()) {
+      res = res.concat(group.fields);
+    }
+    return res;
   }
-  addDataTable( riskCode: string) {
-    let dataRisk:any = localStorage.getItem(riskCode);
-    dataRisk = JSON.parse(dataRisk);
+
+  getAll() {
+    let res: any[] = [];
+    for (const group of this.complementaryDataControls?.getRawValue()) {
+      res = res.concat(group.fields);
+    }
+
+    return res;
+
+  }
+
+  getAllRisk() {
+
+
+    let res: any[] = [];
+
+    for (const group of this.getRiskArraydById(2).getRawValue()) {
+      res = res.concat(group.fields);
+    }
+
+    return res;
+
+
+
+  }
+
+  get complementaryDataControls(): FormArray {
+    return (<FormArray>(
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
+    )) as FormArray;
+  }
+
+  get policyDataControls(): FormArray {
+    return (<FormArray>(
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
+    )) as FormArray;
+  }
+
+  getRiskArrayByIdModify(id: number) {
+    return (<FormArray>this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'));
+  }
+
+  getRiskArraydById(id: number) {
+    return (<FormArray>this.productService.riskTypes.controls.find((x: { value: { id: number; }; }) => x.value.id === 2)?.get('complementaryData'));
+  }
+
+  getGroupArrayByIdModify(id: number) {
+    return <FormArray>(
+      this.getRiskArrayByIdModify(2).controls
+        .find((x: { value: { id: number } }) => x.value.id === id)
+        ?.get('fields')
+    );
+    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
+  }
+
+
+  ngOnChanges(changes: SimpleChanges) {
+    // this.addDataTable(changes['data'].currentValue);
+  }
+  addDataTable( ) {
+    let dataRisk:any =[], disableAux:any=this.productService.getProductObject().riskTypes[0].businessPlans;
+
+    dataRisk=this.policyDataControls.value[0].cmmrclPln;
+    console.log(disableAux);
+    console.log(dataRisk);
     for (let data of dataRisk) {
       console.log(data.code == this.data);
       if (data.code == this.data) {
         dataRisk = data;
+        // disableAux.forEach((element:any) =>{
+        //   if(element.code===dataRisk.code){
+        //     let coverage=element.coverages;
+        //     coverage.forEach((element1:any) =>{
+        //       let obj: any = { code: data.code, coverages:           required:element1.required};
+        //       dataRisk.push(obj)
+        //     });
+        //   }
+        // });
       }
     }
-    this.fillTableData(dataRisk);
+    console.log(dataRisk);
+
+      // console.log(x);
+  
+console.log(this.policyDataControls.value[0].cmmrclPln)
+    // if(disableAux.name==)
+
+    this.tableData.push(dataRisk.coverages);
+    this.tableDataService.push(dataRisk.servicePlans);
   }
 
-
-  fillTableData(data: any) {
-    this.tableData = [];
-    this.tableDataService = [];
-    let idCoverages = data.coverages, coverageAux,servicePlansAux,
-      idServicePlans = data.servicePlans;
-    for (let coverage of idCoverages) {
-      coverageAux = this.productService.getCoverageById(coverage.id);
-      coverageAux.required = idCoverages.find(
-        (data: any) => data.id === coverage.id
-      );
-      this.tableData.push(coverageAux);
-    }
-console.log(idServicePlans)
-    for (let servicePlans of idServicePlans) {
-      servicePlansAux = this.productService.getServicePlanById(servicePlans.id);
-      servicePlansAux.required = idServicePlans.find(
-        (data: any) => data.id === servicePlans.id
-      );
-        console.log(servicePlansAux)
-
-      this.tableDataService.push(servicePlansAux);
-    }
-  }
 
   changeCheck(data: any) {
     console.log(data);
@@ -123,7 +185,7 @@ console.log(idServicePlans)
   }
   activeButton(data: any) {
     let btn: boolean;
-    const result = data.athrzdOprtnCoverages?.find((key:any ) => key.key === 'MDF');
+    const result = data.athrzdOprtn?.find((key:any ) => key.key === 'MDF');
     result ? (btn = false) : (btn = true);
     return btn;
   }

@@ -123,14 +123,14 @@
         [titleRisk]="titleRisk"
           [riskType]="riskType"
           (addBranch)="onAddBranch($event)"
-          *ngIf="showCommercialPlans && !riskData"
+          *ngIf="showCommercialPlans && !riskData && !policyData"
         ></refactoring-smartcore-mf-modification-types-risk>
         <refactoring-smartcore-mf-commercial-plan-type
           [titleBussinesPlan]="titleBussinesPlan"
           [data]="data"
         [riskDataCode]="riskDataCode"
           [bussinesPlans]="bussinesPlans"
-          *ngIf="showCommercialPlansTypes && !riskData"
+          *ngIf="showCommercialPlansTypes && !riskData !policyData"
         ></refactoring-smartcore-mf-commercial-plan-type>
   <!-- </div> -->
 </div>

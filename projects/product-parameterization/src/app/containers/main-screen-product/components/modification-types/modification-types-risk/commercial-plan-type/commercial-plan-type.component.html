@@ -22,10 +22,9 @@
                   >
                     <label>
                       <p-checkbox
-                        [disabled]="data.required.required && option.key=='RMV'"
                         (onChange)="changeCheck(data)"
                         [value]="option"
-                        [(ngModel)]="data.athrzdOprtnCoverages"
+                        [(ngModel)]="data.athrzdOprtn"
                       ></p-checkbox>
                       {{ option.name }}
                     </label>
@@ -68,10 +67,9 @@
                   >
                     <label>
                       <p-checkbox
-                      [disabled]="data.required.required && option.key=='RMV'"
                         (onChange)="changeCheckServices()"
                         [value]="option"
-                        [(ngModel)]="data.athrzdOprtnService"
+                        [(ngModel)]="data.athrzdOprtn"
                       ></p-checkbox>
                       {{ option.name }}
                     </label>
@@ -85,3 +83,4 @@
     </p-tabView>
   </section>
 </div>
+<!-- [disabled]="data.required.required && option.key=='RMV'" -->
