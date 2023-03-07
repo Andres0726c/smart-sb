@@ -1,7 +1,6 @@
 import { Route } from "@angular/router";
 import { AuthGuardParameterizer } from "../../../guard/auth.guard";
 import { ScreenManagementComponent } from "./screen-management.component";
-import { CancellationDataModule } from '../../main-screen-product/components/cancellation-data/cancellation-data.module';
 
 export const screenManagementRoutes: Route[] = [
     {
