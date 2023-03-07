@@ -12,6 +12,8 @@ export class ProcessParameterizationSharedComponent implements OnInit {
   @Input() header3!:string;
   @Input() serviceCause!:string;
 
+  dataSource:[] = [];
+  
   constructor() { }
 
   ngOnInit(): void {
