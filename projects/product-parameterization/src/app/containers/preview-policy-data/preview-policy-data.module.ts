@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PreviewPolicyDataComponent } from './preview-policy-data.component';
 import { Route, RouterModule } from '@angular/router';
-import { ModificationTechnicalControlComponent } from './modification-technical-control.component';
+import { ComplementaryDataModule } from '../../shared/complementary-data/complementary-data.module';
 import { SharedModule } from '../../shared/shared.module';
 import { AngularMaterialModule } from '../../material.module';
-import { ComplementaryDataModule } from '../../shared/complementary-data/complementary-data.module';
 
 const routes: Route[] = [
   {
       path     : '',
-      component: ModificationTechnicalControlComponent
+      component: PreviewPolicyDataComponent
   }
 ]
 
-
 @NgModule({
   declarations: [
-    ModificationTechnicalControlComponent
+    PreviewPolicyDataComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -24,6 +23,9 @@ const routes: Route[] = [
     SharedModule,
     AngularMaterialModule,
     ComplementaryDataModule
+  ],
+  exports: [
+    PreviewPolicyDataComponent
   ]
 })
-export class ModificationTechnicalControlModule { }
+export class PreviewPolicyDataModule { }

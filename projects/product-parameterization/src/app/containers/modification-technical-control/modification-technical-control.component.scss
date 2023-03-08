@@ -1,0 +1,394 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+.content {
+
+  justify-content: center;
+  flex-direction: column;
+  background: $grayscaleLevel-5;
+  .content_title {
+    display: flex;
+    /* align-content: space-between; */
+    /* flex-wrap: wrap; */
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 20px 20px 0px;
+  }
+  .title {
+    font-family: Roboto Condensed !important;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 35.16px;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    color: #223354;
+  }
+  .subtitle {
+    font-family: Roboto Condensed !important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 19.92px;
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    color: #223354;
+  }
+}
+
+.chip{
+  width: 100%;
+  height: 20px;
+  background-color: $greenBG;
+  color: $primaryBase;
+  padding: 0 6px !important;
+  min-height: 20px;
+  font-family: Roboto Condensed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .chip__icon{
+    color: $primaryBase;
+    height: 12px;
+    width:  12px;
+    font-size: 12px;
+    margin-right: 4px;
+  }
+  button{
+    display: flex;
+    align-items: center;
+    width: 12px;
+    opacity: 1;
+    .chip__icon{
+      margin-right: 0px;
+    }
+  }
+}
+
+.example-chip-list {
+  width: 100%;
+  font-family: 9px;
+  line-height: 3;
+  mat-error{
+    line-height: 1;
+  }
+}
+.chip-list-input{
+  max-width: 10px;
+  font-size: 8px;
+}
+.option-mat{
+  display: none;
+}
+.form {
+  margin-left: 20px;
+  margin-right: 10px;
+  width: 100%;
+}
+.expansion-header,
+.expansion-header:hover,
+.expansion-header.mat-expanded {
+  background: $greenBG !important;
+}
+.font-expansion-title {
+  font-family: "Roboto Condensed" !important;
+  font-style: normal;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 25px;
+}
+.div-button {
+  position: relative;
+  margin-top: 10px;
+  .bt {
+    font-weight: bold;
+    height: 40px;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: $primaryBase;
+    border-radius: 50px;
+  }
+  
+}
+
+.bt {
+  color: $primaryBase; 
+}
+
+.bt-delete {
+  font-weight: bold;
+  height: 40px;
+  color: red;
+  border-radius: 50px;
+  border: 1px solid red;
+}
+
+.bt-delete[disabled] {
+   border: 1px solid transparent;
+}
+
+.icon-button-add {
+  color: $primaryBase;
+  font-size: 16px;
+  margin-right: 10px;
+  @include mq-max(md) {
+    margin-right: 5px;
+  }
+}
+
+.icon-button-delete {
+  font-size: 16px;
+  margin-right: 10px;
+  @include mq-max(md) {
+    margin-right: 5px;
+  }
+}
+
+.container-expansion-panel {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+.font-empty-title-data{
+  font-family: "Roboto Condensed" !important;
+  font-style: normal;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 25px;
+}
+.font-empty-desc-data{
+  font-family: "Roboto Condensed" !important;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.disabled-pointer {
+    pointer-events: none;
+  }
+
+  ::ng-deep .mat-expansion-indicator::after{
+     color: $primaryBase;
+  }
+
+  .container-elements{
+    display: flex; 
+    flex-wrap: wrap;
+    padding: 20px;
+    max-height: 600px;
+    min-height: 218px;
+    overflow: auto;
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .width-column{
+    width: 50%;
+    padding: 5px 15px;  
+  }
+
+
+
+  .container-box {
+    display: flex;
+    flex-direction: column;
+    font-family: Roboto Condensed;
+    border: 1px solid $grayscaleLevel-4;
+    box-sizing: border-box;
+    width: 286px;
+    padding: 16px 16px;
+    // position: fixed;
+    .title {
+      text-align: center;
+      font-family: Roboto Condensed;
+      color: $primaryBase;
+      font-weight: 700;
+      font-size: 24px;
+      justify-content: center;
+      margin-left: 0px;
+    }
+    .container-sliders-toggle {
+      display: flex;
+      flex-direction: column;
+      row-gap: 16px;
+      padding-bottom: 24px;
+    }
+  }
+  .container-name-variable {
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    padding: 16px 0 32px 0;
+    .name-variable {
+      width: max-content;
+      padding: 0 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $grayscaleWhite;
+      background-color: $grayscaleLevel-3;
+      border-radius: 5px;
+      height: 40px;
+      text-align: center;
+    }
+  }
+  .container-bt {
+    display: flex;
+    justify-content: center;
+    .bt-icon {
+      font-size: 24px;
+      font-weight: 100;
+    }
+  }
+  
+  .position-accordion{
+    display: flex;
+    width: calc(100vw - 682px);
+  }
+
+  .position-accordion-empty{
+    display: flex;
+    width: 100%
+  }
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px $grayscaleLevel-4; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $grayscaleLevel-3; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $grayscaleLevel-3; 
+}
+
+.div-container-form {
+    background:$grayscaleWhite;
+    margin-left: 20px;
+    margin-right: 20px;
+    column-gap: 5%;
+    /*padding: 24px 32px;*/
+    &__left{
+      width: 70%;
+      @include mq-max(md) {
+        width: 50%;
+      }
+    }
+    &__right{
+      padding-top: 85px;
+    
+      flex-direction: column;
+      align-items: center;
+      row-gap: 56px;
+      width: 30%;
+      max-width: 270px;
+      @include mq-max(md) {
+        width: 50%;
+      }
+    }
+  }
+
+tr.mat-header-row.cdk-header-row.ng-star-inserted {
+    background: #F6F8FB;
+}
+
+th.mat-header-cell {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 120%;
+    color: #333333;
+    padding: 10px;
+}
+
+td.mat-cell {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 120%;
+    color: #666666;
+    border-bottom-color: transparent;
+    padding: 10px;
+}
+
+.search_input{
+  input{
+    padding-left: 10px;
+    font-size: 15px;
+    width: 241px;
+  }
+}
+
+.icon-search {
+  color: $primaryBase;
+}
+.content_search {
+  width: 100%;
+  /*margin-top: 24px;*/
+  padding: 20px 20px 0px;
+  font-family: Roboto condensed !important;
+  display: flex; 
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.div-buttons {
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 10px; 
+  margin-left: auto;
+}
+
+::ng-deep {
+  .content_search .mat-form-field-outline-start {
+    border-radius: 28px 0 0 28px !important;
+    min-width: 28px !important;
+  }
+}
+::ng-deep .content_search .mat-form-field-outline-end {
+  border-radius: 0 28px 28px 0 !important;
+}
+
+.container-elements{
+  display: flex; 
+  flex-wrap: wrap;
+  padding: 20px;
+  max-height: 600px;
+  min-height: 218px;
+  overflow: auto;
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.colums-table{
+  text-align:center
+}
+
+::ng-deep .fa-search:before{
+  padding:13px;
+}
+
+::ng-deep .mat-paginator-range-actions{
+  margin: auto;
+}
