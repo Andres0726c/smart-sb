@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { CancellationDataComponent } from './cancellation-data.component';
 import { Route, RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
-import { ProcessParameterizationSharedModule } from '../../../../shared/process-parameterization-shared/process-parameterization-shared.module';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ChipsModule } from 'primeng/chips';
@@ -25,7 +24,6 @@ const routes: Route[] = [
     RouterModule.forChild(routes),
     CommonModule,
     CardModule,
-    ProcessParameterizationSharedModule,
     CheckboxModule,
     MultiSelectModule,
     ChipsModule,
