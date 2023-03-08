@@ -19,6 +19,14 @@ export class RenewalDataComponent implements OnInit {
     {
       id: 'RNV_CRE_1',
       name: 'Solicitud del tomador'
+    },
+    {
+      id: 'RNV_CRE_2',
+      name: 'Solicitud del test'
+    },
+    {
+      id: 'RNV_CRE_3',
+      name: 'Solicitud del test 3'
     }
   ];
 
