@@ -11,6 +11,7 @@ import { ModalSearchSmallComponent } from 'projects/product-parameterization/src
 import {
   DataToast,
   STATES,
+  ToastMessageComponent,
 } from 'projects/product-parameterization/src/app/shared/toast-message/toast-message.component';
 interface OptionsCommercialP {
   name: string;
@@ -132,14 +133,11 @@ export class ModificationTypesComponent implements OnInit {
     for (const group of this.complementaryDataControls?.getRawValue()) {
       res = res.concat(group.fields);
     }
-
     return res;
   
   }
 
   getAllRisk() {
-
-
     let res: any[] = [];
     
     for (const group of this.getRiskArraydById(2).getRawValue()) {
@@ -147,8 +145,6 @@ export class ModificationTypesComponent implements OnInit {
     }
    
     return res;
-   
-
   
   }
 
@@ -189,6 +185,7 @@ export class ModificationTypesComponent implements OnInit {
 
   addItem = (obj: ElementReturn[], group: number, showMessage: boolean) => {
     if (obj) {
+
       let data: DataToast = {
         status: STATES.success,
         title: 'Asociación exitosa',
@@ -197,60 +194,18 @@ export class ModificationTypesComponent implements OnInit {
 
       let nameGruop: any;
 
-      console.log(obj)
-
       for (let object of obj) {
         nameGruop = this.getNameGroup(object.element.businessCode);
 
-        console.log(this.getRiskArrayByIdModify(2),"getRisk");
-        console.log(nameGruop,"grupo");
-
-        if ( this.riskData
-       
-        //  this.getRiskArrayByIdModify(2).value.findIndex(
-         //   (x: { id: any }) => x.id === nameGruop.id
-          //) === -1 
-          // this.complementaryDataControls.value.findIndex(
-          //   (x: { id: any }) => x.id === nameGruop.id
-          // ) === -1
-        ) {
-          if(this.getRiskArrayByIdModify(2).value.findIndex(
-            (x: { id: any }) => x.id === nameGruop.id
-          ) === -1) 
-          console.log("que hay?: ",this.getRiskArrayByIdModify(2).value.findIndex(
-            (x: { id: any }) => x.id === nameGruop.id
-          ))
-         //this.complementaryDataControls.push(
-          this.getGroupArrayByIdRisk(2).push(
-            new FormGroup({
-              id: this.fb.control(nameGruop.id),
-              code: this.fb.control(nameGruop.code),
-              name: this.fb.control(nameGruop.name),
-              fields: this.fb.array([], Validators.required),
-              isEditing: this.fb.control(nameGruop.isEditing),
-            })
-          );
+        if ( this.riskData) {
+         this.add(nameGruop);
         }
 
-        if ( this.policyData &&
-         
-          //  this.getRiskArrayByIdModify(2).value.findIndex(
-           //   (x: { id: any }) => x.id === nameGruop.id
-            //) === -1 
-            this.complementaryDataControls.value.findIndex(
+        if ( this.policyData &&  this.complementaryDataControls.value.findIndex(
               (x: { id: any }) => x.id === nameGruop.id
             ) === -1
           ) {
-           //this.complementaryDataControls.push(
-            this.complementaryDataControls.push(
-              new FormGroup({
-                id: this.fb.control(nameGruop.id),
-                code: this.fb.control(nameGruop.code),
-                name: this.fb.control(nameGruop.name),
-                fields: this.fb.array([], Validators.required),
-                isEditing: this.fb.control(nameGruop.isEditing),
-              })
-            );
+            this.add(nameGruop);
           }
 
         const index = this.complementaryDataControls.value.findIndex(
@@ -295,9 +250,40 @@ export class ModificationTypesComponent implements OnInit {
         );
       }
 
-       console.log(this.productService.mdfctnPrcss,"test");
+      if (showMessage) {
+        this.toastMessage.openFromComponent(ToastMessageComponent, {
+          data: data,
+        });
+      }
     }
   };
+
+    add(nameGruop:any){
+
+        // if(this.getRiskArrayByIdModify(2).value.findIndex(
+        //   (x: { id: any }) => x.id === nameGruop.id
+        // ) === -1) 
+      
+        // this.getGroupArrayByIdRisk(2).push(
+        //   new FormGroup({
+        //     id: this.fb.control(nameGruop.id),
+        //     code: this.fb.control(nameGruop.code),
+        //     name: this.fb.control(nameGruop.name),
+        //     fields: this.fb.array([], Validators.required),
+        //     isEditing: this.fb.control(nameGruop.isEditing),
+        //   })
+        // );
+
+        this.complementaryDataControls.push(
+              new FormGroup({
+                id: this.fb.control(nameGruop.id),
+                code: this.fb.control(nameGruop.code),
+                name: this.fb.control(nameGruop.name),
+                fields: this.fb.array([], Validators.required),
+                isEditing: this.fb.control(nameGruop.isEditing),
+              })
+            );
+    }
 
  
 
