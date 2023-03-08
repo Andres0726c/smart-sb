@@ -1,1 +1,57 @@
-<p>rehabilitation-data works!</p>
+<div class="p-5">
+    <div class="flex flex-col">
+      <span class="text-4xl font-bold ml-2"> Rehabilitación </span>
+      <span class="ml-2">Especifique los datos a definir en la rehabilitación</span>
+    </div>
+    <div class="mt-5 rounded-xl bg-white p-5">
+      <form
+        class="grid grid-cols-3 gap-6"
+        [formGroup]="productService.rehabilitation"
+      >
+        <div class="flex flex-col w-full mb-5">
+          <label class="text-base mb-2">Causas de rehabilitación</label>
+          <p-multiSelect
+            [options]="causes"
+            formControlName="rnsttmntCsCd"
+            display="chip"
+            styleClass="w-full"
+            optionLabel="name"
+            appendTo="body"
+          >
+          </p-multiSelect>
+        </div>
+        <div class="flex flex-col w-full mb-5">
+          <label class="text-base mb-2">Regla de cálculo</label>
+          <div class="p-inputgroup">
+            <p-chips
+              formControlName="clcltnRl"
+              styleClass="w-full w-full-chips"
+              inputStyleClass="w-full"
+              placeholder="Seleccione"
+            >
+              <ng-template let-item pTemplate="item" class="w-full">
+                <span
+                  class="w-full whitespace-nowrap overflow-hidden text-ellipsis"
+                  >{{ item.name }}</span
+                >
+              </ng-template>
+            </p-chips>
+            <button
+              type="button"
+              pButton
+              pRipple
+              icon="fal fa-plus-circle"
+              styleClass="p-button-warn"
+              class="h-[37px]"
+              (click)="openRuleWizard('ruleCalculationControls', 'clcltnRl')"
+            ></button>
+          </div>
+        </div>
+        <div class="flex flex-col items-center w-full mb-5">
+          <label class="text-base mb-2">¿Permite emitir una nueva póliza?</label>
+          <p-checkbox class="mt-2" [formControl]="$any(productService.rehabilitation.controls['isNwIssPlcy'])" [binary]="true"></p-checkbox>
+        </div>
+      </form>
+    </div>
+  </div>
+  

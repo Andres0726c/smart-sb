@@ -55,7 +55,9 @@ export class ProductService {
     'selectedProcess',
     'conceptReserv',
     'cnclltnCsCd',
-    'clcltnRl'
+    'clcltnRl',
+    'rnsttmntCsCd',
+    'isNwIssPlcy'
   ];
 
   defaultControls = [
@@ -203,7 +205,7 @@ export class ProductService {
       });
       this.rehabilitation = new FormGroup({
         enabled: new FormControl(false),
-        rhblttnCsCd: new FormControl([]),
+        rnsttmntCsCd: new FormControl([]),
         clcltnRl: new FormControl([]),
         isNwIssPlcy: new FormControl(false)
       });
@@ -458,12 +460,23 @@ export class ProductService {
       });
       this.rehabilitation = product.rehabilitation ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({
         enabled: new FormControl(false),
+        rnsttmntCsCd: new FormControl([]),
+        clcltnRl: new FormControl([]),
+        isNwIssPlcy: new FormControl(false)
       });
       this.rnwlPrcss = product.rnwlPrcss ? this.setFields('renewal', product.rnwlPrcss) : new FormGroup({
         enabled: new FormControl(false),
       });
       
-      
+      if (!this.rehabilitation.contains('rnsttmntCsCd')) {
+        this.rehabilitation.addControl('rnsttmntCsCd', this.fb.control([]));
+      }
+      if (!this.rehabilitation.contains('clcltnRl')) {
+        this.rehabilitation.addControl('clcltnRl', this.fb.control([]));
+      }
+      if (!this.rehabilitation.contains('isNwIssPlcy')) {
+        this.rehabilitation.addControl('isNwIssPlcy', this.fb.control([]));
+      }
 
       this.initialParameters.get('productName')?.disable();
       this.initialParameters.get('company')?.disable();

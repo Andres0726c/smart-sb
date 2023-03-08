@@ -19,6 +19,14 @@ export class CancellationDataComponent implements OnInit {
       id: 'RNV_CRE_1',
       name: 'Solicitud del tomador',
     },
+    {
+      id: 'rer',
+      name: 'Solicitud del tomador',
+    },
+    {
+      id: 'RNV_CrtertRE_1',
+      name: 'Solicitud del tomador',
+    },
   ];
 
   constructor(
@@ -28,6 +36,7 @@ export class CancellationDataComponent implements OnInit {
 
   
   ngOnInit(): void {
+    console.log('aqui', this.productService.cancellation);
     this.loadContextData();
   }
   loadContextData() {
