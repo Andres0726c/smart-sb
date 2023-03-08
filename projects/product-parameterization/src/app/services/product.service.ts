@@ -53,7 +53,9 @@ export class ProductService {
 
   defaultArrays = [
     'selectedProcess',
-    'conceptReserv'
+    'conceptReserv',
+    'cnclltnCsCd',
+    'clcltnRl'
   ];
 
   defaultControls = [
@@ -195,9 +197,15 @@ export class ProductService {
      })
      this.cancellation = new FormGroup({
         enabled: new FormControl(false),
+        cnclltnCsCd: new FormControl([]),
+        clcltnRl: new FormControl([]),
+        isCncllblIncptnDt: new FormControl(false)
       });
       this.rehabilitation = new FormGroup({
         enabled: new FormControl(false),
+        rhblttnCsCd: new FormControl([]),
+        clcltnRl: new FormControl([]),
+        isNwIssPlcy: new FormControl(false)
       });
       this.rnwlPrcss = new FormGroup({
         enabled: new FormControl(false),
@@ -444,6 +452,9 @@ export class ProductService {
        });
       this.cancellation = product.cancellation ? this.setFields('cancellation', product.cancellation) : new FormGroup({
         enabled: new FormControl(false),
+        cnclltnCsCd: new FormControl([]),
+        clcltnRl: new FormControl([]),
+        isCncllblIncptnDt: new FormControl(false)
       });
       this.rehabilitation = product.rehabilitation ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({
         enabled: new FormControl(false),
