@@ -14,8 +14,9 @@
     border-color: var(--primary-base);
   }
   .p-multiselect .p-multiselect-label {
-    padding: 0.25rem 0.5rem;
-    min-height: 37px;
+    /*padding: 0.25rem 0.5rem;*/
+    min-height: 35px;
+    padding: 8.5px 0.5rem;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
   }
   .p-multiselect .p-multiselect-label.p-placeholder {
@@ -41,7 +42,7 @@
   }
   .p-multiselect .p-multiselect-trigger {
     background: transparent;
-    color: var(--primary-base);;
+    color: var(--primary-base);
     width: 3rem;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
@@ -69,6 +70,8 @@
   }
   .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {
     padding-right: 1.75rem;
+    font-size: 12px;
+    border-radius: 50px;
   }
   .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-multiselect-filter-icon {
     right: 0.75rem;
@@ -107,10 +110,11 @@
     color: #495057;
     background: transparent;
     transition: box-shadow 0.2s;
+    font-size: 12px;
     border-radius: 0;
   }
   .p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight {
-    color: #1D4ED8;
+    color: #495057;
     background: #EFF6FF;
   }
   .p-multiselect-panel .p-multiselect-items .p-multiselect-item:not(.p-highlight):not(.p-disabled):hover {
