@@ -65,7 +65,7 @@ export class ModificationTypesComponent implements OnInit {
   ngOnInit(): void {
    
  
- console.log(    this.getRiskArrayByIdModify(2).controls);
+//  console.log(    this.getRiskArrayByIdModify(2).controls);
   }
 
   getGroupArrayById(id: number) {
@@ -140,9 +140,9 @@ export class ModificationTypesComponent implements OnInit {
   getAllRisk() {
     let res: any[] = [];
     
-    for (const group of this.getRiskArraydById(2).getRawValue()) {
-      res = res.concat(group.fields);
-    }
+    // for (const group of this.getRiskArraydById(2).getRawValue()) {
+    //   res = res.concat(group.fields);
+    // }
    
     return res;
   
@@ -359,7 +359,7 @@ console.log(objGruop)
     return list;
   }
 
-  addBusinessPlan(bussinesPlan?: any, showMenu?: BussinesPlans[]) {
+  addBusinessPlan(bussinesPlan: any, showMenu?: BussinesPlans[]) {
     let list: MenuItem[] = [];
     if (!showMenu) {
       showMenu = [];
@@ -375,7 +375,7 @@ console.log(objGruop)
         disabled: this.addBranchCoverage(showMenu, itempush),
         command: (event: any) => {
           this.titleCommercialPlan = itempush.name;
-          this.sendData(event.item.id);
+          // this.sendData(event.item.id);
         },
       };
       list.push(label);
@@ -428,15 +428,15 @@ console.log(objGruop)
     return validate;
   }
 
-  sendData(idCommercialPlan: string) {
-    if (idCommercialPlan) {
-      this.data = idCommercialPlan;
-    }
-    this.showCommercialPlansTypes = true;
-    if (this.showCommercialPlans || this.bussinesPlans)
-      this.showCommercialPlans = false;
-    this.showRisk = false;
-  }
+  // sendData(idCommercialPlan: string) {
+  //   if (idCommercialPlan) {
+  //     this.data = idCommercialPlan;
+  //   }
+  //   this.showCommercialPlansTypes = true;
+  //   if (this.showCommercialPlans || this.bussinesPlans)
+  //     this.showCommercialPlans = false;
+  //   this.showRisk = false;
+  // }
   // dataSet(itempush: any) {
   //   console.log(itempush);
   //   localStorage.setItem(

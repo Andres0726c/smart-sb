@@ -70,85 +70,88 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   idCoverages: IdCoverages[] = [];
   idServicePlans: IdCoverages[] = [];
 
-  constructor(private productService: ProductService) {}
+  constructor(public productService: ProductService, public fb: FormBuilder,) {}
 
   ngOnInit(): void {
     //ngOnInit()
     this.addDataTable();
   }
 
-  getAllFields() {
-    let res: any[] = [];
+  // getAllFields() {
+  //   let res: any[] = [];
 
-    for (const group of this.productService.policyData?.getRawValue()) {
-      res = res.concat(group.fields);
-    }
-    return res;
-  }
+  //   for (const group of this.productService.policyData?.getRawValue()) {
+  //     res = res.concat(group.fields);
+  //   }
+  //   return res;
+  // }
 
-  getAll() {
-    let res: any[] = [];
-    for (const group of this.complementaryDataControls?.getRawValue()) {
-      res = res.concat(group.fields);
-    }
+  // getAll() {
+  //   let res: any[] = [];
+  //   for (const group of this.complementaryDataControls?.getRawValue()) {
+  //     res = res.concat(group.fields);
+  //   }
 
-    return res;
+  //   return res;
 
-  }
+  // }
 
-  getAllRisk() {
-
-
-    let res: any[] = [];
-
-    for (const group of this.getRiskArraydById(2).getRawValue()) {
-      res = res.concat(group.fields);
-    }
-
-    return res;
+  // getAllRisk() {
 
 
+  //   let res: any[] = [];
 
-  }
+  //   for (const group of this.getRiskArraydById(2).getRawValue()) {
+  //     res = res.concat(group.fields);
+  //   }
 
-  get complementaryDataControls(): FormArray {
-    return (<FormArray>(
-      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
-    )) as FormArray;
-  }
+  //   return res;
 
-  get policyDataControls(): FormArray {
-    return (<FormArray>(
-      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
-    )) as FormArray;
-  }
 
-  getRiskArrayByIdModify(id: number) {
-    return (<FormArray>this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'));
-  }
 
-  getRiskArraydById(id: number) {
-    return (<FormArray>this.productService.riskTypes.controls.find((x: { value: { id: number; }; }) => x.value.id === 2)?.get('complementaryData'));
-  }
+  // }
 
-  getGroupArrayByIdModify(id: number) {
-    return <FormArray>(
-      this.getRiskArrayByIdModify(2).controls
-        .find((x: { value: { id: number } }) => x.value.id === id)
-        ?.get('fields')
-    );
-    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
-  }
+  // get complementaryDataControls(): FormArray {
+  //   return (<FormArray>(
+  //     this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
+  //   )) as FormArray;
+  // }
+
+  // // get policyDataControls(): FormArray {
+  // //   return (<FormArray>(
+  // //     this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
+  // //   )) as FormArray;
+  // // }
+
+  // getRiskArrayByIdModify(id: number) {
+  //   return (<FormArray>this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'));
+  // }
+
+  // getRiskArraydById(id: number) {
+  //   return (<FormArray>this.productService.riskTypes.controls.find((x: { value: { id: number; }; }) => x.value.id === 2)?.get('complementaryData'));
+  // }
+
+  // getGroupArrayByIdModify(id: number) {
+  //   return <FormArray>(
+  //     this.getRiskArrayByIdModify(2).controls
+  //       .find((x: { value: { id: number } }) => x.value.id === id)
+  //       ?.get('fields')
+  //   );
+  //   //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
+  // }
 
 
   ngOnChanges(changes: SimpleChanges) {
     // this.addDataTable(changes['data'].currentValue);
   }
   addDataTable( ) {
-    let dataRisk:any =[], disableAux:any=this.productService.getProductObject().riskTypes[0].businessPlans;
+    let dataRisk:any =[];
+    
+    // disableAux:any=this.productService.getProductObject().riskTypes[0].businessPlans;
 
-    dataRisk=this.policyDataControls.value[0].cmmrclPln;
-    console.log(disableAux);
+    // dataRisk=this.policyDataControls.value[0].cmmrclPln;
+    dataRisk=[{}];
+    // console.log(disableAux);
     console.log(dataRisk);
     for (let data of dataRisk) {
       console.log(data.code == this.data);
@@ -165,11 +168,11 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
         // });
       }
     }
-    console.log(dataRisk);
+    // console.log(dataRisk);
 
       // console.log(x);
   
-console.log(this.policyDataControls.value[0].cmmrclPln)
+// console.log(this.policyDataControls.value[0].cmmrclPln)
     // if(disableAux.name==)
 
     this.tableData.push(dataRisk.coverages);
