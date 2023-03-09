@@ -109,9 +109,7 @@ export class ModifyPolicyComponent {
       riskDataPreview: this.fb.array([]),
     });
 
-    this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
-      this.policyAux = res.body;
-    });
+
   }
 
   ngOnInit(): void {
@@ -119,10 +117,13 @@ export class ModifyPolicyComponent {
     this.getPolicy();
     this.formPolicy.valueChanges.subscribe((v) => {
       this.result = this.validateSaveButton(this.policyData, this.policyDataControls, this.riskData, this.riskTypesControls);
-      if(!this.result && this.riskTypesControls.status == 'VALID' && this.policyDataControls.status == 'VALID' )
+      if(!this.result && this.riskTypesControls.status == 'VALID'  )
       { this.isNextDisabled = false }else{this.isNextDisabled = true} ;
     });
-
+    
+    this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
+      this.policyAux = res.body;
+    });
 
   }
 
@@ -448,6 +449,18 @@ export class ModifyPolicyComponent {
 
       this.savePolicyModify();
 
+  //   this.reverseMap(this.policyDataControls, this.policy.plcy.plcyDtGrp, "policy");
+  //   for (let risk of this.riskTypesControls.controls) {
+  //     this.reverseMap(this.getGroupsControls(risk), this.policy.plcy.rsk['1'].rskDtGrp, "risk");
+  //   }
+
+  //   this.policy.plcy.plcyDtGrp[this.Business] = this.policyAux.plcy.plcyDtGrp[this.Business];
+  //   this.policy.plcy.rsk['1'].rskDtGrp[this.Business] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.Business];
+    
+  //  if (flag)
+
+  //     this.savePolicyModify();
+
   }
 
   saveModification() {
@@ -474,8 +487,6 @@ export class ModifyPolicyComponent {
 
   validData(){
 
-   
-
     for (let key of Object.keys(this.policy.plcy.plcyDtGrp)) {
         
         console.log(key,"keyPolicy");
@@ -490,8 +501,6 @@ export class ModifyPolicyComponent {
   }
 
   validDataRisk(){
-
-    
 
     for (let key of Object.keys(this.policy.plcy.rsk['1'].rskDtGrp)) {
         

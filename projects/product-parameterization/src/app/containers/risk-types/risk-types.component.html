@@ -59,7 +59,7 @@
           </app-complementary-data>
         </mat-tab>
         <mat-tab label="Planes comerciales">
-         <app-commercial-plan #commercialPlanComponent [CommertialPlan]="selectedRiskType?.get('businessPlans')">
+         <app-commercial-plan #commercialPlanComponent [CommertialPlan]="selectedRiskType?.get('businessPlans')" [idRisk]="selectedRiskType?.get('id')">
           </app-commercial-plan>      
           <!--  -->
         </mat-tab>         

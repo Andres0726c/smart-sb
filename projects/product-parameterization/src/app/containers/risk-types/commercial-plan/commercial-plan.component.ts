@@ -26,6 +26,7 @@ export class CommercialPlanComponent implements OnInit {
 
   //*Data shared from father component that uses the selector of this component
   @Input() CommertialPlan:any = new FormArray([]);
+  @Input() idRisk:any;
 
   //*It allows you to get instances of native elements, directives, and components that are in the template itself.
   @ViewChild('planCommertialTable') planCommertialTable!: MatTable<ElementTableSearch> ;
@@ -62,7 +63,8 @@ export class CommercialPlanComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log("")   
+    console.log("") 
+     
   }
 
   ngAfterViewInit() {
@@ -77,6 +79,7 @@ export class CommercialPlanComponent implements OnInit {
   ngOnChanges() {
     this.dataSource= new MatTableDataSource<any>(this.CommertialPlan.value);
     this.dataSource.paginator = this.paginatorCommercialPlan;
+   
   }
 
   /**
@@ -134,6 +137,23 @@ export class CommercialPlanComponent implements OnInit {
     return (<FormGroup> this.CommercialPlan?.get('step1'));
   }
 
+  // get riskTypeControls(): FormArray {
+  //   return (<FormArray>(
+  //     this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
+  //   )) as FormArray;
+  // }
+
+  // getRiskArrayById(id: number) {
+  //   return (<FormArray>this.riskTypeControls.controls.find(x => x.value.id === id)?.get('cmmrclPln'));
+  // }
+
+  // getDataCoverages(id: number,position:any) {
+  //   return (<FormArray>this.productService.coverages).controls.find(x => x.value.id === id)?.get(position);
+  // }
+  // getServicesPlan(id: number,position:any) {
+  //   return (<FormArray>this.productService.servicePlans).controls.find(x => x.value.id === id)?.get(position);
+  // }
+
   /**
    * In base at configuration done in the wizard, an object is created that is added to table 
    * that is linked with commercial plan for each risk type
@@ -152,7 +172,32 @@ export class CommercialPlanComponent implements OnInit {
       servicePlans.push(servicePlan);
     }
 
+    // //ModifyComponent
+    // let objCoverages:any;
+    // let objservicePlans:any;
 
+
+    // for (const coverage of result['coverages'].controls) {
+    //   objCoverages = this.fb.group({
+    //     id:this.fb.control(coverage.value.id),
+    //     name:this.getDataCoverages(coverage.value.id,'name')?.value,
+    //     description:this.getDataCoverages(coverage.value.id,'description')?.value,
+    //     athrzdOprtn:this.fb.control([]),
+    //     cvrgDtGrp: this.fb.array([],Validators.required)
+    //   })
+     
+    // }
+
+    // for (const servicePlan of result['servicePlans'].controls) {
+    //   objservicePlans = this.fb.group({
+    //     id:this.fb.control(servicePlan.value.id),
+    //     name:this.getServicesPlan(servicePlan.value.id,'name')?.value,
+    //     description:this.getServicesPlan(servicePlan.value.id,'description')?.value,
+    //     athrzdOprtn:this.fb.control([]),
+    //   })
+      
+    // }
+    
 
     let element: any;
     element = this.fb.group({
@@ -166,6 +211,23 @@ export class CommercialPlanComponent implements OnInit {
 
 
     this.CommertialPlanControls.push(element);
+
+    // addModifyRisk
+    
+   
+
+    // this.getRiskArrayById(this.idRisk.value).push(
+    //   this.fb.group({
+    //     name:this.fb.control(result['step1'].value.name),
+    //     code:this.fb.control(this.autoIncrementCustomId((this.getMax(this.CommertialPlanControls.value, 'code')),result['step1'].value.name)),
+    //     description:this.fb.control(result['step1'].value.description),
+    //     athrzdOprtn:this.fb.control([]),
+    //     coverages:objCoverages,
+    //     servicePlans:objservicePlans
+    //        })
+    //   )
+       
+
     this.dataSource = new MatTableDataSource<any>(this.CommertialPlanControls.value);
     this.dataSource.paginator = this.paginatorCommercialPlan;
     this.planCommertialTable.renderRows();

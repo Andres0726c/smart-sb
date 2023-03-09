@@ -131,7 +131,7 @@
           
           <div formArrayName="policyData">
               <div class="p-5" *ngFor="let group of policyDataControls.controls; let i = index" formGroupName="{{i}}">
-                  <!-- <ng-container *ngTemplateOutlet="groupFields;context:{group: group, data:true}"></ng-container> -->
+                  <!-- <ng-container *ngTemplateOutlet="groupFields;context:{group: group}"></ng-container> -->
                   <smartcore-reactive-group-fields [group]="group"[policy]="policy" [level]="'policy'" (validRules)="validRules($event)" (updatePolicy)="transformData($event)"></smartcore-reactive-group-fields>
               </div>
           </div>

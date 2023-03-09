@@ -83,7 +83,6 @@ export class RulesWizardComponent implements OnInit {
       this.EmptyData=true;
       this.rulesModal = search.filter((item: SearchModal) => item.code === this.data.code)[0];
 
-      console.log(this.rulesModal)
       // seteamos columnas por default
       this.rulesModal.columns = [
         { name: 'name', header: 'Nombre', displayValue: [''] },
@@ -130,7 +129,6 @@ export class RulesWizardComponent implements OnInit {
       this.ruleSelection = new SelectionModel<ElementTableSearch>(this.rulesModal.multiSelect, []);
 
       this.contextData = this.transformContextData(this.data.contextData);
-
       // llamamos a la carga de datos
       await this.loadData('0', this.currentRulesPage, this.rulesPageSize,this.sortColumns,this.sortingDirection);
 
@@ -141,15 +139,15 @@ export class RulesWizardComponent implements OnInit {
   }
 
   transformContextData(dataList:any[]){
+    let contextData: any = [];
+
     //se agrega la propiedad businessCode al arreglo del dominio
-    dataList.forEach(obj =>{
-      obj.businessCode = obj.code;
-      // or via brackets
-      // obj['total'] = 2;
-      return obj;
+    dataList.forEach(element =>{
+    let obj: any = { id:element.code, name : element.description,businessCode:element.code , applctnLvl:element.applctnLvl };
+      contextData.push(obj)
     });
 
-    return dataList;
+    return contextData;
   }
 
   ngAfterViewInit() {
@@ -271,6 +269,7 @@ export class RulesWizardComponent implements OnInit {
    * Method that insert the information in mat table datasource
    */
   async insertDataToTable() {
+
     if (this.rulesModal.remotePaginator) {
       this.rulesDataSource.data = [...this.dataList];
       this.dataSourceAux.data = [...this.dataListAux];
@@ -377,7 +376,7 @@ export class RulesWizardComponent implements OnInit {
     this.ParametersForm.get('rule')?.setValue(this.ruleSelection.selected[0]);
 
     let map = this.ParametersForm.get('rule')?.value.nmParameterList;
-    let Jsonmap: any;
+    let Jsonmap: any, orderList: any = [];
     try {
       if (map){
          Jsonmap = JSON.parse(map);
@@ -394,8 +393,11 @@ export class RulesWizardComponent implements OnInit {
     }
 
     for(let x = 0; x < this.data.complementaryData.length; x++){
-      this.aditionalData.push(this.data.complementaryData.value[x].fields);
+      orderList=orderList.concat(this.data.complementaryData.value[x].fields);    
     }
+    if(this.contextData){ orderList=orderList.concat(this.contextData);}
+    this.sortParameterBy('name',orderList)
+    this.aditionalData.push(orderList);
 
     for ( let rule of this.stepParameters) {
        let ObjForm = this.fb.group({
@@ -407,6 +409,13 @@ export class RulesWizardComponent implements OnInit {
      }
   }
 
+  sortParameterBy(property:any, complementaryData:any) {  
+    return complementaryData.sort((a:any, b:any) => {
+      return a[property] >= b[property]
+        ? 1
+        : -1
+    })
+  }
   public isObject(obj: any) {
     return obj !== undefined && obj !== null && obj.constructor == Object;
   }

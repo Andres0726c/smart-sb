@@ -36,9 +36,10 @@ export class ProductService {
   claimTechnicalControls: any = new FormArray<any>([]);
   claimData: any = new FormArray<any>([]);
   modificationTypes: any = new FormArray<any>([]);
-  mdfctnPrcss:FormGroup = new FormGroup({
-    enabled: new FormControl(false),
-  });
+  //mdfctnPrcss: FormGroup =new FormGroup({});
+   mdfctnPrcss:FormGroup = new FormGroup({
+     enabled: new FormControl(false),
+   });
   cancellation:FormGroup = new FormGroup({
     enabled: new FormControl(false),
   });
@@ -48,6 +49,7 @@ export class ProductService {
   renewal:FormGroup = new FormGroup({
     enabled: new FormControl(false),
   });
+
 
   defaultArrays = [
     'selectedProcess',
@@ -116,6 +118,8 @@ export class ProductService {
 
     /* Modification Types */
     { field: 'modificationTypes', validators: [] },
+
+    { field: 'mdfctnPrcss', validators: [] },
   ]
 
   constructor(
@@ -180,18 +184,24 @@ export class ProductService {
     this.claimTechnicalControls = this.fb.array([], []);
     this.claimData = this.fb.array([], [Validators.required]);
     this.modificationTypes = this.fb.array([], [Validators.required]);
-    this.mdfctnPrcss = new FormGroup({
+    this.mdfctnPrcss = this.fb.group ({ 
       enabled: new FormControl(false),
-    });
-    this.cancellation = new FormGroup({
-      enabled: new FormControl(false),
-    });
-    this.rehabilitation = new FormGroup({
-      enabled: new FormControl(false),
-    });
-    this.renewal = new FormGroup({
-      enabled: new FormControl(false),
-    });
+      mdfcblDt: this.fb.group ({ 
+          plcyDtGrp:this.fb.array([]),
+          rskTyp:this.fb.array([]),
+          cls:this.fb.array([])
+        }),
+      mdfctnTchnclCntrl:this.fb.array([])
+     })
+     this.cancellation = new FormGroup({
+        enabled: new FormControl(false),
+      });
+      this.rehabilitation = new FormGroup({
+        enabled: new FormControl(false),
+      });
+      this.renewal = new FormGroup({
+        enabled: new FormControl(false),
+      });
       //autosave enabled
       // this.autoSaveProduct();
   }
@@ -299,7 +309,8 @@ export class ProductService {
       mdfctnPrcss: this.mdfctnPrcss.getRawValue(),
       cancellation: this.cancellation.getRawValue(),
       rehabilitation: this.rehabilitation.getRawValue(),
-      renewal: this.renewal.getRawValue()
+      renewal: this.renewal.getRawValue(),
+    
     };
   }
 
@@ -423,9 +434,11 @@ export class ProductService {
       this.claimData = product.claimData ? (this.setFields('claimData', product.claimData)) : new FormArray<any>([]);
       this.claimTechnicalControls = product.claimTechnicalControls ? (this.setFields('claimTechnicalControls', product.claimTechnicalControls)) : new FormArray<any>([]);
       this.modificationTypes = product.modificationTypes ? (this.setFields('modificationTypes', product.modificationTypes)) : new FormArray<any>([]);
+     // this.mdfctnPrcss = product.mdfctnPrcss ? (this.setFields('mdfctnPrcss', product.mdfctnPrcss)) :new FormGroup({});
+     
       this.mdfctnPrcss = product.mdfctnPrcss ? this.setFields('mdfctnPrcss', product.mdfctnPrcss) : new FormGroup({
-        enabled: new FormControl(false),
-      });
+         enabled: new FormControl(false),
+       });
       this.cancellation = product.cancellation ? this.setFields('cancellation', product.cancellation) : new FormGroup({
         enabled: new FormControl(false),
       });
@@ -500,12 +513,50 @@ export class ProductService {
         }
       }
 
+       if (!this.mdfctnPrcss.contains('mdfcblDt')) {
+        this.mdfctnPrcss.addControl( 'mdfcblDt',this.fb.group ({ 
+          plcyDtGrp:this.fb.array([]),
+          rskTyp:this.fb.array([]),
+          cls:this.fb.array([])
+        }))
+       
+        this.addRisk();
+       
+
+      }
+      
+      if((<FormArray>( this.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))).length ===0)
+      {
+        this.addRisk();
+      }
+
       this.modificationTypes = product.modificationTypes ? this.setFields('modificationTypes', product.modificationTypes) : new FormArray<any>([]);
       this.isEnabledSave = false;
       //autosave enabled
       this.autoSaveProduct();
       return product;
     //});
+  }
+
+  addRisk(){
+
+    for(const risk of this.riskTypes.value){
+      (<FormArray>(
+        this.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
+      )).push(
+        this.fb.group({
+          id: this.fb.control(risk.id, Validators.required),
+          name: this.fb.control(risk.name, Validators.required),
+          description: this.fb.control(
+            risk.description,
+            Validators.required
+          ),
+          rskTypDtGrp:this.fb.array([],Validators.required),
+          cmmrclPln:this.fb.array([],Validators.required)
+        })
+        )
+    }
+
   }
 
   /**
