@@ -1,5 +1,5 @@
 .chip-select {
-    height: 28px !important;
+    height: 18px !important;
     max-width: max-content;
     background-color: var(--bg-primary-light);
     color: var(--primary-base);
@@ -7,7 +7,9 @@
     display: flex;
     column-gap: 10px;
     align-items: center;
-    border-radius: 50px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: default;
     &-count{
       column-gap: 0px;
     }
@@ -15,25 +17,17 @@
       color: var(--primary-base);
       height: 12px;
       width: 12px;
-      font-size: 12px;
-      margin-right: 4px;
       cursor: pointer;
     }
-  }
-  
-  .select-multiple ::ng-deep .mat-chip.mat-standard-chip {
-    min-height: 28px;
-    .mat-chip-remove{
-      opacity: 1;
+    &:hover {
+      background: var(--greyscale-4);
     }
   }
   
   .dots {
     margin: 0px 5px;
-    font-family: Roboto Condensed;
     font-style: normal;
     font-weight: 400;
-    font-size: 14px;
-    line-height: 180%;
+    font-size: 12px;
     color: var(--primary-base);
   }
