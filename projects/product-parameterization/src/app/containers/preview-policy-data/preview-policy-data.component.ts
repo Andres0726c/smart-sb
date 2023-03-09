@@ -107,7 +107,7 @@ export class PreviewPolicyDataComponent implements OnInit {
 
       panelClass: 'custom-dialog-container',
     });
-    console.log(dialogRef);
+
     dialogRef.afterClosed().subscribe((res) => {
       if (this.previewPolicyData.length == 0) {
         this.addPreview(res);
@@ -154,7 +154,6 @@ export class PreviewPolicyDataComponent implements OnInit {
   };
 
   updateTree = (): void => {
-    this.dataSource.data = this.dataSource.data;
     for (let value of this.treeControl.dataNodes) {
       this.treeControl.expand(value);
     }
