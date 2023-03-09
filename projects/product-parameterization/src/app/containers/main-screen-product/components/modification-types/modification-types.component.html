@@ -6,15 +6,27 @@
   
     <h4 class="p-4">{{titleCurrent}}</h4>
      
-        <div class="div-button" *ngIf="getAll().length > 0">
+        <div class="div-button" *ngIf="getAll().length > 0 && policyData">
           <button
             mat-button
             class="bt bt-primary"
-            (click)="openToAdd()"
+            (click)="openToAdd('policy')"
             data-qa-id="sc-rpmf-btn_add-element"
           >
             <em class="fal fa-plus-circle icon-button-add"></em>
             Añadir
+          </button>
+        </div>
+
+        <div class="div-button" *ngIf="getAllRisk().length > 0  && riskData">
+          <button
+            mat-button
+            class="bt bt-primary"
+            (click)="openToAdd('risk')"
+            data-qa-id="sc-rpmf-btn_add-element"
+          >
+            <em class="fal fa-plus-circle icon-button-add"></em>
+            Añadirrisk
           </button>
         </div>
 
@@ -44,7 +56,7 @@
           'Seleccione los datos de la póliza que desea asociar'
         "
         [complementaryData]="complementaryDataControls"
-        (action)="openToAdd()"
+        (action)="openToAdd('policy')"
         [modifyData]="true"
       >
       </app-complementary-data>
@@ -71,7 +83,7 @@
               'Seleccione los datos de la póliza que desea asociar'
             "
             [complementaryData]="complementaryDataControls"
-            (action)="openToAdd()"
+            (action)="openToAdd('policy')"
             [modifyData]="true"
           >
           </app-complementary-data>
@@ -82,7 +94,28 @@
     <!-- <div *ngIf="true"> -->
 
     <div *ngIf="riskData">
-      <p>risk</p>
+      <app-complementary-data
+            [applicationLevel]="'types'"
+            [title]="''"
+            [subtitle]="''"
+            [groupName]="'Datos básicos'"
+            [emptyText]="'Sin datos de la póliza'"
+            [emptySubText]="'No se han asociado datos de la póliza al producto'"
+            [successAddItemMsg]="
+              'Los datos de la póliza fueron asociados correctamente.'
+            "
+            [removeItemMsg]="
+              '¿Está seguro de querer desasociar el dato de la póliza seleccionado?'
+            "
+            [titleModalCompData]="'Seleccionar nuevos datos de la póliza'"
+            [subtitleModalCompData]="
+              'Seleccione los datos de la póliza que desea asociar'
+            "
+            [complementaryData]="getRiskArrayByIdModify(2)"
+            (action)="openToAdd('risk')"
+            [modifyData]="true"
+          >
+          </app-complementary-data>
     </div>
 
         <refactoring-smartcore-mf-modification-types-risk
@@ -90,14 +123,14 @@
         [titleRisk]="titleRisk"
           [riskType]="riskType"
           (addBranch)="onAddBranch($event)"
-          *ngIf="showCommercialPlans && !riskData"
+          *ngIf="showCommercialPlans && !riskData && !policyData"
         ></refactoring-smartcore-mf-modification-types-risk>
         <refactoring-smartcore-mf-commercial-plan-type
           [titleBussinesPlan]="titleBussinesPlan"
           [data]="data"
         [riskDataCode]="riskDataCode"
           [bussinesPlans]="bussinesPlans"
-          *ngIf="showCommercialPlansTypes && !riskData"
+          *ngIf="showCommercialPlansTypes && !riskData && !policyData"
         ></refactoring-smartcore-mf-commercial-plan-type>
   <!-- </div> -->
 </div>

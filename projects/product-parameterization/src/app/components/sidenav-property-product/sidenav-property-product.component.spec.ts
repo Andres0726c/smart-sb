@@ -54,7 +54,7 @@ describe('SidenavPropertyProductComponent', () => {
       modification: new FormGroup({enabled:new FormControl(true)})
     })
     component.validateShow(component.menus[1])
-    expect(component.menus[1].show).toEqual(true)
+    expect(component.menus[1].showEnable).toEqual(false)
   })
 
   it('validateShow doesnt find modification process into formProcess',()=>{
