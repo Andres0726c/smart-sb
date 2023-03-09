@@ -66,12 +66,14 @@ describe('PolicyDataComponent', () => {
     expect(component).toBeTruthy();
   });
 
-    it('Componente inicializado', () => {
-      component.ngOnInit();
-      expect(component).toBeDefined();
-    });
+  it('Componente inicializado', () => {
+    component.ngOnInit();
+    expect(component).toBeDefined();
+  });
 
-
+  it('openToAdd', () => {
+    expect(component.openToAdd()).toBeUndefined();
+  });
   
 
   /*it('complementaryDataControls',()=>{
