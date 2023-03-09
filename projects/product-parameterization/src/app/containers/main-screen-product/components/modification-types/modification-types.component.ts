@@ -178,19 +178,66 @@ export class ModificationTypesComponent implements OnInit {
     //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
   }
 
+  showMessageGroup(showMessage:boolean){
+    let data: DataToast = {
+      status: STATES.success,
+      title: 'Asociación exitosa',
+      msg: 'this.successAddItemMsg,',
+    };
+    if (showMessage) {
+      this.toastMessage.openFromComponent(ToastMessageComponent, {
+        data: data,
+      });
+    }
+  }
 
+  addGroupArrayById(object:any,nameGruop:any){
+  const index = this.complementaryDataControls.value.findIndex(
+    (x: { id: any }) => x.id === nameGruop.id
+  );
 
+  // const index2 = this.getAll().findIndex((x: { id: number; }) => x.id === object.id);
+
+  //   if (index2 === -1) {
+
+  this.getGroupArrayById(index + 1).push(
+    new FormGroup({
+      id: this.fb.control(object.id, [Validators.required]),
+      name: this.fb.control(object.name, [Validators.required]),
+      label: this.fb.control(
+        object.element.nmLabel
+          ? object.element.nmLabel
+          : object.element.label,
+        [Validators.required]
+      ),
+      dataType: this.fb.control(object.element.dataType),
+      initializeRule: this.fb.array([], []),
+      validateRule: this.fb.array([], []),
+      dependency: this.fb.control(null, []),
+      requiredEssential: this.fb.control(
+        object.element.flIsMandatory === 'S' ? true : false,
+        [Validators.required]
+      ),
+      required: this.fb.control(
+        object.element.flIsMandatory === 'S' ? true : false,
+        [Validators.required]
+      ),
+      editable: this.fb.control(true, [Validators.required]),
+      visible: this.fb.control(true, [Validators.required]),
+      fieldGroup: this.fb.control(index + 1, []),
+      shouldDelete: this.fb.control(object.shouldDelete, [
+        Validators.required,
+      ]),
+      businessCode: this.fb.control(object.element.businessCode),
+      domainList: this.fb.control(object.element.domainList),
+    })
+  );
+}
   
 
   addItem = (obj: ElementReturn[], group: number, showMessage: boolean) => {
     if (obj) {
-
-      let data: DataToast = {
-        status: STATES.success,
-        title: 'Asociación exitosa',
-        msg: 'this.successAddItemMsg,',
-      };
-
+      this.showMessageGroup(showMessage);
       let nameGruop: any;
 
       for (let object of obj) {
@@ -207,52 +254,8 @@ export class ModificationTypesComponent implements OnInit {
             this.add(nameGruop);
           }
 
-        const index = this.complementaryDataControls.value.findIndex(
-          (x: { id: any }) => x.id === nameGruop.id
-        );
-
-        // const index2 = this.getAll().findIndex((x: { id: number; }) => x.id === object.id);
-
-        //   if (index2 === -1) {
-
-        this.getGroupArrayById(index + 1).push(
-          new FormGroup({
-            id: this.fb.control(object.id, [Validators.required]),
-            name: this.fb.control(object.name, [Validators.required]),
-            label: this.fb.control(
-              object.element.nmLabel
-                ? object.element.nmLabel
-                : object.element.label,
-              [Validators.required]
-            ),
-            dataType: this.fb.control(object.element.dataType),
-            initializeRule: this.fb.array([], []),
-            validateRule: this.fb.array([], []),
-            dependency: this.fb.control(null, []),
-            requiredEssential: this.fb.control(
-              object.element.flIsMandatory === 'S' ? true : false,
-              [Validators.required]
-            ),
-            required: this.fb.control(
-              object.element.flIsMandatory === 'S' ? true : false,
-              [Validators.required]
-            ),
-            editable: this.fb.control(true, [Validators.required]),
-            visible: this.fb.control(true, [Validators.required]),
-            fieldGroup: this.fb.control(index + 1, []),
-            shouldDelete: this.fb.control(object.shouldDelete, [
-              Validators.required,
-            ]),
-            businessCode: this.fb.control(object.element.businessCode),
-            domainList: this.fb.control(object.element.domainList),
-          })
-        );
-      }
-
-      if (showMessage) {
-        this.toastMessage.openFromComponent(ToastMessageComponent, {
-          data: data,
-        });
+          this.addGroupArrayById(object,nameGruop);
+        
       }
     }
   };
@@ -288,12 +291,19 @@ export class ModificationTypesComponent implements OnInit {
 
   getNameGroup(name: any) {
     let objGruop;
-//console.log(name,"name");
-//getRiskArraydById
-//this.productService.policyData.value
+
 if(this.policyData){
-  //console.log(this.productService.policyData.value)
-  for (let groups of this.productService.policyData.value) {
+  objGruop= this.addGroupObj(this.productService.policyData.value,name);
+}
+
+if(this.riskData){
+  objGruop=this.addGroupObj(this.getRiskArraydById(2).value,name);
+  }
+    return objGruop;
+  }
+addGroupObj(groupName:any,name:any){
+  let objGruop;
+  for (let groups of groupName) {
     for (let key of groups.fields) {
       if (key.businessCode === name) {
         objGruop = {
@@ -307,29 +317,8 @@ if(this.policyData){
       }
     }
   }
+  return objGruop;
 }
-//console.log(objGruop)
-
-if(this.riskData){
-    for (let groups of this.getRiskArraydById(2).value) {
-      for (let key of groups.fields) {
-        if (key.businessCode === name) {
-          objGruop = {
-            id: groups.id,
-            code: groups.code,
-            name: groups.name,
-            fields: this.fb.array([], Validators.required),
-            isEditing: groups.isEditing,
-          };
-          break;
-        }
-      }
-    }
-  }
-//console.log(objGruop)
-    return objGruop;
-  }
-
   addBranch(items: any, showMenu?: BussinesPlans[]): MenuItem[] {
     let list: MenuItem[] = [];
  
@@ -388,8 +377,7 @@ if(this.riskData){
   }
 
   calledMenu(showMenu?: BussinesPlans[]) {
-    // console.log(this.productService.mdfctnPrcss);
-    // console.log(this.policyDataControls.value ,"riskmenu")
+
     this.items1 = [
       {
         label: 'Datos de la póliza',
@@ -435,20 +423,6 @@ if(this.riskData){
   //   if (this.showCommercialPlans || this.bussinesPlans)
   //     this.showCommercialPlans = false;
   //   this.showRisk = false;
-  // }
-  // dataSet(itempush: any) {
-  //   console.log(itempush);
-  //   localStorage.setItem(
-  //     itempush.name,
-  //     JSON.stringify(
-  //       this.productService
-  //         .getProductObject()
-  //         .riskTypes.find((product: any) => product.id === itempush.id)
-  //     )
-  //   );
-  //   this.riskDataCode = itempush.name;
-  //   this.riskType = itempush.name;
-  //   this.titleRisk = itempush.name;
   // }
   showRiskType() {
     this.riskData = true;
