@@ -37,7 +37,7 @@
               </div>
               <div class="canvas" *ngIf="menu.isExpanded" [hidden]="!menu.show">
                 <ul class="submenu" [ngClass]="{ expanded: menu.show }">
-                  <li *ngFor="let submenu of menu.submenus" routerLinkActive="fill-select" >
+                  <li *ngFor="let submenu of menu.submenus" routerLinkActive="fill-select">
                     <a [routerLink]="submenu.routerLink">
                       <span>{{submenu.name}}</span>
                       <em class="fal fa-angle-right"></em>
@@ -45,7 +45,6 @@
                   </li>
                 </ul>
               </div>
-              
             </div>
           </form>
         
