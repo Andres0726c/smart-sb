@@ -1,4 +1,4 @@
-<div class="">
+<!-- <div class="">
     <app-no-data-screen 
         [data]="arrayTechnicalControls" 
         [layoutType]="'full'" 
@@ -9,12 +9,10 @@
         (action)="openToAdd()">
     </app-no-data-screen>
     <div class="div-container-form" [hidden]="arrayTechnicalControls.length === 0">
-        <!-- <mat-card style="width:100%"> -->
             <div class="content_search">
                 <mat-form-field appearance="outline" class="search_input" style="width: 241px !important;">
                     <input matInput placeholder="Buscar" (keyup)="applyFilter($event)"
                         data-qa-id="sc-rpmf-input_search_technical_control" />
-                    <!-- <mat-icon matSuffix class="icon-search">search</mat-icon> -->
                     <em matSuffix class="far fa-search fa-lg icon-search"></em>
                 </mat-form-field>
                 <div class="div-buttons">
@@ -34,7 +32,6 @@
                 <table mat-table #controlTecnicoTable [dataSource]="dataSource" style="width:100%">
                     <caption></caption>
     
-                    <!-- Checkbox Column -->
                     <ng-container matColumnDef="select">
                         <th mat-header-cell *matHeaderCellDef>
                             <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -50,19 +47,16 @@
                         </td>
                     </ng-container>
     
-                    <!-- Name Column -->
                     <ng-container matColumnDef="name">
                         <th mat-header-cell *matHeaderCellDef>Nombre</th>
                         <td mat-cell *matCellDef="let element let i=index">{{element.value.name}}</td>
                     </ng-container>
     
-                    <!-- description Column -->
                     <ng-container matColumnDef="description">
                         <th mat-header-cell *matHeaderCellDef>Descripción</th>
                         <td mat-cell *matCellDef="let element let i=index">{{element.value.description}}</td>
                     </ng-container>
     
-                    <!-- execution Level Column -->
                     <ng-container matColumnDef="level">
                         <th mat-header-cell *matHeaderCellDef>Nivel de ejecución</th>
                         <td mat-cell *matCellDef="let element let i=index" class="colums-table" [formGroup]="element">
@@ -77,27 +71,7 @@
                             </section>
                         </td>
                     </ng-container>
-    
-                    <!-- process Column -->
-<!--                     <ng-container matColumnDef="process">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" class="colums-table">Procesos</th>
-                        <td mat-cell *matCellDef="let element let i=index" class="colums-table"
-                            data-qa-id="sc-rpmf-multi-select_process_technical_control">
-                            <app-multi-select [dataOptions]="process" [selectedOptions]="element.get('selectedProcess')">
-                            </app-multi-select>
-                        </td>
-                    </ng-container> -->
-    
-                    <!-- Actions Column -->
-                    <!-- <ng-container matColumnDef="actions">
-                        <th mat-header-cell *matHeaderCellDef class="colums-table">Acciones</th>
-                        <td mat-cell *matCellDef="let element let i=index" style=" display: flex;justify-content: center;">
-                            <button mat-icon-button color="warn" type='button' (click)="deleteTechnical(i)"
-                                data-qa-id="sc-rpmf-btn_delete_technical_control">
-                                <em class="fal fa-trash text-xl"></em>
-                            </button>
-                        </td>
-                    </ng-container> -->
+
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;">
                     </tr>
@@ -107,7 +81,6 @@
             <mat-paginator style="margin: auto !important;;" #paginatorTechnical [hidePageSize]="true" [pageSize]="10"
                 [pageSizeOptions]="[2, 10, 20]" showFirstLastButtons>
             </mat-paginator>
-    
-        <!-- </mat-card> -->
+
     </div>
-</div>
+</div> -->
