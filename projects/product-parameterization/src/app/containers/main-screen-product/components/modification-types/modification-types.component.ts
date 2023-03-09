@@ -63,7 +63,6 @@ export class ModificationTypesComponent implements OnInit {
     this.calledMenu();
   }
   ngOnInit(): void {
-   
  
 //  console.log(    this.getRiskArrayByIdModify(2).controls);
   }
@@ -79,8 +78,8 @@ export class ModificationTypesComponent implements OnInit {
 
 
   getGroupArrayByIdRisk(id: number) {
-     console.log(id)
-    console.log(this.complementaryDataControls.controls)
+    //  console.log(id)
+    // console.log(this.complementaryDataControls.controls)
     return <FormArray>(
       this.complementaryDataControls.controls
         .find((x: { value: { id: number } }) => x.value.id === id)
@@ -90,10 +89,10 @@ export class ModificationTypesComponent implements OnInit {
   }
 
   openToAdd(level:any): void {
-    console.log('level',level);
+    //console.log('level',level);
     let sendData = [];
     sendData = this.productService.policyData?.value[0].fields;
-    console.log(this.productService.riskTypes.complementaryData);
+    //console.log(this.productService.riskTypes.complementaryData);
     const columns = [
       { name: 'name', header: 'Nombre', displayValue: ['label'] },
       {
@@ -161,7 +160,7 @@ export class ModificationTypesComponent implements OnInit {
   }
 
   getRiskArrayByIdModify(id: number) {
-    console.log(this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'))
+    //console.log(this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'))
     return (<FormArray>this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'));
   }
 
@@ -289,11 +288,11 @@ export class ModificationTypesComponent implements OnInit {
 
   getNameGroup(name: any) {
     let objGruop;
-console.log(name,"name");
+//console.log(name,"name");
 //getRiskArraydById
 //this.productService.policyData.value
 if(this.policyData){
-  console.log(this.productService.policyData.value)
+  //console.log(this.productService.policyData.value)
   for (let groups of this.productService.policyData.value) {
     for (let key of groups.fields) {
       if (key.businessCode === name) {
@@ -309,7 +308,7 @@ if(this.policyData){
     }
   }
 }
-console.log(objGruop)
+//console.log(objGruop)
 
 if(this.riskData){
     for (let groups of this.getRiskArraydById(2).value) {
@@ -327,7 +326,7 @@ if(this.riskData){
       }
     }
   }
-console.log(objGruop)
+//console.log(objGruop)
     return objGruop;
   }
 
@@ -389,8 +388,8 @@ console.log(objGruop)
   }
 
   calledMenu(showMenu?: BussinesPlans[]) {
-    console.log(this.productService.mdfctnPrcss);
-    console.log(this.policyDataControls.value ,"riskmenu")
+    // console.log(this.productService.mdfctnPrcss);
+    // console.log(this.policyDataControls.value ,"riskmenu")
     this.items1 = [
       {
         label: 'Datos de la póliza',
