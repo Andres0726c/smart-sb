@@ -377,8 +377,7 @@ addGroupObj(groupName:any,name:any){
   }
 
   calledMenu(showMenu?: BussinesPlans[]) {
-    // console.log(this.productService.mdfctnPrcss);
-    // console.log(this.policyDataControls.value ,"riskmenu")
+
     this.items1 = [
       {
         label: 'Datos de la póliza',
@@ -424,20 +423,6 @@ addGroupObj(groupName:any,name:any){
   //   if (this.showCommercialPlans || this.bussinesPlans)
   //     this.showCommercialPlans = false;
   //   this.showRisk = false;
-  // }
-  // dataSet(itempush: any) {
-  //   console.log(itempush);
-  //   localStorage.setItem(
-  //     itempush.name,
-  //     JSON.stringify(
-  //       this.productService
-  //         .getProductObject()
-  //         .riskTypes.find((product: any) => product.id === itempush.id)
-  //     )
-  //   );
-  //   this.riskDataCode = itempush.name;
-  //   this.riskType = itempush.name;
-  //   this.titleRisk = itempush.name;
   // }
   showRiskType() {
     this.riskData = true;
