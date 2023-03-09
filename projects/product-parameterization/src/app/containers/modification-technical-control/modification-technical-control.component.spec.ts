@@ -1,14 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModificationTechnicalControlComponent } from './modification-technical-control.component';
+import { AngularMaterialModule } from '../../material.module';
+import { HttpClientModule } from '@angular/common/http';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 describe('ModificationTechnicalControlComponent', () => {
   let component: ModificationTechnicalControlComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [],
+      imports: [
+        AngularMaterialModule,
+        HttpClientModule,
+        ReactiveFormsModule
+      ],
       declarations: [],
-      providers: [ModificationTechnicalControlComponent],
+      providers: [
+        ModificationTechnicalControlComponent,
+      ],
       schemas: [],
     });
     component = TestBed.inject(ModificationTechnicalControlComponent);
