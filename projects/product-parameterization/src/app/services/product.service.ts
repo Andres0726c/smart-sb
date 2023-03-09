@@ -513,14 +513,22 @@ export class ProductService {
         }
       }
 
-      // if (this.modificationProcess.length > 0) {
-      //   for (const modificationProcess of this.modificationProcess.controls) {
-      //     let modificationProcess: any = (<FormArray>this.modificationProcess.get('visibleNonModificableData'));
-      //     if (modificationProcess.length > 0 && !(<FormGroup>modificationProcess.controls[0]).contains('code')) {
-      //       (<FormGroup>modificationProcess.controls[0]).addControl('code', this.fb.control('datos_basicos'));
-      //     }
-      //   }
-      // }
+       if (!this.mdfctnPrcss.contains('mdfcblDt')) {
+        this.mdfctnPrcss.addControl( 'mdfcblDt',this.fb.group ({ 
+          plcyDtGrp:this.fb.array([]),
+          rskTyp:this.fb.array([]),
+          cls:this.fb.array([])
+        }))
+       
+        this.addRisk();
+       
+
+      }
+      
+      if((<FormArray>( this.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))).length ===0)
+      {
+        this.addRisk();
+      }
 
       this.modificationTypes = product.modificationTypes ? this.setFields('modificationTypes', product.modificationTypes) : new FormArray<any>([]);
       this.isEnabledSave = false;
@@ -528,6 +536,27 @@ export class ProductService {
       this.autoSaveProduct();
       return product;
     //});
+  }
+
+  addRisk(){
+
+    for(const risk of this.riskTypes.value){
+      (<FormArray>(
+        this.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
+      )).push(
+        this.fb.group({
+          id: this.fb.control(risk.id, Validators.required),
+          name: this.fb.control(risk.name, Validators.required),
+          description: this.fb.control(
+            risk.description,
+            Validators.required
+          ),
+          rskTypDtGrp:this.fb.array([],Validators.required),
+          cmmrclPln:this.fb.array([],Validators.required)
+        })
+        )
+    }
+
   }
 
   /**
