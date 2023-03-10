@@ -42,7 +42,7 @@ export class ModificationTechnicalControlComponent {
   }
 
 
-  /*ngAfterViewInit() {
+  ngAfterViewInit() {
 
     this.updateTable()
   }
@@ -56,27 +56,27 @@ export class ModificationTechnicalControlComponent {
 
   get TechnicalControls(): FormArray {
     return this.arrayTechnicalControls;
-  }*/
+  }
 
   /** Get data from the process microservice  */
-  /*getProcess() {
+  getProcess() {
     this.technicalControlServices.getProcess().subscribe(res => {
       this.process = res.body.map(item => item.name)
     })
-  }*/
+  }
 
   /** Get data from the Execution Level microservice  */
-  /*getRunLevel() {
+  getRunLevel() {
     this.technicalControlServices.getExecutionLevel().subscribe(res => {
       this.executionLevels = res.body.map(item => item.name)
     })
-  }*/
+  }
 
   /**
   * Retorna la instancia de asociaci\u00f3n exitosa.
   * @returns instancia DataToast
   */
-  /*getSuccessStatus = (title: string, message: string): DataToast => {
+  getSuccessStatus = (title: string, message: string): DataToast => {
     return {
       status: STATES.success,
       title: title,
@@ -129,10 +129,10 @@ export class ModificationTechnicalControlComponent {
         ),
       });
     }
-  }*/
+  }
 
   /** @returns data to inject in multi-select */
-  /*selectedOptions(i: number) {
+  selectedOptions(i: number) {
     return this.TechnicalControls.get(i.toString())?.get('selectedProcess');
   }
 
@@ -144,7 +144,7 @@ export class ModificationTechnicalControlComponent {
       return dataStr.indexOf(filter) != -1;
     }
 
-    if (filterValue.length() >= 3) {
+    if (filterValue.length >= 3) {
       this.dataSource.filter = filterValue.trim().toLowerCase();
     } else {
       this.dataSource.filter = "";
@@ -220,5 +220,5 @@ export class ModificationTechnicalControlComponent {
       }
     }
     return countSelected > 0 && countSelected < pageSize;
-  }*/
+  }
 }
