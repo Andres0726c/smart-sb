@@ -63,8 +63,82 @@ export class ModificationTypesComponent implements OnInit {
     this.calledMenu();
   }
   ngOnInit(): void {
- 
-//  console.log(    this.getRiskArrayByIdModify(2).controls);
+
+   this.getcmmrclPln(2).clear();
+    console.log(this.productService.mdfctnPrcss);
+   console.log(this.productService.riskTypes,"risk");
+   if (this.getcmmrclPln(2).length ===0){
+    console.log("karol"); 
+    this.test();
+    }
+  }
+
+  test(){
+    for(const risk of this.productService.riskTypes.value){
+
+      for (let plan of risk.businessPlans){
+
+        this.getcmmrclPln(risk.id).push(
+          this.fb.group({
+            name:this.fb.control(plan.name),
+            code:this.fb.control(plan.code),
+            description:this.fb.control(plan.description),
+            athrzdOprtn:this.fb.control([]),
+            coverages: this.fb.control(this.getCoverages(plan,'coverage')),
+            servicePlans:this.fb.control(this.getCoverages(plan,'servicePlan')),
+                })
+       )
+       
+       
+      }
+     
+    }
+
+  //this.getcmmrclPln(2).clear();
+
+  console.log(this.productService.mdfctnPrcss);
+  }
+
+  getDataCoverages(id: number,position:any) {
+    return (<FormArray>this.productService.coverages).controls.find(x => x.value.id === id)?.get(position);
+  }
+  getServicesPlan(id: number,position:any) {
+    return (<FormArray>this.productService.servicePlans).controls.find(x => x.value.id === id)?.get(position);
+  }
+
+  getCoverages(plan:any,level:any){
+    let obj:any=[];
+
+    if (level==='coverage'){
+    for (let coverage of plan.coverages){
+      let objCovereage={
+        id:coverage.id,
+         name:this.getDataCoverages(coverage.id,'name')?.value,
+         description:this.getDataCoverages(coverage.id,'description')?.value,
+         athrzdOprtn:this.fb.control([]),
+        cvrgDtGrp: this.fb.array([],Validators.required)
+      }
+      obj.push(objCovereage)
+      console.log(obj);
+    }
+  }
+    else {
+      for (let servicePlan of plan.servicePlans){
+        let objSerivePLan={
+          id:this.fb.control(servicePlan.id),
+           name:this.getServicesPlan(servicePlan.id,'name')?.value,
+           description:this.getServicesPlan(servicePlan.id,'description')?.value,
+           athrzdOprtn:this.fb.control([])
+        }
+        obj.push(objSerivePLan)
+      }
+    }
+
+    return obj;
+  }
+
+  getcmmrclPln(id:number){
+    return <FormArray>(this.policyDataControls.controls.find((x: { value: { id: number } }) => x.value.id === id)?.get('cmmrclPln')) as FormArray;
   }
 
   getGroupArrayById(id: number) {
@@ -182,7 +256,7 @@ export class ModificationTypesComponent implements OnInit {
     let data: DataToast = {
       status: STATES.success,
       title: 'Asociación exitosa',
-      msg: 'this.successAddItemMsg,',
+      msg: 'Los datos de la póliza fueron asociados correctamente.',
     };
     if (showMessage) {
       this.toastMessage.openFromComponent(ToastMessageComponent, {
