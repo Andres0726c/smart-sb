@@ -82,9 +82,18 @@ export class ModalPolicyActionsComponent implements OnInit {
 
     this.modalAPService.getPremium(idPolicy, deletionDate)
     .subscribe( premium => {
-      //this.premium = premium.body;
+      this.premium = premium.body;
     });
   }*/
+
+  getPremiumReturnValue(premiumValue: any, processDate: any, expirationDate: any){
+    expirationDate = new Date(expirationDate).toISOString();
+    processDate = new Date(processDate).toISOString();
+    this.modalAPService.getPremiumReturnValue(premiumValue, processDate, expirationDate)
+    .subscribe( premium => {
+      this.premium = premium.body;
+    });
+  }
 
   /**
    * Method for calculate ammount to return, based on selected process date
@@ -92,7 +101,7 @@ export class ModalPolicyActionsComponent implements OnInit {
    * @param expirationDate policy end date
    * @param processDate selected process date
    */
-  getAmountToReturn(inceptionDate: any, expirationDate: any, processDate: any) {
+  /*getAmountToReturn(inceptionDate: any, expirationDate: any, processDate: any) {
     inceptionDate = new Date(inceptionDate);
     expirationDate = new Date(expirationDate);
     processDate = new Date(processDate);
@@ -101,7 +110,7 @@ export class ModalPolicyActionsComponent implements OnInit {
     const premium = this.premiumData ? Number(this.premiumData.premiumEndValue) : 0;
     const dayValue = premium / policyDays;
     this.premium = this.premiumData ? Number((dayValue * diffDays).toFixed(2)): null;
-  }
+  }*/
 
   cancelPolicy() {
     this.modalAPService.getExistsPreviousRenewalByIdPolicy(this.config.data.policy.idPolicy).subscribe((res: any) => {
@@ -199,7 +208,8 @@ export class ModalPolicyActionsComponent implements OnInit {
     const [withoutTime] = date.toISOString().split('T');
     if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
       //this.getPremium(this.config.data.policy.idPolicy, withoutTime);
-      this.getAmountToReturn(inceptionDate, expirationDate, withoutTime);
+      //this.getAmountToReturn(inceptionDate, expirationDate, withoutTime);
+      this.getPremiumReturnValue(this.premiumData.premiumEndValue, withoutTime, expirationDate);
     } else {
       this.formProcess.get('immediate')?.setValue(0);
       this.formProcess.get('applicationProcess')?.setValue(this.config.data.process);

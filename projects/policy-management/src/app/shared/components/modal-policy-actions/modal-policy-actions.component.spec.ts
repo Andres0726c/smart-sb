@@ -86,12 +86,12 @@ describe('ModalPolicyActionsComponent', () => {
     expect(spy1).toHaveBeenCalledTimes(1);
   })
 
-  /*it('getPremium', () => {
+  it('getPremiumReturnValue', () => {
     const modalActionsService = fixture.debugElement.injector.get(ModalPolicyActionsService);
-    const spy1 = jest.spyOn(modalActionsService, 'getPremium').mockReturnValueOnce(of(1, '2022-11-15T20:27:10.000Z'));
-    component.getPremium(1, '2022-11-15T20:27:10.000Z');
+    const spy1 = jest.spyOn(modalActionsService, 'getPremiumReturnValue').mockReturnValueOnce(of(1, '2022-11-15T20:27:10.000Z','2023-01-01T20:27:10.000Z'));
+    component.getPremiumReturnValue(1, '2022-11-15T20:27:10.000Z','2023-01-01T20:27:10.000Z');
     expect(spy1).toHaveBeenCalledTimes(1);
-  })*/
+  })
 
   it('cancelPolicy success', () => {
 
