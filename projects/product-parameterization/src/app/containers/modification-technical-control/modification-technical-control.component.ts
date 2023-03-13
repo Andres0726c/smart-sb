@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductService } from '../../services/product.service';
 import { ModalSearchSmallComponent } from '../../shared/modal-search-small/modal-search-small.component';
@@ -21,7 +21,7 @@ export class ModificationTechnicalControlComponent {
 
   process: string[] = []
   executionLevels: string[] = []
-  applicationLevel: string = 'Póliza';
+  executionLevel: string = 'Póliza';
   @ViewChild('controlTecnicoTable') controlTecnicoTable!: MatTable<ElementTableSearch>;
 
   arrayTechnicalControls: any = new FormArray([]);
@@ -30,20 +30,31 @@ export class ModificationTechnicalControlComponent {
   @ViewChild('paginatorTechnical') paginatorTechnical!: MatPaginator;
 
   selection = new SelectionModel<any>(true, []);
-  
+  index: number = 0
 
   constructor(
     public dialog: MatDialog,
     public productService: ProductService,
     private toastMessage: MatSnackBar,
     public technicalControlServices: TechnicalControlService,
-    public fb: FormBuilder
+    public fb: FormBuilder,
   ) {
+/*     this.productService.modificationTechnicalControls.controls.forEach((modificationTechnicalControl: any) => {
+
+      this.dataSource.data.push(new FormControl({
+        name: modificationTechnicalControl.value.name,
+        id: modificationTechnicalControl.value.id,
+        description: modificationTechnicalControl.value.description,
+        executionLevel: modificationTechnicalControl.value.executionLevel,
+        selectedProcess: modificationTechnicalControl.value.selectedProcess
+      }));
+    });
+
+    this.updateTable() */
   }
 
 
-  ngAfterViewInit() {
-
+/*   ngAfterViewInit() {
     this.updateTable()
   }
 
@@ -51,41 +62,39 @@ export class ModificationTechnicalControlComponent {
   ngOnInit(): void {
     this.getProcess();
     this.getRunLevel();
-
   }
 
   get TechnicalControls(): FormArray {
     return this.arrayTechnicalControls;
-  }
+  } */
 
   /** Get data from the process microservice  */
-  getProcess() {
+/*   getProcess() {
     this.technicalControlServices.getProcess().subscribe(res => {
       this.process = res.body.map(item => item.name)
     })
-  }
+  } */
 
   /** Get data from the Execution Level microservice  */
-  getRunLevel() {
+/*   getRunLevel() {
     this.technicalControlServices.getExecutionLevel().subscribe(res => {
       this.executionLevels = res.body.map(item => item.name)
     })
-  }
+  } */
 
   /**
   * Retorna la instancia de asociaci\u00f3n exitosa.
   * @returns instancia DataToast
   */
-  getSuccessStatus = (title: string, message: string): DataToast => {
+/*   getSuccessStatus = (title: string, message: string): DataToast => {
     return {
       status: STATES.success,
       title: title,
       msg: message,
     }
-  }
+  } */
 
-  openToAdd(): void {
-
+/*   openToAdd(): void {
     const columns = [
       { name: 'name', header: 'Nombre', displayValue: ['name'],dbColumnName:['nmname'] },
       { name: 'description', header: 'Descripción', displayValue: ['description'],dbColumnName:['dsdescription'] },
@@ -97,21 +106,33 @@ export class ModificationTechnicalControlComponent {
         code: 'controlTechnicalControls',
         columns: columns,
         list: this.TechnicalControls.value,
-        parameter: this.applicationLevel
+        parameter: this.executionLevel
       },
       panelClass: 'custom-dialog-container',
     });
+
     dialogRef.afterClosed().subscribe((res) => {
-      this.addItem(res);
+      if (this.productService.modificationTechnicalControls.length == 0) {
+        this.addItem(res);
+        this.index = 0;
+      } else {
+        this.addItem(res);
+      }
     });
-  }
+  } */
 
-  addItem(result: any) {
-
-    let element: any;
-
+  /* addItem(result: any) {
     if (result) {
       for (let object of result) {
+        this.productService.modificationTechnicalControls.push(
+          this.fb.group({
+            id: this.fb.control(object.id),
+            name: this.fb.control(object.name),
+            description: this.fb.control(object.description),
+            executionLevel: this.fb.control('', [Validators.required]),
+            selectedProcess: this.fb.control([], [Validators.required]),
+          })
+        );
 
         this.TechnicalControls.push(this.fb.group({
           id: this.fb.control(object.id),
@@ -120,8 +141,10 @@ export class ModificationTechnicalControlComponent {
           executionLevel: this.fb.control('', [Validators.required]),
           selectedProcess: this.fb.control([], [Validators.required]),
         }))
-        this.updateTable()
+
+        this.updateTable();
       }
+
       this.toastMessage.openFromComponent(ToastMessageComponent, {
         data: this.getSuccessStatus(
           'Asociaci\u00f3n exitosa',
@@ -129,14 +152,14 @@ export class ModificationTechnicalControlComponent {
         ),
       });
     }
-  }
+  } */
 
   /** @returns data to inject in multi-select */
-  selectedOptions(i: number) {
+  /* selectedOptions(i: number) {
     return this.TechnicalControls.get(i.toString())?.get('selectedProcess');
-  }
+  } */
 
-  applyFilter(event: Event) {
+/*   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
 
     this.dataSource.filterPredicate = (data: any, filter) => {
@@ -149,9 +172,9 @@ export class ModificationTechnicalControlComponent {
     } else {
       this.dataSource.filter = "";
     }
-  }
+  } */
 
-  deleteTechnical() {
+/*   deleteTechnical() {
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: { 
         img: 'picto-delete',
@@ -162,30 +185,31 @@ export class ModificationTechnicalControlComponent {
       if (res) {
         for(let row of this.selection.selected) {
           const index = this.TechnicalControls.controls.indexOf(row);
-          this.TechnicalControls.removeAt(index);
+          this.productService.modificationTechnicalControls.removeAt(index);
+            this.TechnicalControls.removeAt(index);
         }
         this.selection.clear();
         this.updateTable();
       }
     });
-  }
+  } */
 
-  updateTable(){
+/*   updateTable(){
     this.dataSource = new MatTableDataSource<any>(this.TechnicalControls.controls);
     this.dataSource.paginator = this.paginatorTechnical;
-  }
+  } */
 
-  isAllSelected() {
+/*   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
-  }
-  masterToggle() {
+  } */
+/*   masterToggle() {
     this.isAllDisplayedSelected() ?
       this.deselectRows() :
       this.selectRows();
-  }
-  isAllDisplayedSelected(): boolean {
+  } */
+/*   isAllDisplayedSelected(): boolean {
     let isAllDisplayedSelected = true;
     if (this.selection.selected.length === 0 || this.dataSource.filteredData.length === 0) {
       return false;
@@ -220,5 +244,5 @@ export class ModificationTechnicalControlComponent {
       }
     }
     return countSelected > 0 && countSelected < pageSize;
-  }
+  } */
 }

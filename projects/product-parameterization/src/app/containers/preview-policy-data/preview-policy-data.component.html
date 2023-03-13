@@ -1,4 +1,5 @@
-<div class="">
+<p>it works</p>
+<!-- <div class="">
     <app-no-data-screen 
         [data]="previewPolicyData" 
         [layoutType]="'full'" 
@@ -19,12 +20,12 @@
                 </button>
             </div>
             <mat-tree class="tree" [dataSource]="dataSource" [treeControl]="treeControl">
-                <!-- This is the tree node template for leaf nodes -->
+                
                 <mat-tree-node *matTreeNodeDef="let node" class="level-two">
                     <span class="title-node">{{node.name}}</span>
                     <div class="node-counter" (click)="quantityItems(node)">{{quantityItems(node)}}</div>
                 </mat-tree-node>
-                <!-- This is the tree node template for expandable nodes -->
+                
                 <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding class="level-one">
                     <div>
                         <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
@@ -62,4 +63,4 @@
             </mat-tab-group>
         </form>
     </div>
-</div>
+</div> -->

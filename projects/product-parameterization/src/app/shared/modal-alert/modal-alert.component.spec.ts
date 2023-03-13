@@ -51,4 +51,10 @@ describe('ModalAlertComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('ngOnInit', ()=>{
+    component.ngOnInit();
+    expect(component.message).toBeDefined();
+  })
+  
 });
