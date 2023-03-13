@@ -51,6 +51,10 @@ export class ModalPolicyActionsService {
     return this.httpClient.get<any>(`${this.apiUrl}policy/valueCancellation/${id}/${deletionDate}`, {headers: this.headers})
   }
 
+  getPremiumReturnValue(premiumValue: any, processDate: any, deletionDate: any): Observable<any>{
+    return this.httpClient.get<any>(`${this.apiUrl}policy/getPremiumReturnValue/${premiumValue}/${processDate}/${deletionDate}`, {headers: this.headers})
+  }
+
   postRehabilitation(policy: any, data: any): Observable<any>{
 
     const sendData = {
