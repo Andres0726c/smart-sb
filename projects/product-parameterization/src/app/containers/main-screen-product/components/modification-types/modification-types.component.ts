@@ -60,7 +60,6 @@ export class ModificationTypesComponent implements OnInit {
     public toastMessage: MatSnackBar,
     public productService: ProductService
   ) {
-    this.calledMenu();
   }
   ngOnInit(): void {
 
@@ -71,6 +70,7 @@ export class ModificationTypesComponent implements OnInit {
     console.log("karol"); 
     this.test();
     }
+    this.calledMenu();
   }
 
   test(){
@@ -437,6 +437,9 @@ addGroupObj(groupName:any,name:any){
         disabled: this.addBranchCoverage(showMenu, itempush),
         command: (event: any) => {
           this.titleCommercialPlan = itempush.name;
+         
+          this.sendData(itempush.code);
+
           // this.sendData(event.item.id);
         },
       };
@@ -480,8 +483,7 @@ addGroupObj(groupName:any,name:any){
   addBranchCoverage(showMenu: BussinesPlans[], itempush: any) {
     let validate: boolean = true;
     for (let onOption of showMenu) {
-      const result = onOption.athrzdOprtn?.find(({ key }) => key === 'MDF'),
-        exist = this.showBranch.find(({ name }) => name === onOption.name);
+      const result = onOption.athrzdOprtn?.find(({ key }) => key === 'MDF');
       if (onOption.code === itempush.code && result) {
         return (validate = false);
       }
@@ -489,15 +491,15 @@ addGroupObj(groupName:any,name:any){
     return validate;
   }
 
-  // sendData(idCommercialPlan: string) {
-  //   if (idCommercialPlan) {
-  //     this.data = idCommercialPlan;
-  //   }
-  //   this.showCommercialPlansTypes = true;
-  //   if (this.showCommercialPlans || this.bussinesPlans)
-  //     this.showCommercialPlans = false;
-  //   this.showRisk = false;
-  // }
+  sendData(idCommercialPlan: string) {
+    if (idCommercialPlan) {
+      this.data = idCommercialPlan;
+    }
+    this.showCommercialPlansTypes = true;
+    if (this.showCommercialPlans || this.bussinesPlans)
+      this.showCommercialPlans = false;
+    this.showRisk = false;
+  }
   showRiskType() {
     this.riskData = true;
     this.titleCurrent = this.items1[1]?.label;
