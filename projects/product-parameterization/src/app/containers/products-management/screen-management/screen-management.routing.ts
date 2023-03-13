@@ -79,7 +79,12 @@ export const screenManagementRoutes: Route[] = [
             {
                 path: 'hidden-view',
                 loadChildren: () => import('../../../containers/hidden-view/hidden-view.module').then(m => m.HiddenViewModule)
-            }
+            },
+            /* Renovación */
+            {
+                path: 'datos-renovacion',
+                loadChildren: () => import('../../../containers/main-screen-product/components/renewal-data/renewal-data.module').then(m => m.RenewalDataModule)
+            },
         ]
     }
 ];
