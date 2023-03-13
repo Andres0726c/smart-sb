@@ -15,7 +15,8 @@ export class RenewalDataComponent implements OnInit {
   isLoading = false;
   flagError = false;
   applicationLevel = 'Renovación';
-  causes = [
+  causes = [];
+  /*causes = [
     {
       id: 'RNV_CRE_1',
       name: 'Solicitud del tomador'
@@ -28,7 +29,7 @@ export class RenewalDataComponent implements OnInit {
       id: 'RNV_CRE_3',
       name: 'Solicitud del test 3'
     }
-  ];
+  ];*/
 
   constructor(
     public productService: ProductService,
@@ -37,19 +38,41 @@ export class RenewalDataComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loadCauses();
     this.loadContextData();
   }
 
-  loadContextData() {
-    this.productService.getApiData(`domainList/DATOS_CONTEXTO`).subscribe({
+  loadCauses() {
+    this.isLoading = true;
+    const company = this.productService.companyId;
+    const insuranceLine = this.productService.initialParameters.get('insuranceLine')?.value;
+    this.productService.getApiData(`claimCause/findByCompanyAndInsuranceLine/${company}/${insuranceLine}/0/0/0/0/${this.applicationLevel}`).subscribe({
       next: (res: any) => {
-        console.log('rdatos_contexto', res);
-        this.contextData = res.body.nmValueList;
-        //se filtra los datos de contexto dependiendo del nivel de aplicación
-        this.contextData =  this.contextData.filter( (data:any) => data.applctnLvl.includes(this.applicationLevel) || data.applctnLvl.includes("*") );
+        console.log('causas', res);
+        this.causes = res.body;
+        this.isLoading = false;
       },
       error: (error) => {
         this.flagError = true;
+        this.isLoading = false;
+        console.error('Ha ocurrido un error al obtener los datos necesarios');
+      }
+    });
+  }
+
+  loadContextData() {
+    this.isLoading = true;
+    this.productService.getApiData(`domainList/DATOS_CONTEXTO`).subscribe({
+      next: (res: any) => {
+        console.log('datos contexto', res);
+        this.contextData = res.body.nmValueList;
+        //se filtra los datos de contexto dependiendo del nivel de aplicación
+        this.contextData =  this.contextData.filter( (data:any) => data.applctnLvl.includes(this.applicationLevel) || data.applctnLvl.includes("*") );
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.flagError = true;
+        this.isLoading = false;
         console.error('Ha ocurrido un error al obtener los datos necesarios');
       }
     });
@@ -62,6 +85,7 @@ export class RenewalDataComponent implements OnInit {
    * Funcion para realizar la apertura de la modal de consulta y seleccion multiple
    */
   openRuleWizard(code: string, field: string) {
+    console.log('form', this.productService.rnwlPrcss);
     const columns = [
       { field: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname']  },
       { field: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription']  },
@@ -85,11 +109,12 @@ export class RenewalDataComponent implements OnInit {
           this.complementaryData,
           this.contextData
         )*/
+    const itemSelected = this.productService.getProductDependency('rl', this.productService.rnwlPrcss.get(field)?.value.cd);
 
     const dialogRef = this.dialogService.open(RulesWizardComponent, {
       data: { 
         code: code,
-        list: this.productService.rnwlPrcss.get(field)?.value, 
+        list: itemSelected ? [itemSelected] : [], 
         columns: columns,
         paramValues: this.getParamValuesList()
       },
@@ -113,19 +138,21 @@ export class RenewalDataComponent implements OnInit {
 
   addRule(field: string, objRule: any) {
     let arr: any[] = [];
+    let elementDp: any = {
+      cd: objRule.rule.cdBusinessCode,
+      nm: objRule.rule.name
+    };
     let element: any = {
-      id: objRule.rule.id,
-      name: objRule.rule.name,
-      cdBusinessCode: objRule.rule.cdBusinessCode,
-      description: objRule.rule.description,
-      cdRuleType: objRule.rule.cdRuleType,
-      endPoint: objRule.rule.endPoint,
-      rlEngnCd: objRule.rule.rlEngnCd,
+      rlCd: objRule.rule.cdBusinessCode, 
       argmntLst: objRule.parameters
     };
     
+    this.productService.setProductDependency('rl', elementDp);
     arr.push(element);
     this.productService.rnwlPrcss.get(field)?.setValue(arr);
+
+    console.log('rnwlPrcss', this.productService.rnwlPrcss);
+    console.log('prdctDpndncy', this.productService.prdctDpndncy);
   }
 
   getAllFields() {
@@ -159,6 +186,24 @@ export class RenewalDataComponent implements OnInit {
     console.log('valores: ', list);
 
     return list;
+  }
+
+  setCsDependency(event: any) {
+    const value = event.value;
+    for (let cs of value) {
+      const cause: any = this.causes.find((x: any) => x.businessCode === cs);
+      const obj = {
+        cd: cause.businessCode,
+        nm: cause.name,
+        dscrptn: cause.description,
+        sttCd: cause.idStatus
+      };
+
+      this.productService.setProductDependency('cs', obj);
+    }
+    console.log('prdctDpndncy', this.productService.prdctDpndncy);
+    console.log('field', this.productService.rnwlPrcss);
+    console.log('event', event);
   }
 
 }
