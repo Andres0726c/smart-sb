@@ -5,6 +5,7 @@ import { ModificationTechnicalControlComponent } from './modification-technical-
 import { SharedModule } from '../../shared/shared.module';
 import { AngularMaterialModule } from '../../material.module';
 import { ComplementaryDataModule } from '../../shared/complementary-data/complementary-data.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 const routes: Route[] = [
   {
@@ -23,7 +24,9 @@ const routes: Route[] = [
     CommonModule,
     SharedModule,
     AngularMaterialModule,
-    ComplementaryDataModule
+    ComplementaryDataModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class ModificationTechnicalControlModule { }
