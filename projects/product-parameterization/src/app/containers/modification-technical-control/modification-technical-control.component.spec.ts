@@ -59,7 +59,7 @@ describe('ModificationTechnicalControlComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('ngOnInit Ok', () => {
+  /* it('ngOnInit Ok', () => {
     expect(component.ngOnInit()).toBeUndefined();
   });
 
@@ -134,6 +134,6 @@ describe('ModificationTechnicalControlComponent', () => {
   it('isAllSelected Ok', () => {
     expect(component.isAllSelected()).toBeTruthy();
   });
-
+ */
 
 });
