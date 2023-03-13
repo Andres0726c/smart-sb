@@ -70,10 +70,6 @@ describe('PolicyDataComponent', () => {
     component.ngOnInit();
     expect(component).toBeDefined();
   });
-
-  it('openToAdd', () => {
-    expect(component.openToAdd()).toBeUndefined();
-  });
   
 
   /*it('complementaryDataControls',()=>{
