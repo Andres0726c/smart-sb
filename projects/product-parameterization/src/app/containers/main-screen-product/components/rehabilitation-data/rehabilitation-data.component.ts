@@ -3,6 +3,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ElementTableSearch } from 'projects/product-parameterization/src/app/core/model/ElementTableSearch.model';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 import { RulesWizardComponent } from 'projects/product-parameterization/src/app/shared/rules-wizard/rules-wizard.component';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'refactoring-smartcore-mf-rehabilitation-data',
@@ -14,12 +15,7 @@ export class RehabilitationDataComponent implements OnInit {
   applicationLevel = 'Rehabilitación';
   flagError = false;
 
-  causes = [
-    {
-      id: 'RNV_CRE_1',
-      name: 'Solicitud del tomador',
-    },
-  ];
+  causes: any = [];
 
   constructor(
     public productService: ProductService,
@@ -27,28 +23,29 @@ export class RehabilitationDataComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('aqui', this.productService.rehabilitation);
-    
     this.loadContextData();
+    this.getCauses();
   }
 
-  loadContextData() {
-    this.productService.getApiData(`domainList/DATOS_CONTEXTO`).subscribe({
-      next: (res: any) => {
-        console.log('rdatos_contexto', res);
-        this.contextData = res.body.nmValueList;
-        //se filtra los datos de contexto dependiendo del nivel de aplicación
-        this.contextData = this.contextData.filter(
-          (data: any) =>
-            data.applctnLvl.includes(this.applicationLevel) ||
-            data.applctnLvl.includes('*')
-        );
-      },
-      error: (error) => {
-        this.flagError = true;
-        console.error('Ha ocurrido un error al obtener los datos necesarios');
-      },
-    });
+  async loadContextData() {
+    try {
+      let res: any;
+      res = await lastValueFrom(
+        this.productService.getApiData(`domainList/DATOS_CONTEXTO`)
+      );
+
+      this.contextData = res.body.nmValueList;
+
+      //se filtra los datos de contexto dependiendo del nivel de aplicación
+      this.contextData = this.contextData.filter(
+        (data: any) =>
+          data.applctnLvl.includes(this.applicationLevel) ||
+          data.applctnLvl.includes('*')
+      );
+    } catch (error) {
+      this.flagError = true;
+      console.error('Ha ocurrido un error al obtener los datos necesarios');
+    }
   }
 
   /**
@@ -92,7 +89,7 @@ export class RehabilitationDataComponent implements OnInit {
     const dialogRef = this.dialogService.open(RulesWizardComponent, {
       data: {
         code: code,
-        list: this.productService.rehabilitation.get(field)?.value,
+        list: this.productService.rnsttmntPrcss?.get(field)?.value,
         columns: columns,
         paramValues: this.getParamValuesList(),
       },
@@ -102,12 +99,12 @@ export class RehabilitationDataComponent implements OnInit {
     let res: ElementTableSearch[] = [];
 
     dialogRef.onClose.subscribe((res) => {
-      console.log('cerro', res);
       if (res) {
         this.addRule(field, res);
       }
     });
   }
+
   addRule(field: string, objRule: any) {
     let arr: any[] = [];
     let element: any = {
@@ -122,7 +119,7 @@ export class RehabilitationDataComponent implements OnInit {
     };
 
     arr.push(element);
-    this.productService.rehabilitation.get(field)?.setValue(arr);
+    this.productService.rnsttmntPrcss?.get(field)?.setValue(arr);
   }
 
   getParamValuesList() {
@@ -145,7 +142,6 @@ export class RehabilitationDataComponent implements OnInit {
     }
 
     list = list.sort((a: any, b: any) => (a.name < b.name ? -1 : 1));
-    console.log('valores: ', list);
 
     return list;
   }
@@ -156,5 +152,33 @@ export class RehabilitationDataComponent implements OnInit {
       res = res.concat(group.fields);
     }
     return res;
+  }
+
+  async getCauses() {
+    let search = 0;
+    let pageNumber = 0;
+    let pageSize = 0;
+    let notElements = 0;
+
+    const parameters =
+      this.productService.initialParameters?.get('insuranceLine')?.value !==
+      null
+        ? this.productService.initialParameters?.get('insuranceLine')?.value +
+          ''
+        : '0';
+
+    try {
+      let res: any;
+      res = await lastValueFrom(
+        this.productService.getApiData(
+          `claimCause/findByCompanyAndInsuranceLine/${this.productService.companyId}/${parameters}/${search}/${pageNumber}/${pageSize}/${notElements}/${this.applicationLevel}`
+        )
+      );
+
+      this.causes = res.body;
+    } catch (error) {
+      this.flagError = true;
+      console.error('Ha ocurrido un error al obtener los datos de las causas');
+    }
   }
 }

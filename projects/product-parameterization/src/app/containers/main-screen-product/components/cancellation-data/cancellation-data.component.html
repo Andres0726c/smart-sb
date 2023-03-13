@@ -6,14 +6,14 @@
   <div class="mt-5 rounded-xl bg-white p-5">
     <form
       class="grid grid-cols-3 gap-6"
-      [formGroup]="productService.cancellation"
+      [formGroup]="productService.cnclltnPrcss"
     >
       <div class="flex flex-col w-full mb-5">
         <label class="text-base mb-2">Causas de cancelación</label>
         <p-multiSelect
           [options]="causes"
           formControlName="cnclltnCsCd"
-          display="chip"
+          (click)="$event.stopImmediatePropagation();"
           styleClass="w-full"
           optionLabel="name"
           [maxSelectedLabels]="1"
@@ -22,7 +22,7 @@
             <div class="flex w-full">
               <div *ngIf="value.length > 0" class="chip-select">
                 {{ value[0].name }}
-                <button (click)="(null)">
+                <button (click)="value.splice(0, 1);">
                   <em class="fal fa-times-circle chip-select__icon"></em>
                 </button>
               </div>
@@ -62,6 +62,7 @@
             icon="fal fa-plus-circle"
             styleClass="p-button-warn"
             class="h-[37px]"
+            [disabled]="!productService.cnclltnPrcss.value.enabled"
             (click)="openRuleWizard('ruleCalculationControls', 'clcltnRl')"
           ></button>
         </div>
@@ -71,7 +72,7 @@
         <p-checkbox
           class="mt-2"
           [formControl]="
-            $any(productService.cancellation.controls['isCncllblIncptnDt'])
+            $any(productService.cnclltnPrcss.controls['isCncllblIncptnDt'])
           "
           [binary]="true"
         ></p-checkbox>

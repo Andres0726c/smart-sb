@@ -40,10 +40,10 @@ export class ProductService {
    mdfctnPrcss:FormGroup = new FormGroup({
      enabled: new FormControl(false),
    });
-  cancellation:FormGroup = new FormGroup({
+   cnclltnPrcss:FormGroup = new FormGroup({
     enabled: new FormControl(false),
   });
-  rehabilitation:FormGroup = new FormGroup({
+  rnsttmntPrcss:FormGroup = new FormGroup({
     enabled: new FormControl(false),
   });
   rnwlPrcss:FormGroup = new FormGroup({
@@ -197,13 +197,13 @@ export class ProductService {
         }),
       mdfctnTchnclCntrl:this.fb.array([])
      })
-     this.cancellation = new FormGroup({
+     this.cnclltnPrcss = new FormGroup({
         enabled: new FormControl(false),
         cnclltnCsCd: new FormControl([]),
         clcltnRl: new FormControl([]),
         isCncllblIncptnDt: new FormControl(false)
       });
-      this.rehabilitation = new FormGroup({
+      this.rnsttmntPrcss = new FormGroup({
         enabled: new FormControl(false),
         rnsttmntCsCd: new FormControl([]),
         clcltnRl: new FormControl([]),
@@ -320,8 +320,8 @@ export class ProductService {
       conceptReservation: this.conceptReservation.value,
       modificationTypes: this.modificationTypes.getRawValue(),
       mdfctnPrcss: this.mdfctnPrcss.getRawValue(),
-      cancellation: this.cancellation.getRawValue(),
-      rehabilitation: this.rehabilitation.getRawValue(),
+      cnclltnPrcss: this.cnclltnPrcss.getRawValue(),
+      rnsttmntPrcss: this.rnsttmntPrcss.getRawValue(),
       rnwlPrcss: this.rnwlPrcss.getRawValue(),
     
     };
@@ -452,13 +452,13 @@ export class ProductService {
       this.mdfctnPrcss = product.mdfctnPrcss ? this.setFields('mdfctnPrcss', product.mdfctnPrcss) : new FormGroup({
          enabled: new FormControl(false),
        });
-      this.cancellation = product.cancellation ? this.setFields('cancellation', product.cancellation) : new FormGroup({
+      this.cnclltnPrcss = product.cnclltnPrcss ? this.setFields('cnclltnPrcss', product.cnclltnPrcss) : new FormGroup({
         enabled: new FormControl(false),
         cnclltnCsCd: new FormControl([]),
         clcltnRl: new FormControl([]),
         isCncllblIncptnDt: new FormControl(false)
       });
-      this.rehabilitation = product.rehabilitation ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({
+      this.rnsttmntPrcss = product.rnsttmntPrcss ? this.setFields('rnsttmntPrcss', product.rnsttmntPrcss) : new FormGroup({
         enabled: new FormControl(false),
         rnsttmntCsCd: new FormControl([]),
         clcltnRl: new FormControl([]),
@@ -468,14 +468,14 @@ export class ProductService {
         enabled: new FormControl(false),
       });
       
-      if (!this.rehabilitation.contains('rnsttmntCsCd')) {
-        this.rehabilitation.addControl('rnsttmntCsCd', this.fb.control([]));
+      if (!this.rnsttmntPrcss.contains('rnsttmntCsCd')) {
+        this.rnsttmntPrcss.addControl('rnsttmntCsCd', this.fb.control([]));
       }
-      if (!this.rehabilitation.contains('clcltnRl')) {
-        this.rehabilitation.addControl('clcltnRl', this.fb.control([]));
+      if (!this.rnsttmntPrcss.contains('clcltnRl')) {
+        this.rnsttmntPrcss.addControl('clcltnRl', this.fb.control([]));
       }
-      if (!this.rehabilitation.contains('isNwIssPlcy')) {
-        this.rehabilitation.addControl('isNwIssPlcy', this.fb.control([]));
+      if (!this.rnsttmntPrcss.contains('isNwIssPlcy')) {
+        this.rnsttmntPrcss.addControl('isNwIssPlcy', this.fb.control([]));
       }
 
       this.initialParameters.get('productName')?.disable();
@@ -715,7 +715,7 @@ export class ProductService {
     if(environment.productAutosave)
     {
       let formArrayList: any[] = [this.coverages, this.policyData, this.clauses, this.riskTypes, this.servicePlans, this.taxesCategories, this.technicalControls, this.conceptReservation, this.claimData, this.claimTechnicalControls, this.modificationTypes];
-      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cancellation, this.rehabilitation, this.rnwlPrcss];
+      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cnclltnPrcss, this.rnsttmntPrcss, this.rnwlPrcss];
          this.registerFormEvent(formArrayList);
          this.registerFormEvent(formGroupList);
     }
