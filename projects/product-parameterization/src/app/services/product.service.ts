@@ -49,6 +49,10 @@ export class ProductService {
   rnwlPrcss:FormGroup = new FormGroup({
     enabled: new FormControl(false),
   });
+  prdctDpndncy: FormGroup = new FormGroup({
+    cs: new FormArray([]),
+    rl: new FormArray([])
+  });
 
 
   defaultArrays = [
@@ -209,12 +213,16 @@ export class ProductService {
         clcltnRl: new FormControl([]),
         isNwIssPlcy: new FormControl(false)
       });
-      this.rnwlPrcss = new FormGroup({
-        enabled: new FormControl(false),
-        rnwlCsCd: new FormControl([]),
-        clcltnRl: new FormControl([]),
-        isNwIssPlcy: new FormControl(false)
-      });
+    this.rnwlPrcss = new FormGroup({
+      enabled: new FormControl(false),
+      rnwlCsCd: new FormControl([]),
+      clcltnRl: new FormControl([]),
+      isNwIssPlcy: new FormControl(false)
+    });
+    this.prdctDpndncy = new FormGroup({
+      cs: new FormArray([]),
+      rl: new FormArray([])
+    });
       //autosave enabled
       // this.autoSaveProduct();
   }
@@ -323,7 +331,7 @@ export class ProductService {
       cnclltnPrcss: this.cnclltnPrcss.getRawValue(),
       rnsttmntPrcss: this.rnsttmntPrcss.getRawValue(),
       rnwlPrcss: this.rnwlPrcss.getRawValue(),
-    
+      prdctDpndncy: this.rnwlPrcss.getRawValue()
     };
   }
 
@@ -467,7 +475,11 @@ export class ProductService {
       this.rnwlPrcss = product.rnwlPrcss ? this.setFields('renewal', product.rnwlPrcss) : new FormGroup({
         enabled: new FormControl(false),
       });
-      
+
+      this.prdctDpndncy = product.prdctDpndncy ? this.setFields('prdctDpndncy', product.prdctDpndncy) : new FormGroup({
+        cs: new FormArray([]),
+        rl: new FormArray([])
+      });
       if (!this.rnsttmntPrcss.contains('rnsttmntCsCd')) {
         this.rnsttmntPrcss.addControl('rnsttmntCsCd', this.fb.control([]));
       }
@@ -715,7 +727,7 @@ export class ProductService {
     if(environment.productAutosave)
     {
       let formArrayList: any[] = [this.coverages, this.policyData, this.clauses, this.riskTypes, this.servicePlans, this.taxesCategories, this.technicalControls, this.conceptReservation, this.claimData, this.claimTechnicalControls, this.modificationTypes];
-      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cnclltnPrcss, this.rnsttmntPrcss, this.rnwlPrcss];
+      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cancellation, this.rehabilitation, this.rnwlPrcss];
          this.registerFormEvent(formArrayList);
          this.registerFormEvent(formGroupList);
     }
@@ -737,6 +749,22 @@ export class ProductService {
             }
           })
      });
+ }
+
+ setProductDependency(key: string, obj: any) {
+  const dp = (<FormArray>this.prdctDpndncy.get(key));
+  const el = dp.value.find((x: any) => x.cd === obj.cd);
+
+  if (!el) {
+    // vamos a crear nueva dependencia
+    dp.push(this.fb.control(obj));
+  }
+ }
+
+ getProductDependency(key: string, code: string) {
+  const dp = (<FormArray>this.prdctDpndncy.get(key));
+  const el = dp.value.find((x: any) => x.cd === code);
+  return el;
  }
 
 }

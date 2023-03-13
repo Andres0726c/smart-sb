@@ -11,12 +11,12 @@
             <div class="flex flex-col w-full mb-5">
                 <label class="text-base mb-2">Causas de renovación</label>
                 <p-multiSelect [options]="causes" formControlName="rnwlCsCd" (click)="$event.stopImmediatePropagation();"
-                    styleClass="w-full" optionLabel="name" [maxSelectedLabels]="1">
+                    styleClass="w-full" optionLabel="name" optionValue="businessCode" [maxSelectedLabels]="1" (onChange)="setCsDependency($event)">
                     <ng-template let-value pTemplate="selectedItems" class="w-full">
                         <div class="flex w-full">
                             <div *ngIf="value.length > 0" class="chip-select">
-                                {{ value[0].name }}
-                                <button (click)="value.splice(0, 1);">
+                                {{ productService.getProductDependency('cs', this.productService.rnwlPrcss.get('rnwlCsCd')?.value[0]).nm }}
+                                <button (click)="$event.stopImmediatePropagation(); value.splice(0, 1);">
                                     <em class="fal fa-times-circle chip-select__icon"></em>
                                 </button>
                             </div>
@@ -25,8 +25,6 @@
                                 {{ value.length - 1 }}
                             </div>
                         </div>
-                        
-                        <!-- <span class="null" *ngFor="let option of value">{{ option.name }}</span> -->
                     </ng-template>
                 </p-multiSelect>
                 <!-- <p-dropdown data-qa-id="sc-rsmf-drpdwn-process-field" 
@@ -44,7 +42,7 @@
                         inputStyleClass="w-full"
                         placeholder="Seleccione">
                         <ng-template let-item pTemplate="item" class="w-full">
-                            <span class="w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ item.name }}</span>
+                            <span class="w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ productService.getProductDependency('rl', this.productService.rnwlPrcss.get('clcltnRl')?.value[0].rlCd).nm }}</span>
                         </ng-template>
                     </p-chips>   
                     <button type="button" pButton pRipple icon="fal fa-plus-circle" styleClass="p-button-warn" class="h-[37px]" (click)="openRuleWizard('ruleCalculationControls', 'clcltnRl')"></button>      
