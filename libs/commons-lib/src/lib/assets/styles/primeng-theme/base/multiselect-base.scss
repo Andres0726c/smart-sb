@@ -10,7 +10,7 @@
   .p-multiselect:not(.p-disabled).p-focus {
     outline: 0 none;
     outline-offset: 0;
-    box-shadow: 0 0 0 0.2rem #BFDBFE;
+    box-shadow: 0 0 0 0.2rem var(--bg-primary-light);
     border-color: var(--primary-base);
   }
   .p-multiselect .p-multiselect-label {
