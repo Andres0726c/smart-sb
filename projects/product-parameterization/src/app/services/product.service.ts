@@ -54,6 +54,9 @@ export class ProductService {
     cs: new FormArray([]),
     rl: new FormArray([])
   });
+  prvwDt:FormGroup = new FormGroup({
+    plcyCntxtGrp:new FormControl([]),
+  })
 
 
   defaultArrays = [
@@ -218,6 +221,9 @@ export class ProductService {
       cs: new FormArray([]),
       rl: new FormArray([])
     });
+    this.prvwDt = new FormGroup({
+      plcyCntxtGrp:new FormControl([]),
+    })
       //autosave enabled
       // this.autoSaveProduct();
   }
@@ -327,7 +333,8 @@ export class ProductService {
       cancellation: this.cancellation.getRawValue(),
       rehabilitation: this.rehabilitation.getRawValue(),
       rnwlPrcss: this.rnwlPrcss.getRawValue(),
-      prdctDpndncy: this.rnwlPrcss.getRawValue()
+      prdctDpndncy: this.rnwlPrcss.getRawValue(),
+      prvwDt:this.prvwDt.getRawValue()
     };
   }
 
@@ -471,6 +478,9 @@ export class ProductService {
         cs: new FormArray([]),
         rl: new FormArray([])
       });
+      this.prvwDt = product.prvwDt ? this.setFields('prvwDt', product.prvwDt) : new FormGroup({
+        plcyCntxtGrp:new FormControl([]),
+      })
       
 
       this.initialParameters.get('productName')?.disable();

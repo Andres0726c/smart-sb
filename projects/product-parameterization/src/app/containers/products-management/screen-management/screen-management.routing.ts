@@ -48,7 +48,7 @@ export const screenManagementRoutes: Route[] = [
             /* Previsualización campos */
             {
                 path: 'previsualizar-datos-poliza',
-                loadChildren: () => import('../../../containers/preview-policy-data/preview-policy-data.module').then(m => m.PreviewPolicyDataModule)
+                loadChildren: () => import('../../../containers/main-screen-product/components/preview-data/preview-data-policy/preview-data-policy.module').then(m => m.PreviewDataPolicyModule)
             },
             /* Modificación */
             {
