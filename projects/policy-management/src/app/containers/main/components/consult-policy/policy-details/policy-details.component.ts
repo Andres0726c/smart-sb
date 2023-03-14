@@ -48,7 +48,7 @@ export class PolicyDetailsComponent implements OnInit {
 
           this.petData = {
             petType: this.findDescription(dataRisk, 'TIPO_MASCOTA', this.policy.complementaryData.petType),
-            petBrand: this.findDescription(dataRisk, 'RAZA', this.policy.complementaryData.petBrand),
+            petBrand: this.policy.complementaryData.petBrand? this.policy.complementaryData.petBrand : 'No Aplica',
             petAge: this.findDescription(dataRisk, 'EDAD_MASCOTA', this.policy.complementaryData.petAge)
           }
         } catch (error) {
