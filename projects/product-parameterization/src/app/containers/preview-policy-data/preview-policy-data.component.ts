@@ -86,7 +86,7 @@ export class PreviewPolicyDataComponent implements OnInit {
     //
   }
 
-  get previewPolicyGroup(): FormGroup {
+  /* get previewPolicyGroup(): FormGroup {
     return this.previewPolicyData.controls[this.index] as FormGroup;
   }
 
@@ -213,5 +213,5 @@ export class PreviewPolicyDataComponent implements OnInit {
         (item) => item.id == this.flatNodeMap.get(node)?.id
       ) || 0
     );
-  }
+  } */
 }
