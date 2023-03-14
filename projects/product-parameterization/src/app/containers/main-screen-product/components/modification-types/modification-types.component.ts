@@ -67,7 +67,6 @@ export class ModificationTypesComponent implements OnInit {
     console.log(this.productService.mdfctnPrcss);
    console.log(this.productService.riskTypes,"risk");
    if (this.getcmmrclPln(2).length ===0){
-    console.log("karol"); 
     this.test();
     }
     this.calledMenu();
@@ -111,8 +110,10 @@ export class ModificationTypesComponent implements OnInit {
 
     if (level==='coverage'){
     for (let coverage of plan.coverages){
+      console.log(coverage)
       let objCovereage={
-        id:coverage.id,
+         id:coverage.id,
+          required:coverage.required,
          name:this.getDataCoverages(coverage.id,'name')?.value,
          description:this.getDataCoverages(coverage.id,'description')?.value,
          athrzdOprtn:this.fb.control([]),
@@ -126,6 +127,7 @@ export class ModificationTypesComponent implements OnInit {
       for (let servicePlan of plan.servicePlans){
         let objSerivePLan={
           id:this.fb.control(servicePlan.id),
+          required:servicePlan.required,
            name:this.getServicesPlan(servicePlan.id,'name')?.value,
            description:this.getServicesPlan(servicePlan.id,'description')?.value,
            athrzdOprtn:this.fb.control([])

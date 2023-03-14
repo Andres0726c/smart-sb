@@ -101,27 +101,15 @@ export class ModificationTypesRiskComponent implements OnInit,OnChanges {
         .find((x: { value: { id: number } }) => x.value.id === id)
         ?.get('fields')
     );
-    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
   }
 
 
   ngOnInit(): void {
-      //ngOnInit()
     this.tableData=this.policyDataControls.value[0].cmmrclPln;
-    // this.tableData=[];
   }
   ngOnChanges(changes: SimpleChanges){
-      // this.changeView(changes['riskType'].currentValue);
   }
-  // changeView() {
 
-  //   // let dataRisk:any=localStorage.getItem(riskType);
-  //   // dataRisk= JSON.parse(dataRisk);
-  //   // console.log(dataRisk);
-  //   // console.log(this.policyDataControls.value[0].cmmrclPln);
-  //   // this.tableData=dataRisk.businessPlans;
-  //   this.tableData=this.policyDataControls.value[0].cmmrclPln;
-  // }
 
   changeCheck() {
 
