@@ -67,8 +67,7 @@ export class ModificationTypesComponent implements OnInit {
   ngOnInit(): void {
 
    this.getcmmrclPln(2).clear();
-    console.log(this.productService.mdfctnPrcss);
-   console.log(this.productService.riskTypes,"risk");
+    
    if (this.getcmmrclPln(2).length ===0){
     this.test();
     }
@@ -86,8 +85,8 @@ export class ModificationTypesComponent implements OnInit {
             code:this.fb.control(plan.code),
             description:this.fb.control(plan.description),
             athrzdOprtn:this.fb.control([]),
-            coverages: this.fb.array(this.getCoverages(plan,'coverage')),
-            servicePlans:this.fb.control(this.getCoverages(plan,'servicePlan')),
+            cvrg: this.fb.array(this.getCoverages(plan,'coverage')),
+            srvcPln:this.fb.control(this.getCoverages(plan,'servicePlan')),
                 })
        )
        

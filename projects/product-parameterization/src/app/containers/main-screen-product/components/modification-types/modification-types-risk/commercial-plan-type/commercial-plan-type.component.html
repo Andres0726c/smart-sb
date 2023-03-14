@@ -103,7 +103,7 @@
           [subtitleModalCompData]="
           'Seleccione los datos del tipo de riesgo que desea asociar'
         "
-          [complementaryData]="getcoverages(8)"
+          [complementaryData]="this.getcoverages(7).value.cvrgDtGrp"
           (action)="openToAdd('risk')"
           [modifyData]="true"
         >
