@@ -86,12 +86,18 @@ export class ModalPolicyActionsComponent implements OnInit {
     });
   }*/
 
+  /**
+   * Method for calculate ammount to return, based on selected process date, expiration date and premium value
+   * @param premiumValue 
+   * @param processDate 
+   * @param expirationDate 
+   */
   getPremiumReturnValue(premiumValue: any, processDate: any, expirationDate: any){
     expirationDate = new Date(expirationDate).toISOString();
     processDate = new Date(processDate).toISOString();
     this.modalAPService.getPremiumReturnValue(premiumValue, processDate, expirationDate)
     .subscribe( premium => {
-      this.premium = premium.body;
+      this.premium = premium.body.value;
     });
   }
 
