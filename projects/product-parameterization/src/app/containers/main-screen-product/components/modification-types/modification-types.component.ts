@@ -18,19 +18,22 @@ interface OptionsCommercialP {
   key: string;
 }
 
-interface Coverages {
-  id: number;
-  required: boolean;
-}
+
 interface BussinesPlans {
   code: string;
-  coverages: Coverages[];
+  coverages: any[];
   description: string;
   name: string;
-  servicePlans: Coverages[];
+  servicePlans: any[];
   athrzdOprtn?: OptionsCommercialP[];
 }
-
+interface Coverages {
+  description: string;
+  id: number;
+  name: string;
+  cvrgDtGrp: any;
+  athrzdOprtn: any;
+}
 @Component({
   selector: 'refactoring-smartcore-mf-modification-types',
   templateUrl: './modification-types.component.html',
@@ -83,7 +86,7 @@ export class ModificationTypesComponent implements OnInit {
             code:this.fb.control(plan.code),
             description:this.fb.control(plan.description),
             athrzdOprtn:this.fb.control([]),
-            coverages: this.fb.control(this.getCoverages(plan,'coverage')),
+            coverages: this.fb.array(this.getCoverages(plan,'coverage')),
             servicePlans:this.fb.control(this.getCoverages(plan,'servicePlan')),
                 })
        )
@@ -110,10 +113,11 @@ export class ModificationTypesComponent implements OnInit {
 
     if (level==='coverage'){
     for (let coverage of plan.coverages){
+      console.log(this.productService.coverages.controls.find((x:any) => x.value.id === coverage.id));
       console.log(coverage)
       let objCovereage={
          id:coverage.id,
-          required:coverage.required,
+         required:coverage.required,
          name:this.getDataCoverages(coverage.id,'name')?.value,
          description:this.getDataCoverages(coverage.id,'description')?.value,
          athrzdOprtn:this.fb.control([]),
@@ -215,9 +219,9 @@ export class ModificationTypesComponent implements OnInit {
   getAllRisk() {
     let res: any[] = [];
     
-    // for (const group of this.getRiskArraydById(2).getRawValue()) {
-    //   res = res.concat(group.fields);
-    // }
+    for (const group of this.getRiskArraydById(2).getRawValue()) {
+      res = res.concat(group.fields);
+    }
    
     return res;
   
@@ -234,12 +238,26 @@ export class ModificationTypesComponent implements OnInit {
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
     )) as FormArray;
   }
-
+  get cvrgDtGrpDataControls(): FormArray {
+    return (<FormArray>(
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('cmmrclPln')?.get('cvrg')
+    )) as FormArray;
+  }
   getRiskArrayByIdModify(id: number) {
     //console.log(this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'))
     return (<FormArray>this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'));
   }
+  getCvrgDtGrp(id:number){
+   console.log("controls: ",this.cvrgDtGrpDataControls); 
+    return (<FormArray>this.cvrgDtGrpDataControls.controls.find(x => x.value.id === id)?.get('cvrgDtGrp'));
+  }
 
+  getcoveragesPln(id: string) {
+    return <FormArray>this.getcmmrclPln(2)
+      .controls.find((x: { value: { code: string } }) => x.value.code === id)
+      ?.get('coverages');
+    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
+  }
   getRiskArraydById(id: number) {
     return (<FormArray>this.productService.riskTypes.controls.find((x: { value: { id: number; }; }) => x.value.id === 2)?.get('complementaryData'));
   }
@@ -272,7 +290,6 @@ export class ModificationTypesComponent implements OnInit {
     (x: { id: any }) => x.id === nameGruop.id
   );
 
-  // const index2 = this.getAll().findIndex((x: { id: number; }) => x.id === object.id);
 
   //   if (index2 === -1) {
 
@@ -308,8 +325,48 @@ export class ModificationTypesComponent implements OnInit {
       domainList: this.fb.control(object.element.domainList),
     })
   );
-}
+
   
+}
+addGroupArrayByIdRisk(object:any,nameGruop:any){
+
+  const index = this.policyDataControls.value.findIndex(
+    (x: { id: any }) => x.id === nameGruop.id
+  );
+  console.log(index);
+  this.getGroupArrayByIdRisk(index+1).push(
+    new FormGroup({
+      id: this.fb.control(object.id, [Validators.required]),
+      name: this.fb.control(object.name, [Validators.required]),
+      label: this.fb.control(
+        object.element.nmLabel
+          ? object.element.nmLabel
+          : object.element.label,
+        [Validators.required]
+      ),
+      dataType: this.fb.control(object.element.dataType),
+      initializeRule: this.fb.array([], []),
+      validateRule: this.fb.array([], []),
+      dependency: this.fb.control(null, []),
+      requiredEssential: this.fb.control(
+        object.element.flIsMandatory === 'S' ? true : false,
+        [Validators.required]
+      ),
+      required: this.fb.control(
+        object.element.flIsMandatory === 'S' ? true : false,
+        [Validators.required]
+      ),
+      editable: this.fb.control(true, [Validators.required]),
+      visible: this.fb.control(true, [Validators.required]),
+      fieldGroup: this.fb.control(index + 1, []),
+      shouldDelete: this.fb.control(object.shouldDelete, [
+        Validators.required,
+      ]),
+      businessCode: this.fb.control(object.element.businessCode),
+      domainList: this.fb.control(object.element.domainList),
+    }) 
+  )
+} 
 
   addItem = (obj: ElementReturn[], group: number, showMessage: boolean) => {
     if (obj) {
@@ -318,47 +375,53 @@ export class ModificationTypesComponent implements OnInit {
 
       for (let object of obj) {
         nameGruop = this.getNameGroup(object.element.businessCode);
+       
 
         if ( this.riskData) {
-         this.add(nameGruop);
+         this.addRisk(nameGruop);
+         this.addGroupArrayByIdRisk(object,nameGruop)
         }
 
-        if ( this.policyData &&  this.complementaryDataControls.value.findIndex(
-              (x: { id: any }) => x.id === nameGruop.id
-            ) === -1
+        if ( this.policyData
           ) {
             this.add(nameGruop);
+            this.addGroupArrayById(object,nameGruop);
           }
 
-          this.addGroupArrayById(object,nameGruop);
+          
         
       }
     }
   };
 
-    add(nameGruop:any){
+  addRisk(nameGroup:any){
 
-        // if(this.getRiskArrayByIdModify(2).value.findIndex(
-        //   (x: { id: any }) => x.id === nameGruop.id
-        // ) === -1) 
+        if(this.getRiskArrayByIdModify(2).value.findIndex(
+          (x: { id: any }) => x.id === nameGroup.id
+        ) === -1) 
       
-        // this.getGroupArrayByIdRisk(2).push(
-        //   new FormGroup({
-        //     id: this.fb.control(nameGruop.id),
-        //     code: this.fb.control(nameGruop.code),
-        //     name: this.fb.control(nameGruop.name),
-        //     fields: this.fb.array([], Validators.required),
-        //     isEditing: this.fb.control(nameGruop.isEditing),
-        //   })
-        // );
+        this.getGroupArrayByIdRisk(2).push(
+          new FormGroup({
+            id: this.fb.control(nameGroup.id),
+            code: this.fb.control(nameGroup.code),
+            name: this.fb.control(nameGroup.name),
+            fields: this.fb.array([], Validators.required),
+            isEditing: this.fb.control(nameGroup.isEditing),
+          })
+        );
+  }
+    add(nameGroup:any){
 
+      if(this.complementaryDataControls.value.findIndex(
+        (x: { id: any }) => x.id === nameGroup.id) === -1)
+        
         this.complementaryDataControls.push(
               new FormGroup({
-                id: this.fb.control(nameGruop.id),
-                code: this.fb.control(nameGruop.code),
-                name: this.fb.control(nameGruop.name),
+                id: this.fb.control(nameGroup.id),
+                code: this.fb.control(nameGroup.code),
+                name: this.fb.control(nameGroup.name),
                 fields: this.fb.array([], Validators.required),
-                isEditing: this.fb.control(nameGruop.isEditing),
+                isEditing: this.fb.control(nameGroup.isEditing),
               })
             );
     }

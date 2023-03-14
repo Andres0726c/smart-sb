@@ -4,7 +4,9 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
+  Output,
   ChangeDetectionStrategy,
+  EventEmitter,
 } from '@angular/core';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -32,6 +34,9 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   @Input() data: string = '';
   @Input() bussinesPlans: boolean = false;
   @Input() riskDataCode: string = '';
+  dataCoverage :any;
+  Coverageflag:boolean=false;
+
   items = [
     { label: 'Mascotas' },
     { label: 'Planes comerciales' },
@@ -63,6 +68,10 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.addDataTable();
+    console.log(this.getcoverages(8));
+    console.log(this.getcoveragesPln(this.data))
+    console.log(this.getcoveragesPln(this.data)
+    .controls.find((x: { value: { id: number } }) => x.value.id === 8))
     // this.dataAthrzdOprtn = this.tableData.map(d => ({id : d.id, athrzdOprtn: d.athrzdOprtn.value}))
     this.tableData = this.tableData.map((d) => {
       // delete athrzdOprtnCopy;
@@ -109,6 +118,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     return res;
   }
 
+  
   getcmmrclPln(id: number) {
     return (<FormArray>(
       this.policyDataControls.controls
@@ -122,10 +132,15 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       ?.get('coverages');
     //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
   }
+  getcoverages(id: number) {
+  
+    return <FormArray>this.getcoveragesPln(this.data)
+      .controls.find((x: { value: { id: number } }) => x.value.id === id)
+      ?.get('cvrgDtGrp');
+      // ({key})=>key==="RMP"
+    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
+  }
 
-  // getcoveragesPln(id:string){
-  //   return <FormArray>(this.policyDataControls.controls.find((x: { value: {code: string } }) => x.value.code === id)?.get('cvrg')) as FormArray;
-  // }
   get complementaryDataControls(): FormArray {
     return (<FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
@@ -227,7 +242,20 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     result? (btn = false) : (btn = true);
     return btn;
   }
+
+  openToAdd(level: any){
+
+    
+  }
+
   editData(data: any) {
+
+    if(data){
+      this.Coverageflag=true;
+    }else{ this.Coverageflag=false;}
+    
+    console.log(this.getcoveragesPln(this.data));
+    console.log(this.getcoverages(data.id));
     console.log(data)
     console.log(this.policyDataControls);
 

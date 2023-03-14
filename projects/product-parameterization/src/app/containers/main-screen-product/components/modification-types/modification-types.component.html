@@ -91,25 +91,24 @@
 
       
     </div>
-    <!-- <div *ngIf="true"> -->
 
     <div *ngIf="riskData">
       <app-complementary-data
             [applicationLevel]="'types'"
             [title]="''"
             [subtitle]="''"
-            [groupName]="'Datos básicos'"
-            [emptyText]="'Sin datos de la póliza'"
-            [emptySubText]="'No se han asociado datos de la póliza al producto'"
+            [groupName]="'Datos básicos'"           
+            [emptyText]="'Sin datos del riesgo'"
+            [emptySubText]="'No se han asociado datos para modificar el tipo de riesgo'"            
             [successAddItemMsg]="
               'Los datos de la póliza fueron asociados correctamente.'
             "
             [removeItemMsg]="
               '¿Está seguro de querer desasociar el dato de la póliza seleccionado?'
             "
-            [titleModalCompData]="'Seleccionar nuevos datos de la póliza'"
+            [titleModalCompData]="'Seleccionar  datos del reisgo'"
             [subtitleModalCompData]="
-              'Seleccione los datos de la póliza que desea asociar'
+              'Seleccione los datos del tipo de riesgo'
             "
             [complementaryData]="getRiskArrayByIdModify(2)"
             (action)="openToAdd('risk')"
@@ -123,7 +122,7 @@
         [titleRisk]="titleRisk"
           [riskType]="riskType"
           (addBranch)="onAddBranch($event)"
-          *ngIf="showCommercialPlans && !riskData && !policyData"
+          *ngIf="showCommercialPlans && !riskData && !policyData "
         ></refactoring-smartcore-mf-modification-types-risk>
         <refactoring-smartcore-mf-commercial-plan-type
           [titleBussinesPlan]="titleBussinesPlan"
@@ -132,7 +131,8 @@
           [bussinesPlans]="bussinesPlans"
           *ngIf="showCommercialPlansTypes && !riskData && !policyData"
         ></refactoring-smartcore-mf-commercial-plan-type>
-  <!-- </div> -->
+
+
 </div>
 </div>
 

@@ -1,5 +1,5 @@
-<div class="container-boxes">
-  <section class="container-table">
+<div class="container-boxes"  >
+  <section class="container-table" *ngIf="!Coverageflag">
     <p-breadcrumb [model]="items"></p-breadcrumb>
     <p-tabView>
       <p-tabPanel header="Coberturas">
@@ -85,4 +85,30 @@
       </p-tabPanel>
     </p-tabView>
   </section>
+  <div *ngIf="Coverageflag">
+    <app-complementary-data
+          [applicationLevel]="'types'"
+          [title]="''"
+          [subtitle]="''"
+          [groupName]="'Datos básicos'"
+          [emptyText]="'Datos complementarios'"
+          [emptySubText]="'No se han asociado los datos complementarios a modificar'"
+          [successAddItemMsg]="
+            'Los datos de la póliza fueron asociados correctamente.'
+          "
+          [removeItemMsg]="
+            '¿Está seguro de querer desasociar el dato de la póliza seleccionado?'
+          "
+          [titleModalCompData]="'Seleccionar datos complementarios'"
+          [subtitleModalCompData]="
+          'Seleccione los datos del tipo de riesgo que desea asociar'
+        "
+          [complementaryData]="getcoverages(8)"
+          (action)="openToAdd('risk')"
+          [modifyData]="true"
+        >
+        </app-complementary-data>
+  </div>
+
 </div>
+
