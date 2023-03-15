@@ -477,6 +477,32 @@ export class InitialParametersComponent implements OnInit {
       businessCode:businessCodeReset,
       insuranceLine: insuranceLineReset
     });
+
+    this.service.prdctDpndncy = new FormGroup({
+      insrncLn: new FormArray([]),
+      cs: new FormArray([]),
+      rl: new FormArray([])
+    });
+
+    this.setInsDependency(insuranceLineReset);
   }
 
+  setInsDependency(event: any) {
+    let rm: any = this.ramo.find((x: any) => x.id === event);
+
+    let objIns = {
+      id: rm.id,
+      cd: rm.businessCode,
+      fnnclCd: rm.financialCode,
+      nm: rm.nmName,
+      dscrptn: rm.dsDescription,
+      sttCd: 'ACT',
+      cmpnyId: this.service.companyId
+    }
+    
+    console.log('insrncLn', objIns);
+    this.service.setProductDependency('insrncLn', objIns);
+   
+    console.log('form', this.service);
+  }
 }

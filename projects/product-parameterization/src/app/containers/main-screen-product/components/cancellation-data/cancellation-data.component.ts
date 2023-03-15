@@ -46,7 +46,6 @@ export class CancellationDataComponent implements OnInit {
       this.flagError = true;
       console.error('Ha ocurrido un error al obtener los datos necesarios');
     }
-
   }
 
   /**
@@ -108,19 +107,40 @@ export class CancellationDataComponent implements OnInit {
 
   addRule(field: string, objRule: any) {
     let arr: any[] = [];
+
     let element: any = {
-      id: objRule.rule.id,
-      name: objRule.rule.name,
-      cdBusinessCode: objRule.rule.cdBusinessCode,
-      description: objRule.rule.description,
-      cdRuleType: objRule.rule.cdRuleType,
-      endPoint: objRule.rule.endPoint,
-      rlEngnCd: objRule.rule.rlEngnCd,
+      rlCd: objRule.rule.cdBusinessCode,
       argmntLst: objRule.parameters,
     };
 
+    let elementDp: any = {
+      // id: objRule.rule.id,
+      // name: objRule.rule.name,
+      // cdBusinessCode: objRule.rule.cdBusinessCode,
+      // description: objRule.rule.description,
+      // cdRuleType: objRule.rule.cdRuleType,
+      // endPoint: objRule.rule.endPoint,
+      // rlEngnCd: objRule.rule.rlEngnCd,
+      // argmntLst: objRule.parameters,
+      cd: objRule.rule.cdBusinessCode,
+      nm: objRule.rule.name,
+      vrsn: '',//Falta
+      dscrptn: objRule.rule.description,
+      prmtrLst: objRule.parameters, //Validar
+      rtrnLst:  objRule.rule.nmParameterList,//Validar
+      rlTypItm: objRule.rule.cdRuleType,//validar
+      aplctnLvlItm: '',//Falta
+      endPnt: objRule.rule.endPoint, //Validar
+      sttsCd: '',//Falta
+      insrncLnCd: '',//Falta
+    };
+
+    this.productService.setProductDependency('rl', elementDp);
     arr.push(element);
     this.productService.cnclltnPrcss?.get(field)?.setValue(arr);
+
+    console.log('cnclltnPrcss', this.productService.cnclltnPrcss);
+    console.log('prdctDpndncy', this.productService.prdctDpndncy);
   }
 
   getParamValuesList() {
@@ -181,5 +201,28 @@ export class CancellationDataComponent implements OnInit {
       this.flagError = true;
       console.error('Ha ocurrido un error al obtener los datos de las causas');
     }
+  }
+
+  setCsDependency(event: any) {
+    
+    const value = event.value;
+    
+    for (let cs of value) {
+      const cause: any = this.causes.find((x: any) => x.businessCode === cs);
+      const obj = {
+        cd: cause.businessCode,
+        nm: cause.name,
+        dscrptn: cause.description,
+        sttCd: cause.statusCode,
+        aplctnPrcssItm: cause.aplicationProcess, //validar
+        aplctnSbprcssCd: cause.aplicationSubProcess, //validar
+        insrncLnCd: '', //Faltan
+      };
+
+      this.productService.setProductDependency('cs', obj);
+    }
+    
+    console.log('cnclltnPrcss', this.productService.cnclltnPrcss);
+    console.log('prdctDpndncy', this.productService.prdctDpndncy);
   }
 }

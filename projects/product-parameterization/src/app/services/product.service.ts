@@ -50,6 +50,7 @@ export class ProductService {
     enabled: new FormControl(false),
   });
   prdctDpndncy: FormGroup = new FormGroup({
+    insrncLn: new FormArray([]),
     cs: new FormArray([]),
     rl: new FormArray([])
   });
@@ -220,6 +221,7 @@ export class ProductService {
       isNwIssPlcy: new FormControl(false)
     });
     this.prdctDpndncy = new FormGroup({
+      insrncLn: new FormArray([]),
       cs: new FormArray([]),
       rl: new FormArray([])
     });
@@ -477,6 +479,7 @@ export class ProductService {
       });
 
       this.prdctDpndncy = product.prdctDpndncy ? this.setFields('prdctDpndncy', product.prdctDpndncy) : new FormGroup({
+        insrncLn: new FormArray([]),
         cs: new FormArray([]),
         rl: new FormArray([])
       });
@@ -727,7 +730,7 @@ export class ProductService {
     if(environment.productAutosave)
     {
       let formArrayList: any[] = [this.coverages, this.policyData, this.clauses, this.riskTypes, this.servicePlans, this.taxesCategories, this.technicalControls, this.conceptReservation, this.claimData, this.claimTechnicalControls, this.modificationTypes];
-      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cancellation, this.rehabilitation, this.rnwlPrcss];
+      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cnclltnPrcss, this.rnsttmntPrcss, this.rnwlPrcss];
          this.registerFormEvent(formArrayList);
          this.registerFormEvent(formGroupList);
     }
