@@ -202,8 +202,8 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       ?.get('fields');
   }
   getCvrgDtGrp(){
-  console.log(this.getcoveragesPln(this.data).controls);
-     return (<FormArray>this.getcoveragesPln(this.data).controls.find((x: { value: { id: number; }; }) => x.value.id=== this.idCoverage)?.get('cvrgDtGrp'));
+  console.log(this.getcoveragesPln(this.data).controls.find((x: { value: { id: number; }; }) => x.value.id=== this.idCoverage));
+     return (<FormArray>this.getcoveragesPln(this.data).controls.find((x: { value: { id: number; }; }) => x.value.id=== this.idCoverage)?.value.cvrgDtGrp);
    }
  
 
@@ -343,6 +343,7 @@ add(nameGroup:any){
         domainList: this.fb.control(object.element.domainList),
       })
     );
+    console.log(this.productService.mdfctnPrcss);
   }
   showMessageGroup(showMessage: boolean) {
     let data: DataToast = {
