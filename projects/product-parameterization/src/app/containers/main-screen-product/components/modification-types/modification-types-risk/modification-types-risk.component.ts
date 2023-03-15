@@ -16,7 +16,7 @@ interface BusinessPlans {
   description: string;
   name: string;
   servicePlans: Coverages[];
-  athrzdOprtn?: OptionsCommercialP[];
+  athrzdOprtn?: [];
 }
 
 @Component({
@@ -114,8 +114,8 @@ export class ModificationTypesRiskComponent implements OnInit,OnChanges {
   changeCheck() {
 
     for(let bussines of this.tableData){
-      const result= bussines.athrzdOprtn?.find(({key})=>key==="MDF"), 
-      result1=bussines.athrzdOprtn?.find(({key})=>key==="RMP"),
+      const result= bussines.athrzdOprtn?.find((key:any)=>key==="MDF"), 
+      result1=bussines.athrzdOprtn?.find((key:any)=>key==="RMP"),
       exist= this.showBranch.find(({name})=>name===bussines.name);
       if(result!=undefined && exist==undefined){
         this.showBranch.push(bussines);    
@@ -133,6 +133,5 @@ export class ModificationTypesRiskComponent implements OnInit,OnChanges {
       }else{
         this.addBranch.emit([]);
       }
-      console.log(this.showBranch);
   }
 }

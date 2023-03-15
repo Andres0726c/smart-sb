@@ -25,7 +25,7 @@ interface BussinesPlans {
   description: string;
   name: string;
   servicePlans: any[];
-  athrzdOprtn?: OptionsCommercialP[];
+  athrzdOprtn: [];
 }
 interface Coverages {
   description: string;
@@ -47,7 +47,7 @@ export class ModificationTypesComponent implements OnInit {
   bussinesPlans: boolean = false;
   data: string = '';
   riskDataCode: string = '';
-  showBranch: BussinesPlans[] = [];
+  showBranch: any[] = [];
   riskData: boolean = false;
   riskType: string = '';
   policyData: boolean = true;
@@ -112,8 +112,6 @@ export class ModificationTypesComponent implements OnInit {
 
     if (level==='coverage'){
     for (let coverage of plan.coverages){
-      console.log(this.productService.coverages.controls.find((x:any) => x.value.id === coverage.id));
-      console.log(coverage)
       let objCovereage={
          id:coverage.id,
          required:coverage.required,
@@ -123,7 +121,6 @@ export class ModificationTypesComponent implements OnInit {
         cvrgDtGrp: this.fb.array([],Validators.required)
       }
       obj.push(objCovereage)
-      console.log(obj);
     }
   }
     else {
@@ -168,10 +165,8 @@ export class ModificationTypesComponent implements OnInit {
   }
 
   openToAdd(level:any): void {
-    //console.log('level',level);
     let sendData = [];
     sendData = this.productService.policyData?.value[0].fields;
-    //console.log(this.productService.riskTypes.complementaryData);
     const columns = [
       { name: 'name', header: 'Nombre', displayValue: ['label'] },
       {
@@ -519,9 +514,9 @@ addGroupObj(groupName:any,name:any){
     return list;
   }
 
-  onAddBranch(showMenu: BussinesPlans[]) {
+  onAddBranch(showMenu: any[]) {
     this.calledMenu(showMenu);
-    this.showBranch = showMenu;
+      this.showBranch=showMenu;
   }
 
   calledMenu(showMenu?: BussinesPlans[]) {
@@ -554,7 +549,7 @@ addGroupObj(groupName:any,name:any){
   addBranchCoverage(showMenu: BussinesPlans[], itempush: any) {
     let validate: boolean = true;
     for (let onOption of showMenu) {
-      const result = onOption.athrzdOprtn?.find(({ key }) => key === 'MDF');
+      const result = onOption.athrzdOprtn?.find(( key:any ) => key === 'MDF');
       if (onOption.code === itempush.code && result) {
         return (validate = false);
       }

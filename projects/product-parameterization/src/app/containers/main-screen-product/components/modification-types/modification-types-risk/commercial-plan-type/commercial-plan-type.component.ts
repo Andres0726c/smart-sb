@@ -80,7 +80,6 @@ export class CommercialPlanTypeComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.policyDataControls, 'contros');
     console.log(this.getcoveragesPln(this.data), 'planes');
-    console.log(this.getcoverages(7).value.cvrgDtGrp, 'coverages');
     console.log(this.productService.coverages)
 
     this.addDataTable();
@@ -90,7 +89,6 @@ export class CommercialPlanTypeComponent implements OnInit {
         (x: { value: { id: number } }) => x.value.id === 8
       )
     );
-    // this.dataAthrzdOprtn = this.tableData.map(d => ({id : d.id, athrzdOprtn: d.athrzdOprtn.value}))
     this.tableData = this.tableData.map((d) => {
       // delete athrzdOprtnCopy;
       return {
@@ -179,17 +177,17 @@ export class CommercialPlanTypeComponent implements OnInit {
     // .find(x: { value: { id: number } }) => x.value.id === id)
     // ?.get('fields');
     // console.log(data);
-    return (<FormArray>this.getcoverages(this.idCoverage).value.cvrgDtGrp.controls)
+    return (<FormArray>this.getcoverages(this.idCoverage).value.cvrgDtGrp.controls['0'].controls.fields);
     // return <FormArray>data.find((x: { id: number } ) => x.id === id);
     //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
   }
 
-  getGroup(id:number){
-    return <FormArray>(
-      this.getGroupArray().value.find((x: { value: { id: number } }) => x.value.id === id)
-        ?.get('fields')
-    );
-  }
+  // getGroup(id:number){
+  //   return <FormArray>(
+  //     this.getGroupArray().value.find((x: { value: { id: number } }) => x.value.id === id)
+  //       ?.get('fields')
+  //   );
+  // }
 
   addDataTable() {
     let dataRisk: any = [];
@@ -211,9 +209,12 @@ export class CommercialPlanTypeComponent implements OnInit {
 
 
   changeCheck(id: any, event: any) {
+    let option;
     const data = this.tableData.find((d) => d.id == id);
+    console.log(data);
     if (data) {
-      data.athrzdOprtn.value = event.checked;
+      data.athrzdOprtn.setValue(event.checked);
+      
     }
   }
 
@@ -263,30 +264,19 @@ export class CommercialPlanTypeComponent implements OnInit {
       let nameGruop: any;
 
       for (let object of obj) {
-        nameGruop = this.getNameGroup(object.element.businessCode);
+        nameGruop = this.getNameGroup(object.element.businessCode)
         this.addGroupArray(object,nameGruop)
         console.log(nameGruop)
+        console.log(this.getcoverages(this.idCoverage).value.cvrgDtGrp);
           
         
       }
     }
   };
-  get cvrgDtGrpDataControls(): FormArray {
-    return (<FormArray>(
-      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')?.get('cmmrclPln')?.get('cvrg')
-    )) as FormArray;
-  }
-  getCvrgDtGrp(id:number){
-    console.log("controls: ",this.cvrgDtGrpDataControls); 
-     return (<FormArray>this.cvrgDtGrpDataControls.controls.find(x => x.value.id === id)?.get('cvrgDtGrp'));
-   }
 
   addGroupArray(object:any,nameGruop:any){
 
     let coverage= this.getcoverages(this.idCoverage).value.cvrgDtGrp.controls;
-    console.log(coverage)
-    console.log(this.cvrgDtGrpDataControls);
-     console.log(coverage['0'])
     console.log(coverage)
     console.log(nameGruop.id)
     const index = coverage.findIndex(
@@ -294,38 +284,38 @@ export class CommercialPlanTypeComponent implements OnInit {
     );
     console.log(this.getGroupArray());
   
-    // this.getGroupArray().push(
-    //   new FormGroup({
-    //     id: this.fb.control(object.id, [Validators.required]),
-    //     name: this.fb.control(object.name, [Validators.required]),
-    //     label: this.fb.control(
-    //       object.element.nmLabel
-    //         ? object.element.nmLabel
-    //         : object.element.label,
-    //       [Validators.required]
-    //     ),
-    //     dataType: this.fb.control(object.element.dataType),
-    //     initializeRule: this.fb.array([], []),
-    //     validateRule: this.fb.array([], []),
-    //     dependency: this.fb.control(null, []),
-    //     requiredEssential: this.fb.control(
-    //       object.element.flIsMandatory === 'S' ? true : false,
-    //       [Validators.required]
-    //     ),
-    //     required: this.fb.control(
-    //       object.element.flIsMandatory === 'S' ? true : false,
-    //       [Validators.required]
-    //     ),
-    //     editable: this.fb.control(true, [Validators.required]),
-    //     visible: this.fb.control(true, [Validators.required]),
-    //     fieldGroup: this.fb.control(index + 1, []),
-    //     shouldDelete: this.fb.control(object.shouldDelete, [
-    //       Validators.required,
-    //     ]),
-    //     businessCode: this.fb.control(object.element.businessCode),
-    //     domainList: this.fb.control(object.element.domainList),
-    //   }) 
-    // )
+    this.getGroupArray().push(
+      new FormGroup({
+        id: this.fb.control(object.id, [Validators.required]),
+        name: this.fb.control(object.name, [Validators.required]),
+        label: this.fb.control(
+          object.element.nmLabel
+            ? object.element.nmLabel
+            : object.element.label,
+          [Validators.required]
+        ),
+        dataType: this.fb.control(object.element.dataType),
+        initializeRule: this.fb.array([], []),
+        validateRule: this.fb.array([], []),
+        dependency: this.fb.control(null, []),
+        requiredEssential: this.fb.control(
+          object.element.flIsMandatory === 'S' ? true : false,
+          [Validators.required]
+        ),
+        required: this.fb.control(
+          object.element.flIsMandatory === 'S' ? true : false,
+          [Validators.required]
+        ),
+        editable: this.fb.control(true, [Validators.required]),
+        visible: this.fb.control(true, [Validators.required]),
+        fieldGroup: this.fb.control(index + 1, []),
+        shouldDelete: this.fb.control(object.shouldDelete, [
+          Validators.required,
+        ]),
+        businessCode: this.fb.control(object.element.businessCode),
+        domainList: this.fb.control(object.element.domainList),
+      }) 
+    )
 
   }
   showMessageGroup(showMessage:boolean){
