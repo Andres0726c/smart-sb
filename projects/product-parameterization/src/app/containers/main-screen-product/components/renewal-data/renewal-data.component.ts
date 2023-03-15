@@ -14,8 +14,10 @@ export class RenewalDataComponent implements OnInit {
   contextData: any = [];
   isLoading = false;
   flagError = false;
+  flagCsProcess = false;
   applicationLevel = 'Renovación';
   causes = [];
+  causesPrevValue = [];
   /*causes = [
     {
       id: 'RNV_CRE_1',
@@ -188,22 +190,47 @@ export class RenewalDataComponent implements OnInit {
     return list;
   }
 
-  setCsDependency(event: any) {
-    const value = event.value;
+  verifyCsProcess(value: any) {
+    if (!this.flagCsProcess && this.causesPrevValue.length === 0) {
+      this.causesPrevValue = value;
+      this.flagCsProcess = true;
+    }
+    if (this.causesPrevValue.length > value.length) {
+      // vamos a eliminar causas
+      console.log('vamos a eliminar causas');
+      const diff = this.causesPrevValue.filter((x: any) => !value.includes(x));
+      for (let cause of diff) {
+        this.productService.deleteDependencyRef(cause, 'rnwlCsCd');
+      }
+      console.log('prdctDpndncy', this.productService.prdctDpndncy);
+      console.log('field', this.productService.rnwlPrcss);
+      console.log('references', this.productService.references);
+    } else {
+      // vamos a agregar causas
+      this.setCsDependency(value);
+    }
+    this.causesPrevValue = value;
+  }
+
+  setCsDependency(value: any) {
     for (let cs of value) {
       const cause: any = this.causes.find((x: any) => x.businessCode === cs);
       const obj = {
+        id: cause.id,
         cd: cause.businessCode,
         nm: cause.name,
         dscrptn: cause.description,
-        sttCd: cause.idStatus
+        aplctnPrcssItm: cause.aplicationProcess,
+        aplctnSbprcssCd: cause.aplicationSubProcess,
+        sttCd: cause.statusCode
       };
 
       this.productService.setProductDependency('cs', obj);
+      this.productService.setDependencyRef('cs', obj.cd, 'rnwlCsCd')
     }
     console.log('prdctDpndncy', this.productService.prdctDpndncy);
     console.log('field', this.productService.rnwlPrcss);
-    console.log('event', event);
+    console.log('references', this.productService.references);
   }
 
 }
