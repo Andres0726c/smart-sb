@@ -1,5 +1,28 @@
+
+
+
+<div class="subHeader"  *ngIf="coverageflag">
+  <div>
+    <h4 class="p-4">{{titleCurrent}}</h4>
+    <h5>Cobertura por {{titleCurrent}}</h5>
+  </div>
+
+  <div class="div-button" *ngIf="getAll().length > 0 && coverageflag">
+    <button
+      mat-button
+      class="bt bt-primary"
+      (click)="openToAdd()"
+      data-qa-id="sc-rpmf-btn_add-element"
+    >
+      <em class="fal fa-plus-circle icon-button-add"></em>
+      Añadir
+    </button>
+  </div>
+  
+</div>
+
 <div class="container-boxes"  >
-  <section class="container-table" *ngIf="!Coverageflag">
+  <section class="container-table" *ngIf="!coverageflag">
     <p-breadcrumb [model]="items"></p-breadcrumb>
     <p-tabView>
       <p-tabPanel header="Coberturas">
@@ -85,7 +108,7 @@
       </p-tabPanel>
     </p-tabView>
   </section>
-  <div *ngIf="Coverageflag">
+  <div *ngIf="coverageflag">
     <app-complementary-data
           [applicationLevel]="'types'"
           [title]="''"

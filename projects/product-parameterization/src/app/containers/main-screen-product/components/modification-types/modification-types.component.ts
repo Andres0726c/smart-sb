@@ -69,12 +69,12 @@ export class ModificationTypesComponent implements OnInit {
    this.getcmmrclPln(2).clear();
     
    if (this.getcmmrclPln(2).length ===0){
-    this.test();
+    this.addDataRisk();
     }
     this.calledMenu();
   }
 
-  test(){
+  addDataRisk(){
     for(const risk of this.productService.riskTypes.value){
 
       for (let plan of risk.businessPlans){
@@ -165,8 +165,6 @@ export class ModificationTypesComponent implements OnInit {
   }
 
   openToAdd(level:any): void {
-    let sendData = [];
-    sendData = this.productService.policyData?.value[0].fields;
     const columns = [
       { name: 'name', header: 'Nombre', displayValue: ['label'] },
       {
@@ -503,8 +501,8 @@ addGroupObj(groupName:any,name:any){
         disabled: this.addBranchCoverage(showMenu, itempush),
         command: (event: any) => {
           this.titleCommercialPlan = itempush.name;
-         
-          this.sendData(itempush.code);
+         console.log(itempush.name);
+          this.sendData(itempush.code,itempush.name);
 
           // this.sendData(event.item.id);
         },
@@ -517,6 +515,8 @@ addGroupObj(groupName:any,name:any){
   onAddBranch(showMenu: any[]) {
     this.calledMenu(showMenu);
       this.showBranch=showMenu;
+      console.log(showMenu);
+      console.log(this.getcmmrclPln(2));
   }
 
   calledMenu(showMenu?: BussinesPlans[]) {
@@ -557,9 +557,10 @@ addGroupObj(groupName:any,name:any){
     return validate;
   }
 
-  sendData(idCommercialPlan: string) {
+  sendData(idCommercialPlan: string,title:string) {
     if (idCommercialPlan) {
       this.data = idCommercialPlan;
+      this.titleBussinesPlan=title;
     }
     this.showCommercialPlansTypes = true;
     if (this.showCommercialPlans || this.bussinesPlans)

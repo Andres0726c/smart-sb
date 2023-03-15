@@ -41,70 +41,17 @@ export class ModificationTypesRiskComponent implements OnInit,OnChanges {
   // "athrzdOprtn": ["RMP","MDF"]
   constructor(public productService: ProductService, public fb: FormBuilder) {}
 
-  getAllFields() {
-    let res: any[] = [];
- 
-    for (const group of this.productService.policyData?.getRawValue()) {
-      res = res.concat(group.fields);
-    }
-    return res;
-  }
-
-  getAll() {
-    let res: any[] = [];
-    for (const group of this.complementaryDataControls?.getRawValue()) {
-      res = res.concat(group.fields);
-    }
-
-    return res;
-  
-  }
-
-  getAllRisk() {
-
-
-    let res: any[] = [];
-    
-    for (const group of this.getRiskArraydById(2).getRawValue()) {
-      res = res.concat(group.fields);
-    }
-   
-    return res;
-   
 
   
-  }
-
-  get complementaryDataControls(): FormArray {
-    return (<FormArray>(
-      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
-    )) as FormArray;
-  }
 
   get policyDataControls(): FormArray {
     return (<FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
     )) as FormArray;
-  }
-
-  getRiskArrayByIdModify(id: number) {
-    return (<FormArray>this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'));
-  }
-
-  getRiskArraydById(id: number) {
-    return (<FormArray>this.productService.riskTypes.controls.find((x: { value: { id: number; }; }) => x.value.id === 2)?.get('complementaryData'));
-  }
-
-  getGroupArrayByIdModify(id: number) {
-    return <FormArray>(
-      this.getRiskArrayByIdModify(2).controls
-        .find((x: { value: { id: number } }) => x.value.id === id)
-        ?.get('fields')
-    );
-  }
-
+    }
 
   ngOnInit(): void {
+    console.log(this.policyDataControls)
     this.tableData=this.policyDataControls.value[0].cmmrclPln;
   }
   ngOnChanges(changes: SimpleChanges){
