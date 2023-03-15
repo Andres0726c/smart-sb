@@ -188,7 +188,7 @@ export class ModificationTypesComponent implements OnInit {
       data: {
         code: 'emissionData',
         columns: columns,
-        list: level==='risk'?[]:this.getAll(),
+        list: level==='risk'?this.getAllRiskField():this.getAll(),
         data: level==='risk'?this.getAllRisk():this.getAllFields(),
       },
     });
@@ -209,6 +209,16 @@ export class ModificationTypesComponent implements OnInit {
   getAll() {
     let res: any[] = [];
     for (const group of this.complementaryDataControls?.getRawValue()) {
+      res = res.concat(group.fields);
+    }
+    return res;
+  
+  }
+
+  
+  getAllRiskField() {
+    let res: any[] = [];
+    for (const group of this.getRiskArrayByIdModify(2)?.getRawValue()) {
       res = res.concat(group.fields);
     }
     return res;
@@ -239,7 +249,7 @@ export class ModificationTypesComponent implements OnInit {
   }
   get cvrgDtGrpDataControls(): FormArray {
     return (<FormArray>(
-      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('cmmrclPln')?.get('cvrg')
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')?.get('cmmrclPln')?.get('cvrg')
     )) as FormArray;
   }
   getRiskArrayByIdModify(id: number) {
@@ -289,9 +299,6 @@ export class ModificationTypesComponent implements OnInit {
     (x: { id: any }) => x.id === nameGruop.id
   );
 
-
-  //   if (index2 === -1) {
-
   this.getGroupArrayById(index + 1).push(
     new FormGroup({
       id: this.fb.control(object.id, [Validators.required]),
@@ -329,11 +336,11 @@ export class ModificationTypesComponent implements OnInit {
 }
 addGroupArrayByIdRisk(object:any,nameGruop:any){
 
-  const index = this.policyDataControls.value.findIndex(
+  const index = this.getRiskArraydById(2).value.findIndex(
     (x: { id: any }) => x.id === nameGruop.id
   );
   console.log(index);
-  this.getGroupArrayByIdRisk(index+1).push(
+  this.getGroupArrayByIdModify(index+1).push(
     new FormGroup({
       id: this.fb.control(object.id, [Validators.required]),
       name: this.fb.control(object.name, [Validators.required]),

@@ -2,14 +2,21 @@ import {
   Component,
   OnInit,
   Input,
-  OnChanges,
-  SimpleChanges,
   Output,
   ChangeDetectionStrategy,
   EventEmitter,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ElementReturn } from 'projects/product-parameterization/src/app/core/model/SearchModal.model';
+import {
+  DataToast,
+  STATES,
+  ToastMessageComponent,
+} from 'projects/product-parameterization/src/app/shared/toast-message/toast-message.component';
+import { ModalSearchSmallComponent } from 'projects/product-parameterization/src/app/shared/modal-search-small/modal-search-small.component';
 
 interface options {
   id: number;
@@ -29,13 +36,13 @@ interface Coverages {
   templateUrl: './commercial-plan-type.component.html',
   styleUrls: ['./commercial-plan-type.component.scss'],
 })
-export class CommercialPlanTypeComponent implements OnInit, OnChanges {
+export class CommercialPlanTypeComponent implements OnInit {
   @Input() titleBussinesPlan: string = '';
   @Input() data: string = '';
   @Input() bussinesPlans: boolean = false;
   @Input() riskDataCode: string = '';
-  dataCoverage :any;
-  Coverageflag:boolean=false;
+  dataCoverage: any;
+  Coverageflag: boolean = false;
 
   items = [
     { label: 'Mascotas' },
@@ -52,6 +59,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   product: any;
   risk: any;
   optionCoverage: any = [];
+  idCoverage:number=0;
   athrzdOprtnCoverages: any[] = [
     { name: 'Remover', key: 'RMV' },
     { name: 'Añadir', key: 'ADD' },
@@ -64,19 +72,24 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
 
   dataAthrzdOprtn: any = [];
 
-  constructor(public productService: ProductService, public fb: FormBuilder) {}
+  constructor(public productService: ProductService,    
+     public dialog: MatDialog,
+    public fb: FormBuilder,
+    public toastMessage: MatSnackBar) {}
 
   ngOnInit(): void {
-    console.log(this.policyDataControls,"contros");
-    console.log(this.getcoveragesPln(this.data),"planes");
-    console.log(this.getcoverages(7).value.cvrgDtGrp,"coverages");
-  
-   
-   
+    console.log(this.policyDataControls, 'contros');
+    console.log(this.getcoveragesPln(this.data), 'planes');
+    console.log(this.getcoverages(7).value.cvrgDtGrp, 'coverages');
+    console.log(this.productService.coverages)
+
     this.addDataTable();
-    
-    console.log(this.getcoveragesPln(this.data)
-    .controls.find((x: { value: { id: number } }) => x.value.id === 8))
+
+    console.log(
+      this.getcoveragesPln(this.data).controls.find(
+        (x: { value: { id: number } }) => x.value.id === 8
+      )
+    );
     // this.dataAthrzdOprtn = this.tableData.map(d => ({id : d.id, athrzdOprtn: d.athrzdOprtn.value}))
     this.tableData = this.tableData.map((d) => {
       // delete athrzdOprtnCopy;
@@ -93,58 +106,58 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
         athrzdOprtnCopy: d.athrzdOprtn.value,
       };
     });
-
   }
 
-  // getAllFields() {
-  //   let res: any[] = [];
+  getAllFields() {
+    let res: any[] = [];
+    for (const group of this.getComplementaryData(this.idCoverage).getRawValue()) {
+      res = res.concat(group.fields);
+    }
+    return res;
+  }
 
-  //   for (const group of this.productService.policyData?.getRawValue()) {
-  //     res = res.concat(group.fields);
-  //   }
-  //   return res;
-  // }
+  getAll() {
+    let res: any[] = [];
+    console.log(this.idCoverage)
 
-  // getAll() {
-  //   let res: any[] = [];
-  //   for (const group of this.complementaryDataControls?.getRawValue()) {
-  //     res = res.concat(group.fields);
-  //   }
-  //   return res;
-  // }
 
-  // getAllRisk() {
-  //   let res: any[] = [];
+    console.log(this.getComplementaryData(this.idCoverage).getRawValue())
 
-  //   for (const group of this.getRiskArraydById(2).getRawValue()) {
-  //     res = res.concat(group.fields);
-  //   }
+    console.log(this.productService.coverages
+      .controls.find((x: { value: { id: number } }) => x.value.id === this.idCoverage))
+    for (const group of this.getcoverages(this.idCoverage).value.cvrgDtGrp.getRawValue()) {
+      res = res.concat(group.fields);
+    }
+    console.log(res)
+    return res;
+  }
 
-  //   return res;
-  // }
+ 
 
-  
   getcmmrclPln(id: number) {
     return (<FormArray>(
       this.policyDataControls.controls
         .find((x: { value: { id: number } }) => x.value.id === id)
         ?.get('cmmrclPln')
-    )) as FormArray;
+    ));
   }
   getcoveragesPln(code: string) {
-    return (<FormArray>(this.getcmmrclPln(2)).controls.find((x: { value: { code: string } }) => x.value.code === code)?.get('cvrg'))as FormArray;
-    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
+    return (<FormArray>this.getcmmrclPln(2)
+      .controls.find((x: { value: { code: string } }) => x.value.code === code)
+      ?.get('cvrg')) as FormArray;
+  }
+  getComplementaryData(id:number){
+    return (<FormArray>this.productService.coverages
+    .controls.find((x: { value: { id: number } }) => x.value.id === id)
+    ?.get('complementaryData')) as FormArray;
   }
   getcoverages(id: number) {
-    console.log(this.data,"data");  
-    return (<FormArray>(this.getcoveragesPln(this.data)
-      .controls.find((x: { value: { id: number } }) => x.value.id === id)
-      )) as FormArray;
-      // ({key})=>key==="RMP"
-    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
+    return (<FormArray>(
+      this.getcoveragesPln(this.data).controls.find(
+        (x: { value: { id: number } }) => x.value.id === id
+      )
+    )) as FormArray;
   }
-
-
 
   get policyDataControls(): FormArray {
     return (<FormArray>(
@@ -159,60 +172,49 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
         ?.get('complementaryData')
     );
   }
+  
 
-  // getGroupArrayByIdModify(id: number) {
-  //   return <FormArray>this.getRiskArrayByIdModify(2)
-  //     .controls.find((x: { value: { id: number } }) => x.value.id === id)
-  //     ?.get('fields');
-  //   //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
-  // }
-
-  ngOnChanges(changes: SimpleChanges) {
-    // this.addDataTable(changes['data'].currentValue);
+  getGroupArray() {
+    // let data=
+    // .find(x: { value: { id: number } }) => x.value.id === id)
+    // ?.get('fields');
+    // console.log(data);
+    return (<FormArray>this.getcoverages(this.idCoverage).value.cvrgDtGrp.controls)
+    // return <FormArray>data.find((x: { id: number } ) => x.id === id);
+    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
   }
+
+  getGroup(id:number){
+    return <FormArray>(
+      this.getGroupArray().value.find((x: { value: { id: number } }) => x.value.id === id)
+        ?.get('fields')
+    );
+  }
+
   addDataTable() {
     let dataRisk: any = [];
     dataRisk = this.policyDataControls.value[0].cmmrclPln;
 
-    // dataRisk=[{}];
-    // console.log(disableAux);
-  
     for (let data of dataRisk) {
       console.log(data);
       if (data.code == this.data) {
         dataRisk = data;
         console.log(data.name);
-        this.titleBussinesPlan=data.name;
+        this.titleBussinesPlan = data.name;
       }
     }
-    
 
-    // console.log(x);
-
-    // console.log(this.policyDataControls.value[0].cmmrclPln)
-    // if(disableAux.name==)
     this.tableData.push(...dataRisk.cvrg);
-    
+
     this.tableDataService.push(...dataRisk.srvcPln);
   }
-  // getDataCoverages(id: number, position: any) {
-  //   return (<FormArray>this.productService.coverages).controls
-  //     .find((x) => x.value.id === id)
-  //     ?.get(position);
-  // }
-  // getServicesPlan(id: number, position: any) {
-  //   return (<FormArray>this.productService.servicePlans).controls
-  //     .find((x) => x.value.id === id)
-  //     ?.get(position);
-  // }
+
 
   changeCheck(id: any, event: any) {
     const data = this.tableData.find((d) => d.id == id);
     if (data) {
       data.athrzdOprtn.value = event.checked;
     }
-    console.log(data);
-    console.log(this.tableData);
   }
 
   changeCheckServices(id: any, event: any) {
@@ -220,35 +222,181 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     if (data) {
       data.athrzdOprtn.value = event.checked;
     }
-    console.log(data);
-    console.log(this.tableData);
   }
 
   activeButton(data: any) {
-    let btn: boolean, result = data.athrzdOprtn.value;
-    result = result.find((d:any ) => d === 'MDF');
-    result? (btn = false) : (btn = true);
+    let btn: boolean,
+      result = data.athrzdOprtn.value;
+    result = result.find((d: any) => d === 'MDF');
+    result ? (btn = false) : (btn = true);
     return btn;
   }
 
-  openToAdd(level: any){
+  openToAdd() {
+    const columns = [
+      { name: 'name', header: 'Nombre', displayValue: ['label'] },
+      {
+        name: 'description',
+        header: 'Descripción',
+        displayValue: ['description'],
+      },
+      { name: 'shouldDelete', displayValue: [true] },
+      { name: 'element', displayValue: ['element'] },
+    ];
 
-    
+    const dialogRef = this.dialog.open(ModalSearchSmallComponent, {
+      id: 'emissionData',
+      data: {
+        code: 'emissionData',
+        columns: columns,
+        list:  this.getAll(),
+        data:  this.getAllFields(),
+      },
+    });
+    dialogRef.afterClosed().subscribe((res: ElementReturn[]) => {
+      this.addItem(res, 1, true);
+    });
+  }
+  addItem = (obj: ElementReturn[], group: number, showMessage: boolean) => {
+    if (obj) {
+      this.showMessageGroup(showMessage);
+      let nameGruop: any;
+
+      for (let object of obj) {
+        nameGruop = this.getNameGroup(object.element.businessCode);
+        this.addGroupArray(object,nameGruop)
+        console.log(nameGruop)
+          
+        
+      }
+    }
+  };
+  get cvrgDtGrpDataControls(): FormArray {
+    return (<FormArray>(
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')?.get('cmmrclPln')?.get('cvrg')
+    )) as FormArray;
+  }
+  getCvrgDtGrp(id:number){
+    console.log("controls: ",this.cvrgDtGrpDataControls); 
+     return (<FormArray>this.cvrgDtGrpDataControls.controls.find(x => x.value.id === id)?.get('cvrgDtGrp'));
+   }
+
+  addGroupArray(object:any,nameGruop:any){
+
+    let coverage= this.getcoverages(this.idCoverage).value.cvrgDtGrp.controls;
+    console.log(coverage)
+    console.log(this.cvrgDtGrpDataControls);
+     console.log(coverage['0'])
+    console.log(coverage)
+    console.log(nameGruop.id)
+    const index = coverage.findIndex(
+      (x: { id: any }) => x.id === nameGruop.id
+    );
+    console.log(this.getGroupArray());
+  
+    // this.getGroupArray().push(
+    //   new FormGroup({
+    //     id: this.fb.control(object.id, [Validators.required]),
+    //     name: this.fb.control(object.name, [Validators.required]),
+    //     label: this.fb.control(
+    //       object.element.nmLabel
+    //         ? object.element.nmLabel
+    //         : object.element.label,
+    //       [Validators.required]
+    //     ),
+    //     dataType: this.fb.control(object.element.dataType),
+    //     initializeRule: this.fb.array([], []),
+    //     validateRule: this.fb.array([], []),
+    //     dependency: this.fb.control(null, []),
+    //     requiredEssential: this.fb.control(
+    //       object.element.flIsMandatory === 'S' ? true : false,
+    //       [Validators.required]
+    //     ),
+    //     required: this.fb.control(
+    //       object.element.flIsMandatory === 'S' ? true : false,
+    //       [Validators.required]
+    //     ),
+    //     editable: this.fb.control(true, [Validators.required]),
+    //     visible: this.fb.control(true, [Validators.required]),
+    //     fieldGroup: this.fb.control(index + 1, []),
+    //     shouldDelete: this.fb.control(object.shouldDelete, [
+    //       Validators.required,
+    //     ]),
+    //     businessCode: this.fb.control(object.element.businessCode),
+    //     domainList: this.fb.control(object.element.domainList),
+    //   }) 
+    // )
+
+  }
+  showMessageGroup(showMessage:boolean){
+    let data: DataToast = {
+      status: STATES.success,
+      title: 'Asociación exitosa',
+      msg: 'Los datos de la póliza fueron asociados correctamente.',
+    };
+    if (showMessage) {
+      this.toastMessage.openFromComponent(ToastMessageComponent, {
+        data: data,
+      });
+    }
   }
 
+  getNameGroup(name: any) {
+    let objGruop;
+    console.log(this.productService.policyData.value)
+    console.log(name)
+    console.log(this.getComplementaryData(this.idCoverage).value)
+  for (let groups of this.getComplementaryData(this.idCoverage).value) {
+    for (let key of groups.fields) {
+      if (key.businessCode === name) {
+        objGruop = {
+          id: groups.id,
+          code: groups.code,
+          name: groups.name,
+          fields: this.fb.array([], Validators.required),
+          isEditing: groups.isEditing,
+        };
+        break;
+      }
+    }
+  }
+  console.log(objGruop)
+  return objGruop;
+  }
+
+  addRisk(nameGroup:any){
+
+    // if(this.getRiskArrayByIdModify(2).value.findIndex(
+    //   (x: { id: any }) => x.id === nameGroup.id
+    // ) === -1) 
+  
+    // this.getGroupArrayByIdRisk(2).push(
+    //   new FormGroup({
+    //     id: this.fb.control(nameGroup.id),
+    //     code: this.fb.control(nameGroup.code),
+    //     name: this.fb.control(nameGroup.name),
+    //     fields: this.fb.array([], Validators.required),
+    //     isEditing: this.fb.control(nameGroup.isEditing),
+    //   })
+    // );
+}
+
   editData(data: any) {
+    console.log(data, 'editar');
 
-    console.log(data,"editar");
-
-
-    if(data){
-      this.Coverageflag=true;
-    }else{ this.Coverageflag=false;}
-    
+    if (data) {
+      this.Coverageflag = true;
+      this.idCoverage=data.id;
+    } else {
+      this.Coverageflag = false;
+    }
     console.log(this.getcoveragesPln(this.data));
-    console.log(this.getcoverages(data.id),"aqui");
-    console.log(data)
+    console.log(this.getcoverages(data.id), 'aqui');
+    console.log(data);
     console.log(this.policyDataControls);
+  }
 
+  sendDataCoverage(){
+    return this.getcoverages(this.idCoverage).value.cvrgDtGrp
   }
 }
