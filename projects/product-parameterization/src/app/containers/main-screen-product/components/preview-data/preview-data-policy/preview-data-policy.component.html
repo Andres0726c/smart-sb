@@ -7,3 +7,27 @@
         [emptySubText]="'No se han asociado datos para previsualizar'" 
         (action)="openToAdd()">
     </app-no-data-screen>
+
+    <div *ngIf="dataPolicy.length >0">
+    <app-complementary-data
+    [applicationLevel]="'types'"
+    [title]="''"
+    [subtitle]="''"
+    [groupName]="'Datos básicos'"
+    [emptyText]="'Sin datos a modificar'"
+    [emptySubText]="'No se han asociado datos de la póliza a modificar'"
+    [successAddItemMsg]="
+      'Los datos de la póliza fueron asociados correctamente.'
+    "
+    [removeItemMsg]="
+      '¿Está seguro de querer desasociar el dato de la póliza seleccionado?'
+    "
+    [titleModalCompData]="'Seleccionar nuevos datos de la póliza'"
+    [subtitleModalCompData]="
+      'Seleccione los datos de la póliza que desea asociar'
+    "
+    [complementaryData]="dataPolicy"
+    [modifyData]="true"
+  >
+  </app-complementary-data>
+</div>
