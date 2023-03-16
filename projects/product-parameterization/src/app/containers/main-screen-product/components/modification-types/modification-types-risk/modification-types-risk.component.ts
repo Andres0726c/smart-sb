@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,EventEmitter,Output,OnChanges,SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input,EventEmitter,Output } from '@angular/core';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -24,7 +24,7 @@ interface BusinessPlans {
   templateUrl: './modification-types-risk.component.html',
   styleUrls: ['./modification-types-risk.component.scss'],
 })
-export class ModificationTypesRiskComponent implements OnInit,OnChanges {
+export class ModificationTypesRiskComponent implements OnInit {
   @Output() addBranch  =new EventEmitter<BusinessPlans[]>();
   @Input() riskType:string='';
   @Input() titleRisk:string='';
@@ -33,7 +33,7 @@ export class ModificationTypesRiskComponent implements OnInit,OnChanges {
   home = { icon: 'pi pi-home', routerLink: '/' };
   breadcrumb: any;
   showBranch:BusinessPlans[]=[];
-  tableData: BusinessPlans[] = [];
+  tableData: any[] = [];
   athrzdOprtn: OptionsCommercialP[] = [
     { name: 'Reemplazar', key: 'RMP' },
     { name: 'Modificar', key: 'MDF' },
@@ -50,35 +50,36 @@ export class ModificationTypesRiskComponent implements OnInit,OnChanges {
     )) as FormArray;
     }
 
+    getcmmrclPln(id: number) {
+      console.log(id);
+      return (<FormArray>(
+        this.policyDataControls.controls
+          .find((x: { value: { id: number } }) => x.value.id === id)
+          ?.get('cmmrclPln')
+      )) as FormArray;
+    }
+    getAthrzdOprtn(code: string) {
+      return this.getcmmrclPln(2)
+        .controls.find((x: { value: { code: string } }) => x.value.code === code)
+        ?.get('athrzdOprtn')
+    }
+  
   ngOnInit(): void {
-    console.log(this.policyDataControls)
-    this.tableData=this.policyDataControls.value[0].cmmrclPln;
-  }
-  ngOnChanges(changes: SimpleChanges){
+    this.tableData.push(...this.getcmmrclPln(2).getRawValue());
   }
 
 
-  changeCheck() {
 
-    for(let bussines of this.tableData){
-      const result= bussines.athrzdOprtn?.find((key:any)=>key==="MDF"), 
-      result1=bussines.athrzdOprtn?.find((key:any)=>key==="RMP"),
-      exist= this.showBranch.find(({name})=>name===bussines.name);
-      if(result!=undefined && exist==undefined){
-        this.showBranch.push(bussines);    
-      }
-      if((result==undefined && exist!=undefined)){
-        const i= this.showBranch.findIndex(({name})=>name===bussines.name);
-        this.showBranch.splice(i,1);
-      }
-      if(result1!=undefined){
-        this.addBranch.emit(this.tableData);
-      }
-    } 
-      if(this.showBranch){
-        this.addBranch.emit(this.showBranch);
-      }else{
-        this.addBranch.emit([]);
-      }
+  changeCheck(data:any,event:any) {
+
+     if(event.checked!=''){
+      this.addBranch.emit(this.tableData);
+     }else{
+      this.addBranch.emit([]);
+    }
+    let control=this.getAthrzdOprtn(data.code);
+    if(control){
+      control.setValue(event.checked);
+    }
   }
 }

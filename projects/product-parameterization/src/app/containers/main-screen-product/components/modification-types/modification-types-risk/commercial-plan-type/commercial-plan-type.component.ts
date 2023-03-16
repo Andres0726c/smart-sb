@@ -87,33 +87,11 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       { label: 'Planes comerciales' },
       { label: this.titleBussinesPlan },
     ];
+    this.tableData = [];
+    this.tableDataService = [];
     this.addDataTable();
-    this.tableData = this.tableData.map((d) => {
-      // delete athrzdOprtnCopy;
-      return {
-        ...d,
-        athrzdOprtnCopy: d.athrzdOprtn.value,
-      };
-    });
-
-    this.tableDataService = this.tableDataService.map((d) => {
-      // delete athrzdOprtnCopy;
-      return {
-        ...d,
-        athrzdOprtnCopy: d.athrzdOprtn.value,
-      };
-    });
   }
   ngOnInit(): void {
-    // console.log(this.policyDataControls, 'contros');
-    // console.log(this.getcoveragesPln(this.data), 'planes');
-    // console.log(this.productService.coverages);
-    // console.log(
-    //   this.getcoveragesPln(this.data).controls.find(
-    //     (x: { value: { id: number } }) => x.value.id === 8
-    //   )
-    // );
-    // console.log(this.getcoverages(7).value.cvrgDtGrp.controls)
   }
 
   getAllFields() {
@@ -128,24 +106,14 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
 
   getAll() {
     let res: any[] = [];
-    // console.log(this.idCoverage);
-
-    // console.log(this.getComplementaryData(this.idCoverage).getRawValue());
-
-    // console.log(
-    //   this.productService.coverages.controls.find(
-    //     (x: { value: { id: number } }) => x.value.id === this.idCoverage
-    //   )
-    // );
     if (this.idCoverage != 0) {
-      for (const group of this.getcoverages(
+      for (const group of this.getcover(
         this.idCoverage
-      ).value.cvrgDtGrp.getRawValue()) {
+      ).getRawValue()) {
         res = res.concat(group.fields);
       }
     }
 
-    // console.log(res);
     return res;
   }
 
@@ -161,7 +129,31 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       .controls.find((x: { value: { code: string } }) => x.value.code === code)
       ?.get('cvrg')) as FormArray;
   }
+
+  getAthrzdOprtnCoveragePln(id:number){
+    return this.getcoveragesPln(this.data)
+    .controls.find((x: { value: { id: number } }) => x.value.id === id)
+    ?.get('athrzdOprtn');
+}
+  
+  
+  
+  getSrvcPln(code: string) {
+    return (<FormArray>this.getcmmrclPln(2)
+      .controls.find((x: { value: { code: string } }) => x.value.code === code)
+      ?.get('srvcPln')) as FormArray;
+  }
+
+  getAthrzdOprtnSrvcPln(id:number){
+    return this.getSrvcPln(this.data)
+    .controls.find((x: { value: { id: number } }) => x.value.id === id)
+    ?.get('athrzdOprtn');
+}
+  
+
   getComplementaryData(id: number) {
+    console.log(this.productService.coverages);
+
     return (<FormArray>(
       this.productService.coverages.controls
         .find((x: { value: { id: number } }) => x.value.id === id)
@@ -175,79 +167,57 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       )
     )) as FormArray;
   }
-  get cvrgDtGrpDataControls(): FormArray {
+  getcover(id: number) {
     return (<FormArray>(
-      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')?.get('cmmrclPln')?.get('cvrg')
+      this.getcoveragesPln(this.data).controls.find(
+        (x: { value: { id: number } }) => x.value.id === id
+      )?.get('cvrgDtGrp')
     )) as FormArray;
   }
+
+
   get policyDataControls(): FormArray {
     return (<FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
     )) as FormArray;
   }
 
-  getRiskArraydById(id: number) {
-    return <FormArray>(
-      this.productService.riskTypes.controls
-        .find((x: { value: { id: number } }) => x.value.id === 2)
-        ?.get('complementaryData')
-    );
-  }
+
 
   getGroupArray(id: number) {
-    return <FormArray>this.getcoverages(this.idCoverage)
-      .value.cvrgDtGrp.controls.find(
+    return <FormArray>this.getcover(this.idCoverage).controls.find(
         (x: { value: { id: number } }) => x.value.id === id
       )
       ?.get('fields');
   }
-  getCvrgDtGrp(){
-  console.log(this.getcoveragesPln(this.data).controls.find((x: { value: { id: number; }; }) => x.value.id=== this.idCoverage));
-     return (<FormArray>this.getcoveragesPln(this.data).controls.find((x: { value: { id: number; }; }) => x.value.id=== this.idCoverage)?.value.cvrgDtGrp);
-   }
+
  
 
   addDataTable() {
-    let dataRisk: any = [];
     this.tableData = [];
     this.tableDataService = [];
-    dataRisk = this.policyDataControls.value[0].cmmrclPln;
-
-    for (let data of dataRisk) {
-      // console.log(data);
-      if (data.code == this.data) {
-        dataRisk = data;
-        // console.log(data.name);
-        this.titleBussinesPlan = data.name;
-      }
-    }
-
-    this.tableData.push(...dataRisk.cvrg);
-
-    this.tableDataService.push(...dataRisk.srvcPln);
+    this.tableData.push(...this.getcoveragesPln(this.data).getRawValue());
+    this.tableDataService.push(...this.getSrvcPln(this.data).getRawValue());
   }
 
-  changeCheck(id: any, event: any) {
-    let option;
-    const data = this.tableData.find((d) => d.id == id);
-    // console.log(data);
-    if (data) {
-      data.athrzdOprtn.setValue(event.checked);
+  changeCheck(id: number, event: any) {
+    let control=this.getAthrzdOprtnCoveragePln(id);
+    if(control){
+      control.setValue(event.checked);
     }
   }
 
   changeCheckServices(id: any, event: any) {
-    const data = this.tableDataService.find((d) => d.id == id);
-    if (data) {
-      data.athrzdOprtn.value = event.checked;
+    let control=this.getAthrzdOprtnSrvcPln(id);
+    if(control){
+      control.setValue(event.checked);
     }
+    
   }
 
   activeButton(data: any) {
-    let btn: boolean,
-      result = data.athrzdOprtn.value;
-    result = result.find((d: any) => d === 'MDF');
-    result ? (btn = false) : (btn = true);
+    let btn: boolean; 
+      data.athrzdOprtn.find((d:any)=>d=='MDF') ? (btn = false) : (btn = true);
     return btn;
   }
 
@@ -289,10 +259,9 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     }
   };
 add(nameGroup:any){
-  if(this.getcoverages(this.idCoverage).value.cvrgDtGrp.value.findIndex(
+  if(this.getcover(this.idCoverage).value.findIndex(
     (x: { id: any }) => x.id === nameGroup.id) === -1)
-    console.log(this.getCvrgDtGrp());
-    this.getCvrgDtGrp().push(
+    this.getcover(this.idCoverage).push(
       new FormGroup({
         id: this.fb.control(nameGroup.id),
         code: this.fb.control(nameGroup.code),
@@ -301,16 +270,11 @@ add(nameGroup:any){
         isEditing: this.fb.control(nameGroup.isEditing),
       })
     )
-    // this.getcoverages(this.idCoverage).value.cvrgDtGrp)
+
 }
   addGroupArray(object: any, nameGruop: any) {
-    let coverage = this.getcoverages(this.idCoverage).value.cvrgDtGrp.value;
 
-    const index = coverage.findIndex((x: { id: any }) => x.id === nameGruop.id);
-    console.log("object: ",object);
-    console.log(coverage);
-    console.log("nameGruop: ",nameGruop)
-    console.log("index: ",index)
+    const index = this.getcover(this.idCoverage).value.findIndex((x: { id: any }) => x.id === nameGruop.id);
     this.getGroupArray(index + 1).push(
       new FormGroup({
         id: this.fb.control(object.id, [Validators.required]),
@@ -343,7 +307,6 @@ add(nameGroup:any){
         domainList: this.fb.control(object.element.domainList),
       })
     );
-    console.log(this.productService.mdfctnPrcss);
   }
   showMessageGroup(showMessage: boolean) {
     let data: DataToast = {
@@ -360,9 +323,6 @@ add(nameGroup:any){
 
   getNameGroup(name: any) {
     let objGruop;
-    // console.log(this.productService.policyData.value);
-    // console.log(name);
-    // console.log(this.getComplementaryData(this.idCoverage).value);
     for (let groups of this.getComplementaryData(this.idCoverage).value) {
       for (let key of groups.fields) {
         if (key.businessCode === name) {
@@ -377,15 +337,12 @@ add(nameGroup:any){
         }
       }
     }
-    console.log(objGruop);
     return objGruop;
   }
 
 
 
   editData(data: any) {
-    console.log(data, 'editar');
-
     if (data) {
       this.idCoverage = data.id;
       this.titleCurrent=data.name;
@@ -393,14 +350,10 @@ add(nameGroup:any){
     } else {
       this.coverageflag = false;
     }
-    // console.log(this.getcoveragesPln(this.data));
-    // console.log(this.getcoverages(data.id), 'aqui');
-    // console.log(data);
-    // console.log(this.policyDataControls);
+
   }
 
   sendDataCoverage() {
-    // console.log(this.getcoverages(this.idCoverage).value.cvrgDtGrp);
-    return this.getcoverages(this.idCoverage).value.cvrgDtGrp;
+    return this.getcover(this.idCoverage);
   }
 }

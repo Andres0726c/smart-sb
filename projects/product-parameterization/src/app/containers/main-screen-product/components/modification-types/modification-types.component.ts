@@ -63,41 +63,75 @@ export class ModificationTypesComponent implements OnInit {
     public productService: ProductService
   ) {}
   ngOnInit(): void {
+  console.log(this.productService.policyData);
     if (
       (<FormArray>(
         this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
       )).length === 0
     ) {
       this.productService.addRisk();
-      
     }
     this.getcmmrclPln(2).clear();
 
-      if (this.getcmmrclPln(2).length === 0) {
-        this.addDataRisk();
-      }
-      this.calledMenu();
+    if (this.getcmmrclPln(2).length === 0) {
+      this.addDataRisk();
+    }
+
+    this.calledMenu();
   }
 
   addDataRisk() {
+    let coverages:any = this.fb.array([]);
+    let servicePlans:any = this.fb.array([]);
     for (const risk of this.productService.riskTypes.value) {
       for (let plan of risk.businessPlans) {
+        for (let coverage of plan.coverages) {
+          coverages.push(
+            this.fb.group({
+              id: this.fb.control(coverage.id),
+              required: this.fb.control(coverage.required),
+              name: this.fb.control(
+                this.getDataCoverages(coverage.id, 'name')?.value
+              ),
+              description: this.fb.control(
+                this.getDataCoverages(coverage.id, 'description')?.value
+              ),
+              athrzdOprtn: this.fb.control([]),
+              cvrgDtGrp: this.fb.array([], []),
+            })
+          );
+  
+          // obj.push(objCovereage);
+        }
+        for (let servicePlan of plan.servicePlans) {
+          servicePlans.push(
+            this.fb.group({
+              id: this.fb.control(servicePlan.id),
+              required: this.fb.control(servicePlan.required),
+              name: this.fb.control(
+                this.getServicesPlan(servicePlan.id, 'name')?.value
+              ),
+              description: this.fb.control(
+                this.getServicesPlan(servicePlan.id, 'description')?.value
+              ),
+              athrzdOprtn: this.fb.control([]),
+            })
+          );
+          // obj.push(objSerivePLan);
+        }
         this.getcmmrclPln(risk.id).push(
           this.fb.group({
             name: this.fb.control(plan.name),
             code: this.fb.control(plan.code),
             description: this.fb.control(plan.description),
             athrzdOprtn: this.fb.control([]),
-            cvrg: this.fb.array(this.getCoverages(plan, 'coverage')),
-            srvcPln: this.fb.control(this.getCoverages(plan, 'servicePlan')),
+            cvrg:coverages ,
+            srvcPln:servicePlans,
           })
         );
       }
     }
 
-    //this.getcmmrclPln(2).clear();
-
-    console.log(this.productService.mdfctnPrcss);
   }
 
   getDataCoverages(id: number, position: any) {
@@ -112,31 +146,42 @@ export class ModificationTypesComponent implements OnInit {
   }
 
   getCoverages(plan: any, level: any) {
-    let obj: any = [];
+    let obj: any = new FormArray([]);
 
     if (level === 'coverage') {
       for (let coverage of plan.coverages) {
-        let objCovereage = {
-          id: coverage.id,
-          required: coverage.required,
-          name: this.getDataCoverages(coverage.id, 'name')?.value,
-          description: this.getDataCoverages(coverage.id, 'description')?.value,
-          athrzdOprtn: this.fb.control([]),
-          cvrgDtGrp: this.fb.array([],[]),
-        };
-        obj.push(objCovereage);
+        obj.push(
+          this.fb.group({
+            id: this.fb.control(coverage.id),
+            required: this.fb.control(coverage.required),
+            name: this.fb.control(
+              this.getDataCoverages(coverage.id, 'name')?.value
+            ),
+            description: this.fb.control(
+              this.getDataCoverages(coverage.id, 'description')?.value
+            ),
+            athrzdOprtn: this.fb.control([]),
+            cvrgDtGrp: this.fb.array([], []),
+          })
+        );
+
+        // obj.push(objCovereage);
       }
     } else {
       for (let servicePlan of plan.servicePlans) {
-        let objSerivePLan = {
-          id: this.fb.control(servicePlan.id),
-          required: servicePlan.required,
-          name: this.getServicesPlan(servicePlan.id, 'name')?.value,
-          description: this.getServicesPlan(servicePlan.id, 'description')
-            ?.value,
-          athrzdOprtn: this.fb.control([]),
-        };
-        obj.push(objSerivePLan);
+        obj.push(
+          this.fb.group({
+            id: this.fb.control(servicePlan.id),
+            required: this.fb.control(servicePlan.required),
+            name: this.fb.control(
+              this.getServicesPlan(servicePlan.id, 'name')?.value
+            ),
+            description: this.fb.control(
+              this.getServicesPlan(servicePlan.id, 'description')?.value
+            ),
+            athrzdOprtn: this.fb.control([]),
+          })
+        );
       }
     }
 
@@ -157,19 +202,8 @@ export class ModificationTypesComponent implements OnInit {
         .find((x: { value: { id: number } }) => x.value.id === id)
         ?.get('fields')
     );
-    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
   }
 
-  getGroupArrayByIdRisk(id: number) {
-    //  console.log(id)
-    // console.log(this.complementaryDataControls.controls)
-    return <FormArray>(
-      this.complementaryDataControls.controls
-        .find((x: { value: { id: number } }) => x.value.id === id)
-        ?.get('fields')
-    );
-    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
-  }
 
   openToAdd(level: any): void {
     const columns = [
@@ -243,38 +277,16 @@ export class ModificationTypesComponent implements OnInit {
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
     )) as FormArray;
   }
-  get cvrgDtGrpDataControls(): FormArray {
-    return (<FormArray>(
-      this.productService.mdfctnPrcss
-        ?.get('mdfcblDt')
-        ?.get('rskTyp')
-        ?.get('cmmrclPln')
-        ?.get('cvrg')
-    )) as FormArray;
-  }
+
   getRiskArrayByIdModify(id: number) {
-    //console.log(this.policyDataControls.controls.find(x => x.value.id === 2)?.get('rskTypDtGrp'))
     return <FormArray>(
       this.policyDataControls.controls
-        .find((x) => x.value.id === 2)
+        .find((x) => x.value.id === id)
         ?.get('rskTypDtGrp')
     );
   }
-  getCvrgDtGrp(id: number) {
-    console.log('controls: ', this.cvrgDtGrpDataControls);
-    return <FormArray>(
-      this.cvrgDtGrpDataControls.controls
-        .find((x) => x.value.id === id)
-        ?.get('cvrgDtGrp')
-    );
-  }
 
-  getcoveragesPln(id: string) {
-    return <FormArray>this.getcmmrclPln(2)
-      .controls.find((x: { value: { code: string } }) => x.value.code === id)
-      ?.get('coverages');
-    //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
-  }
+
   getRiskArraydById(id: number) {
     return <FormArray>(
       this.productService.riskTypes.controls
@@ -345,7 +357,6 @@ export class ModificationTypesComponent implements OnInit {
     const index = this.getRiskArraydById(2).value.findIndex(
       (x: { id: any }) => x.id === nameGruop.id
     );
-    console.log(index);
     this.getGroupArrayByIdModify(index + 1).push(
       new FormGroup({
         id: this.fb.control(object.id, [Validators.required]),
@@ -407,7 +418,7 @@ export class ModificationTypesComponent implements OnInit {
         (x: { id: any }) => x.id === nameGroup.id
       ) === -1
     )
-      this.getGroupArrayByIdRisk(2).push(
+      this.getRiskArrayByIdModify(2).push(
         new FormGroup({
           id: this.fb.control(nameGroup.id),
           code: this.fb.control(nameGroup.code),
@@ -464,7 +475,7 @@ export class ModificationTypesComponent implements OnInit {
     }
     return objGruop;
   }
-  addBranch(items: any, showMenu?: BussinesPlans[]): MenuItem[] {
+  addBranch(items: any, showMenu?: any[]): MenuItem[] {
     let list: MenuItem[] = [];
 
     for (let itempush of items) {
@@ -473,9 +484,6 @@ export class ModificationTypesComponent implements OnInit {
           id: itempush.id,
           label: label1,
           icon: 'pi pi-fw',
-          // command: (event: any) => {
-          //   this.dataSet(itempush);
-          // },
           items: [
             {
               label: 'Planes comerciales',
@@ -492,7 +500,7 @@ export class ModificationTypesComponent implements OnInit {
     return list;
   }
 
-  addBusinessPlan(bussinesPlan: any, showMenu?: BussinesPlans[]) {
+  addBusinessPlan(bussinesPlan: any, showMenu?: any[]) {
     let list: MenuItem[] = [];
     if (!showMenu) {
       showMenu = [];
@@ -508,10 +516,7 @@ export class ModificationTypesComponent implements OnInit {
         disabled: this.addBranchCoverage(showMenu, itempush),
         command: (event: any) => {
           this.titleCommercialPlan = itempush.name;
-          console.log(itempush.name);
           this.sendData(itempush.code, itempush.name);
-
-          // this.sendData(event.item.id);
         },
       };
       list.push(label);
@@ -522,11 +527,9 @@ export class ModificationTypesComponent implements OnInit {
   onAddBranch(showMenu: any[]) {
     this.calledMenu(showMenu);
     this.showBranch = showMenu;
-    console.log(showMenu);
-    console.log(this.getcmmrclPln(2));
   }
 
-  calledMenu(showMenu?: BussinesPlans[]) {
+  calledMenu(showMenu?: any[]) {
     this.items1 = [
       {
         label: 'Datos de la póliza',
@@ -547,7 +550,7 @@ export class ModificationTypesComponent implements OnInit {
       },
     ];
   }
-  addBranchCoverage(showMenu: BussinesPlans[], itempush: any) {
+  addBranchCoverage(showMenu: any[], itempush: any) {
     let validate: boolean = true;
     for (let onOption of showMenu) {
       const result = onOption.athrzdOprtn?.find((key: any) => key === 'MDF');

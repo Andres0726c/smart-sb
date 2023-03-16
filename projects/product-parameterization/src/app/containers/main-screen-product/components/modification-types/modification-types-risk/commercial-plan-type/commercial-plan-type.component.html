@@ -49,7 +49,7 @@
                         (onChange)="changeCheck(data.id,$event)"
                         [value]="option.key"
                         [disabled]="data.required && option.key=='RMV'"
-                        [(ngModel)]="data.athrzdOprtnCopy"
+                        [(ngModel)]="data.athrzdOprtn"
                         ></p-checkbox>
                       {{ option.name }}
                     </label>
@@ -95,7 +95,7 @@
                         (onChange)="changeCheckServices(data.id,$event)"
                         [value]="option.key"
                         [disabled]="data.required && option.key=='RMV'"
-                        [(ngModel)]="data.athrzdOprtnCopy"
+                        [(ngModel)]="data.athrzdOprtn"
                       ></p-checkbox>
                       {{ option.name }}
                     </label>

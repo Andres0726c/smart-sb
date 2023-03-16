@@ -17,7 +17,7 @@
               <div *ngFor="let option of athrzdOprtn; let i = index" class="field-checkbox">
                 <label>
                   <p-checkbox
-                    (onChange)="changeCheck()"
+                    (onChange)="changeCheck(data,$event)"
                     [value]="option.key"
                     [(ngModel)]="data.athrzdOprtn"
                   ></p-checkbox>
