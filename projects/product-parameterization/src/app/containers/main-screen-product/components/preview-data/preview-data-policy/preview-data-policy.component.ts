@@ -153,6 +153,7 @@ getNameGroup(name: any) {
 
   let objGruop;
   for (let groups of this.productService.policyData.value) {
+    console.log(groups,"grupos");
     for (let key of groups.fields) {
       if (key.businessCode === name) {
         objGruop = {
@@ -164,6 +165,16 @@ getNameGroup(name: any) {
         };
         break;
       }
+      // else {
+      //   objGruop = {
+      //     id: 'datos_contexto',
+      //     code: 'datos_contexto',
+      //     name: 'Datos de contexto',
+      //     fields: this.fb.array([], Validators.required),
+      //     isEditing: false,
+      //   };
+
+      // }
     }
   }
   return objGruop;
