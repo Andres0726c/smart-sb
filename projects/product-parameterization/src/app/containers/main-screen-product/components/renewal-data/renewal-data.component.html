@@ -11,7 +11,7 @@
             <div class="flex flex-col w-full mb-5">
                 <label class="text-base mb-2">Causas de renovación</label>
                 <p-multiSelect [options]="causes" formControlName="rnwlCsCd" (click)="$event.stopImmediatePropagation();"
-                    styleClass="w-full" optionLabel="name" optionValue="businessCode" [maxSelectedLabels]="1" (onChange)="setCsDependency($event)">
+                    styleClass="w-full" optionLabel="name" optionValue="businessCode" [maxSelectedLabels]="1" (onChange)="verifyCsProcess($event.value)">
                     <ng-template let-value pTemplate="selectedItems" class="w-full">
                         <div class="flex w-full">
                             <div *ngIf="value.length > 0" class="chip-select">
