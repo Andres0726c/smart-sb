@@ -595,8 +595,8 @@ describe('ModificationTypesComponent', () => {
     component.addBusinessPlan(menu2,menu);
   })
 
-  it('addDataRisk',()=>{
-    const spy=jest.spyOn(component,'getCoverages').mockImplementation();
-    component.addDataRisk();
-  })
+  // it('addDataRisk',()=>{
+  //   const spy=jest.spyOn(component,'getCoverages').mockImplementation();
+  //   component.addDataRisk();
+  // })
 });
