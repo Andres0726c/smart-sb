@@ -18,13 +18,29 @@
           (click)="$event.stopImmediatePropagation()"
           styleClass="w-full"
           optionLabel="name"
+          optionValue="businessCode"
           [maxSelectedLabels]="1"
+          (onChange)="verifyCsProcess($event.value)"
         >
           <ng-template let-value pTemplate="selectedItems" class="w-full">
             <div class="flex w-full">
               <div *ngIf="value.length > 0" class="chip-select">
-                {{ value[0].name }}
-                <button (click)="value.splice(0, 1)">
+                <span class="chip-lable">
+                  {{
+                    productService.getProductDependency(
+                      "cs",
+                      this.productService.rnsttmntPrcss.get("rnsttmntCsCd")
+                        ?.value[0]
+                    )?.nm
+                  }}
+                </span>
+                <button
+                  (click)="
+                    $event.stopImmediatePropagation();
+                    removeCsProcess(value[0]);
+                    value.splice(0, 1)
+                  "
+                >
                   <em class="fal fa-times-circle chip-select__icon"></em>
                 </button>
               </div>
@@ -49,11 +65,18 @@
             styleClass="w-full w-full-chips"
             inputStyleClass="w-full"
             placeholder="Seleccione"
+            (onRemove)="removeRule($event.value)"
           >
             <ng-template let-item pTemplate="item" class="w-full">
               <span
                 class="w-full whitespace-nowrap overflow-hidden text-ellipsis"
-                >{{ item.name }}</span
+                >{{
+                  productService.getProductDependency(
+                    "rl",
+                    this.productService.rnsttmntPrcss.get("clcltnRl")?.value[0]
+                      .rlCd
+                  )?.nm
+                }}</span
               >
             </ng-template>
           </p-chips>

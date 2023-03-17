@@ -14,8 +14,12 @@ export class RehabilitationDataComponent implements OnInit {
   contextData: any = [];
   applicationLevel = 'Rehabilitación';
   flagError = false;
-
+  flagCsProcess = false;
+  causesPrevValue: any[] = [];
   causes: any = [];
+  rmsDpndncy: any;
+  rm: any;
+  rulePrevValue: any = [];
 
   constructor(
     public productService: ProductService,
@@ -23,6 +27,12 @@ export class RehabilitationDataComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.rmsDpndncy = this.productService.prdctDpndncy?.get('insrncLn')?.value;
+    this.rm = this.rmsDpndncy.find(
+      (element: any) =>
+        element.id ===
+        this.productService.initialParameters?.get('insuranceLine')?.value
+    );
     this.loadContextData();
     this.getCauses();
   }
@@ -89,7 +99,7 @@ export class RehabilitationDataComponent implements OnInit {
     const dialogRef = this.dialogService.open(RulesWizardComponent, {
       data: {
         code: code,
-        list: this.productService.rnsttmntPrcss?.get(field)?.value,
+        list: this.getRulesDp(),
         columns: columns,
         paramValues: this.getParamValuesList(),
       },
@@ -106,20 +116,65 @@ export class RehabilitationDataComponent implements OnInit {
   }
 
   addRule(field: string, objRule: any) {
+    if (this.rulePrevValue.length > 0) {
+      // vamos a eliminar la regla anterior
+      this.productService.deleteDependencyRef('rl', this.rulePrevValue.rlCd, 'rhClcltnRl');
+    }
     let arr: any[] = [];
-    let element: any = {
+    let parametersList: any = {};
+
+    try {
+      parametersList = JSON.parse(objRule.rule.nmParameterList);
+    } catch (error) {
+      parametersList = {};
+    }
+
+    let elementDp: any = {
       id: objRule.rule.id,
-      name: objRule.rule.name,
-      cdBusinessCode: objRule.rule.cdBusinessCode,
-      description: objRule.rule.description,
-      cdRuleType: objRule.rule.cdRuleType,
-      endPoint: objRule.rule.endPoint,
-      rlEngnCd: objRule.rule.rlEngnCd,
-      argmntLst: objRule.parameters,
+      cd: objRule.rule.cdBusinessCode,
+      nm: objRule.rule.name,
+      vrsn: objRule.rule.nmVersion,
+      dscrptn: objRule.rule.description,
+      prmtrLst: parametersList,
+      rtrnLst: objRule.rule.nmReturnList,
+      rlTypItm: objRule.rule.cdRuleType,
+      aplctnLvlItm: objRule.rule.applicationLevel,
+      endPnt: {
+        url: objRule.rule.endPoint,
+        rlEngnCd: objRule.rule.rlEngnCd
+      },
+      sttsCd: 'ACT',
+      insrncLnCd: [this.rm.cd]
     };
 
+    let objRlArgs = this.mapRuleArgs(objRule.parameters);
+
+    let element: any = {
+      rlCd: objRule.rule.cdBusinessCode, 
+      argmntLst: objRlArgs
+    };
+
+    this.productService.setProductDependency('rl', elementDp);
+    this.productService.setDependencyRef('rl', elementDp.cd, 'rhClcltnRl');
     arr.push(element);
-    this.productService.rnsttmntPrcss?.get(field)?.setValue(arr);
+    this.productService.rnsttmntPrcss.get(field)?.setValue(arr);
+    this.rulePrevValue = element;
+  }
+
+  mapRuleArgs(args: any) {
+    let obj: any = {};
+    for (let item of args) {
+      obj[item.name] = item.value;
+    }
+    return obj;
+  }
+
+  getRulesDp() {
+    let res: any[] = [];
+    for(const rule of this.productService.rnsttmntPrcss.get('clcltnRl')?.value) {
+      res.push(this.productService.getProductDependency('rl', rule.rlCd));
+    }
+    return res;
   }
 
   getParamValuesList() {
@@ -180,5 +235,52 @@ export class RehabilitationDataComponent implements OnInit {
       this.flagError = true;
       console.error('Ha ocurrido un error al obtener los datos de las causas');
     }
+  }
+
+  verifyCsProcess(value: any) {
+    if (!this.flagCsProcess && this.causesPrevValue.length === 0) {
+      this.causesPrevValue = value;
+      this.flagCsProcess = true;
+    }
+    if (this.causesPrevValue.length > value.length) {
+      // vamos a eliminar causas
+      const diff = this.causesPrevValue.filter((x: any) => !value.includes(x));
+
+      for (let cause of diff) {
+        this.productService.deleteDependencyRef('cs', cause, 'rnsttmntCsCd');
+      }
+    } else {
+      // vamos a agregar causas
+      this.setCsDependency(value);
+    }
+    this.causesPrevValue = value;
+  }
+
+  setCsDependency(value: any) {
+    for (let cs of value) {
+      const cause: any = this.causes.find((x: any) => x.businessCode === cs);
+      const obj = {
+        id: cause.id,
+        cd: cause.businessCode,
+        nm: cause.name,
+        dscrptn: cause.description,
+        sttCd: cause.statusCode,
+        aplctnPrcssItm: cause.aplicationProcess,
+        aplctnSbprcssCd: cause.aplicationSubProcess,
+        insrncLnCd: [this.rm.cd],
+      };
+
+      this.productService.setProductDependency('cs', obj);
+      this.productService.setDependencyRef('cs', obj.cd, 'rnsttmntCsCd');
+    }
+  }
+
+  removeCsProcess(value: any) {
+    this.productService.deleteDependencyRef('cs', value, 'rnsttmntCsCd');
+  }
+
+  removeRule(value: any) {
+    this.productService.deleteDependencyRef('rl', value.rlCd, 'rhClcltnRl');
+    this.rulePrevValue = [];
   }
 }

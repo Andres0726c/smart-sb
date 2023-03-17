@@ -65,6 +65,7 @@
             styleClass="w-full w-full-chips"
             inputStyleClass="w-full"
             placeholder="Seleccione"
+            (onRemove)="removeRule($event.value)"
           >
             <ng-template let-item pTemplate="item" class="w-full">
               <span
@@ -74,7 +75,7 @@
                     "rl",
                     this.productService.cnclltnPrcss.get("clcltnRl")?.value[0]
                       .rlCd
-                  ).nm
+                  )?.nm
                 }}</span
               >
             </ng-template>

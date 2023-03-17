@@ -19,8 +19,7 @@ export class CancellationDataComponent implements OnInit {
   causes: any = [];
   rmsDpndncy: any;
   rm: any;
-
-  causesShow: any[] = [];
+  rulePrevValue: any = [];
 
   constructor(
     public productService: ProductService,
@@ -101,7 +100,7 @@ export class CancellationDataComponent implements OnInit {
     const dialogRef = this.dialogService.open(RulesWizardComponent, {
       data: {
         code: code,
-        list: this.productService.cnclltnPrcss?.get(field)?.value,
+        list: this.getRulesDp(),
         columns: columns,
         paramValues: this.getParamValuesList(),
       },
@@ -118,38 +117,65 @@ export class CancellationDataComponent implements OnInit {
   }
 
   addRule(field: string, objRule: any) {
-    console.log(objRule);
-
+    if (this.rulePrevValue.length > 0) {
+      // vamos a eliminar la regla anterior
+      this.productService.deleteDependencyRef('rl', this.rulePrevValue.rlCd, 'cnClcltnRl');
+    }
     let arr: any[] = [];
+    let parametersList: any = {};
 
-    let element: any = {
-      rlCd: objRule.rule.cdBusinessCode,
-      argmntLst: objRule.parameters,
-    };
+    try {
+      parametersList = JSON.parse(objRule.rule.nmParameterList);
+    } catch (error) {
+      parametersList = {};
+    }
 
     let elementDp: any = {
+      id: objRule.rule.id,
       cd: objRule.rule.cdBusinessCode,
       nm: objRule.rule.name,
-      vrsn: '', //Falta
+      vrsn: objRule.rule.nmVersion,
       dscrptn: objRule.rule.description,
-      prmtrLst: '', //validar
-      rtrnLst: '', //validar
+      prmtrLst: parametersList,
+      rtrnLst: objRule.rule.nmReturnList,
       rlTypItm: objRule.rule.cdRuleType,
-      aplctnLvlItm: this.applicationLevel,
+      aplctnLvlItm: objRule.rule.applicationLevel,
       endPnt: {
         url: objRule.rule.endPoint,
-        rlEngnCd: objRule.rule.rlEngnCd, //Setear rlEngnCd
+        rlEngnCd: objRule.rule.rlEngnCd
       },
-      sttsCd: 'ACT', //validar
-      insrncLnCd: [this.rm.cd],
+      sttsCd: 'ACT',
+      insrncLnCd: [this.rm.cd]
+    };
+
+    let objRlArgs = this.mapRuleArgs(objRule.parameters);
+
+    let element: any = {
+      rlCd: objRule.rule.cdBusinessCode, 
+      argmntLst: objRlArgs
     };
 
     this.productService.setProductDependency('rl', elementDp);
+    this.productService.setDependencyRef('rl', elementDp.cd, 'cnClcltnRl');
     arr.push(element);
-    this.productService.cnclltnPrcss?.get(field)?.setValue(arr);
+    this.productService.cnclltnPrcss.get(field)?.setValue(arr);
+    this.rulePrevValue = element;
+  }
 
-    console.log('cnclltnPrcss', this.productService.cnclltnPrcss);
-    console.log('prdctDpndncy', this.productService.prdctDpndncy);
+  mapRuleArgs(args: any) {
+    let obj: any = {};
+    for (let item of args) {
+      obj[item.name] = item.value;
+    }
+    return obj;
+  }
+
+  getRulesDp() {
+    let res: any[] = [];
+    for(const rule of this.productService.cnclltnPrcss.get('clcltnRl')?.value) {
+      res.push(this.productService.getProductDependency('rl', rule.rlCd));
+    }
+    return res;
   }
 
   getParamValuesList() {
@@ -219,11 +245,10 @@ export class CancellationDataComponent implements OnInit {
     }
     if (this.causesPrevValue.length > value.length) {
       // vamos a eliminar causas
-      console.log('vamos a eliminar causas');
       const diff = this.causesPrevValue.filter((x: any) => !value.includes(x));
 
       for (let cause of diff) {
-        this.productService.deleteDependencyRef(cause, 'cnclltnCsCd');
+        this.productService.deleteDependencyRef('cs', cause, 'cnclltnCsCd');
       }
     } else {
       // vamos a agregar causas
@@ -252,6 +277,11 @@ export class CancellationDataComponent implements OnInit {
   }
 
   removeCsProcess(value: any) {
-    this.productService.deleteDependencyRef(value, 'cnclltnCsCd');
+    this.productService.deleteDependencyRef('cs', value, 'cnclltnCsCd');
+  }
+
+  removeRule(value: any) {
+    this.productService.deleteDependencyRef('rl', value.rlCd, 'cnClcltnRl');
+    this.rulePrevValue = [];
   }
 }
