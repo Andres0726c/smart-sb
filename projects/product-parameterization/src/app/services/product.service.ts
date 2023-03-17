@@ -58,6 +58,10 @@ export class ProductService {
 
 
   defaultArrays = [
+    'uses',
+    'insrncLnCd',
+    'clcltnRl',
+    'rnwlCsCd',
     'selectedProcess',
     'conceptReserv'
   ];
@@ -324,7 +328,7 @@ export class ProductService {
       cancellation: this.cancellation.getRawValue(),
       rehabilitation: this.rehabilitation.getRawValue(),
       rnwlPrcss: this.rnwlPrcss.getRawValue(),
-      prdctDpndncy: this.rnwlPrcss.getRawValue(),
+      prdctDpndncy: this.prdctDpndncy.getRawValue(),
       references: this.references.getRawValue()
     };
   }
@@ -775,15 +779,15 @@ export class ProductService {
   
  }
 
- deleteDependencyRef(code: string, use: string) {
+ deleteDependencyRef(key: string, code: string, use: string) {
   const el = this.references.value.find((x: any) => x.cd === code);
   el.uses = el.uses.filter((item: any) => item !== use);
 
   // determinamos si la dependencia tiene usos
   if (el.uses.length === 0) {
     // vamos a eliminar la dependencia y su referencia
-    this.deleteProductDependency('cs', el.code);
-    this.references.value.splice(this.references.value.indexOf(el), 1);
+    this.deleteProductDependency(key, el.cd);
+    this.references.removeAt(this.references.value.indexOf(el));
   }
  }
 
