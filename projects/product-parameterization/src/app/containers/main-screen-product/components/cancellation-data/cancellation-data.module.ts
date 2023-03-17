@@ -10,6 +10,8 @@ import { ButtonModule } from 'primeng/button';
 import { RulesWizardModule } from 'projects/product-parameterization/src/app/shared/rules-wizard/rules-wizard.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CommonsLibModule } from 'commons-lib';
 
 const routes: Route[] = [
   {
@@ -31,6 +33,8 @@ const routes: Route[] = [
     RulesWizardModule,
     FormsModule,
     ReactiveFormsModule,
+    ProgressSpinnerModule,
+    CommonsLibModule
   ],
   exports: [CancellationDataComponent],
   providers: [DialogService],

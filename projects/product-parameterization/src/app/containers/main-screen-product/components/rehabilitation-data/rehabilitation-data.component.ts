@@ -20,6 +20,7 @@ export class RehabilitationDataComponent implements OnInit {
   rmsDpndncy: any;
   rm: any;
   rulePrevValue: any = [];
+  isLoading = false;
 
   constructor(
     public productService: ProductService,
@@ -39,6 +40,7 @@ export class RehabilitationDataComponent implements OnInit {
 
   async loadContextData() {
     try {
+      this.isLoading = true;
       let res: any;
       res = await lastValueFrom(
         this.productService.getApiData(`domainList/DATOS_CONTEXTO`)
@@ -52,7 +54,10 @@ export class RehabilitationDataComponent implements OnInit {
           data.applctnLvl.includes(this.applicationLevel) ||
           data.applctnLvl.includes('*')
       );
+
+      this.isLoading = false;
     } catch (error) {
+      this.isLoading = false;
       this.flagError = true;
       console.error('Ha ocurrido un error al obtener los datos necesarios');
     }
@@ -223,6 +228,7 @@ export class RehabilitationDataComponent implements OnInit {
         : '0';
 
     try {
+      this.isLoading = true;
       let res: any;
       res = await lastValueFrom(
         this.productService.getApiData(
@@ -231,7 +237,9 @@ export class RehabilitationDataComponent implements OnInit {
       );
 
       this.causes = res.body;
+      this.isLoading = false;
     } catch (error) {
+      this.isLoading = false;
       this.flagError = true;
       console.error('Ha ocurrido un error al obtener los datos de las causas');
     }
