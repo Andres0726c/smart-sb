@@ -528,8 +528,10 @@ export class ProductService {
         }))
        
         this.addRisk();
-       
-
+      }
+     
+      if (!this.mdfctnPrcss.contains('mdfctnTchnclCntrl')) {
+        this.mdfctnPrcss.addControl( 'mdfctnTchnclCntrl', this.fb.array([]));
       }
       
       if((<FormArray>( this.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))).length ===0)

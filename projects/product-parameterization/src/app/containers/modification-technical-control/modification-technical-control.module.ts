@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Route, RouterModule } from '@angular/router';
 import { ModificationTechnicalControlComponent } from './modification-technical-control.component';
 import { SharedModule } from '../../shared/shared.module';
-import { AngularMaterialModule } from '../../material.module';
-import { ComplementaryDataModule } from '../../shared/complementary-data/complementary-data.module';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { TechnicalControlShModule } from '../../shared/technical-control-sh/technical-control-sh.module';
 
 const routes: Route[] = [
   {
@@ -23,10 +21,7 @@ const routes: Route[] = [
     RouterModule.forChild(routes),
     CommonModule,
     SharedModule,
-    AngularMaterialModule,
-    ComplementaryDataModule,
-    ReactiveFormsModule,
-    FormsModule
+    TechnicalControlShModule
   ]
 })
 export class ModificationTechnicalControlModule { }
