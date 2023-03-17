@@ -278,7 +278,6 @@ export class ModifyPolicyComponent {
 
     } else {
 
-      console.log(riskTypes)
       for (let risk of riskTypes) {
         let groupRisk = this.fb.group({
           id: risk.code,
@@ -330,10 +329,8 @@ export class ModifyPolicyComponent {
     fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
 
     if (field.dataType.guiComponent === 'List box') {
-      let options: any = [];
-      if(field.domainList){
-        options = this.showDomainList(field.domainList.valueList, valueObj) }
-        else{  options = [{ id: valueObj.value, name: valueObj.value }];}
+      let options: any = [], domainList = field.domainList.valueList;
+      field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
       fieldFG.addControl('options', this.fb.control(options));
     }
     return fieldFG;
