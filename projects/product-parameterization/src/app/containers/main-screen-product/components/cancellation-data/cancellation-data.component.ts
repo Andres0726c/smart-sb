@@ -3,7 +3,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ElementTableSearch } from 'projects/product-parameterization/src/app/core/model/ElementTableSearch.model';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 import { RulesWizardComponent } from 'projects/product-parameterization/src/app/shared/rules-wizard/rules-wizard.component';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, filter } from 'rxjs';
 
 @Component({
   selector: 'refactoring-smartcore-mf-cancellation-data',
@@ -14,8 +14,13 @@ export class CancellationDataComponent implements OnInit {
   contextData: any = [];
   applicationLevel = 'Cancelación';
   flagError = false;
-
+  flagCsProcess = false;
+  causesPrevValue: any[] = [];
   causes: any = [];
+  rmsDpndncy: any;
+  rm: any;
+
+  causesShow: any[] = [];
 
   constructor(
     public productService: ProductService,
@@ -23,6 +28,12 @@ export class CancellationDataComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.rmsDpndncy = this.productService.prdctDpndncy?.get('insrncLn')?.value;
+    this.rm = this.rmsDpndncy.find(
+      (element: any) =>
+        element.id ===
+        this.productService.initialParameters?.get('insuranceLine')?.value
+    );
     this.loadContextData();
     this.getCauses();
   }
@@ -77,6 +88,7 @@ export class CancellationDataComponent implements OnInit {
       { field: 'nmParameterList', displayValue: ['nmParameterList'] },
       { field: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
       { field: 'urlBs', displayValue: ['urlBs'] },
+      { field: 'rlEngnCd', displayValue: ['rlEngnCd'] },
     ];
 
     const parameter =
@@ -106,6 +118,8 @@ export class CancellationDataComponent implements OnInit {
   }
 
   addRule(field: string, objRule: any) {
+    console.log(objRule);
+
     let arr: any[] = [];
 
     let element: any = {
@@ -114,25 +128,20 @@ export class CancellationDataComponent implements OnInit {
     };
 
     let elementDp: any = {
-      // id: objRule.rule.id,
-      // name: objRule.rule.name,
-      // cdBusinessCode: objRule.rule.cdBusinessCode,
-      // description: objRule.rule.description,
-      // cdRuleType: objRule.rule.cdRuleType,
-      // endPoint: objRule.rule.endPoint,
-      // rlEngnCd: objRule.rule.rlEngnCd,
-      // argmntLst: objRule.parameters,
       cd: objRule.rule.cdBusinessCode,
       nm: objRule.rule.name,
-      vrsn: '',//Falta
+      vrsn: '', //Falta
       dscrptn: objRule.rule.description,
-      prmtrLst: objRule.parameters, //Validar
-      rtrnLst:  objRule.rule.nmParameterList,//Validar
-      rlTypItm: objRule.rule.cdRuleType,//validar
-      aplctnLvlItm: '',//Falta
-      endPnt: objRule.rule.endPoint, //Validar
-      sttsCd: '',//Falta
-      insrncLnCd: '',//Falta
+      prmtrLst: '', //validar
+      rtrnLst: '', //validar
+      rlTypItm: objRule.rule.cdRuleType,
+      aplctnLvlItm: this.applicationLevel,
+      endPnt: {
+        url: objRule.rule.endPoint,
+        rlEngnCd: objRule.rule.rlEngnCd, //Setear rlEngnCd
+      },
+      sttsCd: 'ACT', //validar
+      insrncLnCd: [this.rm.cd],
     };
 
     this.productService.setProductDependency('rl', elementDp);
@@ -203,26 +212,46 @@ export class CancellationDataComponent implements OnInit {
     }
   }
 
-  setCsDependency(event: any) {
-    
-    const value = event.value;
-    
+  verifyCsProcess(value: any) {
+    if (!this.flagCsProcess && this.causesPrevValue.length === 0) {
+      this.causesPrevValue = value;
+      this.flagCsProcess = true;
+    }
+    if (this.causesPrevValue.length > value.length) {
+      // vamos a eliminar causas
+      console.log('vamos a eliminar causas');
+      const diff = this.causesPrevValue.filter((x: any) => !value.includes(x));
+
+      for (let cause of diff) {
+        this.productService.deleteDependencyRef(cause, 'cnclltnCsCd');
+      }
+    } else {
+      // vamos a agregar causas
+      this.setCsDependency(value);
+    }
+    this.causesPrevValue = value;
+  }
+
+  setCsDependency(value: any) {
     for (let cs of value) {
       const cause: any = this.causes.find((x: any) => x.businessCode === cs);
       const obj = {
+        id: cause.id,
         cd: cause.businessCode,
         nm: cause.name,
         dscrptn: cause.description,
         sttCd: cause.statusCode,
-        aplctnPrcssItm: cause.aplicationProcess, //validar
-        aplctnSbprcssCd: cause.aplicationSubProcess, //validar
-        insrncLnCd: '', //Faltan
+        aplctnPrcssItm: cause.aplicationProcess,
+        aplctnSbprcssCd: cause.aplicationSubProcess,
+        insrncLnCd: [this.rm.cd],
       };
 
       this.productService.setProductDependency('cs', obj);
+      this.productService.setDependencyRef('cs', obj.cd, 'cnclltnCsCd');
     }
-    
-    console.log('cnclltnPrcss', this.productService.cnclltnPrcss);
-    console.log('prdctDpndncy', this.productService.prdctDpndncy);
+  }
+
+  removeCsProcess(value: any) {
+    this.productService.deleteDependencyRef(value, 'cnclltnCsCd');
   }
 }

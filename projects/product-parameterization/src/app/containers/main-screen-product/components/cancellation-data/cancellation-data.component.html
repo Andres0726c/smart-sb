@@ -13,18 +13,34 @@
         <p-multiSelect
           [options]="causes"
           formControlName="cnclltnCsCd"
-          (click)="$event.stopImmediatePropagation();"
+          (click)="$event.stopImmediatePropagation()"
           styleClass="w-full"
           optionLabel="name"
           optionValue="businessCode"
           [maxSelectedLabels]="1"
-          (onChange)="setCsDependency($event)">
+          (onChange)="verifyCsProcess($event.value)"
         >
+          >
           <ng-template let-value pTemplate="selectedItems" class="w-full">
             <div class="flex w-full">
               <div *ngIf="value.length > 0" class="chip-select">
-                {{ productService.getProductDependency('cs', this.productService.cnclltnPrcss.get('cnclltnCsCd')?.value[0]).nm }}
-                <button (click)="value.splice(0, 1);">
+                <span class="chip-lable">
+                  {{
+                    productService.getProductDependency(
+                      "cs",
+                      this.productService.cnclltnPrcss.get("cnclltnCsCd")
+                        ?.value[0]
+                    )?.nm
+                  }}
+                </span>
+
+                <button
+                  (click)="
+                    $event.stopImmediatePropagation();
+                    removeCsProcess(value[0]);
+                    value.splice(0, 1)
+                  "
+                >
                   <em class="fal fa-times-circle chip-select__icon"></em>
                 </button>
               </div>
@@ -53,7 +69,13 @@
             <ng-template let-item pTemplate="item" class="w-full">
               <span
                 class="w-full whitespace-nowrap overflow-hidden text-ellipsis"
-                >{{ productService.getProductDependency('rl', this.productService.cnclltnPrcss.get('clcltnRl')?.value[0].rlCd).nm }}</span
+                >{{
+                  productService.getProductDependency(
+                    "rl",
+                    this.productService.cnclltnPrcss.get("clcltnRl")?.value[0]
+                      .rlCd
+                  ).nm
+                }}</span
               >
             </ng-template>
           </p-chips>

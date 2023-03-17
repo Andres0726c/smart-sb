@@ -1,6 +1,6 @@
 .chip-select {
   height: 18px !important;
-  max-width: max-content;
+  max-width: 85%;
   background-color: var(--bg-primary-light);
   color: var(--primary-base);
   padding: 0 6px !important;
@@ -21,6 +21,12 @@
   }
   &:hover {
     background: var(--greyscale-4);
+  }
+  .chip-lable {
+    max-width: 80%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 

@@ -777,6 +777,7 @@ export class ProductService {
  }
 
  deleteProductDependency(key: string, code: string) {
+
   const dp = (<FormArray>this.prdctDpndncy.get(key));
   const idx = dp.value.findIndex((x: any) => x.cd === code);
   dp.removeAt(idx);
@@ -809,9 +810,8 @@ export class ProductService {
   // determinamos si la dependencia tiene usos
   if (el.uses.length === 0) {
     // vamos a eliminar la dependencia y su referencia
-    this.deleteProductDependency('cs', el.code);
-    this.references.value.splice(this.references.value.indexOf(el), 1);
+    this.deleteProductDependency('cs', el.cd);
+    this.references.removeAt(this.references.value.indexOf(el));
   }
  }
-
 }
