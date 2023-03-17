@@ -1,4 +1,3 @@
-import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -38,8 +37,6 @@ export class TechnicalControlShComponent implements OnInit {
   displayedColumns: string[] = ['name', 'description', 'level', 'actions'];
   dataSource = new MatTableDataSource<any>(this.TechnicalControls.controls);
   @ViewChild('paginatorTechnical') paginatorTechnical!: MatPaginator;
-
-  // selection = new SelectionModel<any>(true, []);
 
   constructor(
     public dialog: MatDialog,
