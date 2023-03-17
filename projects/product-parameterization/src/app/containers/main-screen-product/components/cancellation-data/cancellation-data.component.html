@@ -1,4 +1,16 @@
-<div class="p-5">
+<div
+  class="mt-5 rounded-xl bg-white p-5"
+  *ngIf="causes.length === 0 || contextData.length === 0"
+>
+  <div
+    class="flex p-5 rounded-lg bg-warn-200 text-warn-700 justify-center items-center"
+  >
+    <em class="fas fa-info-circle mr-2"></em>
+    Ha ocurrido un error cargando los datos necesarios
+  </div>
+</div>
+
+<div class="p-5" *ngIf="causes.length > 0 && contextData.length > 0">
   <div class="flex flex-col">
     <span class="text-4xl font-bold ml-2"> Cancelación </span>
     <span class="ml-2">Especifique los datos a definir en la cancelación</span>
