@@ -1,3 +1,31 @@
+.subHeader{
+    padding: 5px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+  
+    h4{
+      padding-top:10px
+    }
+  
+.div-button{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+    .bt {
+      width: 100px;
+    background-color: #FFDC5D;
+    color: #016D38;
+    border-radius: 50px;
+    font-weight: bold;
+    height: 40px;
+    grid-column: 2;
+
+    }
+   
+  }
+}
 .container-table {
     height: 100%;
     border-radius: 10px;
@@ -19,7 +47,18 @@
             gap: 10px;
         
     }
+    button{
+        color:#999999;
+        text-decoration-line: underline;
+
+        }
+    
+    button:not([disabled]){
+        color:#016D38;
+        text-decoration-line: underline;
+    }
 }
+
 
 
 
