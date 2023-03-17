@@ -6,6 +6,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { AngularMaterialModule } from '../../material.module';
 import { ComplementaryDataModule } from '../../shared/complementary-data/complementary-data.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { TechnicalControlComponent } from '../technical-control/technical-control.component';
+import { TechnicalControlShModule } from '../../shared/technical-control-sh/technical-control-sh.module';
 
 const routes: Route[] = [
   {
@@ -23,10 +25,7 @@ const routes: Route[] = [
     RouterModule.forChild(routes),
     CommonModule,
     SharedModule,
-    AngularMaterialModule,
-    ComplementaryDataModule,
-    ReactiveFormsModule,
-    FormsModule
+    TechnicalControlShModule
   ]
 })
 export class ModificationTechnicalControlModule { }

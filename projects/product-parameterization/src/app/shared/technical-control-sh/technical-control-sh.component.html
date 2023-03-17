@@ -21,13 +21,13 @@
                 <button mat-raised-button color="accent" class="bt" (click)="openToAdd()"
                     data-qa-id="sc-rpmf-btn_add_technical_control">
                     <em class="fal fa-plus-circle icon-button-add"></em>
-                    Añadir
+                    Añadir control técnico
                 </button>
-                <button mat-raised-button [disabled]="selection.selected.length === 0" class="bt-delete" (click)="deleteTechnical()"
+                <!-- <button mat-raised-button [disabled]="selection.selected.length === 0" class="bt-delete" (click)="deleteTechnical()"
                     data-qa-id="sc-rpmf-btn_remove_technical_control">
                     <em class="far fa-trash icon-button-delete"></em>
                     Eliminar
-                </button>
+                </button> -->
             </div>
         </div>
         <form>
@@ -35,7 +35,7 @@
                 <caption></caption>
 
                 <!-- Checkbox Column -->
-                <ng-container matColumnDef="select">
+                <!-- <ng-container matColumnDef="select">
                     <th mat-header-cell *matHeaderCellDef>
                         <mat-checkbox (change)="$event ? masterToggle() : null"
                             [checked]="selection.hasValue() && isAllDisplayedSelected()"
@@ -48,7 +48,7 @@
                             color="primary">
                         </mat-checkbox>
                     </td>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- Name Column -->
                 <ng-container matColumnDef="name">
@@ -79,25 +79,25 @@
                 </ng-container>
 
                 <!-- process Column -->
-                <ng-container matColumnDef="process">
+                <!-- <ng-container matColumnDef="process">
                     <th mat-header-cell *matHeaderCellDef class="text-center" class="colums-table">Procesos</th>
                     <td mat-cell *matCellDef="let element let i=index" class="colums-table"
                         data-qa-id="sc-rpmf-multi-select_process_technical_control">
                         <app-multi-select [dataOptions]="process" [selectedOptions]="element.get('selectedProcess')">
                         </app-multi-select>
                     </td>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- Actions Column -->
-                <!-- <ng-container matColumnDef="actions">
+                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef class="colums-table">Acciones</th>
                     <td mat-cell *matCellDef="let element let i=index" style=" display: flex;justify-content: center;">
-                        <button mat-icon-button color="warn" type='button' (click)="deleteTechnical(i)"
+                        <button mat-icon-button color="warn" type='button' (click)="deleteTechnical(element)"
                             data-qa-id="sc-rpmf-btn_delete_technical_control">
                             <em class="fal fa-trash text-xl"></em>
                         </button>
                     </td>
-                </ng-container> -->
+                </ng-container> 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;">
                 </tr>
