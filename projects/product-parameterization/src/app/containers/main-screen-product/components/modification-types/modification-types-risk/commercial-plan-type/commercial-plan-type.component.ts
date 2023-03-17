@@ -92,6 +92,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     this.addDataTable();
   }
   ngOnInit(): void {
+    // TODO document why this method 'ngOnInit' is empty
   }
 
   getAllFields() {
