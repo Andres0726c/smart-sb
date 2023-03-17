@@ -63,7 +63,7 @@ export class ModificationTypesComponent implements OnInit {
     public productService: ProductService
   ) {}
   ngOnInit(): void {
-  console.log(this.productService.policyData);
+
     if (
       (<FormArray>(
         this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
@@ -71,7 +71,7 @@ export class ModificationTypesComponent implements OnInit {
     ) {
       this.productService.addRisk();
     }
-    this.getcmmrclPln(2).clear();
+   // this.getcmmrclPln(2).clear();
 
     if (this.getcmmrclPln(2).length === 0) {
       this.addDataRisk();

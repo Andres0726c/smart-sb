@@ -34,16 +34,25 @@ export class ModificationTypesRiskComponent implements OnInit {
   breadcrumb: any;
   showBranch:BusinessPlans[]=[];
   tableData: any[] = [];
+  test:boolean = true;
   athrzdOprtn: OptionsCommercialP[] = [
     { name: 'Reemplazar', key: 'RMP' },
     { name: 'Modificar', key: 'MDF' },
   ];
-  // "athrzdOprtn": ["RMP","MDF"]
+  selectedCategories: any[] = ['Modificar'];  
+  group!: FormGroup;
   constructor(public productService: ProductService, public fb: FormBuilder) {}
 
+  ngOnInit(): void {
+    this.tableData.push(...this.getcmmrclPln(2).getRawValue());
+    this.selectedCategories = this.athrzdOprtn.slice(1,3);
 
-  
+    console.log(this.controls);
+  }
 
+  get controls() {
+    return (this.group.get('athrzdOprtn') as FormArray).controls;
+  }
   get policyDataControls(): FormArray {
     return (<FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
@@ -59,27 +68,34 @@ export class ModificationTypesRiskComponent implements OnInit {
       )) as FormArray;
     }
     getAthrzdOprtn(code: string) {
-      return this.getcmmrclPln(2)
+      return   (<FormArray>(this.getcmmrclPln(2)
         .controls.find((x: { value: { code: string } }) => x.value.code === code)
-        ?.get('athrzdOprtn')
+        ?.get('athrzdOprtn') )) as FormArray;
     }
   
-  ngOnInit(): void {
-    this.tableData.push(...this.getcmmrclPln(2).getRawValue());
-  }
-
-
+ 
 
   changeCheck(data:any,event:any) {
+
+    console.log(event);
 
      if(event.checked!=''){
       this.addBranch.emit(this.tableData);
      }else{
       this.addBranch.emit([]);
     }
-    let control=this.getAthrzdOprtn(data.code);
-    if(control){
-      control.setValue(event.checked);
+    //let control=this.getAthrzdOprtn(data.code);
+    if (event.checked.length!==0){
+    this.getAthrzdOprtn(data.code).push(this.fb.control((event.checked[0])));
+    }else {
+      this.getAthrzdOprtn(data.code).clear();
     }
+
+    console.log(this.productService.mdfctnPrcss);
   }
+
+  requeridForm(element: any, required: boolean){
+    element.required = required;
+  }
+
 }
