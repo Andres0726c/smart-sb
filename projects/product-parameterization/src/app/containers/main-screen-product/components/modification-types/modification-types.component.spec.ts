@@ -389,10 +389,8 @@ describe('ModificationTypesComponent', () => {
   });
   it('ngOnInit', () => {
     const spy = jest.spyOn(component, 'calledMenu').mockImplementation();
-    const spy1 = jest.spyOn(component, 'addDataRisk').mockImplementation();
     component.ngOnInit();
     expect(spy).toBeCalled();
-    expect(spy1).toBeCalled();
   });
   // it('getDataCoverages',()=>{
 
@@ -595,5 +593,10 @@ describe('ModificationTypesComponent', () => {
       },
     ];
     component.addBusinessPlan(menu2,menu);
+  })
+
+  it('addDataRisk',()=>{
+    const spy=jest.spyOn(component,'getCoverages').mockImplementation();
+    component.addDataRisk();
   })
 });

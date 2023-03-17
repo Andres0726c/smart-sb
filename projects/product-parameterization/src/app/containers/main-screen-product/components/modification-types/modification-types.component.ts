@@ -81,54 +81,11 @@ export class ModificationTypesComponent implements OnInit {
   }
 
   addDataRisk() {
-    let coverages:any = this.fb.array([]);
-    let servicePlans:any = this.fb.array([]);
+ 
     for (const risk of this.productService.riskTypes.value) {
       for (let plan of risk.businessPlans) {
-        for (let coverage of plan.coverages) {
-          coverages.push(
-            this.fb.group({
-              id: this.fb.control(coverage.id),
-              required: this.fb.control(coverage.required),
-              name: this.fb.control(
-                this.getDataCoverages(coverage.id, 'name')?.value
-              ),
-              description: this.fb.control(
-                this.getDataCoverages(coverage.id, 'description')?.value
-              ),
-              athrzdOprtn: this.fb.control([]),
-              cvrgDtGrp: this.fb.array([], []),
-            })
-          );
-  
-          // obj.push(objCovereage);
-        }
-        for (let servicePlan of plan.servicePlans) {
-          servicePlans.push(
-            this.fb.group({
-              id: this.fb.control(servicePlan.id),
-              required: this.fb.control(servicePlan.required),
-              name: this.fb.control(
-                this.getServicesPlan(servicePlan.id, 'name')?.value
-              ),
-              description: this.fb.control(
-                this.getServicesPlan(servicePlan.id, 'description')?.value
-              ),
-              athrzdOprtn: this.fb.control([]),
-            })
-          );
-          // obj.push(objSerivePLan);
-        }
-        this.getcmmrclPln(risk.id).push(
-          this.fb.group({
-            name: this.fb.control(plan.name),
-            code: this.fb.control(plan.code),
-            description: this.fb.control(plan.description),
-            athrzdOprtn: this.fb.control([]),
-            cvrg:coverages ,
-            srvcPln:servicePlans,
-          })
-        );
+        this.getCoverages(plan.coverages,'coverage',risk.id);
+        this.getCoverages(plan.servicePlans,'service',risk.id);
       }
     }
 
@@ -145,12 +102,14 @@ export class ModificationTypesComponent implements OnInit {
       ?.get(position);
   }
 
-  getCoverages(plan: any, level: any) {
-    let obj: any = new FormArray([]);
+  getCoverages(plan: any, level: any, id:number) {
 
+    let coverages:any;
+    let servicePlans:any ;
     if (level === 'coverage') {
-      for (let coverage of plan.coverages) {
-        obj.push(
+      coverages = this.fb.array([]);
+      for (let coverage of plan) {
+        coverages.push(
           this.fb.group({
             id: this.fb.control(coverage.id),
             required: this.fb.control(coverage.required),
@@ -168,8 +127,9 @@ export class ModificationTypesComponent implements OnInit {
         // obj.push(objCovereage);
       }
     } else {
-      for (let servicePlan of plan.servicePlans) {
-        obj.push(
+      servicePlans = this.fb.array([]);
+      for (let servicePlan of plan) {
+        servicePlans.push(
           this.fb.group({
             id: this.fb.control(servicePlan.id),
             required: this.fb.control(servicePlan.required),
@@ -181,11 +141,23 @@ export class ModificationTypesComponent implements OnInit {
             ),
             athrzdOprtn: this.fb.control([]),
           })
+          // obj.push(objSerivePLan);
         );
-      }
+      }     
+    }
+    if(servicePlans&&coverages){
+      this.getcmmrclPln(id).push(
+        this.fb.group({
+          name: this.fb.control(plan.name),
+          code: this.fb.control(plan.code),
+          description: this.fb.control(plan.description),
+          athrzdOprtn: this.fb.control([]),
+          cvrg:coverages,
+          srvcPln:servicePlans,
+        })
+      );
     }
 
-    return obj;
   }
 
   getcmmrclPln(id: number) {
@@ -284,6 +256,11 @@ export class ModificationTypesComponent implements OnInit {
         .find((x) => x.value.id === id)
         ?.get('rskTypDtGrp')
     );
+  }
+  getAthrzdOprtn(code: string) {
+    return   (<FormArray>(this.getcmmrclPln(2)
+      .controls.find((x: { value: { code: string } }) => x.value.code === code)
+      ?.get('athrzdOprtn') )) as FormArray;
   }
 
 

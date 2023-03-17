@@ -47,7 +47,6 @@ export class ModificationTypesRiskComponent implements OnInit {
     this.tableData.push(...this.getcmmrclPln(2).getRawValue());
     this.selectedCategories = this.athrzdOprtn.slice(1,3);
 
-    console.log(this.controls);
   }
 
   get controls() {
@@ -60,7 +59,6 @@ export class ModificationTypesRiskComponent implements OnInit {
     }
 
     getcmmrclPln(id: number) {
-      console.log(id);
       return (<FormArray>(
         this.policyDataControls.controls
           .find((x: { value: { id: number } }) => x.value.id === id)
@@ -77,25 +75,26 @@ export class ModificationTypesRiskComponent implements OnInit {
 
   changeCheck(data:any,event:any) {
 
-    console.log(event);
 
      if(event.checked!=''){
       this.addBranch.emit(this.tableData);
      }else{
       this.addBranch.emit([]);
     }
+    this.addData(event,data);
     //let control=this.getAthrzdOprtn(data.code);
-    if (event.checked.length!==0){
-    this.getAthrzdOprtn(data.code).push(this.fb.control((event.checked[0])));
-    }else {
-      this.getAthrzdOprtn(data.code).clear();
-    }
+    
 
-    console.log(this.productService.mdfctnPrcss);
   }
 
-  requeridForm(element: any, required: boolean){
-    element.required = required;
+  addData(event:any,data:any){
+    if (event.checked.length!==0 ){
+      this.getAthrzdOprtn(data.code).push(this.fb.control((event.checked[0])));
+      }else {
+        this.getAthrzdOprtn(data.code).clear();
+      }
   }
+
+
 
 }

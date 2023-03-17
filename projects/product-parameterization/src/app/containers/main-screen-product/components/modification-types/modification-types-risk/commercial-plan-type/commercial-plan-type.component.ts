@@ -131,28 +131,28 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   }
 
   getAthrzdOprtnCoveragePln(id:number){
-    return this.getcoveragesPln(this.data)
+    return   (<FormArray>(this.getcoveragesPln(this.data)
     .controls.find((x: { value: { id: number } }) => x.value.id === id)
-    ?.get('athrzdOprtn');
+    ?.get('athrzdOprtn') )) as FormArray;
 }
   
   
   
   getSrvcPln(code: string) {
+    
     return (<FormArray>this.getcmmrclPln(2)
       .controls.find((x: { value: { code: string } }) => x.value.code === code)
       ?.get('srvcPln')) as FormArray;
   }
 
   getAthrzdOprtnSrvcPln(id:number){
-    return this.getSrvcPln(this.data)
+    return   (<FormArray>(this.getSrvcPln(this.data)
     .controls.find((x: { value: { id: number } }) => x.value.id === id)
-    ?.get('athrzdOprtn');
+    ?.get('athrzdOprtn') )) as FormArray;
 }
   
 
   getComplementaryData(id: number) {
-    console.log(this.productService.coverages);
 
     return (<FormArray>(
       this.productService.coverages.controls
@@ -201,17 +201,20 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   }
 
   changeCheck(id: number, event: any) {
-    let control=this.getAthrzdOprtnCoveragePln(id);
-    if(control){
-      control.setValue(event.checked);
-    }
+    if (event.checked.length!==0){
+      this.getAthrzdOprtnCoveragePln(id).push(this.fb.control((event.checked[0])));
+      }else {
+        this.getAthrzdOprtnCoveragePln(id).clear();
+      }
   }
 
   changeCheckServices(id: any, event: any) {
-    let control=this.getAthrzdOprtnSrvcPln(id);
-    if(control){
-      control.setValue(event.checked);
-    }
+    if (event.checked.length!==0){
+      this.getAthrzdOprtnSrvcPln(id).push(this.fb.control((event.checked[0])));
+      }else {
+        this.getAthrzdOprtnSrvcPln(id).clear();
+      }
+
     
   }
 

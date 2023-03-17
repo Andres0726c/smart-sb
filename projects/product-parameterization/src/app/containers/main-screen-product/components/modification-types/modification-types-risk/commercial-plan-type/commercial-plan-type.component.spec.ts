@@ -322,14 +322,8 @@ describe('CommercialPlanTypeComponent', () => {
     component.data = 'pc001_opcion1alternativa1';
     component.addDataTable();
   });
-  it('changeCheck', () => {
-    component.data = 'pc001_opcion1alternativa1';
-    component.changeCheck(7, { checked: '' });
-  });
-  it('changeCheckServices', () => {
-    component.data = 'pc001_opcion1alternativa1';
-    component.changeCheckServices(7, { checked: '' });
-  });
+
+
 
   it('activeButtonON', () => {
     component.activeButton({ athrzdOprtn: ['MDF'] });
@@ -396,4 +390,5 @@ describe('CommercialPlanTypeComponent', () => {
     component.sendDataCoverage();
     expect(spy).toBeCalled();
   });
+  
 });

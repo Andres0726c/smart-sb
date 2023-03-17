@@ -173,12 +173,13 @@ describe('ModificationTypesRiskComponent', () => {
   });
 
   it('changeCheckValue',()=>{
+    const spy=jest.spyOn(component,'addData').mockImplementation();
     component.changeCheck({code:'pc001_opcion1alternativa1'},{checked:'MDF'})
   })
+  
   it('changeCheck',()=>{
+    const spy=jest.spyOn(component,'addData').mockImplementation();
     component.changeCheck({code:'pc001_opcion1alternativa1'},{checked:''})
   })
-  it('openToAdd',()=>{
-    
-  })
+
 });
