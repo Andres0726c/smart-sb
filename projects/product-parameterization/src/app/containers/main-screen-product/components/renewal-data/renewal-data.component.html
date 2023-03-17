@@ -40,7 +40,9 @@
                         formControlName="clcltnRl"
                         styleClass="w-full w-full-chips"
                         inputStyleClass="w-full"
-                        placeholder="Seleccione">
+                        placeholder="Seleccione"
+                        (onRemove)="removeRule($event.value)"
+                        >
                         <ng-template let-item pTemplate="item" class="w-full">
                             <span class="w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ productService.getProductDependency('rl', this.productService.rnwlPrcss.get('clcltnRl')?.value[0].rlCd).nm }}</span>
                         </ng-template>
