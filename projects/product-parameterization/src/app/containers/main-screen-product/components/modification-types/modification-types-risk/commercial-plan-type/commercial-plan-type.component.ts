@@ -207,7 +207,6 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       for(let eventA of  event.checked){
         this.getAthrzdOprtnCoveragePln(id).push(this.fb.control(eventA));
       }
-      this.getAthrzdOprtnCoveragePln(id).push(this.fb.control((event.checked[0])));
       }else {
         this.getAthrzdOprtnCoveragePln(id).clear();
       }
