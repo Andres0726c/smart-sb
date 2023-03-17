@@ -119,11 +119,11 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   }
 
   getcmmrclPln(id: number) {
-    return <FormArray>(
+    return  (<FormArray>(
       this.policyDataControls.controls
         .find((x: { value: { id: number } }) => x.value.id === id)
-        ?.get('cmmrclPln')
-    );
+        ?.get('cmmrclPln') )) as FormArray;
+  
   }
   getcoveragesPln(code: string) {
     return (<FormArray>this.getcmmrclPln(2)
@@ -203,6 +203,10 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
 
   changeCheck(id: number, event: any) {
     if (event.checked.length!==0){
+      this.getAthrzdOprtnCoveragePln(id).clear();
+      for(let eventA of  event.checked){
+        this.getAthrzdOprtnCoveragePln(id).push(this.fb.control(eventA));
+      }
       this.getAthrzdOprtnCoveragePln(id).push(this.fb.control((event.checked[0])));
       }else {
         this.getAthrzdOprtnCoveragePln(id).clear();
@@ -210,8 +214,12 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   }
 
   changeCheckServices(id: any, event: any) {
+    
     if (event.checked.length!==0){
-      this.getAthrzdOprtnSrvcPln(id).push(this.fb.control((event.checked[0])));
+      this.getAthrzdOprtnSrvcPln(id).clear();
+      for(let eventA of  event.checked){
+        this.getAthrzdOprtnSrvcPln(id).push(this.fb.control(eventA));
+      }
       }else {
         this.getAthrzdOprtnSrvcPln(id).clear();
       }

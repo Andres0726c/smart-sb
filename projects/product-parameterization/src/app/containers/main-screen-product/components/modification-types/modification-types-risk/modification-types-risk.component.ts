@@ -1,6 +1,6 @@
 import { Component, OnInit, Input,EventEmitter,Output } from '@angular/core';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 interface OptionsCommercialP {
   name: string;
@@ -44,6 +44,7 @@ export class ModificationTypesRiskComponent implements OnInit {
   constructor(public productService: ProductService, public fb: FormBuilder) {}
 
   ngOnInit(): void {
+
     this.tableData.push(...this.getcmmrclPln(2).getRawValue());
     this.selectedCategories = this.athrzdOprtn.slice(1,3);
 
@@ -88,11 +89,19 @@ export class ModificationTypesRiskComponent implements OnInit {
   }
 
   addData(event:any,data:any){
-    if (event.checked.length!==0 ){
-      this.getAthrzdOprtn(data.code).push(this.fb.control((event.checked[0])));
-      }else {
+
+
+      if(event.checked.length!=0){
         this.getAthrzdOprtn(data.code).clear();
+        for(let eventA of  event.checked){
+          this.getAthrzdOprtn(data.code).push(this.fb.control(eventA));
+        }
       }
+      else{
+        this.getAthrzdOprtn(data.code).clear(); 
+      }
+
+
   }
 
 
