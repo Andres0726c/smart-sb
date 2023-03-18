@@ -29,6 +29,8 @@ export class PreviewDataPolicyComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadContextData();
+    console.log(this.productService.prvwDt,"pre");
+   
   }
 
   get policyPreviewControls(): FormArray {
@@ -124,13 +126,23 @@ loadContextData() {
 
       for (let object of obj) {
         nameGruop = this.getNameGroup(object.element.id);
-        console.log(nameGruop);
+
+      if (!nameGruop) {
+       
+        nameGruop = {
+              id: 0,
+              code: 'datos_contexto',
+              name: 'Datos de contexto',
+              fields: this.fb.array([], Validators.required),
+              isEditing: false,
+            };
+      }
         
-        if ( this.dataPolicy.value.findIndex(
+        if ( this.policyPreviewControls.value.findIndex(
               (x: { id: any }) => x.id === nameGruop.id
             ) === -1
           ) {
-            this.dataPolicy.push(
+            this.policyPreviewControls.push(
               new FormGroup({
                 id: this.fb.control(nameGruop.id),
                 code: this.fb.control(nameGruop.code),
@@ -140,12 +152,13 @@ loadContextData() {
               })
             );
 
-            this.addCanonic()
+          //  this.addCanonic()
           }
+          console.log(this.policyPreviewControls);
           this.addGroupArrayById(object,nameGruop);
       }
 
-      console.log(this.dataPolicy,"pliza");
+      console.log(this.policyPreviewControls,"pliza");
     }
   };
 
@@ -180,21 +193,25 @@ getNameGroup(name: any) {
   return objGruop;
 }
 
-getGroupArrayById(id: number) {
+getGroupArrayById(id: any) {
   return <FormArray>(
-    this.dataPolicy.controls
-      .find((x: { value: { id: number } }) => x.value.id === id)
+    this.policyPreviewControls.controls
+      .find((x: { value: { id: any } }) => x.value.id === id)
       ?.get('fields')
   );
   
 }
 
 addGroupArrayById(object:any,nameGruop:any){
-  const index = this.dataPolicy.value.findIndex(
+
+  const index = this.policyPreviewControls.value.findIndex(
     (x: { id: any }) => x.id === nameGruop.id
   );
 
-  this.getGroupArrayById(index + 1).push(
+  console.log(object,"obj");
+  console.log( this.getGroupArrayById(nameGruop.id),"group");
+
+  this.getGroupArrayById(nameGruop.id).push(
     new FormGroup({
       id: this.fb.control(object.id, [Validators.required]),
       name: this.fb.control(object.name, [Validators.required]),
@@ -205,32 +222,17 @@ addGroupArrayById(object:any,nameGruop:any){
         [Validators.required]
       ),
       dataType: this.fb.control(object.element.dataType),
-      initializeRule: this.fb.array([], []),
-      validateRule: this.fb.array([], []),
-      dependency: this.fb.control(null, []),
-      requiredEssential: this.fb.control(
-        object.element.flIsMandatory === 'S' ? true : false,
-        [Validators.required]
-      ),
-      required: this.fb.control(
-        object.element.flIsMandatory === 'S' ? true : false,
-        [Validators.required]
-      ),
-      editable: this.fb.control(true, [Validators.required]),
-      visible: this.fb.control(true, [Validators.required]),
-      fieldGroup: this.fb.control(index + 1, []),
+     
+      fieldGroup: this.fb.control(nameGruop.id, []),
       shouldDelete: this.fb.control(object.shouldDelete, [
         Validators.required,
       ]),
       businessCode: this.fb.control(object.element.businessCode),
-      domainList: this.fb.control(object.element.domainList),
+     
     })
   );
 }
 
-addCanonic(){
-  
-}
 
   showMessageGroup(showMessage:boolean){
     let data: DataToast = {

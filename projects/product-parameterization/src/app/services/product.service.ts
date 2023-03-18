@@ -57,6 +57,9 @@ export class ProductService {
   });
   prvwDt:FormGroup = new FormGroup({
     plcyCntxtGrp:new FormControl([]),
+    plcyDtGrp:new FormControl([]),
+    rskTyp:new FormControl([]),
+    cvrg:new FormControl([]),
   });
   references: FormArray = new FormArray<any>([]);
 
@@ -225,6 +228,9 @@ export class ProductService {
     });
     this.prvwDt = new FormGroup({
       plcyCntxtGrp:new FormControl([]),
+      plcyDtGrp:new FormControl([]),
+      rskTyp:new FormControl([]),
+      cvrg:new FormControl([]),
     });
     this.references = this.fb.array([]);
       //autosave enabled
@@ -484,6 +490,9 @@ export class ProductService {
       });
       this.prvwDt = product.prvwDt ? this.setFields('prvwDt', product.prvwDt) : new FormGroup({
         plcyCntxtGrp:new FormControl([]),
+        plcyDtGrp:new FormControl([]),
+        rskTyp:new FormControl([]),
+        cvrg:new FormControl([]),
       });
 
       this.references = product.references ?  this.setFields('references', product.references) : this.fb.array([]);
@@ -561,6 +570,13 @@ export class ProductService {
         this.addRisk();
        
 
+      }  
+      if (!this.prvwDt.contains('plcyDtGr')) {
+        console.log("entra");
+        this.prvwDt.addControl('plcyCntxtGrp',this.fb.array ([]));
+        this.prvwDt.addControl('plcyDtGrp',this.fb.array ([]));
+        this.prvwDt.addControl('rskTyp',this.fb.array ([]));
+        this.prvwDt.addControl('cvrg',this.fb.array ([]));
       }
       
       if((<FormArray>( this.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))).length ===0)
