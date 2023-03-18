@@ -11,13 +11,13 @@ import { RulesWizardComponent } from 'projects/product-parameterization/src/app/
   styleUrls: ['./renewal-data.component.scss']
 })
 export class RenewalDataComponent implements OnInit {
-  contextData: any = [];
-  isLoading = false;
-  flagError = false;
-  flagCsProcess = false;
-  applicationLevel = 'Renovación';
-  causes = [];
-  causesPrevValue = [];
+  // contextData: any = [];
+  // isLoading = false;
+  // flagError = false;
+  // flagCsProcess = false;
+  // applicationLevel = 'Renovación';
+  // causes = [];
+  // causesPrevValue = [];
   /*causes = [
     {
       id: 'RNV_CRE_1',
@@ -34,203 +34,203 @@ export class RenewalDataComponent implements OnInit {
   ];*/
 
   constructor(
-    public productService: ProductService,
-    public dialogService: DialogService,
-    private messageService: MessageService
-  ) { }
+    // public productService: ProductService,
+    // public dialogService: DialogService,
+    // private messageService: MessageService
+  ) { /* TODO document why this constructor is empty */  }
 
   ngOnInit(): void {
-    this.loadCauses();
-    this.loadContextData();
+    //this.loadCauses();
+    //this.loadContextData();
   }
 
-  loadCauses() {
-    this.isLoading = true;
-    const company = this.productService.companyId;
-    const insuranceLine = this.productService.initialParameters.get('insuranceLine')?.value;
-    this.productService.getApiData(`claimCause/findByCompanyAndInsuranceLine/${company}/${insuranceLine}/0/0/0/0/${this.applicationLevel}`).subscribe({
-      next: (res: any) => {
-        console.log('causas', res);
-        this.causes = res.body;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.flagError = true;
-        this.isLoading = false;
-        console.error('Ha ocurrido un error al obtener los datos necesarios');
-      }
-    });
-  }
+  // loadCauses() {
+  //   this.isLoading = true;
+  //   const company = this.productService.companyId;
+  //   const insuranceLine = this.productService.initialParameters.get('insuranceLine')?.value;
+  //   this.productService.getApiData(`claimCause/findByCompanyAndInsuranceLine/${company}/${insuranceLine}/0/0/0/0/${this.applicationLevel}`).subscribe({
+  //     next: (res: any) => {
+  //       console.log('causas', res);
+  //       this.causes = res.body;
+  //       this.isLoading = false;
+  //     },
+  //     error: (error) => {
+  //       this.flagError = true;
+  //       this.isLoading = false;
+  //       console.error('Ha ocurrido un error al obtener los datos necesarios');
+  //     }
+  //   });
+  // }
 
-  loadContextData() {
-    this.isLoading = true;
-    this.productService.getApiData(`domainList/DATOS_CONTEXTO`).subscribe({
-      next: (res: any) => {
-        console.log('datos contexto', res);
-        this.contextData = res.body.nmValueList;
-        //se filtra los datos de contexto dependiendo del nivel de aplicación
-        this.contextData =  this.contextData.filter( (data:any) => data.applctnLvl.includes(this.applicationLevel) || data.applctnLvl.includes("*") );
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.flagError = true;
-        this.isLoading = false;
-        console.error('Ha ocurrido un error al obtener los datos necesarios');
-      }
-    });
-  }
+  // loadContextData() {
+  //   this.isLoading = true;
+  //   this.productService.getApiData(`domainList/DATOS_CONTEXTO`).subscribe({
+  //     next: (res: any) => {
+  //       console.log('datos contexto', res);
+  //       this.contextData = res.body.nmValueList;
+  //       //se filtra los datos de contexto dependiendo del nivel de aplicación
+  //       this.contextData =  this.contextData.filter( (data:any) => data.applctnLvl.includes(this.applicationLevel) || data.applctnLvl.includes("*") );
+  //       this.isLoading = false;
+  //     },
+  //     error: (error) => {
+  //       this.flagError = true;
+  //       this.isLoading = false;
+  //       console.error('Ha ocurrido un error al obtener los datos necesarios');
+  //     }
+  //   });
+  // }
 
-  /**
-   *
-   * @param code codigo para identificar el tipo de la modal de busqueda que se va a ejecutar
-   * @param list variable de tipo array con los elementos que ya contiene los campos
-   * Funcion para realizar la apertura de la modal de consulta y seleccion multiple
-   */
-  openRuleWizard(code: string, field: string) {
-    console.log('form', this.productService.rnwlPrcss);
-    const columns = [
-      { field: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname']  },
-      { field: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription']  },
-      { field: 'cdRuleType', displayValue: ['cdRuleType'], dbColumnName:['cdRuleType']  },
-      { field: 'endPoint', displayValue: ['endPoint'] },
-      { field: 'nmParameterList', displayValue: ['nmParameterList'] },
-      { field: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { field: 'urlBs', displayValue: ['urlBs'] }
-    ];
+  // /**
+  //  *
+  //  * @param code codigo para identificar el tipo de la modal de busqueda que se va a ejecutar
+  //  * @param list variable de tipo array con los elementos que ya contiene los campos
+  //  * Funcion para realizar la apertura de la modal de consulta y seleccion multiple
+  //  */
+  // openRuleWizard(code: string, field: string) {
+  //   // console.log('form', this.productService.rnwlPrcss);
+  //   const columns = [
+  //     { field: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname']  },
+  //     { field: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription']  },
+  //     { field: 'cdRuleType', displayValue: ['cdRuleType'], dbColumnName:['cdRuleType']  },
+  //     { field: 'endPoint', displayValue: ['endPoint'] },
+  //     { field: 'nmParameterList', displayValue: ['nmParameterList'] },
+  //     { field: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
+  //     { field: 'urlBs', displayValue: ['urlBs'] }
+  //   ];
 
-    const parameter =
-      this.productService.initialParameters?.get('insuranceLine')?.value !== null
-        ? this.productService.initialParameters?.get('insuranceLine')?.value + ''
-        : '0';
+  //   const parameter =
+  //     this.productService.initialParameters?.get('insuranceLine')?.value !== null
+  //       ? this.productService.initialParameters?.get('insuranceLine')?.value + ''
+  //       : '0';
 
-        /*this.openDialogWizard(
-          'ruleInitializeControls',
-          field?.value,
-          columns,
-          false,
-          this.complementaryData,
-          this.contextData
-        )*/
-    const itemSelected = this.productService.getProductDependency('rl', this.productService.rnwlPrcss.get(field)?.value.cd);
+  //       /*this.openDialogWizard(
+  //         'ruleInitializeControls',
+  //         field?.value,
+  //         columns,
+  //         false,
+  //         this.complementaryData,
+  //         this.contextData
+  //       )*/
+  //   // const itemSelected = this.productService.getProductDependency('rl', this.productService.rnwlPrcss.get(field)?.value.cd);
 
-    const dialogRef = this.dialogService.open(RulesWizardComponent, {
-      data: { 
-        code: code,
-        list: itemSelected ? [itemSelected] : [], 
-        columns: columns,
-        paramValues: this.getParamValuesList()
-      },
-      showHeader: false,
-      width: '600px'
-    });
-    let res: ElementTableSearch[] = [];
+  //   const dialogRef = this.dialogService.open(RulesWizardComponent, {
+  //     data: { 
+  //       code: code,
+  //       // list: itemSelected ? [itemSelected] : [], 
+  //       columns: columns,
+  //       paramValues: this.getParamValuesList()
+  //     },
+  //     showHeader: false,
+  //     width: '600px'
+  //   });
+  //   let res: ElementTableSearch[] = [];
 
-    dialogRef.onClose.subscribe((res) => {
-      console.log('cerro', res);
-      if (res) {
-        //console.log(this.selectedField);
-        //let arr: any[] = [];
-        //arr.push(res);
-        //this.selectedField.get(field)?.setValue(arr);
-        this.addRule(field, res);
-      }
-      //this.addItem(res, 1, true);
-    });
-  }
+  //   dialogRef.onClose.subscribe((res) => {
+  //     console.log('cerro', res);
+  //     if (res) {
+  //       //console.log(this.selectedField);
+  //       //let arr: any[] = [];
+  //       //arr.push(res);
+  //       //this.selectedField.get(field)?.setValue(arr);
+  //       this.addRule(field, res);
+  //     }
+  //     //this.addItem(res, 1, true);
+  //   });
+  // }
 
-  addRule(field: string, objRule: any) {
-    let arr: any[] = [];
-    let elementDp: any = {
-      cd: objRule.rule.cdBusinessCode,
-      nm: objRule.rule.name
-    };
-    let element: any = {
-      rlCd: objRule.rule.cdBusinessCode, 
-      argmntLst: objRule.parameters
-    };
+  // addRule(field: string, objRule: any) {
+  //   let arr: any[] = [];
+  //   let elementDp: any = {
+  //     cd: objRule.rule.cdBusinessCode,
+  //     nm: objRule.rule.name
+  //   };
+  //   let element: any = {
+  //     rlCd: objRule.rule.cdBusinessCode, 
+  //     argmntLst: objRule.parameters
+  //   };
     
-    this.productService.setProductDependency('rl', elementDp);
-    arr.push(element);
-    this.productService.rnwlPrcss.get(field)?.setValue(arr);
+  //   this.productService.setProductDependency('rl', elementDp);
+  //   arr.push(element);
+  //   // this.productService.rnwlPrcss.get(field)?.setValue(arr);
 
-    console.log('rnwlPrcss', this.productService.rnwlPrcss);
-    console.log('prdctDpndncy', this.productService.prdctDpndncy);
-  }
+  //   // console.log('rnwlPrcss', this.productService.rnwlPrcss);
+  //   // console.log('prdctDpndncy', this.productService.prdctDpndncy);
+  // }
 
-  getAllFields() {
-    let res: any[] = [];
-    for(const group of this.productService.policyData.getRawValue()) {
-      res = res.concat(group.fields);
-    }
-    return res;
-  }
+  // getAllFields() {
+  //   let res: any[] = [];
+  //   for(const group of this.productService.policyData.getRawValue()) {
+  //     res = res.concat(group.fields);
+  //   }
+  //   return res;
+  // }
 
-  getParamValuesList() {
-    let list: any = [];
+  // getParamValuesList() {
+  //   let list: any = [];
 
-    for (let field of this.getAllFields()) {
-      const objField = {
-        id: field.businessCode,
-        name: field.name
-      };
-      list.push(objField);
-    }
+  //   for (let field of this.getAllFields()) {
+  //     const objField = {
+  //       id: field.businessCode,
+  //       name: field.name
+  //     };
+  //     list.push(objField);
+  //   }
 
-    for (let field of this.contextData) {
-      const objContext = {
-        id: field.code,
-        name: field.description
-      };
-      list.push(objContext);
-    }
+  //   for (let field of this.contextData) {
+  //     const objContext = {
+  //       id: field.code,
+  //       name: field.description
+  //     };
+  //     list.push(objContext);
+  //   }
 
-    list = list.sort((a: any, b: any) => (a.name < b.name ? -1 : 1));
-    console.log('valores: ', list);
+  //   list = list.sort((a: any, b: any) => (a.name < b.name ? -1 : 1));
+  //   console.log('valores: ', list);
 
-    return list;
-  }
+  //   return list;
+  // }
 
-  verifyCsProcess(value: any) {
-    if (!this.flagCsProcess && this.causesPrevValue.length === 0) {
-      this.causesPrevValue = value;
-      this.flagCsProcess = true;
-    }
-    if (this.causesPrevValue.length > value.length) {
-      // vamos a eliminar causas
-      console.log('vamos a eliminar causas');
-      const diff = this.causesPrevValue.filter((x: any) => !value.includes(x));
-      for (let cause of diff) {
-        this.productService.deleteDependencyRef(cause, 'rnwlCsCd');
-      }
-      console.log('prdctDpndncy', this.productService.prdctDpndncy);
-      console.log('field', this.productService.rnwlPrcss);
-      console.log('references', this.productService.references);
-    } else {
-      // vamos a agregar causas
-      this.setCsDependency(value);
-    }
-    this.causesPrevValue = value;
-  }
+  // verifyCsProcess(value: any) {
+  //   if (!this.flagCsProcess && this.causesPrevValue.length === 0) {
+  //     this.causesPrevValue = value;
+  //     this.flagCsProcess = true;
+  //   }
+  //   if (this.causesPrevValue.length > value.length) {
+  //     // vamos a eliminar causas
+  //     console.log('vamos a eliminar causas');
+  //     const diff = this.causesPrevValue.filter((x: any) => !value.includes(x));
+  //     for (let cause of diff) {
+  //       // this.productService.deleteDependencyRef(cause, 'rnwlCsCd');
+  //     }
+  //     // console.log('prdctDpndncy', this.productService.prdctDpndncy);
+  //     // console.log('field', this.productService.rnwlPrcss);
+  //     // console.log('references', this.productService.references);
+  //   } else {
+  //     // vamos a agregar causas
+  //     this.setCsDependency(value);
+  //   }
+  //   this.causesPrevValue = value;
+  // }
 
-  setCsDependency(value: any) {
-    for (let cs of value) {
-      const cause: any = this.causes.find((x: any) => x.businessCode === cs);
-      const obj = {
-        id: cause.id,
-        cd: cause.businessCode,
-        nm: cause.name,
-        dscrptn: cause.description,
-        aplctnPrcssItm: cause.aplicationProcess,
-        aplctnSbprcssCd: cause.aplicationSubProcess,
-        sttCd: cause.statusCode
-      };
+  // setCsDependency(value: any) {
+  //   for (let cs of value) {
+  //     const cause: any = this.causes.find((x: any) => x.businessCode === cs);
+  //     const obj = {
+  //       id: cause.id,
+  //       cd: cause.businessCode,
+  //       nm: cause.name,
+  //       dscrptn: cause.description,
+  //       aplctnPrcssItm: cause.aplicationProcess,
+  //       aplctnSbprcssCd: cause.aplicationSubProcess,
+  //       sttCd: cause.statusCode
+  //     };
 
-      this.productService.setProductDependency('cs', obj);
-      this.productService.setDependencyRef('cs', obj.cd, 'rnwlCsCd')
-    }
-    console.log('prdctDpndncy', this.productService.prdctDpndncy);
-    console.log('field', this.productService.rnwlPrcss);
-    console.log('references', this.productService.references);
-  }
+  //     this.productService.setProductDependency('cs', obj);
+  //     // this.productService.setDependencyRef('cs', obj.cd, 'rnwlCsCd')
+  //   }
+  //   // console.log('prdctDpndncy', this.productService.prdctDpndncy);
+  //   // console.log('field', this.productService.rnwlPrcss);
+  //   // console.log('references', this.productService.references);
+  // }
 
 }
