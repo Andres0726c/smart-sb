@@ -77,7 +77,6 @@ export class CommercialPlanComponent implements OnInit {
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
     );
     console.log(this.idRisk);
-
   }
 
   ngAfterViewInit() {
@@ -164,7 +163,6 @@ export class CommercialPlanComponent implements OnInit {
     return <FormGroup>this.CommercialPlan?.get('step1');
   }
 
- 
   /**
    * In base at configuration done in the wizard, an object is created that is added to table
    * that is linked with commercial plan for each risk type
@@ -198,12 +196,13 @@ export class CommercialPlanComponent implements OnInit {
     });
 
     this.CommertialPlanControls.push(element);
+    this.addDataSource();
+
 
     // addModifyRisk
 
     this.addRiskModify(result, 'add');
 
-    this.addDataSource();
 
     this.toastMessage.openFromComponent(ToastMessageComponent, {
       data: this.getSuccessStatus(
@@ -212,7 +211,7 @@ export class CommercialPlanComponent implements OnInit {
       ),
     });
   }
-  addDataSource(){
+  addDataSource() {
     this.dataSource = new MatTableDataSource<any>(
       this.CommertialPlanControls.value
     );
@@ -364,8 +363,6 @@ export class CommercialPlanComponent implements OnInit {
       }
     });
   }
-
-
 
   /**
    * Allows update the table linked to commercial plan
@@ -563,10 +560,13 @@ export class CommercialPlanComponent implements OnInit {
             coverage.value.id,
             result['step1'].value.code
           )
-            ? this.validateMadatory(this.getAthrzdOprtnCoveragePln(
-                coverage.value.id,
-                result['step1'].value.code
-              ),coverage.value.required)
+            ? this.validateMadatory(
+                this.getAthrzdOprtnCoveragePln(
+                  coverage.value.id,
+                  result['step1'].value.code
+                ),
+                coverage.value.required
+              )
             : this.fb.array([]),
           cvrgDtGrp: this.fb.array([], []),
         })
@@ -588,10 +588,13 @@ export class CommercialPlanComponent implements OnInit {
             servicePlan.value.id,
             result['step1'].value.code
           )
-            ? this.validateMadatory( this.getAthrzdOprtnSrvcPln(
-                servicePlan.value.id,
-                result['step1'].value.code
-              ), servicePlan.value.required)
+            ? this.validateMadatory(
+                this.getAthrzdOprtnSrvcPln(
+                  servicePlan.value.id,
+                  result['step1'].value.code
+                ),
+                servicePlan.value.required
+              )
             : this.fb.array([]),
         })
       );
@@ -604,7 +607,7 @@ export class CommercialPlanComponent implements OnInit {
       this.modifyCommericalRisk(result, objCoverages, objservicePlans, index);
   }
   validateMadatory(array: any, required: any) {
-    if(required){
+    if (required) {
       array.removeAt(array.value.indexOf('RMV'));
       console.log(array);
       return array;
@@ -635,9 +638,9 @@ export class CommercialPlanComponent implements OnInit {
       srvcPln: objservicePlans,
     });
 
-    this.modifyGroup(index,commercialGroup);
+    this.modifyGroup(index, commercialGroup);
   }
-  modifyGroup(index:any,commercialGroup:any){
+  modifyGroup(index: any, commercialGroup: any) {
     this.getRiskArrayById(this.idRisk.value).controls[index] = commercialGroup;
     this.getRiskArrayById(this.idRisk.value).value[index] =
       commercialGroup.value;
