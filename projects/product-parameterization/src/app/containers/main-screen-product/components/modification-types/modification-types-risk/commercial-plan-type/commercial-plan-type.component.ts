@@ -114,7 +114,6 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
         res = res.concat(group.fields);
       }
     }
-
     return res;
   }
 
@@ -197,16 +196,15 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   addDataTable() {
     this.tableData = [];
     this.tableDataService = [];
-    this.tableData.push(...this.getcoveragesPln(this.data).getRawValue());
-    this.tableDataService.push(...this.getSrvcPln(this.data).getRawValue());
+    let dataCoverage=this.getcoveragesPln(this.data).getRawValue();
+    let dataService=this.getSrvcPln(this.data).getRawValue()
+    dataCoverage?this.tableData.push(...dataCoverage):this.tableData=[];
+    dataService?this.tableDataService.push(...dataService):this.tableDataService=[];
   }
 
   changeCheck(id: number, event: any) {
     if (event.checked.length!==0){
-      this.getAthrzdOprtnCoveragePln(id).clear();
-      for(let eventA of  event.checked){
-        this.getAthrzdOprtnCoveragePln(id).push(this.fb.control(eventA));
-      }
+      this.addEvent(id,event.checked,'coverage');
       }else {
         this.getAthrzdOprtnCoveragePln(id).clear();
       }
@@ -215,10 +213,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   changeCheckServices(id: any, event: any) {
     
     if (event.checked.length!==0){
-      this.getAthrzdOprtnSrvcPln(id).clear();
-      for(let eventA of  event.checked){
-        this.getAthrzdOprtnSrvcPln(id).push(this.fb.control(eventA));
-      }
+      this.addEvent(id,event.checked,'service');
       }else {
         this.getAthrzdOprtnSrvcPln(id).clear();
       }
@@ -226,6 +221,19 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     
   }
 
+  addEvent(id:any, checked:any,level:any){
+    if(level==='service'){
+    this.getAthrzdOprtnSrvcPln(id).clear();
+    for(let eventA of  checked){
+      this.getAthrzdOprtnSrvcPln(id).push(this.fb.control(eventA));
+    }
+  }else{
+    this.getAthrzdOprtnCoveragePln(id).clear();
+    for(let eventA of  checked){
+      this.getAthrzdOprtnCoveragePln(id).push(this.fb.control(eventA));
+    }
+  }
+  }
   activeButton(data: any) {
     let btn: boolean; 
       data.athrzdOprtn.find((d:any)=>d=='MDF') ? (btn = false) : (btn = true);
@@ -248,6 +256,8 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       id: 'emissionData',
       data: {
         code: 'emissionData',
+        title:'Seleccionar datos complementarios',
+        subtitle:'Seleccione los datos del tipo de riesgo que desea asociar',
         columns: columns,
         list: this.getAll(),
         data: this.getAllFields(),
@@ -286,7 +296,7 @@ add(nameGroup:any){
   addGroupArray(object: any, nameGruop: any) {
 
     const index = this.getcover(this.idCoverage).value.findIndex((x: { id: any }) => x.id === nameGruop.id);
-    this.getGroupArray(index + 1).push(
+    this.getGroupArray(nameGruop.id).push(
       new FormGroup({
         id: this.fb.control(object.id, [Validators.required]),
         name: this.fb.control(object.name, [Validators.required]),
@@ -355,7 +365,10 @@ add(nameGroup:any){
 
   editData(data: any) {
     if (data) {
+      
       this.idCoverage = data.id;
+      this.getAll();
+      this.getAllFields();
       this.titleCurrent=data.name;
       this.coverageflag = true;
     } else {
@@ -365,6 +378,8 @@ add(nameGroup:any){
   }
 
   sendDataCoverage() {
+    this.getAll();
+    this.getAllFields();
     return this.getcover(this.idCoverage);
   }
 }

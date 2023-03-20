@@ -323,7 +323,21 @@ describe('CommercialPlanTypeComponent', () => {
     component.addDataTable();
   });
 
+  it('getAthrzdOprtnCoveragePln',()=>{
+    component.data='pc001_opcion1alternativa1';
+    component.getAthrzdOprtnCoveragePln(7);
+  })
 
+  
+  it('getAthrzdOprtnSrvcPln',()=>{
+    component.data='pc001_opcion1alternativa1';
+    component.getAthrzdOprtnSrvcPln(7);
+  })
+
+  it('getcoverages',()=>{
+    component.data='pc001_opcion1alternativa1';
+    component.getcoverages(7);
+  })
 
   it('activeButtonON', () => {
     component.activeButton({ athrzdOprtn: ['MDF'] });
@@ -376,19 +390,38 @@ describe('CommercialPlanTypeComponent', () => {
   it('editDataTrue', () => {
     component.data = 'pc001_opcion1alternativa1';
     component.idCoverage = 7;
+    const spy= jest.spyOn(component,'getAll').mockImplementation();
+    const spy1= jest.spyOn(component,'getAllFields').mockImplementation();
+    const spy2= jest.spyOn(component,'getcover').mockImplementation();
     expect(component.editData({ id: 8, name: 'nose' })).toBeUndefined();
   });
   it('editDataFalse', () => {
     component.data = 'pc001_opcion1alternativa1';
     component.idCoverage = 7;
+    const spy= jest.spyOn(component,'getAll').mockImplementation();
+    const spy1= jest.spyOn(component,'getAllFields').mockImplementation();
+    const spy2= jest.spyOn(component,'getcover').mockImplementation();
     expect(component.editData({})).toBeUndefined();
   });
   it('sendDataCoverage', () => {
     component.data = 'pc001_opcion1alternativa1';
     component.idCoverage = 7;
-    const spy= jest.spyOn(component,'getcover').mockImplementation();
+    const spy= jest.spyOn(component,'getAll').mockImplementation();
+    const spy1= jest.spyOn(component,'getAllFields').mockImplementation();
+    const spy2= jest.spyOn(component,'getcover').mockImplementation();
+
     component.sendDataCoverage();
     expect(spy).toBeCalled();
   });
   
+  it('changeCheckServices',()=>{
+    const spy2= jest.spyOn(component,'addEvent').mockImplementation();
+    component.changeCheckServices(1,{checked:['MDF']});
+  });
+
+  
+  it('changeCheck',()=>{
+    const spy2= jest.spyOn(component,'addEvent').mockImplementation();
+    component.changeCheck(1,{checked:['MDF']});
+  });
 });

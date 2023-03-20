@@ -71,21 +71,63 @@ export class ModificationTypesComponent implements OnInit {
     ) {
       this.productService.addRisk();
     }
-   // this.getcmmrclPln(2).clear();
 
     if (this.getcmmrclPln(2).length === 0) {
       this.addDataRisk();
     }
 
     this.calledMenu();
+ 
+   
   }
 
   addDataRisk() {
- 
+    let coverages:any = this.fb.array([]);
+    let servicePlans:any = this.fb.array([]);
     for (const risk of this.productService.riskTypes.value) {
       for (let plan of risk.businessPlans) {
-        this.getCoverages(plan.coverages,'coverage',risk.id);
-        this.getCoverages(plan.servicePlans,'service',risk.id);
+        for (let coverage of plan.coverages) {
+          coverages.push(
+            this.fb.group({
+              id: this.fb.control(coverage.id),
+              required: this.fb.control(coverage.required),
+              name: this.fb.control(
+                this.getDataCoverages(coverage.id, 'name')?.value
+              ),
+              description: this.fb.control(
+                this.getDataCoverages(coverage.id, 'description')?.value
+              ),
+              athrzdOprtn: this.fb.array([]),
+              cvrgDtGrp: this.fb.array([], []),
+            })
+          );
+  
+        }
+        for (let servicePlan of plan.servicePlans) {
+          servicePlans.push(
+            this.fb.group({
+              id: this.fb.control(servicePlan.id),
+              required: this.fb.control(servicePlan.required),
+              name: this.fb.control(
+                this.getServicesPlan(servicePlan.id, 'name')?.value
+              ),
+              description: this.fb.control(
+                this.getServicesPlan(servicePlan.id, 'description')?.value
+              ),
+              athrzdOprtn: this.fb.array([]),
+            })
+          );
+        }
+        this.getcmmrclPln(risk.id).push(
+          this.fb.group({
+            name: this.fb.control(plan.name),
+            code: this.fb.control(plan.code),
+            description: this.fb.control(plan.description),
+            athrzdOprtn: this.fb.array([]),
+            cvrg:coverages ,
+            srvcPln:servicePlans,
+          })
+        );
       }
     }
 
@@ -102,64 +144,7 @@ export class ModificationTypesComponent implements OnInit {
       ?.get(position);
   }
 
-  getCoverages(plan: any, level: any, id:number) {
-
-    let coverages:any;
-    let servicePlans:any ;
-    if (level === 'coverage') {
-      coverages = this.fb.array([]);
-      for (let coverage of plan) {
-        coverages.push(
-          this.fb.group({
-            id: this.fb.control(coverage.id),
-            required: this.fb.control(coverage.required),
-            name: this.fb.control(
-              this.getDataCoverages(coverage.id, 'name')?.value
-            ),
-            description: this.fb.control(
-              this.getDataCoverages(coverage.id, 'description')?.value
-            ),
-            athrzdOprtn: this.fb.control([]),
-            cvrgDtGrp: this.fb.array([], []),
-          })
-        );
-
-        // obj.push(objCovereage);
-      }
-    } else {
-      servicePlans = this.fb.array([]);
-      for (let servicePlan of plan) {
-        servicePlans.push(
-          this.fb.group({
-            id: this.fb.control(servicePlan.id),
-            required: this.fb.control(servicePlan.required),
-            name: this.fb.control(
-              this.getServicesPlan(servicePlan.id, 'name')?.value
-            ),
-            description: this.fb.control(
-              this.getServicesPlan(servicePlan.id, 'description')?.value
-            ),
-            athrzdOprtn: this.fb.control([]),
-          })
-          // obj.push(objSerivePLan);
-        );
-      }     
-    }
-    if(servicePlans&&coverages){
-      this.getcmmrclPln(id).push(
-        this.fb.group({
-          name: this.fb.control(plan.name),
-          code: this.fb.control(plan.code),
-          description: this.fb.control(plan.description),
-          athrzdOprtn: this.fb.control([]),
-          cvrg:coverages,
-          srvcPln:servicePlans,
-        })
-      );
-    }
-
-  }
-
+  
   getcmmrclPln(id: number) {
     return (<FormArray>(
       this.policyDataControls.controls
@@ -193,6 +178,8 @@ export class ModificationTypesComponent implements OnInit {
       id: 'emissionData',
       data: {
         code: 'emissionData',
+        title:level === 'risk' ?'Seleccionar datos del riesgo':'Seleccionar datos de la póliza',
+        subtitle:level === 'risk' ?'Seleccione los datos de riesgo que desea asociar':'Seleccione los datos de la póliza que desea asociar',
         columns: columns,
         list: level === 'risk' ? this.getAllRiskField() : this.getAll(),
         data: level === 'risk' ? this.getAllRisk() : this.getAllFields(),
@@ -297,7 +284,7 @@ export class ModificationTypesComponent implements OnInit {
       (x: { id: any }) => x.id === nameGruop.id
     );
 
-    this.getGroupArrayById(index + 1).push(
+    this.getGroupArrayById(nameGruop.id).push(
       new FormGroup({
         id: this.fb.control(object.id, [Validators.required]),
         name: this.fb.control(object.name, [Validators.required]),

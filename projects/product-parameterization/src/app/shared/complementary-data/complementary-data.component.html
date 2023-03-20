@@ -20,7 +20,7 @@
         </div>
         <div class="add-div-btn"
             *ngIf="complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && getGroupArrayById(1).length > 0)">
-            <button mat-raised-button color="accent" class="bt" data-qa-id="sc-rpmf-btn_open_dialog_complementary_data"
+            <button  *ngIf="!modifyData" mat-raised-button color="accent" class="bt" data-qa-id="sc-rpmf-btn_open_dialog_complementary_data"
                 (click)="openDialogPolicyData('complementaryDataControls')">
                 <em class="fal fa-plus-circle icon-button-add"></em>
                 Añadir datos

@@ -1,11 +1,11 @@
 
 
 
-<!-- <div class="subHeader"  *ngIf="coverageflag">
-   <div>
+ <div class="subHeader"  *ngIf="coverageflag" style="  z-index: 1;   position: absolute; left: 50rem;top: 16rem; ">
+ <!--  <div>
     <h4 class="p-4">{{titleCurrent}}</h4>
     <h5></h5>
-  </div> 
+  </div> -->
 
   <div class="div-button" *ngIf="getAll().length > 0 && coverageflag">
     <button
@@ -19,7 +19,7 @@
     </button>
   </div>
   
-</div> -->
+</div> 
 
 <div class="container-boxes"  >
   <section class="container-table" *ngIf="!coverageflag">
@@ -109,10 +109,34 @@
     </p-tabView>
   </section>
   <div *ngIf="coverageflag">
+    <div *ngIf="getAllFields().length<0">
+      <app-complementary-data
+      [applicationLevel]="'types'"
+      [title]="titleCurrent"
+      [subtitle]="'Cobertura por '+ titleCurrent.toLowerCase()"
+      [groupName]="'Datos básicos'"
+      [emptyText]="'Datos complementarios'"
+      [emptySubText]="'No se han asociado los datos complementarios a modificar'"
+      [successAddItemMsg]="
+        'Los datos de la póliza fueron asociados correctamente.'
+      "
+      [removeItemMsg]="
+        '¿Está seguro de querer desasociar el dato de la póliza seleccionado?'
+      "
+      [titleModalCompData]="'Seleccionar datos complementarios'"
+      [subtitleModalCompData]="
+      'Seleccione los datos del tipo de riesgo que desea asociar'
+    "
+      [complementaryData]="sendDataCoverage()"
+      (action)="openToAdd()"
+      [modifyData]="true"
+    >
+    </app-complementary-data>
+    </div>
     <app-complementary-data
           [applicationLevel]="'types'"
           [title]="titleCurrent"
-          [subtitle]="'Cobertura por '+ titleCurrent"
+          [subtitle]="'Cobertura por '+ titleCurrent.toLowerCase()"
           [groupName]="'Datos básicos'"
           [emptyText]="'Datos complementarios'"
           [emptySubText]="'No se han asociado los datos complementarios a modificar'"
