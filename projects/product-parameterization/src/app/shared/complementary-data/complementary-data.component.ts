@@ -457,7 +457,7 @@ export class ComplementaryDataComponent implements OnInit {
 
   removeGroup(group: any) {
     let index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === group.get('id')?.value);
-    
+   
     
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
@@ -475,6 +475,8 @@ export class ComplementaryDataComponent implements OnInit {
             field.get('fieldGroup')?.setValue(1);
             this.getGroupArrayById(1).push(field);
           }
+          this.removeGroupCascade(group);
+         
         }
       }
     });
@@ -484,8 +486,6 @@ export class ComplementaryDataComponent implements OnInit {
    * remueve la asociación de datos de poliza y tipos de modificación
    */
   DeleteCascadeDateModify(id: number,code:any) {
-
-   
 
     let mdfctnPrcss =  (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).controls.find(x => x.value.id === id)?.get('fields');
       
@@ -501,6 +501,23 @@ export class ComplementaryDataComponent implements OnInit {
 
     }
 
+  }
+
+  /**
+   * remueve la asociación de grupos en los demes componentes
+   */
+
+  removeGroupCascade(group: any): void {
+
+    let indexGroup:any = (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).controls.findIndex(x => x.value.id ===group.get('id')?.value);
+
+    (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).removeAt(indexGroup);
+
+    let index = (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).controls.findIndex(x => x.value.id ===group.get('id')?.value);
+
+    (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).removeAt(index);
+ 
+    
   }
 
   removeAssociatedReference() {
