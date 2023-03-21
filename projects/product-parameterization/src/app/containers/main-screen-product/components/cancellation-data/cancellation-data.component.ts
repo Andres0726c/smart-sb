@@ -29,7 +29,7 @@ export class CancellationDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.rmsDpndncy = this.productService.prdctDpndncy?.get('insrncLn')?.value;
-    this.rm = this.rmsDpndncy.find(
+    this.rm = this.rmsDpndncy?.find(
       (element: any) =>
         element.id ===
         this.productService.initialParameters?.get('insuranceLine')?.value
@@ -150,7 +150,7 @@ export class CancellationDataComponent implements OnInit {
         rlEngnCd: objRule.rule.rlEngnCd
       },
       sttsCd: 'ACT',
-      insrncLnCd: [this.rm.cd]
+      insrncLnCd: [this.rm?.cd]
     };
 
     let objRlArgs = this.mapRuleArgs(objRule.parameters);
@@ -177,7 +177,7 @@ export class CancellationDataComponent implements OnInit {
 
   getRulesDp() {
     let res: any[] = [];
-    for(const rule of this.productService.cnclltnPrcss.get('clcltnRl')?.value) {
+    for(const rule of this.productService.cnclltnPrcss?.get('clcltnRl')?.value) {
       res.push(this.productService.getProductDependency('rl', rule.rlCd));
     }
     return res;
@@ -276,7 +276,7 @@ export class CancellationDataComponent implements OnInit {
         sttCd: cause.statusCode,
         aplctnPrcssItm: cause.aplicationProcess,
         aplctnSbprcssCd: cause.aplicationSubProcess,
-        insrncLnCd: [this.rm.cd],
+        insrncLnCd: [this.rm?.cd],
       };
 
       this.productService.setProductDependency('cs', obj);

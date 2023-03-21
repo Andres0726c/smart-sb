@@ -43,6 +43,12 @@ const ProductServiceMock = {
       ),
     }),
   ]),
+  rnsttmntPrcss: new FormGroup({
+    enabled: new FormControl(false),
+    rnsttmntCsCd: new FormControl([]),
+    clcltnRl: new FormControl([]),
+    isNwIssPlcy: new FormControl(false),
+  }),
 };
 
 describe('RehabilitationDataComponent', () => {

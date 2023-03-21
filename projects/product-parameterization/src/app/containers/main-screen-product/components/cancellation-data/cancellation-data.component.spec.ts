@@ -61,6 +61,12 @@ const ProductServiceMock = {
       ),
     }),
   ]),
+  cnclltnPrcss: new FormGroup({
+    enabled: new FormControl(false),
+    cnclltnCsCd: new FormControl([]),
+    clcltnRl: new FormControl([]),
+    isCncllblIncptnDt: new FormControl(false)
+  }),
 };
 
 class ServiceMock {

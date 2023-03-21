@@ -491,11 +491,11 @@ export class InitialParametersComponent implements OnInit {
     let rm: any = this.ramo.find((x: any) => x.id === event);
 
     let objIns = {
-      id: rm.id,
-      cd: rm.businessCode,
-      fnnclCd: rm.financialCode,
-      nm: rm.nmName,
-      dscrptn: rm.dsDescription,
+      id: rm?.id,
+      cd: rm?.businessCode,
+      fnnclCd: rm?.financialCode,
+      nm: rm?.nmName,
+      dscrptn: rm?.dsDescription,
       sttCd: 'ACT',
       cmpnyId: this.service.companyId
     }
