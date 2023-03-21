@@ -1,14 +1,16 @@
-
-
-
- <div class="subHeader"  *ngIf="coverageflag" style="  z-index: 1;   position: absolute; left: 50rem;top: 16rem; ">
- <!--  <div>
+<div
+  class="subHeader"
+  *ngIf="coverageflag"
+  style="z-index: 1; position: absolute; left: 50rem; top: 16rem"
+>
+  <!--  <div>
     <h4 class="p-4">{{titleCurrent}}</h4>
     <h5></h5>
   </div> -->
 
-  <div class="div-button" *ngIf="getAll().length > 0 && coverageflag">
+  <div class="div-button" *ngIf="coverageflag">
     <button
+      *ngIf="getAll().length > 0"
       mat-button
       class="bt bt-primary"
       (click)="openToAdd()"
@@ -18,16 +20,50 @@
       Añadir
     </button>
   </div>
-  
-</div> 
+</div>
 
-<div class="container-boxes"  >
+<app-complementary-data
+    *ngIf="coverageflag && getAll().length > 0"
+    [applicationLevel]="'types'"
+    [title]="titleCurrent"
+    [subtitle]="'Cobertura por ' + titleCurrent.toLowerCase()"
+    [groupName]="'Datos básicos'"
+    [emptyText]="'Datos complementarios'"
+    [emptySubText]="'No se han asociado los datos complementarios a modificar'"
+    [successAddItemMsg]="
+      'Los datos complementarios de la cobertura fueron asociados correctamente.'
+    "
+    [removeItemMsg]="
+      '¿Está seguro de querer desasociar el dato complementario de la cobertura seleccionado?'
+    "
+    [titleModalCompData]="'Seleccionar datos complementarios'"
+    [subtitleModalCompData]="
+      'Seleccione los datos del tipo de riesgo que desea asociar'
+    "
+    [complementaryData]="sendDataCoverage()"
+    (action)="openToAdd()"
+    [modifyData]="true"
+  >
+  </app-complementary-data>
+<app-no-data-screen
+  *ngIf="coverageflag && getAll().length == 0"
+  [data]="sendDataCoverage()"
+  [layoutType]="'full'"
+  [emptyTitle]="''"
+  [emptySubTitle]="''"
+  [emptyText]="'Sin datos complementarios'"
+  [emptySubText]="'No se han asociado los datos complementarios a modificar'"
+  (action)="openToAdd()"
+>
+</app-no-data-screen>
+
+<div class="container-boxes">
   <section class="container-table" *ngIf="!coverageflag">
     <p-breadcrumb [model]="items"></p-breadcrumb>
     <p-tabView>
       <p-tabPanel header="Coberturas">
-        <div class="table-wrapper" >
-          <p-table [value]="tableData" >
+        <div class="table-wrapper">
+          <p-table [value]="tableData">
             <ng-template pTemplate="header">
               <tr>
                 <th scope="col">Coberturas</th>
@@ -37,20 +73,19 @@
             </ng-template>
             <ng-template pTemplate="body" let-data let-i="rowIndex">
               <tr>
-                <td>{{ data.name}}
-                </td>
+                <td>{{ data.name }}</td>
                 <td>
                   <div
-                    *ngFor="let option of athrzdOprtnCoverages;let i = index"
+                    *ngFor="let option of athrzdOprtnCoverages; let i = index"
                     class="field-checkbox"
                   >
                     <label>
                       <p-checkbox
-                        (onChange)="changeCheck(data.id,$event)"
+                        (onChange)="changeCheck(data.id, $event)"
                         [value]="option.key"
-                        [disabled]="data.required && option.key=='RMV'"
+                        [disabled]="data.required && option.key == 'RMV'"
                         [(ngModel)]="data.athrzdOprtn"
-                        ></p-checkbox>
+                      ></p-checkbox>
                       {{ option.name }}
                     </label>
                   </div>
@@ -74,8 +109,8 @@
       </p-tabPanel>
 
       <p-tabPanel header="Planes de servicio">
-        <div class="table-wrapper" >
-          <p-table [value]="tableDataService" >
+        <div class="table-wrapper">
+          <p-table [value]="tableDataService">
             <ng-template pTemplate="header">
               <tr>
                 <th scope="col">Planes de servicio</th>
@@ -92,9 +127,9 @@
                   >
                     <label>
                       <p-checkbox
-                        (onChange)="changeCheckServices(data.id,$event)"
+                        (onChange)="changeCheckServices(data.id, $event)"
                         [value]="option.key"
-                        [disabled]="data.required && option.key=='RMV'"
+                        [disabled]="data.required && option.key == 'RMV'"
                         [(ngModel)]="data.athrzdOprtn"
                       ></p-checkbox>
                       {{ option.name }}
@@ -108,57 +143,4 @@
       </p-tabPanel>
     </p-tabView>
   </section>
-  <div *ngIf="coverageflag">
-    <div  *ngIf="complementaryFlag">
-      <app-complementary-data
-      [applicationLevel]="'types'"
-      [title]="''"
-      [subtitle]="''"
-      [groupName]="'Datos básicos'"
-      [emptyText]="'Datos complementarios'"
-      [emptySubText]="'No se han asociado los datos complementarios a modificar'"
-      [successAddItemMsg]="
-      'Los datos complementarios de la cobertura fueron asociados correctamente.'
-      "
-      [removeItemMsg]="
-      '¿Está seguro de querer desasociar el dato complementario de la cobertura seleccionado?'
-      "
-      [titleModalCompData]="'Seleccionar datos complementarios'"
-      [subtitleModalCompData]="
-      'Seleccione los datos del tipo de riesgo que desea asociar'
-    "
-      [complementaryData]="sendDataCoverage()"
-      (action)="openToAdd()"
-      [modifyData]="true"
-    >
-    </app-complementary-data>
-    </div>
-    <div *ngIf="!complementaryFlag">
-
-    </div>
-    <app-complementary-data
-          [applicationLevel]="'types'"
-          [title]="titleCurrent"
-          [subtitle]="'Cobertura por '+ titleCurrent.toLowerCase()"
-          [groupName]="'Datos básicos'"
-          [emptyText]="'Datos complementarios'"
-          [emptySubText]="'No se han asociado los datos complementarios a modificar'"
-          [successAddItemMsg]="
-          'Los datos complementarios de la cobertura fueron asociados correctamente.'
-          "
-          [removeItemMsg]="
-          '¿Está seguro de querer desasociar el dato complementario de la cobertura seleccionado?'
-          "
-          [titleModalCompData]="'Seleccionar datos complementarios'"
-          [subtitleModalCompData]="
-          'Seleccione los datos del tipo de riesgo que desea asociar'
-        "
-          [complementaryData]="sendDataCoverage()"
-          (action)="openToAdd()"
-          [modifyData]="true"
-        >
-        </app-complementary-data>
-  </div>
-
 </div>
-

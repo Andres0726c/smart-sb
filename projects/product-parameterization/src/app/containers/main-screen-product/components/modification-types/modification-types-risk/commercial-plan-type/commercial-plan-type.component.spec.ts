@@ -406,12 +406,16 @@ describe('CommercialPlanTypeComponent', () => {
   it('sendDataCoverage', () => {
     component.data = 'pc001_opcion1alternativa1';
     component.idCoverage = 7;
-    const spy= jest.spyOn(component,'getAll').mockImplementation();
+    let res=[{name:''}]
+    const spy= jest.spyOn(component,'getAll').mockReturnValue(res);
     const spy1= jest.spyOn(component,'getAllFields').mockImplementation();
     const spy2= jest.spyOn(component,'getcover').mockImplementation();
 
     component.sendDataCoverage();
     expect(spy).toBeCalled();
+    expect(spy1).toBeCalled();
+    expect(spy2).toBeCalled();
+
   });
   
   it('changeCheckServices',()=>{
