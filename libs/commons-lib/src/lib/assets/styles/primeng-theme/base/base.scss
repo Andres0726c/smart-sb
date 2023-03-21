@@ -861,8 +861,8 @@ p-checkbox.ng-dirty.ng-invalid>.p-checkbox>.p-checkbox-box {
 .p-inputgroup input:last-child,
 .p-inputgroup>.p-inputwrapper:last-child>.p-component,
 .p-inputgroup>.p-inputwrapper:last-child>.p-component>.p-inputtext {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 .p-inputgroup .p-float-label:last-child input {
@@ -5313,11 +5313,11 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-steps .p-steps-item .p-menuitem-link .p-steps-number {
-  color: #495057;
-  border: 1px solid #e9ecef;
+  color: var(--greyscale-3);
+  border: 2px solid var(--greyscale-4);
   background: #ffffff;
-  min-width: 2rem;
-  height: 2rem;
+  min-width: 48px;
+  height: 48px;
   line-height: 2rem;
   font-size: 1.143rem;
   z-index: 1;
@@ -5336,8 +5336,11 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-steps .p-steps-item.p-highlight .p-steps-number {
-  background: #EEF2FF;
+  background: var(--bg-secondary);
   color: var(--primary-dark);
+  padding: 4px;
+  border: 2px solid var(--bg-secondary) !important;
+  background-clip: content-box;
 }
 
 .p-steps .p-steps-item.p-highlight .p-steps-title {

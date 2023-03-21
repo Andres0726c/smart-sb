@@ -1,0 +1,55 @@
+@import "../..//../../../../assets/styles/config/variables";
+@import "../../../../../../assets/styles/config/mixins";
+@import "../../../../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+.div-button {
+    position: relative;
+    margin-top: 10px;
+    .bt {
+      font-weight: bold;
+      height: 40px;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      color: $primaryBase;
+      border-radius: 50px;
+      width: 100px;
+      margin-right: 260px;
+    }
+    
+  }
+
+  .content_title {
+    flex-direction: column;
+    padding: 1rem 0;
+  }
+.title {
+  font-family: "Roboto Condensed"!important;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
+  margin: 0 0 16px 20px;
+  color: $titleSubtitle;
+}
+.subtitle {
+  font-family: "Roboto Condensed"!important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  margin: 0 0 16px 20px;
+  color: $titleSubtitle;
+}
+.container-expansion-panel-child {
+  padding: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
