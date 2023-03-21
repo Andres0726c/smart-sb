@@ -17,8 +17,8 @@ export class RenewalDataComponent implements OnInit {
   flagError = false;
   flagCsProcess = false;
   applicationLevel = 'Renovación';
-  causes = [];
-  causesPrevValue = [];
+  causes: any = [];
+  causesPrevValue: any = [];
   rulePrevValue: any = null;
   /*causes = [
     {
@@ -126,15 +126,7 @@ export class RenewalDataComponent implements OnInit {
       this.productService.initialParameters?.get('insuranceLine')?.value !== null
         ? this.productService.initialParameters?.get('insuranceLine')?.value + ''
         : '0';
-
-        /*this.openDialogWizard(
-          'ruleInitializeControls',
-          field?.value,
-          columns,
-          false,
-          this.complementaryData,
-          this.contextData
-        )*/
+        
     const itemSelected = this.productService.getProductDependency('rl', this.productService.rnwlPrcss.get(field)?.value.cd);
 
     const dialogRef = this.dialogService.open(RulesWizardComponent, {

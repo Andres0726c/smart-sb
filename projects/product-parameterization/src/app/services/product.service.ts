@@ -502,7 +502,6 @@ export class ProductService {
 
       this.references = product.references ?  this.setFields('references', product.references) : this.fb.array([]);
       
-
       this.initialParameters.get('productName')?.disable();
       this.initialParameters.get('company')?.disable();
 
