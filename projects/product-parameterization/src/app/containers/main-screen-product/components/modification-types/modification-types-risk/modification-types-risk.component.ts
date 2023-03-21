@@ -48,11 +48,9 @@ export class ModificationTypesRiskComponent implements OnInit {
     this.tableData.push(...this.getcmmrclPln(2).getRawValue());
     this.selectedCategories = this.athrzdOprtn.slice(1,3);
 
+    console.log("componente Risk: ", this.policyDataControls)
   }
 
-  get controls() {
-    return (this.group.get('athrzdOprtn') as FormArray).controls;
-  }
   get policyDataControls(): FormArray {
     return (<FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
@@ -66,13 +64,14 @@ export class ModificationTypesRiskComponent implements OnInit {
           ?.get('cmmrclPln')
       )) as FormArray;
     }
+
+  
     getAthrzdOprtn(code: string) {
       return   (<FormArray>(this.getcmmrclPln(2)
         .controls.find((x: { value: { code: string } }) => x.value.code === code)
         ?.get('athrzdOprtn') )) as FormArray;
     }
   
- 
 
   changeCheck(data:any,event:any) {
 
