@@ -23,7 +23,7 @@ describe('ModificationTypesRiskComponent', () => {
   const ProductServiceMock = {
     mdfctnPrcss: new FormGroup({
         mdfcblDt: new FormGroup({
-            plcyDtGrp: new FormGroup({
+            plcyDtGrp: new FormArray([new FormGroup({
                 code: new FormControl(
                   'gd002_datosdeldebito',
                   Validators.required
@@ -39,7 +39,8 @@ describe('ModificationTypesRiskComponent', () => {
                   ],
                   Validators.required
                 ),
-            }),
+            })
+          ]),
             rskTyp:new FormArray(
               [
             new FormGroup({
@@ -181,5 +182,7 @@ describe('ModificationTypesRiskComponent', () => {
     const spy=jest.spyOn(component,'addData').mockImplementation();
     component.changeCheck({code:'pc001_opcion1alternativa1'},{checked:''})
   })
-
+  it('getAthrzdOprtn',()=>{
+    component.getAthrzdOprtn("pc001_opcion1alternativa1");
+  })
 });

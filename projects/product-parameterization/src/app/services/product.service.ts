@@ -568,15 +568,17 @@ export class ProductService {
         }))
        
         this.addRisk();
-       
-
       }  
+
       if (!this.prvwDt.contains('plcyDtGr')) {
-        console.log("entra");
         this.prvwDt.addControl('plcyCntxtGrp',this.fb.array ([]));
         this.prvwDt.addControl('plcyDtGrp',this.fb.array ([]));
         this.prvwDt.addControl('rskTyp',this.fb.array ([]));
         this.prvwDt.addControl('cvrg',this.fb.array ([]));
+      }
+     
+      if (!this.mdfctnPrcss.contains('mdfctnTchnclCntrl')) {
+        this.mdfctnPrcss.addControl( 'mdfctnTchnclCntrl', this.fb.array([]));
       }
       
       if((<FormArray>( this.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))).length ===0)

@@ -294,6 +294,38 @@ describe('ModificationTypesComponent', () => {
       },
     },
   ];
+  let res1 = 
+    {
+      id: 1,
+      name: 'string',
+      description: 'string',
+      details: 'string',
+      shouldDelete: true,
+      cdRuleType: 'string',
+      element: {
+        id: 1,
+        businessCode: 'string',
+        nmLabel: 'string',
+        dsDescription: 'string',
+        dataType: {
+          code: 'string',
+          name: 'string',
+          description: 'string',
+          bdFieldType: 'string',
+          guiComponent: 'string',
+          lenght: 1,
+          precision: 1,
+          scale: 1,
+        },
+        flIsMandatory: 'S',
+        domainList: {
+          code: 'string',
+          name: 'string',
+          description: 'string',
+          valueList: 'String',
+        },
+      },
+    };
   class dialogMock {
     open() {
       return {
@@ -338,7 +370,40 @@ describe('ModificationTypesComponent', () => {
 
   class toastMock {
     openFromComponent() {
-      /* TODO document why this method 'openFromComponent' is empty */
+      of([
+        {
+          id: 1,
+          name: 'string',
+          description: 'string',
+          details: 'string',
+          shouldDelete: true,
+          cdRuleType: 'string',
+          element: {
+            id: 1,
+            businessCode: 'string',
+            nmLabel: 'string',
+            label: 'string',
+            dsDescription: 'string',
+            dataType: {
+              code: 'string',
+              name: 'string',
+              description: 'string',
+              bdFieldType: 'string',
+              guiComponent: 'string',
+              lenght: 1,
+              precision: 1,
+              scale: 1,
+            },
+            flIsMandatory: 'S',
+            domainList: {
+              code: 'string',
+              name: 'string',
+              description: 'string',
+              valueList: 'String',
+            },
+          },
+        },
+      ])
     }
   }
 
@@ -365,7 +430,7 @@ describe('ModificationTypesComponent', () => {
         { provide: MatDialog, useValue: new dialogMock() },
         {
           provide: MatSnackBar,
-          useValue: {},
+          useValue: new toastMock(),
         },
         {
           provide: FormGroup,
@@ -469,9 +534,21 @@ describe('ModificationTypesComponent', () => {
     expect(component.getAllFields()).toBeDefined();
   });
 
+ 
   it('showMessageGroup', () => {
     expect(component.showMessageGroup(false)).toBeUndefined();
   });
+  it('showMessageGroupTrue', () => {
+    expect(component.showMessageGroup(true)).toBeUndefined();
+  });
+  it('addDataRisk',()=>{
+    const spy= jest.spyOn(component,'getServicesPlan').mockImplementation();
+    const spy1=jest.spyOn(component,'getDataCoverages').mockImplementation();
+    component.addDataRisk();
+    expect(spy).toBeCalled();
+    expect(spy1).toBeCalled();
+
+  })
   it('addRisk', () => {
     let group = {
       id: 1,
@@ -513,6 +590,9 @@ describe('ModificationTypesComponent', () => {
     expect(component.addGroupObj(group, 'datos_basicos')).toBeUndefined();
   });
 
+  it('getAthrzdOprtn',()=>{
+    component.getAthrzdOprtn("pc001_opcion1alternativa1");
+  })
   it('calledMenu', () => {
     let menu = [
       {
@@ -544,7 +624,6 @@ describe('ModificationTypesComponent', () => {
   })
   it('sendData', () => {
     component.showCommercialPlans=true;
-    component.bussinesPlans=true;
     expect(component.sendData('pc001_opcion1alternativa1', 'risk')).toBeUndefined();
   });
   it('showRiskType', () => {

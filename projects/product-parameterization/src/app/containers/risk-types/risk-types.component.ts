@@ -111,9 +111,6 @@ export class RiskTypesComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedRiskType = this.riskTypeGroup;
-
-    console.log(this.selectedRiskType);
-    console.log(this.productService.mdfctnPrcss,"pr");
   }
 
   get riskTypeGroup(): FormGroup {
