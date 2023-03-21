@@ -70,7 +70,7 @@ export class RulesWizardComponent implements OnInit {
       }
     ];
 
-    this.dataSourceModal.data.contextData =[
+    /*this.dataSourceModal.data.contextData =[
       {
           "code": "prdct",
           "description": "Producto",
@@ -143,7 +143,7 @@ export class RulesWizardComponent implements OnInit {
               "*"
           ]
       }
-    ];
+    ];*/
   }
 
   /**
@@ -242,54 +242,6 @@ export class RulesWizardComponent implements OnInit {
     return this.data.columns?.filter((x: any) => x.header);
   }
 
-  /**
-   * Función que permite obtener los datos a mostrar en la modal, bien sea a nivel local o por consumo de MS
-   * @param search Criterio de búsqueda
-   * @param page Página actual
-   * @param pageSize Número de elementos por página
-   * @param sortColumn Columna para el ordenamiento
-   * @param sortDirection Dirección del ordenamiento (Ascendente/Descendente)
-   * @param modificationType Tipo de modificación
-   */
-  getData(
-    search: string,
-    page: number,
-    pageSize: number,
-    sortColumn: string,
-    sortDirection: string,
-    modificationType?: string
-  ) {
-    let selectedIds = '0';
-    let res: any;
-    let requestParams: any = '';
-    this.isLoading = true;
-
-    if (this.data.list.length > 0) {
-      for (let sel of this.data.list) {
-        selectedIds += `,${sel.id}`;
-      }
-    }
-
-    if (!this.data.data) {
-      // Se consume MS
-      if (this.modal.remotePaginator) {
-        if (this.data.parameter) {
-          requestParams = this.data.parameter + `/${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`;
-        } else {
-          requestParams = `${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`;
-        }
-      }
-      this.getApiData(requestParams, search);
-    } else {
-      // Se cargan datos locales presentes en el service transversal
-      res = { body: this.data.data };
-      this.isLoading = false;
-      this.setData(res);
-      this.flagServiceError = false;
-    }
-    
-  }
-
   getApiData(requestParams: any, search: string) {
     this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false && res.body) {
@@ -375,27 +327,7 @@ export class RulesWizardComponent implements OnInit {
     if (this.selectedElement) {
       this.arrayData.push(this.selectedElement);
     }
-    //arrData = this.removeDuplicates(this.selectedElement, 'id');
     this.ref.close(arrData);
-  }
-
-  /**
-   * Method that delete all the elements repeated in the array
-   * @param originalArray variable that has the array with the values
-   * @param prop variable that has the identifier from the object in the array
-   */
-  removeDuplicates(originalArray: any, prop: string) {
-    let newArray: any = [];
-    let lookupObject: any = {};
-    let i;
-    for (i in originalArray) {
-      lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
-
-    for (i in lookupObject) {
-      newArray.push(lookupObject[i]);
-    }
-    return newArray;
   }
 
   /**
@@ -458,14 +390,7 @@ export class RulesWizardComponent implements OnInit {
     } else {
       this.prevReqParams = requestParams;
     }
-
-    /*setTimeout(() => {
-      this.customerService.getCustomers({lazyEvent: JSON.stringify(event)}).then(res => {
-          this.customers = res.customers;
-          this.totalRecords = res.totalRecords;
-          this.loading = false;
-      })
-    }, 1000);*/
+    
     if (doReq) {
       this.isLoading = true;
       this.getApiData(requestParams, search);
@@ -473,40 +398,6 @@ export class RulesWizardComponent implements OnInit {
     //this.totalSize = 
     //console.log('lazy load', event)
   }
-
-  /*setParameters(field: any, rule: any) {
-    (<FormArray>this.parametersForm.get('parameters'))?.clear();
-
-    let obj = this.fb.group({
-     rule: rule,
-     campo: field.businessCode
-    });
-
-    for (let valid of this.fields.value) {
-      if (valid.rule === rule) {
-        this.fields.removeAt(this.fields.value.findIndex((x: any) => x.rule === rule));
-        break;
-      }
-    }
-
-    this.fields.push(obj);
-
-      // push final
-    let ObjForm;
-
-    for (let parameter of this.stepParameters) {
-      for ( let rule of this.fields.value) {
-       if (parameter.name === rule.rule  ) {
-        ObjForm = this.fb.group({
-          name: this.fb.control(parameter.name),
-          value: this.fb.control(rule.campo)
-        });
-        (<FormArray>this.ParametersForm.get('parameters'))?.push(ObjForm);
-       }
-      }
-    }
-
-  }*/
 
   onRowSelect(event: any) {
     this.parametersForm.get('rule')?.setValue(this.selectedElement);
