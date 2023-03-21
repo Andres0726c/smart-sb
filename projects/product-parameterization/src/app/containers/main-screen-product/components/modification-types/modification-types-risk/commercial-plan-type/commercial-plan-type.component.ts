@@ -65,7 +65,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     { name: 'Remover', key: 'RMV' },
     { name: 'Añadir', key: 'ADD' },
   ];
-
+  prueba:any=new FormArray([]);
   dataAthrzdOprtn: any = [];
 
   constructor(
@@ -373,8 +373,11 @@ add(nameGroup:any){
   }
 
   sendDataCoverage() {
-    this.getAll();
-    this.getAllFields();
-    return this.getcover(this.idCoverage);
+    if( this.getAll().length>0){
+      this.getAll();
+      this.getAllFields();
+    }
+
+     return this.getcover(this.idCoverage);
   }
 }
