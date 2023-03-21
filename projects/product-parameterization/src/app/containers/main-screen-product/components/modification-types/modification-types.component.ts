@@ -62,7 +62,6 @@ export class ModificationTypesComponent implements OnInit {
     public productService: ProductService
   ) {}
   ngOnInit(): void {
-
     if (
       (<FormArray>(
         this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
@@ -71,20 +70,22 @@ export class ModificationTypesComponent implements OnInit {
       this.productService.addRisk();
     }
 
-    if (this.getcmmrclPln(2).length === 0) {
+    if (this.getcmmrclPln(2).length === 0 || this.getcmmrclPln(2).controls[0]?.get('coverages')) {
+      this.getcmmrclPln(2).clear();
       this.addDataRisk();
     }
-
+    console.log(this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))
     this.calledMenu();
- 
-   
   }
-
+ 
   addDataRisk() {
     let coverages:any = this.fb.array([]);
     let servicePlans:any = this.fb.array([]);
+ 
     for (const risk of this.productService.riskTypes.value) {
       for (let plan of risk.businessPlans) {
+        coverages.clear();
+        servicePlans.clear();
         for (let coverage of plan.coverages) {
           coverages.push(
             this.fb.group({
@@ -128,6 +129,7 @@ export class ModificationTypesComponent implements OnInit {
           })
         );
       }
+
     }
 
   }
