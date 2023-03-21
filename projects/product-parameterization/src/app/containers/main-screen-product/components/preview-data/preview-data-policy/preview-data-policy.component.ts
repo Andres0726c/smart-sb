@@ -29,12 +29,15 @@ export class PreviewDataPolicyComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadContextData();
+
+   
+    if(this.policyPreviewControls.length > 0)
     this.clearGroup();
    
   }
 
   get policyPreviewControls(): FormArray {
-    return (<FormArray>(
+  return (<FormArray>(
       this.productService.prvwDt?.get('plcyDtGrp')
     )) as FormArray;
   }
@@ -58,19 +61,22 @@ export class PreviewDataPolicyComponent implements OnInit {
     let list: any = [];
 
     for (let field of this.getAllFields()) {
+     
       const objField = {
-        id: field.businessCode,
+        id: field.id,
         name: field.name,
-        description:field?.dataType?.description
+        description:field?.dataType?.description,
+        businessCode:field.businessCode
       };
       list.push(objField);
     }
 
     for (let field of this.contextData) {
       const objContext = {
-        id: field.code,
+         id: field.id,
         name: field.description,
-        description: field.description
+        description: field.description,
+        businessCode:field.code
       };
       list.push(objContext);
     }
@@ -88,13 +94,38 @@ export class PreviewDataPolicyComponent implements OnInit {
     return res;
   }
 
+  getAllFieldsPreview() {
+    let res: any[] = [];
+    for(const group of this.productService?.prvwDt?.get('plcyDtGrp')?.getRawValue()) {
+      res = res.concat(group.fields);
+    }
+    
+    return res;
+  }
+
 loadContextData() {
     this.isLoading = true;
     this.productService.getApiData(`domainList/DATOS_CONTEXTO`).subscribe({
       next: (res: any) => {
-        console.log('datos contexto', res);
+       
         this.contextData = res.body.nmValueList;
         //se filtra los datos de contexto dependiendo del nivel de aplicación
+        let auxContextData:any =[];
+
+        let id = 0;
+
+        for(const context of this.contextData) {
+          let obj = {
+            id: id++,
+            applctnLvl: context.applctnLvl,
+            code: context.code,
+            description: context.description,
+          }
+          auxContextData.push(obj);
+          
+        }
+        this.contextData = auxContextData;
+
         this.contextData =  this.contextData.filter( (data:any) => data.applctnLvl.includes(this.applicationLevel) || data.applctnLvl.includes("*") );
         this.isLoading = false;
       },
@@ -123,7 +154,7 @@ loadContextData() {
       data: {
         code: 'emissionData',
         columns: columns,
-        list: [],
+        list: this.getAllFieldsPreview(),
         data:this.getParamValuesList() //level==='risk'?this.getAllRisk():this.getAllFields(),
       },
     });
@@ -137,10 +168,9 @@ loadContextData() {
     if (obj) {
       this.showMessageGroup(showMessage);
       let nameGruop: any;
-      console.log("obj",obj);
-
       for (let object of obj) {
-        nameGruop = this.getNameGroup(object.element.id);
+        nameGruop = this.getNameGroup(object.element.businessCode);
+        console.log("nameGruop",nameGruop);
 
       if (!nameGruop) {
        

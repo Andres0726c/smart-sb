@@ -570,7 +570,7 @@ export class ProductService {
         this.addRisk();
       }  
 
-      if (!this.prvwDt.contains('plcyDtGr')) {
+      if (!this.prvwDt.contains('plcyDtGrp')) {
         this.prvwDt.addControl('plcyCntxtGrp',this.fb.array ([]));
         this.prvwDt.addControl('plcyDtGrp',this.fb.array ([]));
         this.prvwDt.addControl('rskTyp',this.fb.array ([]));

@@ -62,6 +62,7 @@ export class ModificationTypesComponent implements OnInit {
     public productService: ProductService
   ) {}
   ngOnInit(): void {
+    this.clearGroup();
     if (
       (<FormArray>(
         this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
@@ -76,6 +77,22 @@ export class ModificationTypesComponent implements OnInit {
     }
     console.log(this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))
     this.calledMenu();
+  }
+
+
+  clearGroup() {
+  
+    for (let field of this.complementaryDataControls.value) {
+
+      if(field.fields.length ===0) {
+
+        let index = this.complementaryDataControls.controls.findIndex(x => x.value.id ===field.id);
+
+          this.complementaryDataControls.removeAt(index);
+      }
+
+    }
+   
   }
  
   addDataRisk() {
@@ -309,7 +326,7 @@ export class ModificationTypesComponent implements OnInit {
         ),
         editable: this.fb.control(true, [Validators.required]),
         visible: this.fb.control(true, [Validators.required]),
-        fieldGroup: this.fb.control(index + 1, []),
+        fieldGroup: this.fb.control(nameGruop.id, []),
         shouldDelete: this.fb.control(object.shouldDelete, [
           Validators.required,
         ]),
@@ -346,7 +363,7 @@ export class ModificationTypesComponent implements OnInit {
         ),
         editable: this.fb.control(true, [Validators.required]),
         visible: this.fb.control(true, [Validators.required]),
-        fieldGroup: this.fb.control(index + 1, []),
+        fieldGroup: this.fb.control(nameGruop.id, []),
         shouldDelete: this.fb.control(object.shouldDelete, [
           Validators.required,
         ]),

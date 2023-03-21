@@ -1,4 +1,9 @@
-    <app-no-data-screen 
+<div class="content_title" *ngIf="getAllFieldsPreview().length >0">
+  <h3 class="title">Previsualización de campos</h3>
+  <h4 class="subtitle">Especifique y defina los campos a previsualizar</h4>
+</div>
+
+<div *ngIf="getAllFieldsPreview().length ===0"><app-no-data-screen 
         [data]="policyPreviewControls" 
         [layoutType]="'full'" 
         [emptyTitle]="'Previsualización de campos'"
@@ -7,9 +12,9 @@
         [emptySubText]="'No se han asociado datos para previsualizar'" 
         (action)="openToAdd()">
     </app-no-data-screen>
-
+  </div>
    
-    <div class="div-button">
+    <div *ngIf="getAllFieldsPreview().length >0" class="div-button" >
       <button
         mat-button
         class="bt bt-primary"
@@ -20,7 +25,7 @@
         Añadir
       </button>
     </div>
-    <div *ngIf="policyPreviewControls.length >0">
+    <div *ngIf="getAllFieldsPreview().length >0">
     <app-complementary-data
     [applicationLevel]="'previewData'"
     [title]="''"

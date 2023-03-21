@@ -436,9 +436,7 @@ export class ComplementaryDataComponent implements OnInit {
             this.selectComplementaryData(<FormGroup>this.getGroupArrayById(1).controls[0]);
           }
 
-          if (this.complementaryDataControls.value[obj.fieldGroup-1].fields.length === 0 && this.modifyData) {
-            this.complementaryDataControls.removeAt(obj.fieldGroup-1);
-         }
+          
         }
         
       }
