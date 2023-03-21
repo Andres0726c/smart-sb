@@ -47,9 +47,21 @@ export class ProductService {
   rehabilitation:FormGroup = new FormGroup({
     enabled: new FormControl(false),
   });
-  renewal:FormGroup = new FormGroup({
+  rnwlPrcss:FormGroup = new FormGroup({
     enabled: new FormControl(false),
   });
+  prdctDpndncy: FormGroup = new FormGroup({
+    insrncLn: new FormArray([]),
+    cs: new FormArray([]),
+    rl: new FormArray([])
+  });
+  prvwDt:FormGroup = new FormGroup({
+    plcyCntxtGrp:new FormArray([]),
+    plcyDtGrp:new FormArray([]),
+    rskTyp:new FormArray([]),
+    cvrg:new FormArray([]),
+  });
+  references: FormArray = new FormArray<any>([]);
 
 
   defaultArrays = [
@@ -204,9 +216,23 @@ export class ProductService {
       this.rehabilitation = new FormGroup({
         enabled: new FormControl(false),
       });
-      this.renewal = new FormGroup({
-        enabled: new FormControl(false),
-      });
+    this.rnwlPrcss = new FormGroup({
+      enabled: new FormControl(false),
+      rnwlCsCd: new FormControl([]),
+      clcltnRl: new FormControl([]),
+      isNwIssPlcy: new FormControl(false)
+    });
+    this.prdctDpndncy = new FormGroup({
+      cs: new FormArray([]),
+      rl: new FormArray([])
+    });
+    this.prvwDt = new FormGroup({
+      plcyCntxtGrp:new FormArray([]),
+      plcyDtGrp:new FormArray([]),
+      rskTyp:new FormArray([]),
+      cvrg:new FormArray([]),
+    });
+    this.references = this.fb.array([]);
       //autosave enabled
       // this.autoSaveProduct();
   }
@@ -315,8 +341,10 @@ export class ProductService {
       mdfctnPrcss: this.mdfctnPrcss.getRawValue(),
       cancellation: this.cancellation.getRawValue(),
       rehabilitation: this.rehabilitation.getRawValue(),
-      renewal: this.renewal.getRawValue(),
-    
+      rnwlPrcss: this.rnwlPrcss.getRawValue(),
+      prdctDpndncy: this.rnwlPrcss.getRawValue(),
+      prvwDt:this.prvwDt.getRawValue(),
+      references: this.references.getRawValue()
     };
   }
 
@@ -452,10 +480,22 @@ export class ProductService {
       this.rehabilitation = product.rehabilitation ? this.setFields('rehabilitation', product.rehabilitation) : new FormGroup({
         enabled: new FormControl(false),
       });
-      this.renewal = product.renewal ? this.setFields('renewal', product.renewal) : new FormGroup({
+      this.rnwlPrcss = product.rnwlPrcss ? this.setFields('renewal', product.rnwlPrcss) : new FormGroup({
         enabled: new FormControl(false),
       });
-      
+
+      this.prdctDpndncy = product.prdctDpndncy ? this.setFields('prdctDpndncy', product.prdctDpndncy) : new FormGroup({
+        cs: new FormArray([]),
+        rl: new FormArray([])
+      });
+      this.prvwDt = product.prvwDt ? this.setFields('prvwDt', product.prvwDt) : new FormGroup({
+        plcyCntxtGrp:new FormArray([]),
+        plcyDtGrp:new FormArray([]),
+        rskTyp:new FormArray([]),
+        cvrg:new FormArray([]),
+      });
+
+      this.references = product.references ?  this.setFields('references', product.references) : this.fb.array([]);
       
 
       this.initialParameters.get('productName')?.disable();
@@ -528,6 +568,13 @@ export class ProductService {
         }))
        
         this.addRisk();
+      }  
+
+      if (!this.prvwDt.contains('plcyDtGrp')) {
+        this.prvwDt.addControl('plcyCntxtGrp',this.fb.array ([]));
+        this.prvwDt.addControl('plcyDtGrp',this.fb.array ([]));
+        this.prvwDt.addControl('rskTyp',this.fb.array ([]));
+        this.prvwDt.addControl('cvrg',this.fb.array ([]));
       }
      
       if (!this.mdfctnPrcss.contains('mdfctnTchnclCntrl')) {
@@ -725,8 +772,8 @@ export class ProductService {
  {
     if(environment.productAutosave)
     {
-      let formArrayList: any[] = [this.coverages, this.policyData, this.clauses, this.riskTypes, this.servicePlans, this.taxesCategories, this.technicalControls, this.conceptReservation, this.claimData, this.claimTechnicalControls, this.modificationTypes];
-      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cancellation, this.rehabilitation, this.renewal];
+      let formArrayList: any[] = [this.coverages, this.policyData, this.clauses, this.riskTypes, this.servicePlans, this.taxesCategories, this.technicalControls, this.conceptReservation, this.claimData, this.claimTechnicalControls, this.modificationTypes, this.references];
+      let formGroupList: FormGroup[] = [this.accumulation, this.initialParameters, this.mdfctnPrcss, this.cancellation, this.rehabilitation, this.rnwlPrcss, this.prdctDpndncy];
          this.registerFormEvent(formArrayList);
          this.registerFormEvent(formGroupList);
     }
@@ -748,6 +795,60 @@ export class ProductService {
             }
           })
      });
+ }
+
+ setProductDependency(key: string, obj: any) {
+  const dp = (<FormArray>this.prdctDpndncy.get(key));
+  const el = dp.value.find((x: any) => x.cd === obj.cd);
+
+  if (!el) {
+    // vamos a crear nueva dependencia
+    dp.push(this.fb.control(obj));
+  }
+ }
+
+ getProductDependency(key: string, code: string) {
+  const dp = (<FormArray>this.prdctDpndncy.get(key));
+  const el = dp.value.find((x: any) => x.cd === code);
+  return el;
+ }
+
+ deleteProductDependency(key: string, code: string) {
+  const dp = (<FormArray>this.prdctDpndncy.get(key));
+  const idx = dp.value.findIndex((x: any) => x.cd === code);
+  dp.removeAt(idx);
+ }
+
+ setDependencyRef(key: string, code: string, use: string) {
+  const el = this.references.value.find((x: any) => x.cd === code);
+
+  if (!el) {
+    // vamos a registrar nueva referencia
+    const obj = {
+      prdctDpndncyRef: key,
+      cd: code,
+      uses: [use]
+    }
+
+    this.references.push(this.fb.control(obj));
+  } else {
+    // vamos a actualizar los usos de la dependencia
+    if (!el.uses.includes(use))
+      el.uses.push(use);
+  }
+  
+ }
+
+ deleteDependencyRef(code: string, use: string) {
+  const el = this.references.value.find((x: any) => x.cd === code);
+  el.uses = el.uses.filter((item: any) => item !== use);
+
+  // determinamos si la dependencia tiene usos
+  if (el.uses.length === 0) {
+    // vamos a eliminar la dependencia y su referencia
+    this.deleteProductDependency('cs', el.code);
+    this.references.value.splice(this.references.value.indexOf(el), 1);
+  }
  }
 
 }

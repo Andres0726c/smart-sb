@@ -75,7 +75,7 @@
             <ng-container
                 *ngIf="complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && !modifyData?getGroupArrayById(1).length > 0:getAllFields().length >0)">
                 <ng-container *ngFor="let group of complementaryDataControls.controls">
-                    <mat-accordion class="form" *ngIf="true">
+                    <mat-accordion class="form" *ngIf=" modifyData ? true && getFieldsFormArray(group.get('fields')).controls.length !== 0:true">
                         <mat-expansion-panel [expanded]="getFieldsFormArray(group.get('fields')).controls.length > 0" hideToggle>
                             <mat-expansion-panel-header class="expansion-header"
                                 [ngClass]="{'panel-header-editing': group.value.isEditing}">
@@ -252,7 +252,7 @@
                 </mat-form-field>
             </section>
 
-            <section class="input input-prop">
+            <section class="input input-prop" *ngIf="applicationLevel !=='previewData'">
                 <mat-label>Regla de validación:</mat-label>
                 <mat-form-field class="example-chip-list" appearance="outline" (click)="openModalValidateRule()"
                     data-qa-id="sc-rpmf-btn_open_validate_rule_modal">

@@ -35,49 +35,49 @@ interface SubItemsPreviewType {
 })
 export class PreviewPolicyDataComponent implements OnInit {
 
-  flatNodeMap = new Map<PreviewPolicyTypeNode, PreviewPolicyTypeNode>();
+  // flatNodeMap = new Map<PreviewPolicyTypeNode, PreviewPolicyTypeNode>();
 
-  private _transformer = (node: PreviewPolicyTypeNode, level: number) => {
-    const flatNode = {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
-      level: level,
-    };
-    this.flatNodeMap.set(flatNode, node);
-    return flatNode;
-  };
+  // private _transformer = (node: PreviewPolicyTypeNode, level: number) => {
+  //   const flatNode = {
+  //     expandable: !!node.children && node.children.length > 0,
+  //     name: node.name,
+  //     level: level,
+  //   };
+  //   this.flatNodeMap.set(flatNode, node);
+  //   return flatNode;
+  // };
 
-  previewPolicyData: any = new FormArray<any>([]);
+  // previewPolicyData: any = new FormArray<any>([]);
 
-  treeControl = new FlatTreeControl<ExampleFlatNode>(
-    (node) => node.level,
-    (node) => node.expandable
-  );
+  // treeControl = new FlatTreeControl<ExampleFlatNode>(
+  //   (node) => node.level,
+  //   (node) => node.expandable
+  // );
 
-  treeFlattener = new MatTreeFlattener<PreviewPolicyTypeNode, ExampleFlatNode>(
-    this._transformer,
-    (node) => node.level,
-    (node) => node.expandable,
-    (node) => node.children
-  );
+  // treeFlattener = new MatTreeFlattener<PreviewPolicyTypeNode, ExampleFlatNode>(
+  //   this._transformer,
+  //   (node) => node.level,
+  //   (node) => node.expandable,
+  //   (node) => node.children
+  // );
 
-  dataSource: MatTreeFlatDataSource<PreviewPolicyTypeNode, ExampleFlatNode> =
-    new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  // dataSource: MatTreeFlatDataSource<PreviewPolicyTypeNode, ExampleFlatNode> =
+  //   new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+  // hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
 
-  subItemsPreviewTypes: SubItemsPreviewType[] = [
-    { name: 'Datos a previsualizar', formArray: 'visibleNonModificableData', distance: 1 }
-  ];
+  // subItemsPreviewTypes: SubItemsPreviewType[] = [
+  //   { name: 'Datos a previsualizar', formArray: 'visibleNonModificableData', distance: 1 }
+  // ];
 
-  selectedPreviewData: any = new FormGroup({});
-  index: number = 0;
+  // selectedPreviewData: any = new FormGroup({});
+  // index: number = 0;
   
   constructor(
-    public dialog: MatDialog,
-    public fb: FormBuilder,
-    private toastMessage: MatSnackBar,
-    public productService: ProductService,
+    // public dialog: MatDialog,
+    // public fb: FormBuilder,
+    // private toastMessage: MatSnackBar,
+    // public productService: ProductService,
   ) { 
 
   }
