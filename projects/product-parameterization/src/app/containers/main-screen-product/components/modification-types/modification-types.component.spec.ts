@@ -624,7 +624,6 @@ describe('ModificationTypesComponent', () => {
   })
   it('sendData', () => {
     component.showCommercialPlans=true;
-    component.bussinesPlans=true;
     expect(component.sendData('pc001_opcion1alternativa1', 'risk')).toBeUndefined();
   });
   it('showRiskType', () => {

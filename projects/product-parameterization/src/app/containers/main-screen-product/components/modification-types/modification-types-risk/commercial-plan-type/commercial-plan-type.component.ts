@@ -41,10 +41,10 @@ interface Coverages {
 export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   @Input() titleBussinesPlan: string = '';
   @Input() data: string = '';
-  @Input() bussinesPlans: boolean = false;
   @Input() riskDataCode: string = '';
-  dataCoverage: any;
+
   coverageflag: boolean = false;
+  complementaryFlag:boolean=false;
 
   items = [
     { label: 'Mascotas' },
@@ -52,16 +52,9 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     { label: this.titleBussinesPlan },
   ];
   tableDataService: any[] = [];
-  home = { icon: 'pi pi-home', routerLink: '/' };
-  breadcrumb: any;
-  showBranch: any[] = [];
   tableData: Coverages[] = [];
-  dataAux: any;
   disabled: boolean = true;
-  product: any;
-  risk: any;
   titleCurrent:string='';
-  optionCoverage: any = [];
   idCoverage: number = 0;
   athrzdOprtnCoverages: any[] = [
     { name: 'Remover', key: 'RMV' },
@@ -102,9 +95,13 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     ).getRawValue()) {
       res = res.concat(group.fields);
     }
+   
+ 
     return res;
   }
 
+    
+  
   getAll() {
     let res: any[] = [];
     if (this.idCoverage != 0) {
@@ -196,10 +193,8 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   addDataTable() {
     this.tableData = [];
     this.tableDataService = [];
-    let dataCoverage=this.getcoveragesPln(this.data).getRawValue();
-    let dataService=this.getSrvcPln(this.data).getRawValue()
-    dataCoverage?this.tableData.push(...dataCoverage):this.tableData=[];
-    dataService?this.tableDataService.push(...dataService):this.tableDataService=[];
+    this.tableData.push(...this.getcoveragesPln(this.data).getRawValue());
+    this.tableDataService.push(...this.getSrvcPln(this.data).getRawValue());
   }
 
   changeCheck(id: number, event: any) {

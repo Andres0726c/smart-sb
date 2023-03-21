@@ -43,7 +43,6 @@ export class ModificationTypesComponent implements OnInit {
   titleBussinesPlan: string = '';
   titleRisk: string = '';
   titleCommercialPlan: string = '';
-  bussinesPlans: boolean = false;
   data: string = '';
   riskDataCode: string = '';
   showBranch: any[] = [];
@@ -531,7 +530,7 @@ export class ModificationTypesComponent implements OnInit {
       this.titleBussinesPlan = title;
     }
     this.showCommercialPlansTypes = true;
-    if (this.showCommercialPlans || this.bussinesPlans)
+    if (this.showCommercialPlans)
       this.showCommercialPlans = false;
     this.showRisk = false;
   }

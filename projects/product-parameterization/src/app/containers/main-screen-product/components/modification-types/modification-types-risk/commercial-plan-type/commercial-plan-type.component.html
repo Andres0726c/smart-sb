@@ -109,11 +109,11 @@
     </p-tabView>
   </section>
   <div *ngIf="coverageflag">
-    <div *ngIf="getAllFields().length<0">
+    <div  *ngIf="complementaryFlag">
       <app-complementary-data
       [applicationLevel]="'types'"
-      [title]="titleCurrent"
-      [subtitle]="'Cobertura por '+ titleCurrent.toLowerCase()"
+      [title]="''"
+      [subtitle]="''"
       [groupName]="'Datos básicos'"
       [emptyText]="'Datos complementarios'"
       [emptySubText]="'No se han asociado los datos complementarios a modificar'"
@@ -132,6 +132,9 @@
       [modifyData]="true"
     >
     </app-complementary-data>
+    </div>
+    <div *ngIf="!complementaryFlag">
+
     </div>
     <app-complementary-data
           [applicationLevel]="'types'"
