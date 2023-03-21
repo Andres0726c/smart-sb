@@ -29,8 +29,6 @@ export class PreviewDataPolicyComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadContextData();
-
-   
     if(this.policyPreviewControls.length > 0)
     this.clearGroup();
    
@@ -253,8 +251,6 @@ addGroupArrayById(object:any,nameGruop:any){
     (x: { id: any }) => x.id === nameGruop.id
   );
 
-  console.log(object,"obj");
-  console.log( this.getGroupArrayById(nameGruop.id),"group");
 
   this.getGroupArrayById(nameGruop.id).push(
     new FormGroup({

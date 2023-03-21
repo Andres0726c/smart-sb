@@ -56,10 +56,10 @@ export class ProductService {
     rl: new FormArray([])
   });
   prvwDt:FormGroup = new FormGroup({
-    plcyCntxtGrp:new FormControl([]),
-    plcyDtGrp:new FormControl([]),
-    rskTyp:new FormControl([]),
-    cvrg:new FormControl([]),
+    plcyCntxtGrp:new FormArray([]),
+    plcyDtGrp:new FormArray([]),
+    rskTyp:new FormArray([]),
+    cvrg:new FormArray([]),
   });
   references: FormArray = new FormArray<any>([]);
 
@@ -227,10 +227,10 @@ export class ProductService {
       rl: new FormArray([])
     });
     this.prvwDt = new FormGroup({
-      plcyCntxtGrp:new FormControl([]),
-      plcyDtGrp:new FormControl([]),
-      rskTyp:new FormControl([]),
-      cvrg:new FormControl([]),
+      plcyCntxtGrp:new FormArray([]),
+      plcyDtGrp:new FormArray([]),
+      rskTyp:new FormArray([]),
+      cvrg:new FormArray([]),
     });
     this.references = this.fb.array([]);
       //autosave enabled
@@ -489,10 +489,10 @@ export class ProductService {
         rl: new FormArray([])
       });
       this.prvwDt = product.prvwDt ? this.setFields('prvwDt', product.prvwDt) : new FormGroup({
-        plcyCntxtGrp:new FormControl([]),
-        plcyDtGrp:new FormControl([]),
-        rskTyp:new FormControl([]),
-        cvrg:new FormControl([]),
+        plcyCntxtGrp:new FormArray([]),
+        plcyDtGrp:new FormArray([]),
+        rskTyp:new FormArray([]),
+        cvrg:new FormArray([]),
       });
 
       this.references = product.references ?  this.setFields('references', product.references) : this.fb.array([]);
