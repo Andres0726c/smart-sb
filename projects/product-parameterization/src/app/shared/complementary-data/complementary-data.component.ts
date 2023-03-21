@@ -417,7 +417,6 @@ export class ComplementaryDataComponent implements OnInit {
    
     let index = this.getGroupArrayById(obj.fieldGroup).value.findIndex((x: { id: number; }) => x.id === this.selectedField.value.id);
 
- 
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
@@ -447,11 +446,6 @@ export class ComplementaryDataComponent implements OnInit {
       
     });
 
-   
-
-    
-
-   
   }
   
 
@@ -500,6 +494,21 @@ export class ComplementaryDataComponent implements OnInit {
      (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).removeAt(id-1);
 
     }
+
+    //PreviewData
+
+      let preview =  (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).controls.find(x => x.value.id === id)?.get('fields');
+      
+      let indexPreview:any = (<FormArray>preview).controls.findIndex(x => x.value.businessCode ===code);
+
+     (<FormArray>preview).removeAt(indexPreview);
+     if ( (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).value[id-1].fields.length === 0){
+
+      (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).removeAt(id-1);
+
+    }
+
+
 
   }
 

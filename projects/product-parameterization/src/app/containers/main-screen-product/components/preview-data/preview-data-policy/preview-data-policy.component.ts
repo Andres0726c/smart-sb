@@ -29,7 +29,7 @@ export class PreviewDataPolicyComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadContextData();
-    console.log(this.productService.prvwDt,"pre");
+    this.clearGroup();
    
   }
 
@@ -37,6 +37,21 @@ export class PreviewDataPolicyComponent implements OnInit {
     return (<FormArray>(
       this.productService.prvwDt?.get('plcyDtGrp')
     )) as FormArray;
+  }
+
+  clearGroup() {
+  
+    for (let field of this.policyPreviewControls.value) {
+
+      if(field.fields.length ===0) {
+
+        let index = this.policyPreviewControls.controls.findIndex(x => x.value.id ===field.id);
+
+          this.policyPreviewControls.removeAt(index);
+      }
+
+    }
+   
   }
 
   getParamValuesList() {
