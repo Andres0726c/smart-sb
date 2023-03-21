@@ -7,7 +7,7 @@ import {
   FormsModule,
   FormBuilder,
 } from '@angular/forms';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { RehabilitationDataComponent } from './rehabilitation-data.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,55 +15,34 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
-const ProductServiceMock = {
-  getApiData: () =>
-    of([
-      {
-        id: 1,
-        name: 'name test return',
-        description: 'description test return',
-      },
-    ]),
-  policyData: new FormArray([
-    new FormGroup({
-      id: new FormControl(1),
-      name: new FormControl('Datos básicos'),
-      code: new FormControl('datos_basicos'),
-      isEditing: new FormControl(false),
-      fields: new FormArray(
-        [
-          new FormGroup({
-            id: new FormControl(24),
-            name: new FormControl('Test'),
-            fieldGroup: new FormControl(1),
-          }),
-        ],
-        Validators.required
-      ),
-    }),
-  ]),
-  rnsttmntPrcss: new FormGroup({
-    enabled: new FormControl(false),
-    rnsttmntCsCd: new FormControl([]),
-    clcltnRl: new FormControl([]),
-    isNwIssPlcy: new FormControl(false),
-  }),
-};
+class DialogMock {
+  open() {
+    return {
+      afterClosed: () => of({})
+    };
+  }
+}
 
 describe('RehabilitationDataComponent', () => {
   let component: RehabilitationDataComponent;
-  let productService: ProductService;
-  let ref: DialogService;
-
+  let fixture: ComponentFixture<RehabilitationDataComponent>;
+  const errorResponseSpy = jest.fn().mockImplementation(() => {
+    return new Observable(() => {
+      throw new Error("error");
+    })
+  });
+  
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, HttpClientModule, HttpClientTestingModule],
+      imports: [FormsModule, HttpClientModule, HttpClientTestingModule, MatDialogModule],
       declarations: [],
       providers: [
         RehabilitationDataComponent,
         FormBuilder,
         DialogService,
+        ProductService,
         {
           provide: FormArray,
           useValue: {},
@@ -72,19 +51,13 @@ describe('RehabilitationDataComponent', () => {
           provide: FormGroup,
           useValue: {},
         },
-        {
-          provide: ProductService,
-          useValue: ProductServiceMock,
-        },
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-  });
 
-  beforeEach(() => {
-    component = TestBed.inject(RehabilitationDataComponent);
-    productService = TestBed.inject(ProductService);
-    ref = DialogService.prototype;
+    fixture = TestBed.createComponent(RehabilitationDataComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -96,90 +69,131 @@ describe('RehabilitationDataComponent', () => {
     expect(component).toBeDefined();
   });
 
-  it('openRuleWizard Ok', () => {
-    const refOpenSpy = jest.spyOn(ref, 'open');
-    component.openRuleWizard('', '');
-    expect(refOpenSpy).toHaveBeenCalled();
-  });
-
-  it('addRule Ok', () => {
-    let objRule = {
+  it('addRule', () => {
+    const objRule: any = {
       rule: {
-        id: '',
-        name: '',
-        cdBusinessCode: '',
-        description: '',
-        cdRuleType: '',
-        endPoint: '',
-        rlEngnCd: '',
-        argmntLst: '',
+        id: 1,
+        cdBusinessCode: 'test',
+        name: 'test',
+        nmVersion: 1,
+        description: 'test',
+        nmParameterList: [ { id: 1, name: 'test' } ],
+        nmReturnList: 'string',
+        cdRuleType: 'Cálculo',
+        aplctnLvlItm: 'Cobertura',
+        endPoint: 'url',
+        rlEngnCd: 'test'
       },
+      parameters: [
+        { name: 'test', value: 'test' },
+        { name: 'test2', value: 'test2' }
+      ]
     };
-
-    expect(component.addRule('', objRule)).toBeUndefined();
+    component.rulePrevValue = {rlCd: 'test'};
+    component.productService.references.push(new FormControl({
+      prdctDpndncyRef: 'rl',
+      cd: 'test',
+      uses: ['clcltnRl']
+    }));
+    expect(component.addRule('test', objRule)).toBeUndefined();
   });
 
-  it('loadContextData OK', async () => {
-    let res: any = {
-      body: [
-        {
-          code: 'prdct',
-          description: 'Producto',
-          nmValueList: 'test',
-        },
-      ],
+  it('load context data', () => {
+    const res = {
+      dataHeader: { code: 200 },
+      body: {
+        nmValueList: [
+          {
+            "code": "prdct",
+            "description": "Producto",
+            "applctnLvl": [
+              "*"
+            ]
+          }
+        ]
+      }
     };
-
-    jest.spyOn(productService, 'getApiData').mockReturnValue(res);
-    expect(component.loadContextData()).toBeDefined();
-
-    res = {
-      body: [
-        {
-          code: 'prdct',
-          description: 'Producto',
-          nmValueList: 'test',
-        },
-      ],
-    };
-
-    jest.spyOn(productService, 'getApiData').mockReturnValue(res);
-    expect(component.loadContextData()).toBeDefined();
-
-    jest.spyOn(productService, 'getApiData').mockImplementation(() => {
-      throw new Error('error');
-    });
+    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
     expect(component.loadContextData()).toBeDefined();
   });
 
-  it('getCauses Ok', () => {
-    let res: any = {
+  it('load context data error', () => {
+    jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
+    expect(component.loadContextData()).toBeDefined();
+  });
+
+  it('load causes', () => {
+    const res = {
+      dataHeader: { code: 200 },
       body: [
         {
-          code: 'prdct',
-          description: 'Producto',
-        },
-      ],
+          id: 1,
+          code: 'test',
+          name: 'test'
+        }
+      ]
     };
+    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.getCauses()).toBeDefined();
+  });
 
-    jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
-    expect(component.loadContextData()).toBeDefined();
+  it('load causes error', () => {
+    jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
+    expect(component.getCauses()).toBeDefined();
+  });
 
-    res = {
-      body: [
-        {
-          code: 'prdct',
-          description: 'Producto',
-        },
-      ],
-    };
+  it('getAllFields', () => {
+    component.productService.policyData.push(new FormGroup({
+      id: new FormControl('1'),
+      fields: new FormControl({businessCode: 'code', name: 'test'})
+    }));
+    expect(component.getAllFields()).toBeDefined();
+  });
 
-    jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
-    expect(component.loadContextData()).toBeDefined();
+  it('getRulesDp', () => {
+    component.productService.rnsttmntPrcss.get('clcltnRl')?.setValue([{id: 1, name: 'test'}]);
+    expect(component.getRulesDp()).toBeDefined();
+  });
 
-    jest.spyOn(productService, 'getApiData').mockImplementation(() => {
-      throw new Error('error');
-    });
-    expect(component.loadContextData()).toBeDefined();
+  it('getParamValuesList', () => {
+    component.productService.policyData.push(new FormGroup({
+      id: new FormControl('1'),
+      fields: new FormControl({businessCode: 'code', name: 'test'})
+    }));
+    component.contextData = [{code: 'code', description: 'test'}];
+    expect(component.getParamValuesList()).toBeDefined();
+  });
+
+  it('verifyCsProcess', () => {
+    expect(component.verifyCsProcess([])).toBeUndefined();
+  });
+
+  it('verifyCsProcess add dp', () => {
+    const value = ['code'];
+    component.causes = [{id: 1, businessCode: 'code', name: 'test'}];
+    expect(component.verifyCsProcess(value)).toBeUndefined();
+  });
+
+  it('verifyCsProcess remove dp', () => {
+    const value = ['test'];
+    component.flagCsProcess = true;
+    component.causesPrevValue = ['code', 'test'];
+    component.causes = [{id: 1, businessCode: 'code', name: 'test'}];
+    component.productService.references.push(new FormControl({
+      prdctDpndncyRef: 'cs',
+      cd: 'code',
+      uses: ['test']
+    }));
+    expect(component.verifyCsProcess(value)).toBeUndefined();
+  });
+
+  it('removeRule', () => {
+    const value = {rlCd: 'code'};
+    component.productService.references.push(new FormControl({
+      prdctDpndncyRef: 'rl',
+      cd: 'code',
+      uses: ['clcltnRl']
+    }));
+    expect(component.removeRule(value)).toBeUndefined();
   });
 });
