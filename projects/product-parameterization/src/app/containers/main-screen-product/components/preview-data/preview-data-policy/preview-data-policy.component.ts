@@ -167,9 +167,8 @@ loadContextData() {
       this.showMessageGroup(showMessage);
       let nameGruop: any;
       for (let object of obj) {
-        nameGruop = this.getNameGroup(object.element.businessCode);
-        console.log("nameGruop",nameGruop);
-
+        nameGruop = this.getNameGroup(object.element.businessCode)
+        
       if (!nameGruop) {
        
         nameGruop = {
@@ -197,11 +196,11 @@ loadContextData() {
 
           //  this.addCanonic()
           }
-          console.log(this.policyPreviewControls);
+         
           this.addGroupArrayById(object,nameGruop);
       }
 
-      console.log(this.policyPreviewControls,"pliza");
+      
     }
   };
 
@@ -209,7 +208,7 @@ getNameGroup(name: any) {
 
   let objGruop;
   for (let groups of this.productService.policyData.value) {
-    console.log(groups,"grupos");
+   
     for (let key of groups.fields) {
       if (key.businessCode === name) {
         objGruop = {
@@ -221,16 +220,6 @@ getNameGroup(name: any) {
         };
         break;
       }
-      // else {
-      //   objGruop = {
-      //     id: 'datos_contexto',
-      //     code: 'datos_contexto',
-      //     name: 'Datos de contexto',
-      //     fields: this.fb.array([], Validators.required),
-      //     isEditing: false,
-      //   };
-
-      // }
     }
   }
   return objGruop;
@@ -259,7 +248,7 @@ addGroupArrayById(object:any,nameGruop:any){
       label: this.fb.control(
         object.element.name
           ? object.element.name
-          : object.element.name,
+          : object.element.description,
         [Validators.required]
       ),
       dataType: this.fb.control(object.element.dataType),
