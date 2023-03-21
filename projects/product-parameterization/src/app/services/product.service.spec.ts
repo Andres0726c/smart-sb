@@ -2,7 +2,7 @@ import { ProductService } from './product.service';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -167,6 +167,35 @@ describe('ProductService', () => {
 
   it('isEnabledSave', () => {
     expect(component.isEnabledSave).toBeDefined();
+  });
+
+  it('setProductDependency', () => {
+    component.setProductDependency('cs', {id: 2, cd: 'test2', name: 'test2'});
+    expect(component.setProductDependency('cs', {id: 1, cd: 'test', name: 'test'})).toBeUndefined();
+  });
+
+  it('getProductDependency', () => {
+    component.setProductDependency('cs', {id: 1, cd: 'test', name: 'test'});
+    expect(component.getProductDependency('cs', 'test')).toEqual({id: 1, cd: 'test', name: 'test'});
+  });
+
+  it('deleteProductDependency', () => {
+    expect(component.deleteProductDependency('cs', 'test')).toBeUndefined();
+  });
+
+  it('setDependencyRef', () => {
+    expect(component.setDependencyRef('cs', 'test', 'test')).toBeUndefined();
+  });
+
+  it('setDependencyRef else', () => {
+    component.references.push(new FormControl({prdctDpndncyRef: "cs", cd: "test", uses: ["test2"]}));
+    expect(component.setDependencyRef('cs', 'test', 'test')).toBeUndefined();
+  });
+
+  it('deleteDependencyRef', () => {
+    component.setProductDependency('cs', {id: 1, cd: 'test', name: 'test'});
+    component.references.push(new FormControl({prdctDpndncyRef: "cs", cd: "test", uses: ["test2"]}));
+    expect(component.deleteDependencyRef('cs', 'test', 'test2')).toBeUndefined();
   });
 
 });
