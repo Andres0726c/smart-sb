@@ -74,10 +74,10 @@ export class PreviewPolicyDataComponent implements OnInit {
   // index: number = 0;
   
   constructor(
-    // public dialog: MatDialog,
-    // public fb: FormBuilder,
-    // private toastMessage: MatSnackBar,
-    // public productService: ProductService,
+    public dialog: MatDialog,
+    public fb: FormBuilder,
+    private toastMessage: MatSnackBar,
+    public productService: ProductService,
   ) { 
 
   }
