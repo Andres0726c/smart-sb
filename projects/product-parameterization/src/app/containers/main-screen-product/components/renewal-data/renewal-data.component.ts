@@ -20,20 +20,6 @@ export class RenewalDataComponent implements OnInit {
   causes: any = [];
   causesPrevValue: any = [];
   rulePrevValue: any = null;
-  /*causes = [
-    {
-      id: 'RNV_CRE_1',
-      name: 'Solicitud del tomador'
-    },
-    {
-      id: 'RNV_CRE_2',
-      name: 'Solicitud del test'
-    },
-    {
-      id: 'RNV_CRE_3',
-      name: 'Solicitud del test 3'
-    }
-  ];*/
 
   constructor(
     public productService: ProductService,
@@ -144,13 +130,8 @@ export class RenewalDataComponent implements OnInit {
     dialogRef.onClose.subscribe((res) => {
       console.log('cerro', res);
       if (res) {
-        //console.log(this.selectedField);
-        //let arr: any[] = [];
-        //arr.push(res);
-        //this.selectedField.get(field)?.setValue(arr);
         this.addRule(field, res);
       }
-      //this.addItem(res, 1, true);
     });
   }
 
@@ -186,7 +167,7 @@ export class RenewalDataComponent implements OnInit {
         rlEngnCd: objRule.rule.rlEngnCd
       },
       sttsCd: 'ACT',
-      insrncLnCd: ['TEST']
+      insrncLnCd: [this.productService.prdctDpndncy.get('insrncLn')?.value[0].cd]
     };
 
     let objRlArgs = this.mapRuleArgs(objRule.parameters);
@@ -288,7 +269,8 @@ export class RenewalDataComponent implements OnInit {
         dscrptn: cause.description,
         aplctnPrcssItm: cause.aplicationProcess,
         aplctnSbprcssCd: cause.aplicationSubProcess,
-        sttCd: cause.statusCode
+        sttCd: cause.statusCode,
+        insrncLnCd: [this.productService.prdctDpndncy.get('insrncLn')?.value[0].cd]
       };
 
       this.productService.setProductDependency('cs', obj);

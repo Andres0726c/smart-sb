@@ -223,7 +223,8 @@ export class ProductService {
       enabled: new FormControl(false),
       rnwlCsCd: new FormControl([]),
       clcltnRl: new FormControl([]),
-      isNwIssPlcy: new FormControl(false)
+      isNwIssPlcy: new FormControl(false),
+      rnwlTchnclCntrl: new FormArray([])
     });
     this.prdctDpndncy = new FormGroup({
       insrncLn: new FormArray([]),
@@ -483,7 +484,15 @@ export class ProductService {
       });
       this.rnwlPrcss = product.rnwlPrcss ? this.setFields('renewal', product.rnwlPrcss) : new FormGroup({
         enabled: new FormControl(false),
+        rnwlCsCd: new FormControl([]),
+        clcltnRl: new FormControl([]),
+        isNwIssPlcy: new FormControl(false),
+        rnwlTchnclCntrl: new FormArray([])
       });
+
+      if (!this.rnwlPrcss.contains('rnwlTchnclCntrl')) {
+        this.rnwlPrcss.addControl('rnwlTchnclCntrl', this.fb.array([]));
+      }
 
       this.prdctDpndncy = product.prdctDpndncy ? this.setFields('prdctDpndncy', product.prdctDpndncy) : new FormGroup({
         insrncLn: new FormArray([]),

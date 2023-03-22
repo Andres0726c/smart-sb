@@ -7,6 +7,7 @@
         <form
             class="grid grid-cols-3 gap-6"
             [formGroup]="productService.rnwlPrcss"
+            *ngIf="!flagError && !isLoading"
         >
             <div class="flex flex-col w-full mb-5">
                 <label class="text-base mb-2">Causas de renovación</label>
@@ -27,11 +28,6 @@
                         </div>
                     </ng-template>
                 </p-multiSelect>
-                <!-- <p-dropdown data-qa-id="sc-rsmf-drpdwn-process-field" 
-                    formControlName="rnwlCsCd" [options]="[]"
-                    optionLabel="name" optionValue="id" styleClass="w-full"
-                    placeholder="Seleccione" [showClear]="true">
-                </p-dropdown> -->
             </div>
             <div class="flex flex-col w-full mb-5">
                 <label class="text-base mb-2">Regla de cálculo</label>
@@ -47,7 +43,10 @@
                             <span class="w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ productService.getProductDependency('rl', this.productService.rnwlPrcss.get('clcltnRl')?.value[0].rlCd).nm }}</span>
                         </ng-template>
                     </p-chips>   
-                    <button type="button" pButton pRipple icon="fal fa-plus-circle" styleClass="p-button-warn" class="h-[37px]" (click)="openRuleWizard('ruleCalculationControls', 'clcltnRl')"></button>      
+                    <button type="button" pButton pRipple icon="fal fa-plus-circle" styleClass="p-button-warn" class="h-[37px]" 
+                        [disabled]="!productService.rnwlPrcss.value.enabled"
+                        (click)="openRuleWizard('ruleCalculationControls', 'clcltnRl')">
+                    </button>      
                 </div>
             </div>
             <div class="flex flex-col items-center w-full mb-5">
@@ -55,5 +54,11 @@
                 <p-checkbox class="mt-2" [formControl]="$any(productService.rnwlPrcss.controls['isNwIssPlcy'])" [binary]="true"></p-checkbox>
             </div>
         </form>
+        <div *ngIf="isLoading" class="text-center p-5">
+            <smartcore-loading-spinner *ngIf="isLoading" [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
+        </div>
+        <div *ngIf="flagError" class="rounded-lg p-5 bg-warn-100 text-warn border-l-2 border-l-warn border-r-2 border-r-warn text-center">
+            Ha ocurrido un error al obtener los datos necesarios
+        </div>
     </div>
 </div>

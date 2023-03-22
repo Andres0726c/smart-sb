@@ -152,5 +152,21 @@ export class SidenavPropertyProductComponent implements OnInit {
         this.formProcess?.get(menu)?.get('isCncllblIncptnDt')?.enable();
       }
     }
+
+    if (menu === 'renewal') {
+      if (!this.formProcess.get(menu)?.value.enabled === false) {
+        this.formProcess?.get(menu)?.get('rnwlCsCd')?.setValue([]);
+        this.formProcess?.get(menu)?.get('clcltnRl')?.setValue([]);
+        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.setValue(false);
+
+        this.formProcess?.get(menu)?.get('rnwlCsCd')?.disable();
+        this.formProcess?.get(menu)?.get('clcltnRl')?.disable();
+        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.disable();
+      } else {
+        this.formProcess?.get(menu)?.get('rnwlCsCd')?.enable();
+        this.formProcess?.get(menu)?.get('clcltnRl')?.enable();
+        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.enable();
+      }
+    }
   }
 }

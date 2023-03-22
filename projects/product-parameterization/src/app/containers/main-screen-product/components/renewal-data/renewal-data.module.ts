@@ -12,6 +12,7 @@ import { RulesWizardModule } from 'projects/product-parameterization/src/app/sha
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { CommonsLibModule } from 'commons-lib';
 
 const routes: Route[] = [
   {
@@ -27,6 +28,7 @@ const routes: Route[] = [
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
+    CommonsLibModule,
     FormsModule,
     ReactiveFormsModule,
     ButtonModule,
