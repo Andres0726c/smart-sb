@@ -40,6 +40,7 @@ export class AuthGuardParameterizer implements CanActivate {
     state: RouterStateSnapshot
   ): Promise<boolean> {
     let check = false;
+    console.log(check);
 
     await this.cognitoService.getUser()
     .then((value) => {
