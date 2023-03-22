@@ -270,13 +270,7 @@ export class RulesWizardComponent implements OnInit {
     let requestParams: any = '';
     let search = '0';
     let selectedIds = '0';
-    let doReq = true;
-    const pageNumer = (event.first ?? 0) / (event.rows ?? 1);
-    const sortDirections: any = {
-      '0': '0',
-      '1': 'asc',
-      '-1': 'desc'
-    }
+    const pageNumber = (event.first ?? 0) / (event.rows ?? 1);
 
     if (this.data.list.length > 0) {
       for (let sel of this.data.list) {
@@ -290,12 +284,30 @@ export class RulesWizardComponent implements OnInit {
       search = '0';
     }
 
-    if (this.data.parameter) {
-      requestParams = this.data.parameter + `/${pageNumer}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
-    } else {
-      requestParams = `${pageNumer}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
+    requestParams = this.defineParameters(event, pageNumber, selectedIds);
+    this.doReq(requestParams, search);
+
+  }
+
+  defineParameters(event: any, pageNumber: any, selectedIds: any) {
+    let requestParams: any = '';
+    const sortDirections: any = {
+      '0': '0',
+      '1': 'asc',
+      '-1': 'desc'
     }
 
+    if (this.data.parameter) {
+      requestParams = this.data.parameter + `/${pageNumber}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
+    } else {
+      requestParams = `${pageNumber}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
+    }
+
+    return requestParams;
+  }
+
+  doReq(requestParams: any, search: any) {
+    let doReq = true;
     if (this.prevReqParams === requestParams) {
       doReq = false;
     } else {
