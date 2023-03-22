@@ -274,4 +274,8 @@ describe('InitialParametersComponent', () => {
     component.ramo = [ramo];
     expect(component.selectInsurenceLine(55)).toBeUndefined();
   });
+
+  it('clearProcess ok', () => {
+    expect(component.clearProcess()).toBeUndefined();
+  });
 });
