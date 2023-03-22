@@ -136,4 +136,8 @@ describe('RulesWizardComponent', () => {
     const event: any = {target: {value: 't'}};
     expect(component.applyFilterGlobal(event, 'contains')).toBeUndefined();
   });*/
+
+  it('paramsControls', () => {
+    expect(component.paramsControls).toBeDefined();
+  });
 });
