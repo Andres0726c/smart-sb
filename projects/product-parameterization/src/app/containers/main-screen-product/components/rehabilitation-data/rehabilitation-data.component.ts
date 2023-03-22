@@ -92,6 +92,9 @@ export class RehabilitationDataComponent implements OnInit {
       { field: 'nmParameterList', displayValue: ['nmParameterList'] },
       { field: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
       { field: 'urlBs', displayValue: ['urlBs'] },
+      { field: 'aplctnLvlItm', displayValue: ['applicationLevel']},
+      { field: 'vrsn', displayValue: ['nmVersion']},
+      { field: 'rtrnLst', displayValue: ['nmReturnList']},
     ];
 
     const parameter =
@@ -236,8 +239,13 @@ export class RehabilitationDataComponent implements OnInit {
         )
       );
 
-      this.causes = res.body;
-      this.isLoading = false;
+      if (res.body !== null) {
+        this.causes = res.body;
+        this.isLoading = false;
+      }else{
+        this.causes = [];
+        this.flagError = true;
+      }
     } catch (error) {
       this.isLoading = false;
       this.flagError = true;

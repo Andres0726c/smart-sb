@@ -93,6 +93,9 @@ export class CancellationDataComponent implements OnInit {
       { field: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
       { field: 'urlBs', displayValue: ['urlBs'] },
       { field: 'rlEngnCd', displayValue: ['rlEngnCd'] },
+      { field: 'aplctnLvlItm', displayValue: ['applicationLevel']},
+      { field: 'vrsn', displayValue: ['nmVersion']},
+      { field: 'rtrnLst', displayValue: ['nmReturnList']},
     ];
 
     const parameter =
@@ -139,12 +142,12 @@ export class CancellationDataComponent implements OnInit {
       id: objRule.rule.id,
       cd: objRule.rule.cdBusinessCode,
       nm: objRule.rule.name,
-      vrsn: objRule.rule.nmVersion,
+      vrsn: objRule.rule.vrsn,
       dscrptn: objRule.rule.description,
       prmtrLst: parametersList,
-      rtrnLst: objRule.rule.nmReturnList,
+      rtrnLst: objRule.rule.rtrnLst,
       rlTypItm: objRule.rule.cdRuleType,
-      aplctnLvlItm: objRule.rule.applicationLevel,
+      aplctnLvlItm: objRule.rule.aplctnLvlItm,
       endPnt: {
         url: objRule.rule.endPoint,
         rlEngnCd: objRule.rule.rlEngnCd
@@ -237,8 +240,15 @@ export class CancellationDataComponent implements OnInit {
         )
       );
 
-      this.causes = res.body;
-      this.isLoading = false;
+      
+      if (res.body !== null) {
+        this.causes = res.body;
+        this.isLoading = false;
+      }else{
+        this.causes = [];
+        this.flagError = true;
+      }
+      
     } catch (error) {
       this.isLoading = false;
       this.flagError = true;

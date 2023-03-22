@@ -125,10 +125,9 @@ export class SidenavPropertyProductComponent implements OnInit {
   }
 
   clearData(menu: any) {
-    console.log(this.formProcess.get(menu));
     if (menu === 'cancellation') {
       if (!this.formProcess?.get(menu)?.value.enabled === false) {
-        this.formProcess?.get(menu)?.get('cnclltnCsCd')?.setValue('');
+        this.formProcess?.get(menu)?.get('cnclltnCsCd')?.setValue([]);
         this.formProcess?.get(menu)?.get('clcltnRl')?.setValue([]);
         this.formProcess?.get(menu)?.get('isCncllblIncptnDt')?.setValue(false);
 
@@ -141,15 +140,15 @@ export class SidenavPropertyProductComponent implements OnInit {
     }
     if (menu === 'rehabilitation') {
       if (!this.formProcess.get(menu)?.value.enabled === false) {
-        this.formProcess?.get(menu)?.get('rnsttmntCsCd')?.setValue('');
+        this.formProcess?.get(menu)?.get('rnsttmntCsCd')?.setValue([]);
         this.formProcess?.get(menu)?.get('clcltnRl')?.setValue([]);
         this.formProcess?.get(menu)?.get('isNwIssPlcy')?.setValue(false);
 
         this.formProcess?.get(menu)?.get('rnsttmntCsCd')?.disable();
         this.formProcess?.get(menu)?.get('isNwIssPlcy')?.disable();
       }else{
-        this.formProcess?.get(menu)?.get('cnclltnCsCd')?.enable();
-        this.formProcess?.get(menu)?.get('isCncllblIncptnDt')?.enable();
+        this.formProcess?.get(menu)?.get('rnsttmntCsCd')?.enable();
+        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.enable();
       }
     }
 
