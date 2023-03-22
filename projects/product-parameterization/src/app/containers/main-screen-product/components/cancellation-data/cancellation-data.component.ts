@@ -98,13 +98,6 @@ export class CancellationDataComponent implements OnInit {
       { field: 'rtrnLst', displayValue: ['nmReturnList']},
     ];
 
-    const parameter =
-      this.productService.initialParameters?.get('insuranceLine')?.value !==
-      null
-        ? this.productService.initialParameters?.get('insuranceLine')?.value +
-          ''
-        : '0';
-
     const dialogRef = this.dialogService.open(RulesWizardComponent, {
       data: {
         code: code,
