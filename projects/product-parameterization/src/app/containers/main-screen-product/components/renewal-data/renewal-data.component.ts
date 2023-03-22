@@ -140,7 +140,7 @@ export class RenewalDataComponent implements OnInit {
       // vamos a eliminar la regla anterior
       console.log('vamos a eliminar la regla anterior');
       console.log('regla anterior', this.rulePrevValue);
-      this.productService.deleteDependencyRef('rl', this.rulePrevValue.rlCd, 'clcltnRl');
+      this.productService.deleteDependencyRef('rl', this.rulePrevValue.rlCd, 'rnClcltnRl');
     }
     console.log('rule', objRule);
     let arr: any[] = [];
@@ -178,7 +178,7 @@ export class RenewalDataComponent implements OnInit {
     };
     
     this.productService.setProductDependency('rl', elementDp);
-    this.productService.setDependencyRef('rl', elementDp.cd, 'clcltnRl')
+    this.productService.setDependencyRef('rl', elementDp.cd, 'rnClcltnRl')
     arr.push(element);
     this.productService.rnwlPrcss.get(field)?.setValue(arr);
     this.rulePrevValue = element;
@@ -282,11 +282,15 @@ export class RenewalDataComponent implements OnInit {
   }
 
   removeRule(value: any) {
-    this.productService.deleteDependencyRef('rl', value.rlCd, 'clcltnRl');
+    this.productService.deleteDependencyRef('rl', value.rlCd, 'rnClcltnRl');
     this.rulePrevValue = [];
     console.log('prdctDpndncy', this.productService.prdctDpndncy);
     console.log('field', this.productService.rnwlPrcss);
     console.log('references', this.productService.references);
+  }
+
+  removeCsProcess(value: any) {
+    this.productService.deleteDependencyRef('cs', value, 'rnwlCsCd');
   }
 
 }

@@ -17,7 +17,7 @@
                         <div class="flex w-full">
                             <div *ngIf="value.length > 0" class="chip-select">
                                 {{ productService.getProductDependency('cs', this.productService.rnwlPrcss.get('rnwlCsCd')?.value[0]).nm }}
-                                <button (click)="$event.stopImmediatePropagation(); value.splice(0, 1);">
+                                <button (click)="$event.stopImmediatePropagation(); removeCsProcess(value[0]); value.splice(0, 1);">
                                     <em class="fal fa-times-circle chip-select__icon"></em>
                                 </button>
                             </div>
