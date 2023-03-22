@@ -9,7 +9,6 @@ import { ModalEditProductModule } from '../modal-edit-product/modal-edit-product
 import { ModalCreateProductModule } from '../modal-create-product/modal-create-product.module';
 import { HeaderModule } from '../../components/header/header.module';
 import { ToastMessageModule } from '../../shared/toast-message/toast-message.module';
-import { ModificationTypesComponent } from './components/modification-types/modification-types.component';
 import { NoDataScreenModule } from '../../shared/no-data-screen/no-data-screen.module';
 
 const routes: Route[] = [
