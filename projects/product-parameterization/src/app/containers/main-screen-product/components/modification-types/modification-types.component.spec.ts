@@ -15,53 +15,411 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { ElementReturn } from 'projects/product-parameterization/src/app/core/model/SearchModal.model';
+import { HttpClientModule } from '@angular/common/http';
 
-fdescribe('ModificationTypesComponent', () => {
+describe('ModificationTypesComponent', () => {
   let component: ModificationTypesComponent;
   let fixture: ComponentFixture<ModificationTypesComponent>;
   let productService: ProductService;
   let formBuilderMock = new FormBuilder();
   let dialog: any;
-  
+  const ProductServiceMock = {
+    mdfctnPrcss: new FormGroup({
+      mdfcblDt: new FormGroup({
+        plcyDtGrp: new FormArray([
+          new FormGroup({
+            id: new FormControl(1),
+            code: new FormControl('gd002_datosdeldebito', Validators.required),
+            name: new FormControl('Datos del débito', Validators.required),
+            fields: new FormArray(
+              [
+                new FormGroup({
+                  id: new FormControl(24),
+                  name: new FormControl('Test'),
+                  fieldGroup: new FormControl(1),
+                }),
+              ],
+              Validators.required
+            ),
+          }),
+        ]),
+        rskTyp: new FormArray([
+          new FormGroup({
+            id: new FormControl(2, Validators.required),
+            name: new FormControl('Mascota', Validators.required),
+            description: new FormControl(
+              'Tipo de riesgo Mascota',
+              Validators.required
+            ),
+            code: new FormArray(
+              [
+                new FormGroup({
+                  businessCode: new FormControl('2', Validators.required),
+                }),
+              ],
+              Validators.required
+            ),
+            cmmrclPln: new FormArray([
+              new FormGroup({
+                name: new FormControl('DAVIPLATA 1'),
+                description: new FormControl('opcion1 alternativa1'),
+                code: new FormControl('pc001_opcion1alternativa1'),
+                athrzdOprtn: new FormControl('MDF'),
+                cvrg: new FormArray([
+                  new FormGroup({
+                    id: new FormControl(7),
+                    code: new FormArray(
+                      [
+                        new FormGroup({
+                          businessCode: new FormControl(
+                            'COB8',
+                            Validators.required
+                          ),
+                        }),
+                      ],
+                      Validators.required
+                    ),
+                    name: new FormControl('Gastos exequiales'),
+                    description: new FormControl('Gastos exequiales'),
+                    athrzdOprtn: new FormControl('MDF'),
+                    cvrgDtGrp: new FormArray([
+                      new FormGroup({
+                        id: new FormControl(2),
+                        name: new FormControl('Datos cobertura'),
+                        description: new FormControl(),
+                        code: new FormControl('gd002_datoscobertura'),
+                        fields: new FormArray(
+                          [
+                            new FormGroup({
+                              id: new FormControl(24),
+                              name: new FormControl('Test'),
+                              // fieldGroup: new FormControl(1)
+                            }),
+                          ],
+                          Validators.required
+                        ),
+                      }),
+                    ]),
+                  }),
+                ]),
+                srvcPln: new FormArray([
+                  new FormGroup({
+                    id: new FormControl(7),
+                    name: new FormControl('Plan básico'),
+                    athrzdOprtn: new FormControl('MDF'),
+                    description: new FormControl(
+                      'Plan básico con mínimo de 3 coberturas'
+                    ),
+                  }),
+                ]),
+              }),
+            ]),
+            rskTypDtGrp: new FormArray([
+              new FormGroup({
+                code: new FormControl(
+                  'gd002_datosmascota',
+                  Validators.required
+                ),
+                name: new FormControl('Datos mascota', Validators.required),
+                fields: new FormArray(
+                  [
+                    new FormGroup({
+                      id: new FormControl(24),
+                      name: new FormControl('Test'),
+                      // fieldGroup: new FormControl(1)
+                    }),
+                  ],
+                  Validators.required
+                ),
+              }),
+            ]),
+          }),
+        ]),
+      }),
+    }),
+    coverages: new FormArray([
+      new FormGroup({
+        id: new FormControl(7),
+        name: new FormControl('Daños materiales bienes y personas'),
+        code: new FormControl('COB7'),
+        complementaryData: new FormArray([
+          new FormGroup({
+            code: new FormControl('datos_basicos'),
+            id: new FormControl(1),
+            name: new FormControl('Datos básicos'),
+            fields: new FormArray(
+              [
+                new FormGroup({
+                  code: new FormArray(
+                    [
+                      new FormGroup({
+                        businessCode: new FormControl(
+                          'datos_basicos',
+                          Validators.required
+                        ),
+                      }),
+                    ],
+                    Validators.required
+                  ),
+
+                  // fieldGroup: new FormControl(1)
+                }),
+              ],
+              Validators.required
+            ),
+            isEditing: new FormControl(true),
+          }),
+        ]),
+      }),
+    ]),
+    riskTypes: new FormArray([
+      new FormGroup({
+        id: new FormControl(2),
+        name: new FormControl('Mascota'),
+        description: new FormControl('Tipo de riesgo Mascota'),
+        businessPlans: new FormArray([
+          new FormGroup({
+            code: new FormControl('pc001_compras'),
+            description: new FormControl('comprascomprascompra'),
+            name: new FormControl('compras'),
+            servicePlans: new FormArray([
+              new FormGroup({
+                id: new FormControl(1),
+                required: new FormControl(true),
+              }),
+            ]),
+            coverages: new FormArray([
+              new FormGroup({
+                id: new FormControl(1),
+                required: new FormControl(true),
+              }),
+            ]),
+          }),
+        ]),
+        complementaryData: new FormArray([
+          new FormGroup({
+            code: new FormControl('datos_basicos'),
+            id: new FormControl(1),
+            isEditing: new FormControl(true),
+            name: new FormControl('Datos básicos'),
+            fields: new FormArray(
+              [
+                new FormGroup({
+                  code: new FormArray(
+                    [
+                      new FormGroup({
+                        businessCode: new FormControl(
+                          'datos_basicos',
+                          Validators.required
+                        ),
+                      }),
+                    ],
+                    Validators.required
+                  ),
+
+                  // fieldGroup: new FormControl(1)
+                }),
+              ],
+              Validators.required
+            ),
+          }),
+        ]),
+      }),
+    ]),
+    policyData: new FormArray([
+      new FormGroup({
+        code: new FormControl('datos_basicos'),
+        id: new FormControl(1),
+        name: new FormControl('Datos básicos'),
+        isEditing: new FormControl(true),
+        fields: new FormArray(
+          [
+            new FormGroup({
+              code: new FormArray(
+                [
+                  new FormGroup({
+                    businessCode: new FormControl(
+                      'datos_basicos',
+                      Validators.required
+                    ),
+                  }),
+                ],
+                Validators.required
+              ),
+
+              // fieldGroup: new FormControl(1)
+            }),
+          ],
+          Validators.required
+        ),
+      }),
+    ]),
+    servicesPlans: new FormArray([
+      new FormGroup({
+        id: new FormControl(7),
+        name:new FormGroup({name:new FormControl('plan básico')})
+      })
+    ])
+  };
+  let res = [
+    {
+      id: 1,
+      name: 'string',
+      description: 'string',
+      details: 'string',
+      shouldDelete: true,
+      cdRuleType: 'string',
+      element: {
+        id: 1,
+        businessCode: 'string',
+        nmLabel: 'string',
+        dsDescription: 'string',
+        dataType: {
+          code: 'string',
+          name: 'string',
+          description: 'string',
+          bdFieldType: 'string',
+          guiComponent: 'string',
+          lenght: 1,
+          precision: 1,
+          scale: 1,
+        },
+        flIsMandatory: 'S',
+        domainList: {
+          code: 'string',
+          name: 'string',
+          description: 'string',
+          valueList: 'String',
+        },
+      },
+    },
+  ];
+  let res1 = 
+    {
+      id: 1,
+      name: 'string',
+      description: 'string',
+      details: 'string',
+      shouldDelete: true,
+      cdRuleType: 'string',
+      element: {
+        id: 1,
+        businessCode: 'string',
+        nmLabel: 'string',
+        dsDescription: 'string',
+        dataType: {
+          code: 'string',
+          name: 'string',
+          description: 'string',
+          bdFieldType: 'string',
+          guiComponent: 'string',
+          lenght: 1,
+          precision: 1,
+          scale: 1,
+        },
+        flIsMandatory: 'S',
+        domainList: {
+          code: 'string',
+          name: 'string',
+          description: 'string',
+          valueList: 'String',
+        },
+      },
+    };
   class dialogMock {
     open() {
       return {
         afterClosed: () =>
-          of([{description: 'description',element: {id: 68,businessCode:"FEC_FIN_VIG_POL",dsDescription: 'Fecha fin de vigencia de la póliza',flIsMandatory: 'S',nmLabel: 'Fecha fin de vigencia de la póliza',label: 'Fecha fin de vigencia de la póliza',dataType: {bdFieldType: 'Date',code: 'TDT13',description:'Campo para seleccionar una fecha y hora desde un calendario',guiComponent: 'Calendar',lenght: 10,name: 'Fecha y Hora',precision: 0,scale: 0,},domainList:{  code: '',name: '',description: '',valueList:''}},id: 68,name: 'Fecha fin de vigencia de la póliza',shouldDelete: true,}] ),
+          of([
+            {
+              id: 1,
+              name: 'string',
+              description: 'string',
+              details: 'string',
+              shouldDelete: true,
+              cdRuleType: 'string',
+              element: {
+                id: 1,
+                businessCode: 'string',
+                nmLabel: 'string',
+                label: 'string',
+                dsDescription: 'string',
+                dataType: {
+                  code: 'string',
+                  name: 'string',
+                  description: 'string',
+                  bdFieldType: 'string',
+                  guiComponent: 'string',
+                  lenght: 1,
+                  precision: 1,
+                  scale: 1,
+                },
+                flIsMandatory: 'S',
+                domainList: {
+                  code: 'string',
+                  name: 'string',
+                  description: 'string',
+                  valueList: 'String',
+                },
+              },
+            },
+          ]),
       };
     }
   }
+
   class toastMock {
-    openFromComponent() {}
+    openFromComponent() {
+      of([
+        {
+          id: 1,
+          name: 'string',
+          description: 'string',
+          details: 'string',
+          shouldDelete: true,
+          cdRuleType: 'string',
+          element: {
+            id: 1,
+            businessCode: 'string',
+            nmLabel: 'string',
+            label: 'string',
+            dsDescription: 'string',
+            dataType: {
+              code: 'string',
+              name: 'string',
+              description: 'string',
+              bdFieldType: 'string',
+              guiComponent: 'string',
+              lenght: 1,
+              precision: 1,
+              scale: 1,
+            },
+            flIsMandatory: 'S',
+            domainList: {
+              code: 'string',
+              name: 'string',
+              description: 'string',
+              valueList: 'String',
+            },
+          },
+        },
+      ])
+    }
   }
-  let store = {};
-  // const mockLocalStorage = {
-  //   getItem: (key: string): string => {
-  //     return key in store ? store[key] : null;
-  //   },
-  //   setItem: (key: string, value: string) => {
-  //     store[key] = `${value}`;
-  //   },
-  //   removeItem: (key: string) => {
-  //     delete store[key];
-  //   },
-  //   clear: () => {
-  //     store = {};
-  //   }
-  // };
-  // let mockDialog=new dialogMock();
-  // let mockHeroService = { getHeros: jest.fn().mockReturnValue( afterClosed : of({})), ... };
 
   beforeEach(async () => {
-
-
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, ReactiveFormsModule, FormsModule],
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule,
+      ],
       declarations: [ModificationTypesComponent],
       providers: [
         { provide: FormBuilder, useValue: formBuilderMock },
         ModificationTypesComponent,
-        ProductService,
+
         FormBuilder,
 
         {
@@ -72,11 +430,15 @@ fdescribe('ModificationTypesComponent', () => {
         { provide: MatDialog, useValue: new dialogMock() },
         {
           provide: MatSnackBar,
-          useValue: {},
+          useValue: new toastMock(),
         },
         {
           provide: FormGroup,
           useValue: {},
+        },
+        {
+          provide: ProductService,
+          useValue: ProductServiceMock,
         },
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
@@ -85,73 +447,235 @@ fdescribe('ModificationTypesComponent', () => {
     fixture = TestBed.createComponent(ModificationTypesComponent);
     component = fixture.componentInstance;
     productService = TestBed.inject(ProductService);
-
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('getGroupArrayById', () => {
-    expect(component.getGroupArrayById(1)).toBeUndefined();
+  it('ngOnInit', () => {
+    const spy = jest.spyOn(component, 'calledMenu').mockImplementation();
+    component.ngOnInit();
+    expect(spy).toBeCalled();
   });
+  // it('getDataCoverages',()=>{
 
+  // })
   it('openToAdd', () => {
-    component.productService.policyData = new FormArray([]);
-    component.productService.policyData.push(
-      new FormGroup({
-        id: new FormControl(68),
-        name: new FormControl('Fecha fin de vigencia de la póliza'),
-      })
-    );
-    const spy3 = jest.spyOn(component, 'getGroupArrayById').mockImplementation();
-    expect(component.openToAdd()).toBeUndefined();
-  });
-  it('getNameGroup', () => {
-    let complementaryData = {value:[{code: 'datos_basicos',fields: [{businessCode: 'FECHA_EMISION',dataType: {code: 'TDT13',name: 'Fecha y Hora',description:'Campo para seleccionar una fecha y hora desde un calendario',bdFieldType: 'Date',guiComponent: 'Calendar',},dependency: null,domainList: null,editable: true,fieldGroup: 1,id: 62,initializeRule: [],label: 'Fecha de emisión',name: 'Fecha de emisión',required: false,requiredEssential: false,shouldDelete: true,validateRule: [],},],id: 1,isEditing: false,name: 'Datos básicos',}]};
-    component.productService.policyData = complementaryData;
-    expect(component.getNameGroup('FECHA_EMISION')).toBeDefined();
+    component.data = 'pc001_opcion1alternativa1';
+    const spy = jest.spyOn(component, 'addItem').mockImplementation();
+    const spy1 = jest.spyOn(component, 'getAllRiskField').mockImplementation();
+    const spy3 = jest.spyOn(component, 'getAllRisk').mockImplementation();
+
+    component.openToAdd('risk');
+    expect(spy).toBeCalled();
+    expect(spy1).toBeCalled();
+    expect(spy3).toBeCalled();
   });
 
-  it('selectGroup',()=>{
-    expect(component.selectGroup()).toBeUndefined();
+  it('openToAddPolicy', () => {
+    component.data = 'pc001_opcion1alternativa1';
+    const spy = jest.spyOn(component, 'addItem').mockImplementation();
+    const spy1 = jest.spyOn(component, 'getAll').mockImplementation();
+    const spy3 = jest.spyOn(component, 'getAllFields').mockImplementation();
+
+    component.openToAdd('policy');
+    expect(spy).toBeCalled();
+    expect(spy1).toBeCalled();
+    expect(spy3).toBeCalled();
+  });
+  it('addItem', () => {
+    component.riskData = true;
+    const spy = jest.spyOn(component, 'showMessageGroup').mockImplementation();
+    const spy1 = jest.spyOn(component, 'getNameGroup').mockImplementation();
+    const spy2 = jest.spyOn(component, 'addRisk').mockImplementation();
+    const spy3 = jest.spyOn(component, 'add').mockImplementation();
+    const spy4 = jest
+      .spyOn(component, 'addGroupArrayById')
+      .mockImplementation();
+    const spy5 = jest
+      .spyOn(component, 'addGroupArrayByIdRisk')
+      .mockImplementation();
+    component.addItem(res, 1, true);
+    expect(spy).toBeCalled();
+    expect(spy1).toBeCalled();
+    expect(spy2).toBeCalled();
+    expect(spy3).toBeCalled();
+    expect(spy4).toBeCalled();
+    expect(spy5).toBeCalled();
   });
 
-  it('addBranch',()=>{
-    let item =[{businessPlans: [{name: 'Daviplata1', code: 'pc001_daviplata1', description: 'Daviplata1 Daviplata1 Daviplata1 Daviplata1 Daviplata1', coverages: [], servicePlans: []},{name: 'daviplata 3', code: 'pc002_daviplata3', description: 'daviplata 3 daviplata 3 daviplata 3 daviplata 3daviplata 3', coverages:[], servicePlans: []}, {name: 'Plan1 opcion2', code: 'pc003_plan1opcion2', description: 'Plan1 opcion2 Plan1 opcion2 Plan1 opcion2 Plan1 opcion2', coverages: [], servicePlans: []}],complementaryData: [],description: "Tipo de riesgo Mascota",id: 2,name: "Mascota"}];
-    component.addBranch(item);
-  });
-  it('onAddBranch',()=>{
-    let menu= [{ code: 'a',coverages: [],description: '',name: '',servicePlans: [],athrzdOprtn: [{name: 'Modificacion', key: 'MDF'}]}];
-    component.showBranch=menu;
-    component.onAddBranch(menu);
-  });
-
-it('addBranchCoverage',()=>{
-  let menu= [{ code: 'a',coverages: [],description: '',name: 'aa',servicePlans: [],athrzdOprtn: [{name: 'Modificacion', key: 'MDF'}]}], itemPush={code:'a'};
-  component.showBranch=menu; 
-  component.addBranchCoverage(menu,itemPush);
-})
-  it('sendData',()=>{
-    component.showCommercialPlans=true;
-    component.bussinesPlans=true;
-    component.sendData('p001_planA');
+  it('addItemPolicy', () => {
+    component.policyData = true;
+    const spy = jest.spyOn(component, 'showMessageGroup').mockImplementation();
+    const spy1 = jest.spyOn(component, 'getNameGroup').mockImplementation();
+    const spy2 = jest.spyOn(component, 'add').mockImplementation();
+    const spy3 = jest
+      .spyOn(component, 'addGroupArrayById')
+      .mockImplementation();
+    component.addItem(res, 1, true);
+    expect(spy).toBeCalled();
+    expect(spy1).toBeCalled();
+    expect(spy2).toBeCalled();
+    expect(spy3).toBeCalled();
   });
 
-  it('dataSet',()=>{
-    let data={businessPlans: [],complementaryData: [],description: "Tipo de riesgo Mascota",id: 2,name: "Mascota"};
-    expect(component.dataSet(data)).toBeUndefined();
+  it('getAllRiskField', () => {
+    expect(component.getAllRiskField()).toBeDefined();
   });
-  it('showRiskType',()=>{
-    component.policyData =true;
-    component.showRiskType();
-    expect(component.showRiskType()).toBeUndefined();
 
+  it('getAllRisk', () => {
+    expect(component.getAllRisk()).toBeDefined();
   });
-  it('showCommercialPlan',()=>{
-    let data={businessPlans: [],complementaryData: [],description: "Tipo de riesgo Mascota",id: 2,name: "Mascota"};
-    component.showCommercialPlansTypes  =true;
-    expect(component.showCommercialPlan(data)).toBeUndefined();
+  it('getAll', () => {
+    expect(component.getAll()).toBeDefined();
+  });
+
+  it('getAllFields', () => {
+    expect(component.getAllFields()).toBeDefined();
+  });
+
+ 
+  it('showMessageGroup', () => {
+    expect(component.showMessageGroup(false)).toBeUndefined();
+  });
+  it('showMessageGroupTrue', () => {
+    expect(component.showMessageGroup(true)).toBeUndefined();
+  });
+  it('addDataRisk',()=>{
+    const spy= jest.spyOn(component,'getServicesPlan').mockImplementation();
+    const spy1=jest.spyOn(component,'getDataCoverages').mockImplementation();
+    component.addDataRisk();
+    expect(spy).toBeCalled();
+    expect(spy1).toBeCalled();
+
   })
+  it('addRisk', () => {
+    let group = {
+      id: 1,
+      code: 'datos_basicos',
+      name: 'Datos básicos',
+      fields: [{ code: { businessCode: 'datos_basicos' } }],
+      isEditing: true,
+    };
+    expect(component.addRisk(group)).toBeUndefined();
+  });
+  it('add', () => {
+    let group = {
+      id: 1,
+      code: 'datos_basicos',
+      name: 'Datos básicos',
+      fields: [{ code: { businessCode: 'datos_basicos' } }],
+      isEditing: true,
+    };
+    expect(component.add(group)).toBeUndefined();
+  });
+  it('getNameGroupPolicyData', () => {
+    component.policyData = true;
+    expect(component.getNameGroup('datos_basicos')).toBeUndefined();
+  });
+  it('getNameGroupRisk', () => {
+    component.riskData = true;
+    expect(component.getNameGroup('datos_basicos')).toBeUndefined();
+  });
+  it('addGroupObj', () => {
+    let group = [
+      {
+        id: 2,
+        code: 'datos_basicos',
+        name: 'Datos básicos',
+        fields: [{ code: { businessCode: 'datos_basicos' } }],
+        isEditing: true,
+      },
+    ];
+    expect(component.addGroupObj(group, 'datos_basicos')).toBeUndefined();
+  });
+
+  it('getAthrzdOprtn',()=>{
+    component.getAthrzdOprtn("pc001_opcion1alternativa1");
+  })
+  it('calledMenu', () => {
+    let menu = [
+      {
+        code: 'string',
+        coverages: [{}],
+        description: 'string',
+        name: 'string',
+        servicePlans: [{}],
+        athrzdOprtn: ['MDF'],
+      },
+    ];
+    expect(component.calledMenu(menu)).toBeUndefined();
+  });
+
+  it('onAddBranch',()=>{
+    let menu = [
+      {
+        code: 'string',
+        coverages: [{}],
+        description: 'string',
+        name: 'string',
+        servicePlans: [{}],
+        athrzdOprtn: ['MDF'],
+      },
+    ];
+    const spy= jest.spyOn(component,'calledMenu').mockImplementation();
+    component.onAddBranch(menu);
+    expect(spy).toBeCalled();
+  })
+  it('sendData', () => {
+    component.showCommercialPlans=true;
+    expect(component.sendData('pc001_opcion1alternativa1', 'risk')).toBeUndefined();
+  });
+  it('showRiskType', () => {
+    component.policyData=true;
+    expect(component.showRiskType()).toBeUndefined();
+  });
+  it('showCommercialPlan', () => {
+    component.showCommercialPlansTypes=true;
+    expect(component.showCommercialPlan({ name: 'Risk' })).toBeUndefined();
+  });
+
+  it('getGroupArrayByIdModify',()=>{
+    component.getGroupArrayByIdModify(2);
+  });
+  it('getGroupArrayById',()=>{
+    component.getGroupArrayById(1);
+  })
+  it('getDataCoverages',()=>{
+    component.getDataCoverages(7,'name')
+  })
+
+  it('addBranchCoverage',()=>{
+    let menu = [
+      {
+        code: 'string',
+        coverages: [{}],
+        description: 'string',
+        name: 'string',
+        servicePlans: [{}],
+        athrzdOprtn: ['MDF'],
+      },
+    ];
+    component.addBranchCoverage(menu,{athrzdOprtn:['MDF'],code :'string'})
+  });
+
+  it('addBusinessPlan',()=>{
+    let menu;
+    let menu2 = [
+      {
+        code: 'string',
+        coverages: [{}],
+        description: 'string',
+        name: 'string',
+        servicePlans: [{}],
+        athrzdOprtn: ['MDF'],
+      },
+    ];
+    component.addBusinessPlan(menu2,menu);
+  })
+
+  // it('addDataRisk',()=>{
+  //   const spy=jest.spyOn(component,'getCoverages').mockImplementation();
+  //   component.addDataRisk();
+  // })
 });

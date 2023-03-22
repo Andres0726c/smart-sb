@@ -29,6 +29,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {MatSortModule} from '@angular/material/sort';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import {MatTreeModule} from '@angular/material/tree';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
     exports: [
@@ -62,7 +63,8 @@ import {MatTreeModule} from '@angular/material/tree';
         MatNativeDateModule,
         MatSortModule,
         DragDropModule,
-        MatTreeModule
+        MatTreeModule,
+        MatSnackBarModule
     ],
     providers: [
         MatDatepickerModule,

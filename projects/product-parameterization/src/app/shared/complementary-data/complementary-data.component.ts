@@ -417,7 +417,6 @@ export class ComplementaryDataComponent implements OnInit {
    
     let index = this.getGroupArrayById(obj.fieldGroup).value.findIndex((x: { id: number; }) => x.id === this.selectedField.value.id);
 
- 
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
@@ -437,9 +436,7 @@ export class ComplementaryDataComponent implements OnInit {
             this.selectComplementaryData(<FormGroup>this.getGroupArrayById(1).controls[0]);
           }
 
-          if (this.complementaryDataControls.value[obj.fieldGroup-1].fields.length === 0 && this.modifyData) {
-            this.complementaryDataControls.removeAt(obj.fieldGroup-1);
-         }
+          
         }
         
       }
@@ -447,17 +444,12 @@ export class ComplementaryDataComponent implements OnInit {
       
     });
 
-   
-
-    
-
-   
   }
   
 
   removeGroup(group: any) {
     let index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === group.get('id')?.value);
-    
+   
     
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
@@ -475,6 +467,8 @@ export class ComplementaryDataComponent implements OnInit {
             field.get('fieldGroup')?.setValue(1);
             this.getGroupArrayById(1).push(field);
           }
+          this.removeGroupCascade(group);
+         
         }
       }
     });
@@ -484,8 +478,6 @@ export class ComplementaryDataComponent implements OnInit {
    * remueve la asociación de datos de poliza y tipos de modificación
    */
   DeleteCascadeDateModify(id: number,code:any) {
-
-   
 
     let mdfctnPrcss =  (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).controls.find(x => x.value.id === id)?.get('fields');
       
@@ -501,6 +493,38 @@ export class ComplementaryDataComponent implements OnInit {
 
     }
 
+    //PreviewData
+
+      let preview =  (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).controls.find(x => x.value.id === id)?.get('fields');
+      
+      let indexPreview:any = (<FormArray>preview).controls.findIndex(x => x.value.businessCode ===code);
+
+     (<FormArray>preview).removeAt(indexPreview);
+     if ( (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).value[id-1].fields.length === 0){
+
+      (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).removeAt(id-1);
+
+    }
+
+
+
+  }
+
+  /**
+   * remueve la asociación de grupos en los demes componentes
+   */
+
+  removeGroupCascade(group: any): void {
+
+    let indexGroup:any = (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).controls.findIndex(x => x.value.id ===group.get('id')?.value);
+
+    (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).removeAt(indexGroup);
+
+    let index = (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).controls.findIndex(x => x.value.id ===group.get('id')?.value);
+
+    (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).removeAt(index);
+ 
+    
   }
 
   removeAssociatedReference() {

@@ -45,6 +45,11 @@ export const screenManagementRoutes: Route[] = [
                 path: 'cumulos',
                 loadChildren: () => import('../../../containers/accumulation/accumulation.module').then(m => m.AccumulationModule)
             },
+            /* Previsualización campos */
+            {
+                path: 'previsualizar-datos-poliza',
+                loadChildren: () => import('../../../containers/main-screen-product/components/preview-data/preview-data-policy/preview-data-policy.module').then(m => m.PreviewDataPolicyModule)
+            },
             /* Modificación */
             {
                 path: 'tipos-modificacion',

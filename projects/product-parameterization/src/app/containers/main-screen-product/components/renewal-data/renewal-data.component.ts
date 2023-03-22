@@ -31,22 +31,6 @@ export class RenewalDataComponent implements OnInit {
   ngOnInit(): void {
     this.loadCauses();
     this.loadContextData();
-
-    /*this.productService.rnwlPrcss = this.fb.group({
-      enabled: this.fb.control(false),
-      rnwlCsCd: this.fb.control([]),
-      clcltnRl: this.fb.control([]),
-      isNwIssPlcy: this.fb.control(false)
-    });
-    this.productService.prdctDpndncy = this.fb.group({
-      cs: this.fb.array([]),
-      rl: this.fb.array([])
-    });
-    this.productService.references = this.fb.array([]);*/
-
-    /*this.productService.rnwlPrcss.reset();
-    this.productService.prdctDpndncy.reset();
-    this.productService.references.reset();*/
   }
 
   loadCauses() {

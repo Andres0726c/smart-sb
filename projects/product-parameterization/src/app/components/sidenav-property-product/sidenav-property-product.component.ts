@@ -15,10 +15,15 @@ export class SidenavPropertyProductComponent implements OnInit {
   formProcess!: FormGroup;
 
   constructor(
+    
     public dialog: MatDialog,
+    
     private route: ActivatedRoute,
+    
     public productService: ProductService,
+    
     public fb: FormBuilder
+  
   ) {
     this.formProcess = this.fb.group({
       modification: this.productService.mdfctnPrcss,
@@ -28,9 +33,9 @@ export class SidenavPropertyProductComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.productName =
-      this.productService.initialParameters.get('productName')?.value;
+  ngOnInit(): void 
+  {
+    this.productName = this.productService.initialParameters.get('productName')?.value;
   }
 
   @ViewChild('sidenav')
@@ -40,7 +45,7 @@ export class SidenavPropertyProductComponent implements OnInit {
 
   isExpandedClaim = true;
   showSubmenuClaim: boolean = true;
-
+  
   menus = [
     {
       name: 'Emisión',
@@ -66,6 +71,17 @@ export class SidenavPropertyProductComponent implements OnInit {
       show: false,
       isExpanded: true,
       submenus: [
+        {
+          name: "Previsualización campos",
+          showEnable: false,
+          show: true,
+          isExpanded: true,
+          submenus:[
+            { name: "Datos de póliza",    routerLink: "previsualizar-datos-poliza"},
+            { name: "Datos de riesgo",   },
+            { name: "Datos de cobertura",},
+          ]
+        },
         { name: 'Datos a modificar', routerLink: 'tipos-modificacion' },
         { name: 'Control técnico', routerLink: 'control-tecnico-modificacion' },
       ],
@@ -123,7 +139,6 @@ export class SidenavPropertyProductComponent implements OnInit {
       menu.show = !menu.show;
     }
   }
-
   clearData(menu: any) {
     if (menu === 'cancellation') {
       if (!this.formProcess?.get(menu)?.value.enabled === false) {

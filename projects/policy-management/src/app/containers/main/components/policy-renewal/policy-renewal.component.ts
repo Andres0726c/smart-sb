@@ -183,7 +183,7 @@ export class PolicyRenewalComponent implements OnInit {
     });
 
     //fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: !field.editable }));
-    fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: this.readOnly ?? !field.editable }));
+    fieldFG.addControl('value', this.fb.control({ value: field.dataType.guiComponent === 'Calendar' ? new Date(value.value) : value.value, disabled: this.readOnly ?? !field.editable }));
 
     if (field.dataType.guiComponent === 'List box' || field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO') {
       let options: any = [], domainList = field.domainList?.valueList;

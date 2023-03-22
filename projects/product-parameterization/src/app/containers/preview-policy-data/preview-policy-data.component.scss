@@ -1,0 +1,196 @@
+@import "../../../assets/styles/config/variables";
+@import "../../../assets/styles/config/mixins";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+.content_title {
+  flex-direction: column;
+  padding: 1rem 0;
+}
+.title {
+  font-family: Roboto Condensed !important;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  color: #223354;
+}
+.subtitle {
+  font-family: Roboto Condensed !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  color: #223354;
+}
+.container-boxes {
+  padding: 0px 16px;
+  display: flex;
+  column-gap: 16px;
+}
+.container-tree {
+  min-width: 260px;
+  padding: 24px 8px;
+  background-color: $grayscaleWhite;
+  border-radius: 6px;
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    &__title {
+      font-family: Roboto Condensed;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 23px;
+      margin-right: 10px;
+    }
+  }
+}
+
+.bt {
+  min-width: 90px;
+  width: 90px;
+  padding: 0;
+  height: 32px;
+}
+.icon-button-add {
+  color: $primaryBase;
+  font-size: 20px;
+  margin-right: 10px;
+}
+.div-button .icon-button-add {
+  margin-right: 0;
+  margin-left: 10px;
+}
+.tree .icon-arrow-tree {
+  color: $primaryBase;
+}
+.title-node {
+  font-family: Roboto Condensed;
+  font-style: normal;
+}
+
+.level-one {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  min-height: 36px;
+  justify-content: space-between;
+  button {
+    height: 36px;
+    width: 24px;
+  }
+  .title-node{
+    margin-left: 8px;
+    cursor: pointer;
+    &:hover {
+      color: $grayscaleBlack;
+      font-weight: 700;
+    }
+  }
+}
+.title-node {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 14px;
+  color: $grayscaleLevel-2;
+  
+  &-selected {
+    color: $primaryDark !important;
+    font-weight: 700;
+  }
+}
+
+.level-two {
+  min-height: 28px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px 0 12px;
+  .title-node {
+    border-left: 2px solid $primaryBase;
+    padding-left: 20px;
+    line-height: 20px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+  }
+  .node-counter {
+    background: #f0f6f3;
+    border-radius: 50px;
+    min-width: 40px;
+    margin: 0 8px;
+    text-align: center;
+    font-family: Roboto Condensed;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    color: $primaryBase;
+  }
+}
+
+.icon-delete {
+  color: $alertsError;
+  margin-right: 10px;
+  cursor: pointer;
+  &:hover {
+    font-weight: 700;
+  }
+}
+.container-details-coverage {
+  width: 100%;
+  background-color: $grayscaleWhite;
+  border-radius: 6px;
+  &__header {
+    padding: 16px 24px;
+  }
+  &__title {
+    font-family: "Roboto Condensed";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38px;
+    display: flex;
+    align-items: center;
+    color: $titleSubtitle;
+    margin: 0 0 15px;
+  }
+  &__subtitle {
+    font-family: "Roboto Condensed";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    color: $titleSubtitle;
+    opacity: 0.5;
+  }
+}
+
+.tabs ::ng-deep .mat-tab-label {
+  font-family: Roboto Condensed;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 120%;
+  color: $grayscaleLevel-2;
+  height: 30px;
+  min-width: 100px;
+  padding: 0 16px;
+  &-active {
+    color: $grayscaleBlack;
+    font-weight: 700;
+  }
+}
+
+.div-button-add {
+  display: flex; 
+  justify-content: center; 
+  margin-top: 20px; 
+  margin-bottom: 10px;
+}
