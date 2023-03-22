@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -99,6 +99,7 @@ describe('RenewalDataComponent', () => {
   });
 
   it('addRule', () => {
+    (<FormArray>component.productService.prdctDpndncy.get('insrncLn')).push(new FormControl({id: 1, cd: 'test'}));
     const objRule: any = {
       rule: {
         id: 1,
@@ -155,6 +156,7 @@ describe('RenewalDataComponent', () => {
 
   it('verifyCsProcess add dp', () => {
     const value = ['code'];
+    (<FormArray>component.productService.prdctDpndncy.get('insrncLn')).push(new FormControl({id: 1, cd: 'test'}));
     component.causes = [{id: 1, businessCode: 'code', name: 'test'}];
     expect(component.verifyCsProcess(value)).toBeUndefined();
   });
