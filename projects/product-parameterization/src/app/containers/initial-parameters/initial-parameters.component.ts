@@ -484,6 +484,7 @@ export class InitialParametersComponent implements OnInit {
       rl: new FormArray([])
     });
 
+    this.clearProcess();
     this.setInsDependency(insuranceLineReset);
   }
 
@@ -500,9 +501,24 @@ export class InitialParametersComponent implements OnInit {
       cmpnyId: this.service.companyId
     }
     
-    console.log('insrncLn', objIns);
     this.service.setProductDependency('insrncLn', objIns);
-   
-    console.log('form', this.service);
+  }
+
+  clearProcess(){
+    this.service.cnclltnPrcss?.get('cnclltnCsCd')?.setValue([]);
+    this.service.cnclltnPrcss?.get('clcltnRl')?.setValue([]);
+    this.service.cnclltnPrcss?.get('isCncllblIncptnDt')?.setValue(false);
+    this.service.cnclltnPrcss?.get('enabled')?.setValue(false);
+
+    this.service.cnclltnPrcss?.get('cnclltnCsCd')?.disable();
+    this.service.cnclltnPrcss?.get('isCncllblIncptnDt')?.disable();
+
+    this.service.rnsttmntPrcss?.get('rnsttmntCsCd')?.setValue([]);
+    this.service.rnsttmntPrcss?.get('clcltnRl')?.setValue([]);
+    this.service.rnsttmntPrcss?.get('isNwIssPlcy')?.setValue(false);
+    this.service.rnsttmntPrcss?.get('enabled')?.setValue(false);
+
+    this.service.rnsttmntPrcss?.get('rnsttmntCsCd')?.disable();
+    this.service.rnsttmntPrcss?.get('isNwIssPlcy')?.disable();
   }
 }

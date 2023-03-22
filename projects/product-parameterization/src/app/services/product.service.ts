@@ -65,9 +65,7 @@ export class ProductService {
     'selectedProcess',
     'conceptReserv',
     'cnclltnCsCd',
-    'clcltnRl',
     'rnsttmntCsCd',
-    'isNwIssPlcy'
   ];
 
   defaultControls = [
