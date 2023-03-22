@@ -65,23 +65,23 @@ export class SidenavPropertyProductComponent implements OnInit {
       ],
     },
     {
+      name: "Previsualización campos",
+      showEnable: false,
+      show: true,
+      isExpanded: true,
+      submenus:[
+        { name: "Datos de póliza",    routerLink: "previsualizar-datos-poliza"},
+        { name: "Datos de riesgo",   },
+        { name: "Datos de cobertura",},
+      ]
+    },
+    {
       name: 'Modificación',
       formControlName: 'modification',
       showEnable: true,
       show: false,
       isExpanded: true,
       submenus: [
-        {
-          name: "Previsualización campos",
-          showEnable: false,
-          show: true,
-          isExpanded: true,
-          submenus:[
-            { name: "Datos de póliza",    routerLink: "previsualizar-datos-poliza"},
-            { name: "Datos de riesgo",   },
-            { name: "Datos de cobertura",},
-          ]
-        },
         { name: 'Datos a modificar', routerLink: 'tipos-modificacion' },
         { name: 'Control técnico', routerLink: 'control-tecnico-modificacion' },
       ],

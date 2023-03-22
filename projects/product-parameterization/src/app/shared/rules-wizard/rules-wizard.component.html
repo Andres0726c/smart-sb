@@ -1,150 +1,149 @@
-<!-- <section [formGroup]="parametersForm">
-    <div class="w-full text-right mt-5">
-      <button data-qa-id="sc-rpmf-btn-close"
-        pButton pRipple type="button" icon="fas fa-times" class="p-button-rounded p-button-text" (click)="ref.close()"></button>
+<section [formGroup]="parametersForm">
+  <div class="w-full text-right mt-5">
+    <button data-qa-id="sc-rpmf-btn-close"
+      pButton pRipple type="button" icon="fas fa-times" class="p-button-rounded p-button-text" (click)="ref.close()"></button>
+  </div>
+
+  <div class="flex flex-col text-center mb-5" *ngIf="activeIndex < 1">
+    <span class="title">{{ modal.title }}</span>
+    <span class="subtitle">{{ modal.subtitle }}</span>
+  </div>
+  <div class="flex flex-col text-center mb-5" *ngIf="activeIndex > 0">
+    <span class="title">{{ selectedElement.description }}</span>
+    <span class="subtitle">Defina los datos para los parámetros de entrada</span>
+  </div>
+
+  <div class="w-full mb-5">
+    <p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="true"></p-steps>
+  </div>
+
+  <div class="flex flex-col gap-6" *ngIf="activeIndex === 0">
+    <div>
+      <span class="p-input-icon-right flex flex-col">
+        <em class="fas fa-search"></em>
+        <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Criterio de búsqueda" />
+      </span>
     </div>
 
-    <div class="flex flex-col text-center mb-5" *ngIf="activeIndex < 1">
-      <span class="title">{{ modal.title }}</span>
-      <span class="subtitle">{{ modal.subtitle }}</span>
-    </div>
-    <div class="flex flex-col text-center mb-5" *ngIf="activeIndex > 0">
-      <span class="title">{{ selectedElement.description }}</span>
-      <span class="subtitle">Defina los datos para los parámetros de entrada</span>
-    </div>
-
-    <div class="w-full mb-5">
-      <p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="true"></p-steps>
-    </div>
-  
-    <div class="flex flex-col gap-6" *ngIf="activeIndex === 0">
-      <div>
-        <span class="p-input-icon-right flex flex-col">
-          <em class="fas fa-search"></em>
-          <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Criterio de búsqueda" />
-        </span>
-      </div>
-   -->
-      <!--TABLE-->
-      <!-- <div>
-        <p-table
-          #modalSearchTable
-          *ngIf="dataSource"
-          [columns]="showedColumns()"
-          [value]="dataSource"
-          [(selection)]="selectedElement"
-          (onRowSelect)="onRowSelect($event)"
-          [customSort]="false"
-          [tableStyle]="{ 'min-width': '30rem' }"
-          [loading]="isLoading"
-          tableStyleClass="w-full"
-          [paginator]="true" [rows]="5"
-          [showCurrentPageReport]="true"
-          currentPageReportTemplate="{first} - {last} de {totalRecords}"
-          [lazy]="this.modal.remotePaginator" 
-          (onLazyLoad)="loadRemoteData($event)"
-          [totalRecords]="totalSize"
-        >
-          <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th style="width: 3rem">
-              </th>
-              <th pSortableColumn="{{modal.remotePaginator ? col.dbColumnName : col.field}}" *ngFor="let col of columns; let i = index">
-                {{ col.header }}
-                <p-sortIcon field="{{modal.remotePaginator ? col.dbColumnName : col.field}}"></p-sortIcon>
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-columns="columns">
-            <tr>
-              <td>
-                <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
-              </td>
-              <td *ngFor="let col of columns; let i = index">
-                {{ getDetailColumn(rowData, col.field) }}
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
-  
-      <div
-        class="flex justify-center"
-        *ngIf="
-          !isLoading &&
-          ((dataSource == undefined && flagServiceError === false) ||
-            (dataSource && dataSource.length === 0 && flagServiceError === false))
-        "
+    <!--TABLE-->
+    <div>
+      <p-table
+        #modalSearchTable
+        *ngIf="dataSource"
+        [columns]="showedColumns()"
+        [value]="dataSource"
+        [(selection)]="selectedElement"
+        (onRowSelect)="onRowSelect($event)"
+        [customSort]="false"
+        [tableStyle]="{ 'min-width': '30rem' }"
+        [loading]="isLoading"
+        tableStyleClass="w-full"
+        [paginator]="true" [rows]="5"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="{first} - {last} de {totalRecords}"
+        [lazy]="this.modal.remotePaginator" 
+        (onLazyLoad)="loadRemoteData($event)"
+        [totalRecords]="totalSize"
       >
-        No hay elementos disponibles para asociar
-      </div>
-      <div class="flex justify-center" *ngIf="flagServiceError === true">
-        Se ha presentado un error, favor comunicarse con el administrador del
-        sistema
-      </div>
-
-       -->
-  
-      <!-- <div class="flex justify-center">
-        <p-button
-          *ngIf="!selectedElement"
-          [disabled]="true"
-          data-qa-id="sc-rpmf-btn-addElement-disabled"
-          styleClass="w-32"
-          icon="fal fa-plus-circle"
-          [label]="'Añadir'"
-          (click)="null"
-        ></p-button>
-        <p-button
-          *ngIf="selectedElement"
-          data-qa-id="sc-rpmf-btn-addElement"
-          styleClass="w-32"
-          icon="fal fa-plus-circle"
-          [label]="'Añadir'"
-          (click)="null"
-        ></p-button>
-      </div> -->
-    <!-- </div>
-
-    <div class="flex flex-col gap-6 mb-8" *ngIf="activeIndex === 1" formArrayName="parameters">
-      <div class="text-4xl font-bold mt-3">
-        Selección de valores
-      </div>
-      <div class="flex p-5 rounded-lg bg-yellow-200 text-yellow-700 justify-center items-center" *ngIf="paramsControls.length === 0">
-        <em class="fas fa-info-circle mr-2"></em>
-        Esta regla no requiere parámetros de entrada
-      </div>
-      <div *ngFor="let param of paramsControls.controls; let i = index;" formGroupName="{{i}}">
-        <label>{{ param.value.name }} ({{ param.value.type }})</label>
-        <p-dropdown data-qa-id="sc-rsmf-drpdwn-process-field" appendTo="body"
-            [options]="dataSourceModal.data.paramValues" optionValue="id" optionLabel="name"
-            styleClass="w-full" formControlName="value" [required]="true" placeholder="Seleccione un valor">
-        </p-dropdown>
-        <div *ngIf="(param.get('value')?.touched || param.get('value')?.dirty)">
-            <small class="p-error block" *ngIf="param.get('value')?.errors?.['required']">Asigne un valor al parámetro</small> 
-        </div>
-      </div>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 3rem">
+            </th>
+            <th pSortableColumn="{{modal.remotePaginator ? col.dbColumnName : col.field}}" *ngFor="let col of columns; let i = index">
+              {{ col.header }}
+              <p-sortIcon field="{{modal.remotePaginator ? col.dbColumnName : col.field}}"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td>
+              <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+            </td>
+            <td *ngFor="let col of columns; let i = index">
+              {{ getDetailColumn(rowData, col.field) }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
 
-    <div class="flex w-full mt-5">
-      <div *ngIf="activeIndex > 0">
-        <button pButton type="button" class="p-button-secondary" (click)="activeIndex = activeIndex - 1;">
-          <em class="fas fa-arrow-left mr-2"></em>
-          Anterior
-        </button>
-      </div>
-      <div class="ml-auto" *ngIf="activeIndex < (items.length - 1)">
-        <button pButton type="button" [disabled]="!selectedElement" (click)="activeIndex = activeIndex + 1;">
-          Siguiente
-          <em class="fas fa-arrow-right ml-2"></em>
-        </button>
-      </div>
-      <div class="ml-auto" *ngIf="activeIndex === (items.length - 1)">
-        <button pButton type="button" [disabled]="!parametersForm.valid" (click)="ref.close(parametersForm.value)">
-          Finalizar
-          <em class="fas fa-check ml-2"></em>
-        </button>
+    <div
+      class="flex justify-center"
+      *ngIf="
+        !isLoading &&
+        ((dataSource == undefined && flagServiceError === false) ||
+          (dataSource && dataSource.length === 0 && flagServiceError === false))
+      "
+    >
+      No hay elementos disponibles para asociar
+    </div>
+    <div class="flex justify-center" *ngIf="flagServiceError === true">
+      Se ha presentado un error, favor comunicarse con el administrador del
+      sistema
+    </div>
+
+    
+
+    <!-- <div class="flex justify-center">
+      <p-button
+        *ngIf="!selectedElement"
+        [disabled]="true"
+        data-qa-id="sc-rpmf-btn-addElement-disabled"
+        styleClass="w-32"
+        icon="fal fa-plus-circle"
+        [label]="'Añadir'"
+        (click)="null"
+      ></p-button>
+      <p-button
+        *ngIf="selectedElement"
+        data-qa-id="sc-rpmf-btn-addElement"
+        styleClass="w-32"
+        icon="fal fa-plus-circle"
+        [label]="'Añadir'"
+        (click)="null"
+      ></p-button>
+    </div> -->
+  </div>
+
+  <div class="flex flex-col gap-6 mb-8" *ngIf="activeIndex === 1" formArrayName="parameters">
+    <div class="text-4xl font-bold mt-3">
+      Selección de valores
+    </div>
+    <div class="flex p-5 rounded-lg bg-yellow-200 text-yellow-700 justify-center items-center" *ngIf="paramsControls.length === 0">
+      <em class="fas fa-info-circle mr-2"></em>
+      Esta regla no requiere parámetros de entrada
+    </div>
+    <div *ngFor="let param of paramsControls.controls; let i = index;" formGroupName="{{i}}">
+      <label>{{ param.value.name }} ({{ param.value.type }})</label>
+      <p-dropdown data-qa-id="sc-rsmf-drpdwn-process-field" appendTo="body"
+          [options]="dataSourceModal.data.paramValues" optionValue="id" optionLabel="name"
+          styleClass="w-full" formControlName="value" [required]="true" placeholder="Seleccione un valor">
+      </p-dropdown>
+      <div *ngIf="(param.get('value')?.touched || param.get('value')?.dirty)">
+          <small class="p-error block" *ngIf="param.get('value')?.errors?.['required']">Asigne un valor al parámetro</small> 
       </div>
     </div>
+  </div>
+
+  <div class="flex w-full mt-5">
+    <div *ngIf="activeIndex > 0">
+      <button pButton type="button" class="p-button-secondary" (click)="activeIndex = activeIndex - 1;">
+        <em class="fas fa-arrow-left mr-2"></em>
+        Anterior
+      </button>
+    </div>
+    <div class="ml-auto" *ngIf="activeIndex < (items.length - 1)">
+      <button pButton type="button" [disabled]="!selectedElement" (click)="activeIndex = activeIndex + 1;">
+        Siguiente
+        <em class="fas fa-arrow-right ml-2"></em>
+      </button>
+    </div>
+    <div class="ml-auto" *ngIf="activeIndex === (items.length - 1)">
+      <button pButton type="button" [disabled]="!parametersForm.valid" (click)="ref.close(parametersForm.value)">
+        Finalizar
+        <em class="fas fa-check ml-2"></em>
+      </button>
+    </div>
+  </div>
 </section>
-   -->
