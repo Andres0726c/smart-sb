@@ -71,16 +71,21 @@ describe('SidenavPropertyProductComponent', () => {
   it('clearData Ok', () => {
     component.formProcess = new FormGroup({
       cancellation: new FormGroup({enabled:new FormControl(true)}),
-      rehabilitation: new FormGroup({enabled:new FormControl(true)})
+      rehabilitation: new FormGroup({enabled:new FormControl(true)}),
+      renewal: new FormGroup({enabled:new FormControl(true)})
     });
+
     expect(component.clearData('cancellation')).toBeUndefined();
     expect(component.clearData('rehabilitation')).toBeUndefined();
+    expect(component.clearData('renewal')).toBeUndefined();
 
     component.formProcess = new FormGroup({
       cancellation: new FormGroup({enabled:new FormControl(false)}),
-      rehabilitation: new FormGroup({enabled:new FormControl(false)})
+      rehabilitation: new FormGroup({enabled:new FormControl(false)}),
+      renewal: new FormGroup({enabled:new FormControl(false)})
     });
     expect(component.clearData('cancellation')).toBeUndefined();
     expect(component.clearData('rehabilitation')).toBeUndefined();
+    expect(component.clearData('renewal')).toBeUndefined();
   });
 });
