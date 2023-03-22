@@ -211,18 +211,6 @@ export class RulesWizardComponent implements OnInit {
         this.modal.multiSelect,
         []
       );
-
-      //console.log('modalcfg', this.data);
-
-      /*if(!this.modal.remotePaginator) {
-        this.getData(
-          '0',
-          this.currentPage,
-          this.pageSize,
-          this.sortColumn,
-          this.sortDirection
-        );
-      }*/
     } catch (error) {
       this.flagServiceError = true;
     }
@@ -334,7 +322,6 @@ export class RulesWizardComponent implements OnInit {
    * Method that insert the information in mat table datasource
    */
   async insertDataToTable() {
-    //this.arrayData.forEach( obj => this.renameKey( obj, 'name', 'field' ));
     if (this.modal.remotePaginator) {
       this.dataSource = [...this.arrayData];
     } else {
@@ -342,8 +329,6 @@ export class RulesWizardComponent implements OnInit {
         this.data.list.every((element) => element.id != item.id)
       );
     }
-
-    //console.log('data', this.dataSource)
   }
 
   applyFilterGlobal(event: Event, filterType: string) {
@@ -395,8 +380,6 @@ export class RulesWizardComponent implements OnInit {
       this.isLoading = true;
       this.getApiData(requestParams, search);
     }
-    //this.totalSize = 
-    //console.log('lazy load', event)
   }
 
   onRowSelect(event: any) {
@@ -408,14 +391,12 @@ export class RulesWizardComponent implements OnInit {
     try {
       const ruleParams = JSON.parse(event.data.nmParameterList);
       for (let param of Object.keys(ruleParams)) {
-        //console.log('param', param);
         const fgParameter = this.fb.group({
           name: this.fb.control(param),
           type: this.fb.control(ruleParams[param]),
           value: this.fb.control(null, [Validators.required]) 
         });
         (<FormArray>this.parametersForm.get('parameters')).push(fgParameter);
-        console.log('paramsForm', this.parametersForm.get('parameters'))
       }
     } catch (error) {
       console.error('Los parémetros de la regla no tienen la estructura correcta');

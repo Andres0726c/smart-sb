@@ -55,7 +55,6 @@ export class RenewalDataComponent implements OnInit {
     const insuranceLine = this.productService.initialParameters.get('insuranceLine')?.value;
     this.productService.getApiData(`claimCause/findByCompanyAndInsuranceLine/${company}/${insuranceLine}/0/0/0/0/${this.applicationLevel}`).subscribe({
       next: (res: any) => {
-        console.log('causas', res);
         this.causes = res.body;
         this.isLoading = false;
       },
@@ -71,7 +70,6 @@ export class RenewalDataComponent implements OnInit {
     this.isLoading = true;
     this.productService.getApiData(`domainList/DATOS_CONTEXTO`).subscribe({
       next: (res: any) => {
-        console.log('datos contexto', res);
         this.contextData = res.body.nmValueList;
         //se filtra los datos de contexto dependiendo del nivel de aplicación
         this.contextData =  this.contextData.filter( (data:any) => data.applctnLvl.includes(this.applicationLevel) || data.applctnLvl.includes("*") );
@@ -92,7 +90,6 @@ export class RenewalDataComponent implements OnInit {
    * Funcion para realizar la apertura de la modal de consulta y seleccion multiple
    */
   openRuleWizard(code: string, field: string) {
-    console.log('form', this.productService.rnwlPrcss);
     const columns = [
       { field: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname']  },
       { field: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription']  },
@@ -128,7 +125,6 @@ export class RenewalDataComponent implements OnInit {
     let res: ElementTableSearch[] = [];
 
     dialogRef.onClose.subscribe((res) => {
-      console.log('cerro', res);
       if (res) {
         this.addRule(field, res);
       }
@@ -138,11 +134,8 @@ export class RenewalDataComponent implements OnInit {
   addRule(field: string, objRule: any) {
     if (this.rulePrevValue) {
       // vamos a eliminar la regla anterior
-      console.log('vamos a eliminar la regla anterior');
-      console.log('regla anterior', this.rulePrevValue);
       this.productService.deleteDependencyRef('rl', this.rulePrevValue.rlCd, 'rnClcltnRl');
     }
-    console.log('rule', objRule);
     let arr: any[] = [];
     let parametersList: any = {};
 
@@ -182,10 +175,6 @@ export class RenewalDataComponent implements OnInit {
     arr.push(element);
     this.productService.rnwlPrcss.get(field)?.setValue(arr);
     this.rulePrevValue = element;
-
-    console.log('prdctDpndncy', this.productService.prdctDpndncy);
-    console.log('field', this.productService.rnwlPrcss);
-    console.log('references', this.productService.references);
   }
 
   mapRuleArgs(args: any) {
@@ -232,7 +221,6 @@ export class RenewalDataComponent implements OnInit {
     }
 
     list = list.sort((a: any, b: any) => (a.name < b.name ? -1 : 1));
-    console.log('valores: ', list);
 
     return list;
   }
@@ -244,14 +232,10 @@ export class RenewalDataComponent implements OnInit {
     }
     if (this.causesPrevValue.length > value.length) {
       // vamos a eliminar causas
-      console.log('vamos a eliminar causas');
       const diff = this.causesPrevValue.filter((x: any) => !value.includes(x));
       for (let cause of diff) {
         this.productService.deleteDependencyRef('cs', cause, 'rnwlCsCd');
       }
-      console.log('prdctDpndncy', this.productService.prdctDpndncy);
-      console.log('field', this.productService.rnwlPrcss);
-      console.log('references', this.productService.references);
     } else {
       // vamos a agregar causas
       this.setCsDependency(value);
@@ -276,17 +260,11 @@ export class RenewalDataComponent implements OnInit {
       this.productService.setProductDependency('cs', obj);
       this.productService.setDependencyRef('cs', obj.cd, 'rnwlCsCd')
     }
-    console.log('prdctDpndncy', this.productService.prdctDpndncy);
-    console.log('field', this.productService.rnwlPrcss);
-    console.log('references', this.productService.references);
   }
 
   removeRule(value: any) {
     this.productService.deleteDependencyRef('rl', value.rlCd, 'rnClcltnRl');
     this.rulePrevValue = [];
-    console.log('prdctDpndncy', this.productService.prdctDpndncy);
-    console.log('field', this.productService.rnwlPrcss);
-    console.log('references', this.productService.references);
   }
 
   removeCsProcess(value: any) {
