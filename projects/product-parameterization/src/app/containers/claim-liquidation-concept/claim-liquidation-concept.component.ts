@@ -264,8 +264,6 @@ export class ClaimLiquidationConceptComponent implements OnInit {
     let pageSize = this.dataSourceTable.connect().value.length;
     let countSelected = 0;
 
-    //pageSize = pageSize <= 10 ? pageSize : 10;
-
     for(let element of this.dataSourceTable.connect().value) {
       if (this.selection.isSelected(element)) {
         countSelected++;
