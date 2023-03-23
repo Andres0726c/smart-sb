@@ -594,6 +594,7 @@ describe('ModificationTypesComponent', () => {
     component.getAthrzdOprtn("pc001_opcion1alternativa1");
   })
   it('calledMenu', () => {
+    component.flagInit=false;
     let menu = [
       {
         code: 'string',
@@ -601,13 +602,14 @@ describe('ModificationTypesComponent', () => {
         description: 'string',
         name: 'string',
         servicePlans: [{}],
-        athrzdOprtn: ['MDF'],
+        athrzdOprtn: ['MDF','RMV'],
       },
     ];
     expect(component.calledMenu(menu)).toBeUndefined();
   });
 
   it('onAddBranch',()=>{
+    component.flagInit=false;
     let menu = [
       {
         code: 'string',
@@ -615,7 +617,7 @@ describe('ModificationTypesComponent', () => {
         description: 'string',
         name: 'string',
         servicePlans: [{}],
-        athrzdOprtn: ['MDF'],
+        athrzdOprtn: ['MDF','RMV'],
       },
     ];
     const spy= jest.spyOn(component,'calledMenu').mockImplementation();

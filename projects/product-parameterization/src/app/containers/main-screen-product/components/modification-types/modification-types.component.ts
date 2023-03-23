@@ -55,6 +55,7 @@ export class ModificationTypesComponent implements OnInit {
   nameBrach: string = '';
   titleCurrent: any = 'Datos de la póliza';
   idCommercialPlan: string = '';
+  flagInit:boolean=true;
   constructor(
     public dialog: MatDialog,
     public fb: FormBuilder,
@@ -62,6 +63,9 @@ export class ModificationTypesComponent implements OnInit {
     public productService: ProductService
   ) {}
   ngOnInit(): void {
+
+    console.log(this.productService.mdfctnPrcss?.get('mdfcblDt'))
+
     if (
       (<FormArray>(
         this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
@@ -74,7 +78,7 @@ export class ModificationTypesComponent implements OnInit {
       this.getcmmrclPln(2).clear();
       this.addDataRisk();
     }
-    console.log(this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))
+    //console.log(this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))
     this.calledMenu();
   }
  
@@ -454,6 +458,7 @@ export class ModificationTypesComponent implements OnInit {
               label: 'Planes comerciales',
               icon: 'pi pi-fw',
               command: (event: any) => {
+                
                 this.showCommercialPlan(itempush);
               },
               items: this.addBusinessPlan(itempush.cmmrclPln, showMenu),
@@ -477,18 +482,21 @@ export class ModificationTypesComponent implements OnInit {
         id: itempush.code,
         label: label1,
         icon: 'pi pi-fw',
-        expanded: false,
-        disabled: this.addBranchCoverage(showMenu, itempush),
+        expanded: true,
+        disabled: this.flagInit? itempush.athrzdOprtn.find((x:any)=>x==='MDF')? false: true :this.addBranchCoverage(showMenu, itempush),
         command: (event: any) => {
+          console.log(event);
           this.titleCommercialPlan = itempush.name;
           this.sendData(itempush.code, itempush.name);
         },
       };
       list.push(label);
     }
+    this.flagInit=false;
     return list;
   }
 
+  
   onAddBranch(showMenu: any[]) {
     this.calledMenu(showMenu);
     this.showBranch = showMenu;
@@ -523,7 +531,11 @@ export class ModificationTypesComponent implements OnInit {
         return (validate = false);
       }
     }
+    
+    
     return validate;
+
+
   }
 
   sendData(idCommercialPlan: string, title: string) {
