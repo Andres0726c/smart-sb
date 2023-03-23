@@ -46,32 +46,34 @@
         !showCommercialPlansTypes
       "
     >
-    <app-no-data-screen
-    *ngIf="getAllFields().length==0"
-    [data]="complementaryDataControls"
-    [layoutType]="'full'"
-    [emptyTitle]="''"
-    [emptySubTitle]="''"
-    [emptyText]="'Datos básicos'"
-    [emptySubText]="'No se han asociado datos de la póliza al producto'"
-    (action)="openToAdd('policy')">
-  </app-no-data-screen>
+      <app-no-data-screen
+        *ngIf="getAllFields().length == 0"
+        [data]="complementaryDataControls"
+        [layoutType]="'full'"
+        [emptyTitle]="''"
+        [emptySubTitle]="''"
+        [emptyText]="'Datos básicos'"
+        [emptySubText]="'No se han asociado datos de la póliza al producto'"
+        (action)="openToAdd('policy')"
+      >
+      </app-no-data-screen>
     </div>
 
     <div
       style="display: flex; padding: 10px; justify-content: space-between"
       *ngIf="policyData"
     >
-    <app-no-data-screen
-    *ngIf="getAllFields().length==0"
-    [data]="complementaryDataControls"
-    [layoutType]="'full'"
-    [emptyTitle]="''"
-    [emptySubTitle]="''"
-    [emptyText]="'Datos básicos'"
-    [emptySubText]="'No se han asociado datos de la póliza al producto'"
-    (action)="openToAdd('policy')">
-  </app-no-data-screen>
+      <app-no-data-screen
+        *ngIf="getAllFields().length == 0"
+        [data]="complementaryDataControls"
+        [layoutType]="'full'"
+        [emptyTitle]="''"
+        [emptySubTitle]="''"
+        [emptyText]="'Datos básicos'"
+        [emptySubText]="'No se han asociado datos de la póliza al producto'"
+        (action)="openToAdd('policy')"
+      >
+      </app-no-data-screen>
 
       <div style="padding-left: 2rem; width: 90%">
         <app-complementary-data
@@ -100,14 +102,18 @@
     </div>
 
     <div *ngIf="riskData" style="padding-left: 2rem; width: 90%">
-      <app-no-data-screen *ngIf="getAllRiskField().length==0"
-      [data]="getRiskArrayByIdModify(2)"
-      [layoutType]="'full'"
-      [emptyTitle]="''"
-      [emptySubTitle]="''"
-      [emptyText]="'Sin datos del riesgo'"
-      [emptySubText]="'No se han seleccionado datos para modificar el tipo de riesgo'"
-      (action)="openToAdd('risk')">
+      <app-no-data-screen
+        *ngIf="getAllRiskField().length == 0"
+        [data]="getRiskArrayByIdModify(2)"
+        [layoutType]="'full'"
+        [emptyTitle]="''"
+        [emptySubTitle]="''"
+        [emptyText]="'Sin datos del riesgo'"
+        [emptySubText]="
+          'No se han seleccionado datos para modificar del tipo de riesgo'
+        "
+        (action)="openToAdd('risk')"
+      >
       </app-no-data-screen>
 
       <app-complementary-data
@@ -117,13 +123,13 @@
         [groupName]="'Datos básicos'"
         [emptyText]="'Sin datos del riesgo'"
         [emptySubText]="
-          'No se han seleccionado datos para modificar el tipo de riesgo'
+          'No se han seleccionado datos para modificar del tipo de riesgo'
         "
         [successAddItemMsg]="
           'Los datos del riesgo fueron asociados correctamente.'
         "
         [removeItemMsg]="
-        '¿Está seguro de querer desasociar el dato del tipo del riesgo seleccionado?'
+          '¿Está seguro de querer desasociar el dato del tipo del riesgo seleccionado?'
         "
         [titleModalCompData]="'Seleccionar  datos del riesgo'"
         [subtitleModalCompData]="'Seleccione los datos del tipo de riesgo'"
@@ -134,7 +140,10 @@
       </app-complementary-data>
     </div>
 
-    <div style="padding-left: 2rem; width: 90%" *ngIf="showCommercialPlans && !riskData && !policyData">
+    <div
+      style="padding-left: 2rem; width: 90%"
+      *ngIf="showCommercialPlans && !riskData && !policyData"
+    >
       <refactoring-smartcore-mf-modification-types-risk
         [titleCommercialPlan]="titleCommercialPlan"
         [titleRisk]="titleRisk"
@@ -143,7 +152,10 @@
       ></refactoring-smartcore-mf-modification-types-risk>
     </div>
 
-    <div style="padding-left: 2rem; width: 90%" *ngIf="showCommercialPlansTypes && !riskData && !policyData">
+    <div
+      style="padding-left: 2rem; width: 90%"
+      *ngIf="showCommercialPlansTypes && !riskData && !policyData"
+    >
       <refactoring-smartcore-mf-commercial-plan-type
         [titleBussinesPlan]="titleBussinesPlan"
         [data]="data"

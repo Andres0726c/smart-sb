@@ -100,7 +100,13 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     return res;
   }
 
-    
+  sortParameterBy(property:any, complementaryData:any) {  
+    return complementaryData.sort((a:any, b:any) => {
+      return a[property] >= b[property]
+        ? 1
+        : -1
+    })
+  }
   
   getAll() {
     let res: any[] = [];
@@ -111,7 +117,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
         res = res.concat(group.fields);
       }
     }
-    return res;
+    return this.sortParameterBy('name',res);
   }
 
   getcmmrclPln(id: number) {
