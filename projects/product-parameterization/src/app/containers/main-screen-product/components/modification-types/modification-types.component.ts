@@ -64,7 +64,6 @@ export class ModificationTypesComponent implements OnInit {
   ) {}
   ngOnInit(): void {
 
-    console.log(this.productService.mdfctnPrcss?.get('mdfcblDt'))
 
     if (
       (<FormArray>(
