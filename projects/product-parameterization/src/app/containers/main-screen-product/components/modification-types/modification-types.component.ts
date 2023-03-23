@@ -65,7 +65,6 @@ export class ModificationTypesComponent implements OnInit {
   ngOnInit(): void {
     this.clearGroup();
 
-
     if (
       (<FormArray>(
         this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
@@ -78,7 +77,6 @@ export class ModificationTypesComponent implements OnInit {
       this.getcmmrclPln(2).clear();
       this.addDataRisk();
     }
-    //console.log(this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))
     this.calledMenu();
   }
 
