@@ -118,7 +118,7 @@ export class CancellationDataComponent implements OnInit {
   }
 
   addRule(field: string, objRule: any) {
-    if (this.rulePrevValue) {
+    if (this.rulePrevValue.length > 0) {
       // vamos a eliminar la regla anterior
       this.productService.deleteDependencyRef('rl', this.rulePrevValue.rlCd, 'cnClcltnRl');
     }

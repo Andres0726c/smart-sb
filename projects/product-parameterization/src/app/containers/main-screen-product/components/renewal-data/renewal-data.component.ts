@@ -19,7 +19,7 @@ export class RenewalDataComponent implements OnInit {
   applicationLevel = 'Renovación';
   causes: any = [];
   causesPrevValue: any = [];
-  rulePrevValue: any = null;
+  rulePrevValue: any = [];
 
   constructor(
     public productService: ProductService,
@@ -116,7 +116,7 @@ export class RenewalDataComponent implements OnInit {
   }
 
   addRule(field: string, objRule: any) {
-    if (this.rulePrevValue) {
+    if (this.rulePrevValue.length > 0) {
       // vamos a eliminar la regla anterior
       this.productService.deleteDependencyRef('rl', this.rulePrevValue.rlCd, 'rnClcltnRl');
     }
