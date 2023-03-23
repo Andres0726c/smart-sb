@@ -79,7 +79,7 @@
             Ramo
           </mat-label>
           <mat-form-field  appearance="outline">
-            <mat-select placeholder="Seleccione el ramo." formControlName="insuranceLine" [errorStateMatcher]="matcher" (focus)="keepFocus()" (selectionChange)="confirmSelectInsurenceLine($event.value)" data-qa-id="sc-rpmf-select-ramo">
+            <mat-select placeholder="Seleccione el ramo." formControlName="insuranceLine" [errorStateMatcher]="matcher" (focus)="keepFocus()" (selectionChange)="confirmSelectInsurenceLine($event.value); setInsDependency($event.value);" data-qa-id="sc-rpmf-select-ramo">
               <mat-option *ngFor="let ramos of ramo" [value]="ramos.id">
                 {{ramos.nmName }}
               </mat-option>

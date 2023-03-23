@@ -80,6 +80,16 @@ export const screenManagementRoutes: Route[] = [
                 path: 'hidden-view',
                 loadChildren: () => import('../../../containers/hidden-view/hidden-view.module').then(m => m.HiddenViewModule)
             },
+            /*Cancelación */
+            {
+                path: 'datos-cancelacion',
+                loadChildren: () => import('../../main-screen-product/components/cancellation-data/cancellation-data.module').then(m => m.CancellationDataModule)
+            },
+            /*Rehabilitación */
+            {
+                path: 'datos-rehabilitacion',
+                loadChildren: () => import('../../main-screen-product/components/rehabilitation-data/rehabilitation-data.module').then(m => m.RehabilitationDataModule)
+            },
             /* Renovación */
             {
                 path: 'datos-renovacion',

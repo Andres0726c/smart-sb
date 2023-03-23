@@ -109,4 +109,13 @@ describe('WaitingTimeComponent', () => {
     component.changeInputNumber(form, 'quantity')
     expect(form.get('quantity')?.value).toEqual('57')
   })
+
+  it('setValidators', () => {
+    let form = new FormGroup({
+      quantity: new FormControl({value:'', disabled: true}),
+      period: new FormControl({value:'', disabled: true})
+    });
+
+    expect(component.setValidators(form, 'quantity')).toBeUndefined();
+  });
 });

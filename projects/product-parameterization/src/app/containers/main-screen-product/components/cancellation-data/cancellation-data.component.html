@@ -1,0 +1,129 @@
+<div class="mt-5 rounded-xl bg-white p-5" *ngIf="isLoading || flagError">
+  <div
+    *ngIf="flagError"
+    class="flex p-5 rounded-lg bg-warn-200 text-warn-700 justify-center items-center"
+  >
+    <em class="fas fa-info-circle mr-2"></em>
+    Ha ocurrido un error cargando los datos necesarios
+  </div>
+  <smartcore-loading-spinner
+    class="flex justify-center items-center"
+    *ngIf="isLoading"
+    [circleSize]="100"
+    [progressThickness]="6"
+    [animationDuration]="0.5"
+  ></smartcore-loading-spinner>
+</div>
+
+<div
+  class="p-5"
+  *ngIf="
+    causes.length > 0 && contextData.length > 0 && !isLoading && !flagError
+  "
+>
+  <div class="flex flex-col">
+    <span class="text-4xl font-bold ml-2"> Cancelación </span>
+    <span class="ml-2">Especifique los datos a definir en la cancelación</span>
+  </div>
+  <div class="mt-5 rounded-xl bg-white p-5">
+    <form
+      class="grid grid-cols-3 gap-6"
+      [formGroup]="productService.cnclltnPrcss"
+    >
+      <div class="flex flex-col w-full mb-5">
+        <label class="text-base mb-2">Causas de cancelación</label>
+        <p-multiSelect
+          [options]="causes"
+          formControlName="cnclltnCsCd"
+          (click)="$event.stopImmediatePropagation()"
+          styleClass="w-full"
+          optionLabel="name"
+          optionValue="businessCode"
+          [maxSelectedLabels]="1"
+          (onChange)="verifyCsProcess($event.value)"
+        >
+          >
+          <ng-template let-value pTemplate="selectedItems" class="w-full">
+            <div class="flex w-full">
+              <div *ngIf="value.length > 0" class="chip-select">
+                <span class="chip-lable">
+                  {{
+                    productService.getProductDependency(
+                      "cs",
+                      this.productService.cnclltnPrcss.get("cnclltnCsCd")
+                        ?.value[0]
+                    )?.nm
+                  }}
+                </span>
+
+                <button
+                  (click)="
+                    $event.stopImmediatePropagation();
+                    removeCsProcess(value[0]);
+                    value.splice(0, 1)
+                  "
+                >
+                  <em class="fal fa-times-circle chip-select__icon"></em>
+                </button>
+              </div>
+              <span *ngIf="value.length > 1" class="dots">...</span>
+              <div
+                *ngIf="value.length > 1"
+                class="chip-select chip-select-count"
+              >
+                {{ value.length - 1 }}
+              </div>
+            </div>
+
+            <!-- <span class="null" *ngFor="let option of value">{{ option.name }}</span> -->
+          </ng-template>
+        </p-multiSelect>
+      </div>
+      <div class="flex flex-col w-full mb-5">
+        <label class="text-base mb-2">Regla de cálculo</label>
+        <div class="p-inputgroup">
+          <p-chips
+            formControlName="clcltnRl"
+            styleClass="w-full w-full-chips"
+            inputStyleClass="w-full"
+            placeholder="Seleccione"
+            (onRemove)="removeRule($event.value)"
+          >
+            <ng-template let-item pTemplate="item" class="w-full">
+              <span
+                class="w-full whitespace-nowrap overflow-hidden text-ellipsis"
+                >{{
+                  productService.getProductDependency(
+                    "rl",
+                    this.productService.cnclltnPrcss.get("clcltnRl")?.value[0]
+                      .rlCd
+                  )?.nm
+                }}</span
+              >
+            </ng-template>
+          </p-chips>
+          <button
+            type="button"
+            pButton
+            pRipple
+            icon="fal fa-plus-circle"
+            styleClass="p-button-warn"
+            class="h-[37px]"
+            [disabled]="!productService.cnclltnPrcss.value.enabled"
+            (click)="openRuleWizard('ruleCalculationControls', 'clcltnRl')"
+          ></button>
+        </div>
+      </div>
+      <div class="flex flex-col items-center w-full mb-5">
+        <label class="text-base mb-2">¿Permite anular desde el inicio?</label>
+        <p-checkbox
+          class="mt-2"
+          [formControl]="
+            $any(productService.cnclltnPrcss.controls['isCncllblIncptnDt'])
+          "
+          [binary]="true"
+        ></p-checkbox>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,51 +1,77 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
-import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
-import { Observable, of } from 'rxjs';
-import { RenewalDataComponent } from './renewal-data.component';
 
-class DialogMock {
+import { CancellationDataComponent } from './cancellation-data.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
+import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
+import { HttpClientModule } from '@angular/common/http';
+import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
+
+class dialogMock {
   open() {
     return {
-      afterClosed: () => of({})
+      afterClosed: () =>
+        of([
+          {
+            id: 1,
+            name: 'name test return',
+            description: 'description test return',
+          },
+        ]),
     };
   }
 }
 
-describe('RenewalDataComponent', () => {
-  let component: RenewalDataComponent;
-  let fixture: ComponentFixture<RenewalDataComponent>;
+describe('CancellationDataComponent', () => {
+  let component: CancellationDataComponent;
+  let fixture: ComponentFixture<CancellationDataComponent>;
+  let ref: DialogService;
   const errorResponseSpy = jest.fn().mockImplementation(() => {
     return new Observable(() => {
       throw new Error("error");
     })
   });
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ RenewalDataComponent ],
-      imports: [ 
-        HttpClientTestingModule,
-        MatDialogModule
-      ],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [CancellationDataComponent],
+      imports: [HttpClientTestingModule, HttpClientModule, FormsModule, MatDialogModule],
       providers: [
-        ProductService,
+        CancellationDataComponent,
         FormBuilder,
         DialogService,
         MessageService,
+        ProductService,
         {
           provide: MatDialog,
-          useValue: new DialogMock()
-        }
-      ]
-    })
-    .compileComponents();
+          useValue: new dialogMock(),
+        },
+        {
+          provide: FormArray,
+          useValue: {},
+        },
+        {
+          provide: FormGroup,
+          useValue: {},
+        },
+        { provide: DynamicDialogRef, useValue: { onClose: of(true) } },
+      ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(RenewalDataComponent);
+    fixture = TestBed.createComponent(CancellationDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -54,52 +80,11 @@ describe('RenewalDataComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('load causes', () => {
-    const res = {
-      dataHeader: { code: 200 },
-      body: [
-        {
-          id: 1,
-          code: 'test',
-          name: 'test'
-        }
-      ]
-    };
-    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
-    expect(component.loadCauses()).toBeUndefined();
-  });
-
-  it('load causes error', () => {
-    jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
-    expect(component.loadCauses()).toBeUndefined();
-  });
-
-  it('load context data', () => {
-    const res = {
-      dataHeader: { code: 200 },
-      body: {
-        nmValueList: [
-          {
-            "code": "prdct",
-            "description": "Producto",
-            "applctnLvl": [
-              "*"
-            ]
-          }
-        ]
-      }
-    };
-    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
-    expect(component.loadContextData()).toBeUndefined();
-  });
-
-  it('load context data error', () => {
-    jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
-    expect(component.loadContextData()).toBeUndefined();
+  it('ngOnInit Ok', () => {
+    expect(component.ngOnInit()).toBeUndefined();
   });
 
   it('addRule', () => {
-    (<FormArray>component.productService.prdctDpndncy.get('insrncLn')).push(new FormControl({id: 1, cd: 'test'}));
     const objRule: any = {
       rule: {
         id: 1,
@@ -128,6 +113,46 @@ describe('RenewalDataComponent', () => {
     expect(component.addRule('test', objRule)).toBeUndefined();
   });
 
+  it('loadContextData OK', async () => {
+    let res: any = {
+      dataHeader: { code: 200 },
+      body: [
+        {
+          code: 'prdct',
+          description: 'Producto',
+          nmValueList: 'test',
+        },
+      ],
+    };
+
+    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadContextData()).toBeDefined();
+  });
+
+  it('load context data error', () => {
+    jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
+    expect(component.loadContextData()).toBeDefined();
+  });
+
+  it('getCauses Ok', () => {
+    let res: any = {
+      body: [
+        {
+          code: 'prdct',
+          description: 'Producto',
+        },
+      ],
+    };
+
+    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadContextData()).toBeDefined();
+  });
+
+  it('load causes error', () => {
+    jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
+    expect(component.getCauses()).toBeDefined();
+  });
+
   it('getAllFields', () => {
     component.productService.policyData.push(new FormGroup({
       id: new FormControl('1'),
@@ -137,7 +162,7 @@ describe('RenewalDataComponent', () => {
   });
 
   it('getRulesDp', () => {
-    component.productService.rnwlPrcss.get('clcltnRl')?.setValue([{id: 1, name: 'test'}]);
+    component.productService.cnclltnPrcss.get('clcltnRl')?.setValue([{id: 1, name: 'test'}]);
     expect(component.getRulesDp()).toBeDefined();
   });
 
@@ -156,7 +181,6 @@ describe('RenewalDataComponent', () => {
 
   it('verifyCsProcess add dp', () => {
     const value = ['code'];
-    (<FormArray>component.productService.prdctDpndncy.get('insrncLn')).push(new FormControl({id: 1, cd: 'test'}));
     component.causes = [{id: 1, businessCode: 'code', name: 'test'}];
     expect(component.verifyCsProcess(value)).toBeUndefined();
   });
@@ -179,9 +203,8 @@ describe('RenewalDataComponent', () => {
     component.productService.references.push(new FormControl({
       prdctDpndncyRef: 'rl',
       cd: 'code',
-      uses: ['clcltnRl']
+      uses: ['cnClcltnRl']
     }));
     expect(component.removeRule(value)).toBeUndefined();
   });
-
 });

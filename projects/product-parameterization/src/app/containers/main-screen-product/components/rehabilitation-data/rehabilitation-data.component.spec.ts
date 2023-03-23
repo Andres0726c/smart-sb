@@ -1,12 +1,21 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
-import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  Validators,
+  FormsModule,
+  FormBuilder,
+} from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { RenewalDataComponent } from './renewal-data.component';
+
+import { RehabilitationDataComponent } from './rehabilitation-data.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { DialogService } from 'primeng/dynamicdialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
 class DialogMock {
   open() {
@@ -16,36 +25,37 @@ class DialogMock {
   }
 }
 
-describe('RenewalDataComponent', () => {
-  let component: RenewalDataComponent;
-  let fixture: ComponentFixture<RenewalDataComponent>;
+describe('RehabilitationDataComponent', () => {
+  let component: RehabilitationDataComponent;
+  let fixture: ComponentFixture<RehabilitationDataComponent>;
   const errorResponseSpy = jest.fn().mockImplementation(() => {
     return new Observable(() => {
       throw new Error("error");
     })
   });
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ RenewalDataComponent ],
-      imports: [ 
-        HttpClientTestingModule,
-        MatDialogModule
-      ],
+  
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, HttpClientModule, HttpClientTestingModule, MatDialogModule],
+      declarations: [],
       providers: [
-        ProductService,
+        RehabilitationDataComponent,
         FormBuilder,
         DialogService,
-        MessageService,
+        ProductService,
         {
-          provide: MatDialog,
-          useValue: new DialogMock()
-        }
-      ]
-    })
-    .compileComponents();
+          provide: FormArray,
+          useValue: {},
+        },
+        {
+          provide: FormGroup,
+          useValue: {},
+        },
+      ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(RenewalDataComponent);
+    fixture = TestBed.createComponent(RehabilitationDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -54,52 +64,12 @@ describe('RenewalDataComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('load causes', () => {
-    const res = {
-      dataHeader: { code: 200 },
-      body: [
-        {
-          id: 1,
-          code: 'test',
-          name: 'test'
-        }
-      ]
-    };
-    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
-    expect(component.loadCauses()).toBeUndefined();
-  });
-
-  it('load causes error', () => {
-    jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
-    expect(component.loadCauses()).toBeUndefined();
-  });
-
-  it('load context data', () => {
-    const res = {
-      dataHeader: { code: 200 },
-      body: {
-        nmValueList: [
-          {
-            "code": "prdct",
-            "description": "Producto",
-            "applctnLvl": [
-              "*"
-            ]
-          }
-        ]
-      }
-    };
-    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
-    expect(component.loadContextData()).toBeUndefined();
-  });
-
-  it('load context data error', () => {
-    jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
-    expect(component.loadContextData()).toBeUndefined();
+  it('ngOnInit Ok', () => {
+    component.ngOnInit();
+    expect(component).toBeDefined();
   });
 
   it('addRule', () => {
-    (<FormArray>component.productService.prdctDpndncy.get('insrncLn')).push(new FormControl({id: 1, cd: 'test'}));
     const objRule: any = {
       rule: {
         id: 1,
@@ -128,6 +98,50 @@ describe('RenewalDataComponent', () => {
     expect(component.addRule('test', objRule)).toBeUndefined();
   });
 
+  it('load context data', () => {
+    const res = {
+      dataHeader: { code: 200 },
+      body: {
+        nmValueList: [
+          {
+            "code": "prdct",
+            "description": "Producto",
+            "applctnLvl": [
+              "*"
+            ]
+          }
+        ]
+      }
+    };
+    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadContextData()).toBeDefined();
+  });
+
+  it('load context data error', () => {
+    jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
+    expect(component.loadContextData()).toBeDefined();
+  });
+
+  it('load causes', () => {
+    const res = {
+      dataHeader: { code: 200 },
+      body: [
+        {
+          id: 1,
+          code: 'test',
+          name: 'test'
+        }
+      ]
+    };
+    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.getCauses()).toBeDefined();
+  });
+
+  it('load causes error', () => {
+    jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
+    expect(component.getCauses()).toBeDefined();
+  });
+
   it('getAllFields', () => {
     component.productService.policyData.push(new FormGroup({
       id: new FormControl('1'),
@@ -137,7 +151,7 @@ describe('RenewalDataComponent', () => {
   });
 
   it('getRulesDp', () => {
-    component.productService.rnwlPrcss.get('clcltnRl')?.setValue([{id: 1, name: 'test'}]);
+    component.productService.rnsttmntPrcss.get('clcltnRl')?.setValue([{id: 1, name: 'test'}]);
     expect(component.getRulesDp()).toBeDefined();
   });
 
@@ -156,7 +170,6 @@ describe('RenewalDataComponent', () => {
 
   it('verifyCsProcess add dp', () => {
     const value = ['code'];
-    (<FormArray>component.productService.prdctDpndncy.get('insrncLn')).push(new FormControl({id: 1, cd: 'test'}));
     component.causes = [{id: 1, businessCode: 'code', name: 'test'}];
     expect(component.verifyCsProcess(value)).toBeUndefined();
   });
@@ -183,5 +196,4 @@ describe('RenewalDataComponent', () => {
     }));
     expect(component.removeRule(value)).toBeUndefined();
   });
-
 });
