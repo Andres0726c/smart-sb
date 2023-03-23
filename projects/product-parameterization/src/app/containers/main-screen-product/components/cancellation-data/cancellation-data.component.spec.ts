@@ -37,15 +37,14 @@ class dialogMock {
 describe('CancellationDataComponent', () => {
   let component: CancellationDataComponent;
   let fixture: ComponentFixture<CancellationDataComponent>;
-  let ref: DialogService;
   const errorResponseSpy = jest.fn().mockImplementation(() => {
     return new Observable(() => {
       throw new Error("error");
     })
   });
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [CancellationDataComponent],
       imports: [HttpClientTestingModule, HttpClientModule, FormsModule, MatDialogModule],
       providers: [
@@ -108,21 +107,25 @@ describe('CancellationDataComponent', () => {
     component.productService.references.push(new FormControl({
       prdctDpndncyRef: 'rl',
       cd: 'test',
-      uses: ['clcltnRl']
+      uses: ['cnClcltnRl']
     }));
     expect(component.addRule('test', objRule)).toBeUndefined();
   });
 
   it('loadContextData OK', async () => {
-    let res: any = {
+    const res = {
       dataHeader: { code: 200 },
-      body: [
-        {
-          code: 'prdct',
-          description: 'Producto',
-          nmValueList: 'test',
-        },
-      ],
+      body: {
+        nmValueList: [
+          {
+            "code": "prdct",
+            "description": "Producto",
+            "applctnLvl": [
+              "*"
+            ]
+          }
+        ]
+      }
     };
 
     jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
@@ -135,13 +138,15 @@ describe('CancellationDataComponent', () => {
   });
 
   it('getCauses Ok', () => {
-    let res: any = {
+    const res = {
+      dataHeader: { code: 200 },
       body: [
         {
-          code: 'prdct',
-          description: 'Producto',
-        },
-      ],
+          id: 1,
+          code: 'test',
+          name: 'test'
+        }
+      ]
     };
 
     jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
