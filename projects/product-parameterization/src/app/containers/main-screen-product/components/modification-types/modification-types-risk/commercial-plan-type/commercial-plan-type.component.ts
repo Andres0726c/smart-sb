@@ -334,7 +334,7 @@ add(nameGroup:any){
     let data: DataToast = {
       status: STATES.success,
       title: 'Asociación exitosa',
-      msg: 'Los datos de la póliza fueron asociados correctamente.',
+      msg: 'Los datos complementarios de la cobertura fueron asociados correctamente.',
     };
     if (showMessage) {
       this.toastMessage.openFromComponent(ToastMessageComponent, {
