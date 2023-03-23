@@ -196,4 +196,14 @@ describe('RehabilitationDataComponent', () => {
     }));
     expect(component.removeRule(value)).toBeUndefined();
   });
+
+  it('removeCsProcess', () => {
+    const value = 'code';
+    component.productService.references.push(new FormControl({
+      prdctDpndncyRef: 'cs',
+      cd: 'code',
+      uses: ['cnclltnCsCd']
+    }));
+    expect(component.removeCsProcess(value)).toBeUndefined();
+  });
 });

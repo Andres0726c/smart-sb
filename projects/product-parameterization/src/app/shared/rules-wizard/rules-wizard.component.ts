@@ -323,8 +323,6 @@ export class RulesWizardComponent implements OnInit {
   onRowSelect(event: any) {
     this.parametersForm.get('rule')?.setValue(this.selectedElement);
     (<FormArray>this.parametersForm.get('parameters'))?.clear();
-
-    //let parametersList = [];
     
     try {
       const ruleParams = JSON.parse(event.data.nmParameterList);
