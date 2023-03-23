@@ -443,22 +443,6 @@ export class CommercialPlanComponent implements OnInit {
       }
       i++;
       return isValid ? null : { name: true };
-
-      /*for(const element of keys)
-        {
-          let currentValue = '' + control.value;
-          let indexValue   = '' + this.CommertialPlanControls.get(element)?.value.name;
-
-          if(this.eliminarDiacriticos(indexValue.toLowerCase().trim()) === this.eliminarDiacriticos(currentValue.toLowerCase().trim())){
-            contadorModify++;
-          }
-
-          if(contadorModify>1){
-            return { name: true };
-          }
-        
-          i++;
-        }*/
     };
   }
   eliminarDiacriticos(texto: string) {

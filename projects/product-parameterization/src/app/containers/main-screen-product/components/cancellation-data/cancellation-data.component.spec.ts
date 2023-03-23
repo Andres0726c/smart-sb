@@ -85,6 +85,7 @@ describe('CancellationDataComponent', () => {
   });
 
   it('addRule', () => {
+    (<FormArray>component.productService.prdctDpndncy.get('insrncLn')).push(new FormControl({id: 1, cd: 'test'}));
     const objRule: any = {
       rule: {
         id: 1,
@@ -108,7 +109,7 @@ describe('CancellationDataComponent', () => {
     component.productService.references.push(new FormControl({
       prdctDpndncyRef: 'rl',
       cd: 'test',
-      uses: ['clcltnRl']
+      uses: ['cnClcltnRl']
     }));
     expect(component.addRule('test', objRule)).toBeUndefined();
   });
@@ -206,5 +207,15 @@ describe('CancellationDataComponent', () => {
       uses: ['cnClcltnRl']
     }));
     expect(component.removeRule(value)).toBeUndefined();
+  });
+
+  it('removeCsProcess', () => {
+    const value = 'code';
+    component.productService.references.push(new FormControl({
+      prdctDpndncyRef: 'cs',
+      cd: 'code',
+      uses: ['cnclltnCsCd']
+    }));
+    expect(component.removeCsProcess(value)).toBeUndefined();
   });
 });
