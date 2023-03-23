@@ -19,7 +19,7 @@ export class RenewalDataComponent implements OnInit {
   applicationLevel = 'Renovación';
   causes: any = [];
   causesPrevValue: any = [];
-  rulePrevValue: any = null;
+  rulePrevValue: any = [];
 
   constructor(
     public productService: ProductService,
