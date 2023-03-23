@@ -477,6 +477,48 @@ export class InitialParametersComponent implements OnInit {
       businessCode:businessCodeReset,
       insuranceLine: insuranceLineReset
     });
+
+    this.service.prdctDpndncy = new FormGroup({
+      insrncLn: new FormArray([]),
+      cs: new FormArray([]),
+      rl: new FormArray([])
+    });
+
+    this.clearProcess();
+    this.setInsDependency(insuranceLineReset);
   }
 
+  setInsDependency(event: any) {
+    let rm: any = this.ramo.find((x: any) => x.id === event);
+
+    let objIns = {
+      id: rm?.id,
+      cd: rm?.businessCode,
+      fnnclCd: rm?.financialCode,
+      nm: rm?.nmName,
+      dscrptn: rm?.dsDescription,
+      sttCd: 'ACT',
+      cmpnyId: this.service.companyId
+    }
+    
+    this.service.setProductDependency('insrncLn', objIns);
+  }
+
+  clearProcess(){
+    this.service.cnclltnPrcss?.get('cnclltnCsCd')?.setValue([]);
+    this.service.cnclltnPrcss?.get('clcltnRl')?.setValue([]);
+    this.service.cnclltnPrcss?.get('isCncllblIncptnDt')?.setValue(false);
+    this.service.cnclltnPrcss?.get('enabled')?.setValue(false);
+
+    this.service.cnclltnPrcss?.get('cnclltnCsCd')?.disable();
+    this.service.cnclltnPrcss?.get('isCncllblIncptnDt')?.disable();
+
+    this.service.rnsttmntPrcss?.get('rnsttmntCsCd')?.setValue([]);
+    this.service.rnsttmntPrcss?.get('clcltnRl')?.setValue([]);
+    this.service.rnsttmntPrcss?.get('isNwIssPlcy')?.setValue(false);
+    this.service.rnsttmntPrcss?.get('enabled')?.setValue(false);
+
+    this.service.rnsttmntPrcss?.get('rnsttmntCsCd')?.disable();
+    this.service.rnsttmntPrcss?.get('isNwIssPlcy')?.disable();
+  }
 }

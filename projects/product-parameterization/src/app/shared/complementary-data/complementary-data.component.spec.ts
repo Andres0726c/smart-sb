@@ -473,6 +473,20 @@ describe('ComplementaryDataComponent', () => {
       ])
       })
     });
+
+    component.productService.prvwDt=component.fb.group({
+        plcyDtGrp:new FormArray([
+          component.fb.group({
+          id: component.fb.control(1,Validators.required),
+          fields:new FormArray([
+           component.fb.group({
+            businessCode:component.fb.control("1",Validators.required)
+           }) 
+          ])
+        })
+      ])
+      
+    });
     expect(component.DeleteCascadeDateModify(1,'1')).toBeUndefined();
   })
 

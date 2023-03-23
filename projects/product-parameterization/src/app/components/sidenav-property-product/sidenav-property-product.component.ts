@@ -1,33 +1,36 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
-
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-sidenav-property-product',
   templateUrl: './sidenav-property-product.component.html',
-  styleUrls: ['./sidenav-property-product.component.scss']
+  styleUrls: ['./sidenav-property-product.component.scss'],
 })
-export class SidenavPropertyProductComponent implements OnInit 
-{
-  productName!:string;
+export class SidenavPropertyProductComponent implements OnInit {
+  productName!: string;
   formProcess!: FormGroup;
 
   constructor(
-    public dialog: MatDialog, 
-    private route: ActivatedRoute, 
-    public productService:ProductService, 
+    
+    public dialog: MatDialog,
+    
+    private route: ActivatedRoute,
+    
+    public productService: ProductService,
+    
     public fb: FormBuilder
-  ) { 
+  
+  ) {
     this.formProcess = this.fb.group({
       modification: this.productService.mdfctnPrcss,
-      cancellation: this.productService.cancellation,
-      rehabilitation: this.productService.rehabilitation,
-      renewal: this.productService.renewal
-    })
+      cancellation: this.productService.cnclltnPrcss,
+      rehabilitation: this.productService.rnsttmntPrcss,
+      renewal: this.productService.rnwlPrcss,
+    });
   }
 
   ngOnInit(): void 
@@ -45,21 +48,21 @@ export class SidenavPropertyProductComponent implements OnInit
   
   menus = [
     {
-      name: "Emisión",
-      showEnable:false,
+      name: 'Emisión',
+      showEnable: false,
       show: true,
       isExpanded: true,
-      submenus:[
-        { name: "Parámetros generales",   routerLink: "parametros-generales"},
-        { name: "Datos de la póliza",     routerLink: "datos-poliza"        },
-        { name: "Coberturas",             routerLink: "coberturas"          },
-        { name: "Planes de servicio",     routerLink: "planes-servicio"     },
-        { name: "Tipos de riesgo",        routerLink: "tipos-riesgo"        },
-        { name: "Categorías de impuesto", routerLink: "categoria-impuestos" },
-        { name: "Control técnico",        routerLink: "control-tecnico"     },
-        { name: "Clausulado",             routerLink: "clausula"            },
-        { name: "Cúmulos",                routerLink: "cumulos"             },
-      ]
+      submenus: [
+        { name: 'Parámetros generales', routerLink: 'parametros-generales' },
+        { name: 'Datos de la póliza', routerLink: 'datos-poliza' },
+        { name: 'Coberturas', routerLink: 'coberturas' },
+        { name: 'Planes de servicio', routerLink: 'planes-servicio' },
+        { name: 'Tipos de riesgo', routerLink: 'tipos-riesgo' },
+        { name: 'Categorías de impuesto', routerLink: 'categoria-impuestos' },
+        { name: 'Control técnico', routerLink: 'control-tecnico' },
+        { name: 'Clausulado', routerLink: 'clausula' },
+        { name: 'Cúmulos', routerLink: 'cumulos' },
+      ],
     },
     {
       name: "Previsualización campos",
@@ -68,67 +71,116 @@ export class SidenavPropertyProductComponent implements OnInit
       isExpanded: true,
       submenus:[
         { name: "Datos de póliza",    routerLink: "previsualizar-datos-poliza"},
-        { name: "Datos de riesgo",    routerLink: "previsualizar-datos-riesgo"},
-        { name: "Datos de cobertura", routerLink: "previsualizar-datos-cobertura"},
+        { name: "Datos de riesgo",   },
+        { name: "Datos de cobertura",},
       ]
     },
     {
-      name: "Modificación",
-      formControlName: "modification",
-      showEnable:true,
+      name: 'Modificación',
+      formControlName: 'modification',
+      showEnable: true,
       show: false,
       isExpanded: true,
-      submenus:[
-        { name: "Datos a modificar",  routerLink: "tipos-modificacion"},
-        { name: "Control técnico",     routerLink: "control-tecnico-modificacion"},
-      ]
+      submenus: [
+        { name: 'Datos a modificar', routerLink: 'tipos-modificacion' },
+        { name: 'Control técnico', routerLink: 'control-tecnico-modificacion' },
+      ],
     },
     {
-      name: "Cancelación",
-      formControlName: "cancellation",
-      showEnable:true,
-      show: false,
-      isExpanded: false,
-      submenus:[]
-    },
-    {
-      name: "Rehabilitación",
-      formControlName: "rehabilitation",
-      showEnable:true,
-      show: false,
-      isExpanded: false,
-      submenus:[]
-    },
-    {
-      name: "Renovación",
-      formControlName: "renewal",
-      showEnable:true,
-      show: false,
-      isExpanded: false,
-      submenus:[]
-    },
-    {
-      name: "Reclamación",
-      showEnable:false,
+      name: 'Cancelación',
+      formControlName: 'cancellation',
+      showEnable: true,
       show: false,
       isExpanded: true,
-      submenus:[
-        { name: "Concepto de reserva",        routerLink: "reserva-reclamacion"},
-        { name: "Concepto de liquidación",    routerLink: "reserva-liquidacion"},
-        { name: "Datos de la reclamación",    routerLink: "datos-reclamacion"},
-        { name: "Control técnico",            routerLink: "control-tecnico-reclamacion"},
-      ]
+      submenus: [
+        { name: 'Datos de cancelación', routerLink: 'datos-cancelacion' },
+      ],
     },
-    
-  ]
+    {
+      name: 'Rehabilitación',
+      formControlName: 'rehabilitation',
+      showEnable: true,
+      show: false,
+      isExpanded: true,
+      submenus: [
+        { name: 'Datos de rehabilitación', routerLink: 'datos-rehabilitacion' },
+      ],
+    },
+    {
+      name: 'Renovación',
+      formControlName: 'renewal',
+      showEnable: true,
+      show: false,
+      isExpanded: true,
+      submenus: [
+        { name: 'Datos de renovación', routerLink: 'datos-renovacion' },
+      ],
+    },
+    {
+      name: 'Reclamación',
+      showEnable: false,
+      show: false,
+      isExpanded: true,
+      submenus: [
+        { name: 'Concepto de reserva', routerLink: 'reserva-reclamacion' },
+        { name: 'Concepto de liquidación', routerLink: 'reserva-liquidacion' },
+        { name: 'Datos de la reclamación', routerLink: 'datos-reclamacion' },
+        { name: 'Control técnico', routerLink: 'control-tecnico-reclamacion' },
+      ],
+    },
+  ];
 
   validateShow(menu: any) {
-    if(menu.formControlName){
-      if(this.formProcess.get(menu.formControlName)?.value.enabled){
-        menu.show = !menu.show
+    if (menu.formControlName) {
+      if (this.formProcess.get(menu.formControlName)?.value.enabled) {
+        menu.show = !menu.show;
       }
-    }else{
-      menu.show = !menu.show
+    } else {
+      menu.show = !menu.show;
+    }
+  }
+  clearData(menu: any) {
+    if (menu === 'cancellation') {
+      if (!this.formProcess?.get(menu)?.value.enabled === false) {
+        this.formProcess?.get(menu)?.get('cnclltnCsCd')?.setValue([]);
+        this.formProcess?.get(menu)?.get('clcltnRl')?.setValue([]);
+        this.formProcess?.get(menu)?.get('isCncllblIncptnDt')?.setValue(false);
+
+        this.formProcess?.get(menu)?.get('cnclltnCsCd')?.disable();
+        this.formProcess?.get(menu)?.get('isCncllblIncptnDt')?.disable();
+      }else{
+        this.formProcess?.get(menu)?.get('cnclltnCsCd')?.enable();
+        this.formProcess?.get(menu)?.get('isCncllblIncptnDt')?.enable();
+      }
+    }
+    if (menu === 'rehabilitation') {
+      if (!this.formProcess.get(menu)?.value.enabled === false) {
+        this.formProcess?.get(menu)?.get('rnsttmntCsCd')?.setValue([]);
+        this.formProcess?.get(menu)?.get('clcltnRl')?.setValue([]);
+        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.setValue(false);
+
+        this.formProcess?.get(menu)?.get('rnsttmntCsCd')?.disable();
+        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.disable();
+      }else{
+        this.formProcess?.get(menu)?.get('rnsttmntCsCd')?.enable();
+        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.enable();
+      }
+    }
+
+    if (menu === 'renewal') {
+      if (!this.formProcess.get(menu)?.value.enabled === false) {
+        this.formProcess?.get(menu)?.get('rnwlCsCd')?.setValue([]);
+        this.formProcess?.get(menu)?.get('clcltnRl')?.setValue([]);
+        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.setValue(false);
+
+        this.formProcess?.get(menu)?.get('rnwlCsCd')?.disable();
+        this.formProcess?.get(menu)?.get('clcltnRl')?.disable();
+        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.disable();
+      } else {
+        this.formProcess?.get(menu)?.get('rnwlCsCd')?.enable();
+        this.formProcess?.get(menu)?.get('clcltnRl')?.enable();
+        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.enable();
+      }
     }
   }
 }

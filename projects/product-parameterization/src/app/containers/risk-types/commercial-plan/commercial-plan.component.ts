@@ -443,22 +443,6 @@ export class CommercialPlanComponent implements OnInit {
       }
       i++;
       return isValid ? null : { name: true };
-
-      /*for(const element of keys)
-        {
-          let currentValue = '' + control.value;
-          let indexValue   = '' + this.CommertialPlanControls.get(element)?.value.name;
-
-          if(this.eliminarDiacriticos(indexValue.toLowerCase().trim()) === this.eliminarDiacriticos(currentValue.toLowerCase().trim())){
-            contadorModify++;
-          }
-
-          if(contadorModify>1){
-            return { name: true };
-          }
-        
-          i++;
-        }*/
     };
   }
   eliminarDiacriticos(texto: string) {
@@ -540,6 +524,7 @@ export class CommercialPlanComponent implements OnInit {
         srvcPln: objservicePlans,
       })
     );
+    console.log("risk: ",this.getRiskArrayById(this.idRisk.value));
   }
   addRiskModify(result: any, action: any, index?: any) {
     let objCoverages: any = this.fb.array([]);
@@ -556,10 +541,7 @@ export class CommercialPlanComponent implements OnInit {
           description: this.fb.control(
             this.getDataCoverages(coverage.value.id, 'description')?.value
           ),
-          athrzdOprtn: this.getAthrzdOprtnCoveragePln(
-            coverage.value.id,
-            result['step1'].value.code
-          )
+          athrzdOprtn:action=='edit'
             ? this.validateMadatory(
                 this.getAthrzdOprtnCoveragePln(
                   coverage.value.id,
@@ -584,10 +566,7 @@ export class CommercialPlanComponent implements OnInit {
           description: this.fb.control(
             this.getServicesPlan(servicePlan.value.id, 'description')?.value
           ),
-          athrzdOprtn: this.getAthrzdOprtnSrvcPln(
-            servicePlan.value.id,
-            result['step1'].value.code
-          )
+          athrzdOprtn: action=='edit'
             ? this.validateMadatory(
                 this.getAthrzdOprtnSrvcPln(
                   servicePlan.value.id,

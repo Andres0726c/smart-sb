@@ -493,25 +493,19 @@ describe('CommercialPlanComponent', () => {
         const spy1 = jest
           .spyOn(component, 'getDataCoverages')
           .mockImplementation();
-        const spy2 = jest
-          .spyOn(component, 'getAthrzdOprtnCoveragePln')
-          .mockImplementation();
+
         const spy3 = jest
           .spyOn(component, 'getServicesPlan')
           .mockImplementation();
-        const spy4 = jest
-          .spyOn(component, 'getAthrzdOprtnSrvcPln')
-          .mockImplementation();
-        const spy5 = jest
+
+        jest
           .spyOn(component, 'validateMadatory')
           .mockImplementation();
         component.addRiskModify(result, 'add');
         expect(spy).toBeCalled();
         expect(spy1).toBeCalled();
-        expect(spy2).toBeCalled();
         expect(spy3).toBeCalled();
-        expect(spy4).toBeCalled();
-        // expect(spy5).toBeCalled();
+  
       });
 
       it('addRiskModifyEdit', () => {
@@ -533,7 +527,7 @@ describe('CommercialPlanComponent', () => {
         const spy4 = jest
           .spyOn(component, 'getAthrzdOprtnSrvcPln')
           .mockImplementation();
-        const spy5 = jest
+        jest
           .spyOn(component, 'validateMadatory')
           .mockImplementation();
         component.addRiskModify(result, 'edit');
@@ -542,7 +536,6 @@ describe('CommercialPlanComponent', () => {
         expect(spy2).toBeCalled();
         expect(spy3).toBeCalled();
         expect(spy4).toBeCalled();
-        // expect(spy5).toBeCalled();
       });
     it('addNewCommercialModify', () => {
       component.productService.mdfctnPrcss = component.fb.group({

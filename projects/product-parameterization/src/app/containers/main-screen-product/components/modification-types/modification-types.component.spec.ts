@@ -495,7 +495,7 @@ describe('ModificationTypesComponent', () => {
     const spy5 = jest
       .spyOn(component, 'addGroupArrayByIdRisk')
       .mockImplementation();
-    component.addItem(res, 1, true);
+    component.addItem(res, 1, true,'risk');
     expect(spy).toBeCalled();
     expect(spy1).toBeCalled();
     expect(spy2).toBeCalled();
@@ -512,7 +512,7 @@ describe('ModificationTypesComponent', () => {
     const spy3 = jest
       .spyOn(component, 'addGroupArrayById')
       .mockImplementation();
-    component.addItem(res, 1, true);
+    component.addItem(res, 1, true,'policy');
     expect(spy).toBeCalled();
     expect(spy1).toBeCalled();
     expect(spy2).toBeCalled();
@@ -536,10 +536,10 @@ describe('ModificationTypesComponent', () => {
 
  
   it('showMessageGroup', () => {
-    expect(component.showMessageGroup(false)).toBeUndefined();
+    expect(component.showMessageGroup(false,'riks')).toBeUndefined();
   });
   it('showMessageGroupTrue', () => {
-    expect(component.showMessageGroup(true)).toBeUndefined();
+    expect(component.showMessageGroup(true,'policy')).toBeUndefined();
   });
   it('addDataRisk',()=>{
     const spy= jest.spyOn(component,'getServicesPlan').mockImplementation();

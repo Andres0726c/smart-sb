@@ -63,6 +63,7 @@ export class ModificationTypesComponent implements OnInit {
     public productService: ProductService
   ) {}
   ngOnInit(): void {
+    this.clearGroup();
 
 
     if (
@@ -79,6 +80,22 @@ export class ModificationTypesComponent implements OnInit {
     }
     //console.log(this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))
     this.calledMenu();
+  }
+
+
+  clearGroup() {
+  
+    for (let field of this.complementaryDataControls.value) {
+
+      if(field.fields.length ===0) {
+
+        let index = this.complementaryDataControls.controls.findIndex(x => x.value.id ===field.id);
+
+          this.complementaryDataControls.removeAt(index);
+      }
+
+    }
+   
   }
  
   addDataRisk() {
@@ -190,7 +207,7 @@ export class ModificationTypesComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((res: ElementReturn[]) => {
-      this.addItem(res, 1, true);
+      this.addItem(res, 1, true,level);
     });
   }
 
@@ -202,7 +219,13 @@ export class ModificationTypesComponent implements OnInit {
     }
     return res;
   }
-
+  sortParameterBy(property:any, complementaryData:any) {  
+    return complementaryData.sort((a:any, b:any) => {
+      return a[property] >= b[property]
+        ? 1
+        : -1
+    })
+  }
   getAll() {
     let res: any[] = [];
     for (const group of this.complementaryDataControls?.getRawValue()) {
@@ -226,7 +249,7 @@ export class ModificationTypesComponent implements OnInit {
       res = res.concat(group.fields);
     }
 
-    return res;
+    return this.sortParameterBy('name',res);
   }
 
   get complementaryDataControls(): FormArray {
@@ -270,11 +293,11 @@ export class ModificationTypesComponent implements OnInit {
     //productService.modificationProcess.mdfcblDt.plcyDtGrp.controls
   }
 
-  showMessageGroup(showMessage: boolean) {
+  showMessageGroup(showMessage: boolean, level:string) {
     let data: DataToast = {
       status: STATES.success,
       title: 'Asociación exitosa',
-      msg: 'Los datos de la póliza fueron asociados correctamente.',
+      msg: level=='risk'? "Los tipos de riesgo fueron asociados correctamente.":'Los datos de la póliza fueron asociados correctamente.',
     };
     if (showMessage) {
       this.toastMessage.openFromComponent(ToastMessageComponent, {
@@ -312,7 +335,7 @@ export class ModificationTypesComponent implements OnInit {
         ),
         editable: this.fb.control(true, [Validators.required]),
         visible: this.fb.control(true, [Validators.required]),
-        fieldGroup: this.fb.control(index + 1, []),
+        fieldGroup: this.fb.control(nameGruop.id, []),
         shouldDelete: this.fb.control(object.shouldDelete, [
           Validators.required,
         ]),
@@ -349,7 +372,7 @@ export class ModificationTypesComponent implements OnInit {
         ),
         editable: this.fb.control(true, [Validators.required]),
         visible: this.fb.control(true, [Validators.required]),
-        fieldGroup: this.fb.control(index + 1, []),
+        fieldGroup: this.fb.control(nameGruop.id, []),
         shouldDelete: this.fb.control(object.shouldDelete, [
           Validators.required,
         ]),
@@ -359,9 +382,9 @@ export class ModificationTypesComponent implements OnInit {
     );
   }
 
-  addItem = (obj: ElementReturn[], group: number, showMessage: boolean) => {
+  addItem = (obj: ElementReturn[], group: number, showMessage: boolean,level:string) => {
     if (obj) {
-      this.showMessageGroup(showMessage);
+      this.showMessageGroup(showMessage,level);
       let nameGruop: any;
 
       for (let object of obj) {

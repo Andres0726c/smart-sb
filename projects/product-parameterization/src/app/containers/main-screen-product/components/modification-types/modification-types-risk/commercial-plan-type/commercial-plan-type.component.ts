@@ -65,7 +65,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     { name: 'Remover', key: 'RMV' },
     { name: 'Añadir', key: 'ADD' },
   ];
-
+  prueba:any=new FormArray([]);
   dataAthrzdOprtn: any = [];
 
   constructor(
@@ -100,7 +100,13 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     return res;
   }
 
-    
+  sortParameterBy(property:any, complementaryData:any) {  
+    return complementaryData.sort((a:any, b:any) => {
+      return a[property] >= b[property]
+        ? 1
+        : -1
+    })
+  }
   
   getAll() {
     let res: any[] = [];
@@ -111,7 +117,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
         res = res.concat(group.fields);
       }
     }
-    return res;
+    return this.sortParameterBy('name',res);
   }
 
   getcmmrclPln(id: number) {
@@ -328,7 +334,7 @@ add(nameGroup:any){
     let data: DataToast = {
       status: STATES.success,
       title: 'Asociación exitosa',
-      msg: 'Los datos de la póliza fueron asociados correctamente.',
+      msg: 'Los datos complementarios de la cobertura fueron asociados correctamente.',
     };
     if (showMessage) {
       this.toastMessage.openFromComponent(ToastMessageComponent, {
@@ -373,8 +379,11 @@ add(nameGroup:any){
   }
 
   sendDataCoverage() {
-    this.getAll();
-    this.getAllFields();
-    return this.getcover(this.idCoverage);
+    if( this.getAll().length>0){
+      this.getAll();
+      this.getAllFields();
+    }
+
+     return this.getcover(this.idCoverage);
   }
 }
