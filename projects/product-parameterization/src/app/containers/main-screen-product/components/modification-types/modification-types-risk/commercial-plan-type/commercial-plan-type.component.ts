@@ -97,7 +97,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     }
    
  
-    return res;
+    return this.sortParameterBy('name',res);
   }
 
   sortParameterBy(property:any, complementaryData:any) {  
