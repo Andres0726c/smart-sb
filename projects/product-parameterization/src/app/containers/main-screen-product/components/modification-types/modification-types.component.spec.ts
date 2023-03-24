@@ -524,8 +524,16 @@ describe('ModificationTypesComponent', () => {
   });
 
   it('getAllRisk', () => {
-    expect(component.getAllRisk()).toBeDefined();
+    const spy=jest.spyOn(component,'sortParameterBy').mockImplementation();
+    expect(component.getAllRisk()).toBeUndefined();
+    expect(spy).toBeCalled();
   });
+
+  it('sortParameterBy',()=>{
+    let res=[{name:'a', description:'a'},{name:'b',description:'b'}]
+    let array=[{name:'b', description:'b'},{name:'a',description:'a'}]
+    expect(component.sortParameterBy('name',array)).toEqual(res);
+  })
   it('getAll', () => {
     expect(component.getAll()).toBeDefined();
   });
