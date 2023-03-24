@@ -524,6 +524,7 @@ export class CommercialPlanComponent implements OnInit {
         srvcPln: objservicePlans,
       })
     );
+    console.log("risk: ",this.getRiskArrayById(this.idRisk.value));
   }
   addRiskModify(result: any, action: any, index?: any) {
     let objCoverages: any = this.fb.array([]);
@@ -540,10 +541,7 @@ export class CommercialPlanComponent implements OnInit {
           description: this.fb.control(
             this.getDataCoverages(coverage.value.id, 'description')?.value
           ),
-          athrzdOprtn: this.getAthrzdOprtnCoveragePln(
-            coverage.value.id,
-            result['step1'].value.code
-          )
+          athrzdOprtn:action=='edit'
             ? this.validateMadatory(
                 this.getAthrzdOprtnCoveragePln(
                   coverage.value.id,
@@ -568,10 +566,7 @@ export class CommercialPlanComponent implements OnInit {
           description: this.fb.control(
             this.getServicesPlan(servicePlan.value.id, 'description')?.value
           ),
-          athrzdOprtn: this.getAthrzdOprtnSrvcPln(
-            servicePlan.value.id,
-            result['step1'].value.code
-          )
+          athrzdOprtn: action=='edit'
             ? this.validateMadatory(
                 this.getAthrzdOprtnSrvcPln(
                   servicePlan.value.id,

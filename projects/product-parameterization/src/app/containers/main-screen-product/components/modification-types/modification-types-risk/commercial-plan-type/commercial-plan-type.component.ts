@@ -100,7 +100,13 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     return res;
   }
 
-    
+  sortParameterBy(property:any, complementaryData:any) {  
+    return complementaryData.sort((a:any, b:any) => {
+      return a[property] >= b[property]
+        ? 1
+        : -1
+    })
+  }
   
   getAll() {
     let res: any[] = [];
@@ -111,7 +117,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
         res = res.concat(group.fields);
       }
     }
-    return res;
+    return this.sortParameterBy('name',res);
   }
 
   getcmmrclPln(id: number) {
@@ -202,6 +208,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       this.addEvent(id,event.checked,'coverage');
       }else {
         this.getAthrzdOprtnCoveragePln(id).clear();
+        this.getcover(id).clear();
       }
   }
 
@@ -217,6 +224,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   }
 
   addEvent(id:any, checked:any,level:any){
+    let flag:boolean=true;
     if(level==='service'){
     this.getAthrzdOprtnSrvcPln(id).clear();
     for(let eventA of  checked){
@@ -224,9 +232,18 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     }
   }else{
     this.getAthrzdOprtnCoveragePln(id).clear();
+
     for(let eventA of  checked){
+      
       this.getAthrzdOprtnCoveragePln(id).push(this.fb.control(eventA));
     }
+    this.getAthrzdOprtnCoveragePln(id).value.find((x:any)=>x==="MDF")?(flag=false):(flag=true);
+
+    if(flag){
+      console.log("entro");
+      this.getcover(id).clear();
+    }
+
   }
   }
   activeButton(data: any) {
@@ -275,17 +292,19 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     }
   };
 add(nameGroup:any){
-  if(this.getcover(this.idCoverage).value.findIndex(
-    (x: { id: any }) => x.id === nameGroup.id) === -1)
-    this.getcover(this.idCoverage).push(
-      new FormGroup({
-        id: this.fb.control(nameGroup.id),
-        code: this.fb.control(nameGroup.code),
-        name: this.fb.control(nameGroup.name),
-        fields: this.fb.array([], Validators.required),
-        isEditing: this.fb.control(nameGroup.isEditing),
-      })
-    )
+
+    if(this.getcover(this.idCoverage).value.findIndex(
+      (x: { id: any }) => x.id === nameGroup.id) === -1)
+      this.getcover(this.idCoverage).push(
+        new FormGroup({
+          id: this.fb.control(nameGroup.id),
+          code: this.fb.control(nameGroup.code),
+          name: this.fb.control(nameGroup.name),
+          fields: this.fb.array([], Validators.required),
+          isEditing: this.fb.control(nameGroup.isEditing),
+        })
+      )
+  
 
 }
   addGroupArray(object: any, nameGruop: any) {
@@ -328,7 +347,7 @@ add(nameGroup:any){
     let data: DataToast = {
       status: STATES.success,
       title: 'Asociación exitosa',
-      msg: 'Los datos de la póliza fueron asociados correctamente.',
+      msg: 'Los datos complementarios de la cobertura fueron asociados correctamente.',
     };
     if (showMessage) {
       this.toastMessage.openFromComponent(ToastMessageComponent, {
