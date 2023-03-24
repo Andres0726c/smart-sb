@@ -38,6 +38,7 @@ export class RulesWizardComponent implements OnInit {
 
   dataSource: any[] = [];
   prevReqParams: any;
+  prevSearch: string = '0';
 
   items: MenuItem[];
   activeIndex = 0;
@@ -308,10 +309,11 @@ export class RulesWizardComponent implements OnInit {
 
   doReq(requestParams: any, search: any) {
     let doReq = true;
-    if (this.prevReqParams === requestParams) {
+    if (this.prevReqParams === requestParams && this.prevSearch === search) {
       doReq = false;
     } else {
       this.prevReqParams = requestParams;
+      this.prevSearch = search;
     }
     
     if (doReq) {
