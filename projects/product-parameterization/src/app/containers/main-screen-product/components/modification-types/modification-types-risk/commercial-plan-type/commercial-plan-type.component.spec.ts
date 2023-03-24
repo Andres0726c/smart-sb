@@ -195,6 +195,8 @@ let res = [
     },
   },
 ];
+  
+
 class dialogMock {
   open() {
     return {
@@ -315,13 +317,52 @@ describe('CommercialPlanTypeComponent', () => {
   it('getAll', () => {
     component.idCoverage = 7;
     component.data = 'pc001_opcion1alternativa1';
-    expect(component.getAll()).toBeDefined();
+    const spy= jest.spyOn(component,'sortParameterBy').mockImplementation();
+    expect(component.getAll()).toBeUndefined();
+    expect(spy).toBeCalled();
   });
+  it('sortParameterBy',()=>{
+    let res=[{name:'a', description:'a'},{name:'b',description:'b'}]
+    let array=[{name:'b', description:'b'},{name:'a',description:'a'}]
+    expect(component.sortParameterBy('name',array)).toEqual(res);
+  })
 
+  it('getGroupArray',()=>{
+    component.data = 'pc001_opcion1alternativa1';
+    component.idCoverage=7;
+    let res3= component.fb.array([
+      new FormGroup({
+        id:component.fb.control(7),
+        athrzdOprtn:component.fb.array([])
+      })
+    ]);
+    const spy= jest.spyOn(component,'getcover').mockReturnValue(res3);
+    component.getGroupArray(7);
+    expect(spy).toBeCalled();
+  
+  });
+  it('addEventService',() => {
+    let res3= component.fb.array([]);
+    res3.push(component.fb.control('MDF'));
+    const spy= jest.spyOn(component,'getAthrzdOprtnSrvcPln').mockReturnValue(res3);
+    component.addEvent(7,['MDF','RPM'],'service')
+    expect(spy).toBeCalled();
+  })
+
+  it('addEventCoverage',() => {
+    let res3= component.fb.array([]);
+    res3.push(component.fb.control('MDF'));
+    const spy= jest.spyOn(component,'getAthrzdOprtnCoveragePln').mockReturnValue(res3);
+    component.addEvent(7,['MDF','RPM'],'coverage')
+    expect(spy).toBeCalled();
+  })
+
+  
   it('addDataTable', () => {
     component.data = 'pc001_opcion1alternativa1';
     component.addDataTable();
   });
+
 
   it('getAthrzdOprtnCoveragePln',()=>{
     component.data='pc001_opcion1alternativa1';
@@ -392,16 +433,21 @@ describe('CommercialPlanTypeComponent', () => {
     component.idCoverage = 7;
     const spy= jest.spyOn(component,'getAll').mockImplementation();
     const spy1= jest.spyOn(component,'getAllFields').mockImplementation();
-    const spy2= jest.spyOn(component,'getcover').mockImplementation();
+    jest.spyOn(component,'getcover').mockImplementation();
     expect(component.editData({ id: 8, name: 'nose' })).toBeUndefined();
+    expect(spy).toBeCalled();
+    expect(spy1).toBeCalled();
   });
   it('editDataFalse', () => {
     component.data = 'pc001_opcion1alternativa1';
     component.idCoverage = 7;
     const spy= jest.spyOn(component,'getAll').mockImplementation();
     const spy1= jest.spyOn(component,'getAllFields').mockImplementation();
-    const spy2= jest.spyOn(component,'getcover').mockImplementation();
+    jest.spyOn(component,'getcover').mockImplementation();
     expect(component.editData({})).toBeUndefined();
+    expect(spy).toBeCalled();
+    expect(spy1).toBeCalled();
+
   });
   it('sendDataCoverage', () => {
     component.data = 'pc001_opcion1alternativa1';
@@ -421,11 +467,13 @@ describe('CommercialPlanTypeComponent', () => {
   it('changeCheckServices',()=>{
     const spy2= jest.spyOn(component,'addEvent').mockImplementation();
     component.changeCheckServices(1,{checked:['MDF']});
+    expect(spy2).toBeCalled();
   });
 
   
   it('changeCheck',()=>{
     const spy2= jest.spyOn(component,'addEvent').mockImplementation();
     component.changeCheck(1,{checked:['MDF']});
+    expect(spy2).toBeCalled();
   });
 });
