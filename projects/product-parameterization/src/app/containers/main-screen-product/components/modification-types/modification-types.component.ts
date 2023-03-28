@@ -211,8 +211,8 @@ export class ModificationTypesComponent implements OnInit {
 
   getAllFields() {
     let res: any[] = [];
-
-    for (const group of this.productService.policyData?.getRawValue()) {
+    let aux = this.productService.policyData?.getRawValue();
+    for (const group of aux) {
       res = res.concat(group.fields);
     }
     return res;
@@ -226,7 +226,8 @@ export class ModificationTypesComponent implements OnInit {
   }
   getAll() {
     let res: any[] = [];
-    for (const group of this.complementaryDataControls?.getRawValue()) {
+    let aux = this.complementaryDataControls?.getRawValue();
+    for (const group of aux) {
       res = res.concat(group.fields);
     }
     return res;
@@ -234,7 +235,8 @@ export class ModificationTypesComponent implements OnInit {
 
   getAllRiskField() {
     let res: any[] = [];
-    for (const group of this.getRiskArrayByIdModify(2)?.getRawValue()) {
+    let aux = this.getRiskArrayByIdModify(2)?.getRawValue();
+    for (const group of aux) {
       res = res.concat(group.fields);
     }
     return res;
