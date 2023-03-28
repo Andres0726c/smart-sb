@@ -336,13 +336,13 @@ export class ModifyPolicyComponent {
     return fieldFG;
   }
   showDomainList(domainList: any[], valueObj: any) {
-    let list: any = [], options = [];
+    let options = [], listStorage: any;
     if (domainList[0].url) {
       let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
       this.types.push(type);
-      list = localStorage.getItem(type);
-      list = JSON.parse(list);
-      options = this.validateList(list, valueObj);
+      listStorage = localStorage.getItem(type);
+      listStorage = [...JSON.parse(listStorage)];
+      options = this.validateList(listStorage, valueObj);
     } else {
       options = this.orderData(domainList);
       options = this.validateList(options, valueObj);
@@ -353,8 +353,10 @@ export class ModifyPolicyComponent {
   validateList(list: any, valueObj: any) {
     let listAux: any = [], x = list.find((result: { id: any; }) => result.id == valueObj.value);
     listAux = list;
-    listAux.splice(listAux.indexOf(x), 1);
-    listAux.splice(0, 0, x);
+    if (x) {
+      listAux.splice(listAux.indexOf(x), 1);
+      listAux.splice(0, 0, x);
+    }
     return listAux;
   }
   orderData(domainList: any, dataList?: any) {
