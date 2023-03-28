@@ -94,7 +94,8 @@ export class PreviewDataPolicyComponent implements OnInit {
 
   getAllFieldsPreview() {
     let res: any[] = [];
-    for(const group of this.productService?.prvwDt?.get('plcyDtGrp')?.getRawValue()) {
+    let aux = this.productService?.prvwDt?.get('plcyDtGrp')?.getRawValue();
+    for(const group of aux) {
       res = res.concat(group.fields);
     }
     

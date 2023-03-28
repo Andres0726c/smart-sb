@@ -179,7 +179,8 @@ export class RenewalDataComponent implements OnInit {
 
   getRulesDp() {
     let res: any[] = [];
-    for(const rule of this.productService.rnwlPrcss.get('clcltnRl')?.value) {
+    let aux = this.productService.rnwlPrcss.get('clcltnRl')?.value;
+    for(const rule of aux) {
       res.push(this.productService.getProductDependency('rl', rule.rlCd));
     }
     return res;

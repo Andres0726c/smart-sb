@@ -173,7 +173,8 @@ export class RehabilitationDataComponent implements OnInit {
 
   getRulesDp() {
     let res: any[] = [];
-    for(const rule of this.productService.rnsttmntPrcss?.get('clcltnRl')?.value) {
+    let aux = this.productService.rnsttmntPrcss?.get('clcltnRl')?.value;
+    for(const rule of aux) {
       res.push(this.productService.getProductDependency('rl', rule.rlCd));
     }
     return res;

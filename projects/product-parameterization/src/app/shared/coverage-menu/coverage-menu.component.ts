@@ -250,8 +250,9 @@ export class CoverageMenuComponent implements OnInit {
       this.removeCoverageCycle(id, formArrayRT);
     }
 
+    let aux =  this.productService.accumulation.get('accumulationCoverages')?.value.filter((x: { id: number; }) => x.id === id);
     // Eliminación en cúmulos
-    for (const coverage of this.productService.accumulation.get('accumulationCoverages')?.value.filter((x: { id: number; }) => x.id === id)) {
+    for (const coverage of aux) {
       const index =  this.productService.accumulation.get('accumulationCoverages')?.value.indexOf(coverage);
       (<FormArray> this.productService.accumulation.get('accumulationCoverages')).removeAt(index);
     }
