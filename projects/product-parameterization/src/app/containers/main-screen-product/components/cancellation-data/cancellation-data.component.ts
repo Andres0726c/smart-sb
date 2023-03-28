@@ -173,7 +173,8 @@ export class CancellationDataComponent implements OnInit {
 
   getRulesDp() {
     let res: any[] = [];
-    for(const rule of this.productService.cnclltnPrcss?.get('clcltnRl')?.value) {
+    let aux = this.productService.cnclltnPrcss?.get('clcltnRl')?.value;
+    for(const rule of aux) {
       res.push(this.productService.getProductDependency('rl', rule.rlCd));
     }
     return res;
