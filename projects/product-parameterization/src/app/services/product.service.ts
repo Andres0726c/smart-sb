@@ -684,7 +684,14 @@ export class ProductService {
         let formGroup = this.fb.group({});
         if (this.isObject(element)) {
           Object.keys(element).forEach(key => {
-            formGroup.addControl(key, this.setFormArrayValue(key, element[key]));
+            if (key === 'athrzdOprtn') {
+              formGroup.addControl(key,this.fb.array(element[key]));
+            }else{
+              formGroup.addControl(
+                key,
+                this.setFormArrayValue(key, element[key])
+              );
+            }
           });
           retorno.push(formGroup);
         }
