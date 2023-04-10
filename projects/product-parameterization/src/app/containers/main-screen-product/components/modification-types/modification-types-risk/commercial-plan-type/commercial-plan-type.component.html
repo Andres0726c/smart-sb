@@ -1,64 +1,5 @@
-<div
-  class="subHeader"
-  *ngIf="coverageflag"
-  style="z-index: 1; position: absolute; left: 50rem; top: 16rem"
->
-  <!--  <div>
-    <h4 class="p-4">{{titleCurrent}}</h4>
-    <h5></h5>
-  </div> -->
-
-  <div class="div-button" *ngIf="coverageflag">
-    <button
-      *ngIf="getAll().length > 0"
-      mat-button
-      class="bt bt-primary"
-      (click)="openToAdd()"
-      data-qa-id="sc-rpmf-btn_add-element"
-    >
-      <em class="fal fa-plus-circle icon-button-add"></em>
-      Añadir
-    </button>
-  </div>
-</div>
-
-<app-complementary-data
-    *ngIf="coverageflag && getAll().length > 0"
-    [applicationLevel]="'types'"
-    [title]="titleCurrent"
-    [subtitle]="'Cobertura por ' + titleCurrent.toLowerCase()"
-    [groupName]="'Datos básicos'"
-    [emptyText]="'Datos complementarios'"
-    [emptySubText]="'No se han asociado los datos complementarios a modificar'"
-    [successAddItemMsg]="
-      'Los datos complementarios de la cobertura fueron asociados correctamente.'
-    "
-    [removeItemMsg]="
-      '¿Está seguro de querer desasociar el dato complementario de la cobertura seleccionado?'
-    "
-    [titleModalCompData]="'Seleccionar datos complementarios'"
-    [subtitleModalCompData]="
-      'Seleccione los datos del tipo de riesgo que desea asociar'
-    "
-    [complementaryData]="sendDataCoverage()"
-    (action)="openToAdd()"
-    [modifyData]="true"
-  >
-  </app-complementary-data>
-<app-no-data-screen
-  *ngIf="coverageflag && getAll().length == 0"
-  [data]="sendDataCoverage()"
-  [layoutType]="'full'"
-  [emptyTitle]="''"
-  [emptySubTitle]="''"
-  [emptyText]="'Sin datos complementarios'"
-  [emptySubText]="'No se han asociado los datos complementarios a modificar'"
-  (action)="openToAdd()"
->
-</app-no-data-screen>
-
-<div class="container-boxes">
-  <section class="container-table" *ngIf="!coverageflag">
+<div>
+  <div class="container-table" *ngIf="!coverageflag">
     <p-breadcrumb [model]="items"></p-breadcrumb>
     <p-tabView>
       <p-tabPanel header="Coberturas">
@@ -142,5 +83,49 @@
         </div>
       </p-tabPanel>
     </p-tabView>
-  </section>
+  </div>
+  <div *ngIf="coverageflag">
+    <div class="flex justify-between">
+      <div>
+        <div class="content_title_subheader">
+          <h3 class="title">{{ titleCurrent }}</h3>
+          <h4 class="subtitle">Cobertura por {{ titleCurrent | lowercase }}</h4>
+        </div>
+      </div>
+      <div class="div-button">
+        <button
+          *ngIf="getAll().length > 0"
+          mat-button
+          class="bt bt-primary"
+          (click)="openToAdd()"
+          data-qa-id="sc-rpmf-btn_add-element"
+        >
+          <em class="fal fa-plus-circle icon-button-add"></em>
+          Añadir
+        </button>
+      </div>
+    </div>
+    <app-complementary-data
+      [applicationLevel]="'types'"
+      [groupName]="'Datos básicos'"
+      [emptyText]="'Datos complementarios'"
+      [emptySubText]="
+        'No se han asociado los datos complementarios a modificar'
+      "
+      [successAddItemMsg]="
+        'Los datos complementarios de la cobertura fueron asociados correctamente.'
+      "
+      [removeItemMsg]="
+        '¿Está seguro de querer desasociar el dato complementario de la cobertura seleccionado?'
+      "
+      [titleModalCompData]="'Seleccionar datos complementarios'"
+      [subtitleModalCompData]="
+        'Seleccione los datos del tipo de riesgo que desea asociar'
+      "
+      [complementaryData]="sendDataCoverage()"
+      (action)="openToAdd()"
+      [modifyData]="true"
+    >
+    </app-complementary-data>
+  </div>
 </div>

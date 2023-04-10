@@ -530,6 +530,7 @@ export class ModificationTypesComponent implements OnInit {
         label: 'Datos de la póliza',
         icon: 'pi pi-fw',
         command: (event: any) => {
+          this.titleCurrent = 'Datos de la póliza';
           this.policyData = true;
           if (this.riskData) this.riskData = false;
         },
@@ -539,6 +540,7 @@ export class ModificationTypesComponent implements OnInit {
         icon: 'pi pi-fw',
         expanded: true,
         command: (event: any) => {
+          this.titleCurrent = 'Tipos de riesgo';
           this.showRiskType();
         },
         items: [...this.addBranch(this.policyDataControls.value, showMenu)],
@@ -572,7 +574,6 @@ export class ModificationTypesComponent implements OnInit {
   }
   showRiskType() {
     this.riskData = true;
-    this.titleCurrent = this.items1[1]?.label;
     this.showRisk = true;
     if (this.policyData) this.policyData = false;
     this.showCommercialPlans = false;

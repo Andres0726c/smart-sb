@@ -1,81 +1,46 @@
-<div class="content_title">
-  <h3 class="title">Modificación</h3>
-  <h4 class="subtitle">Especifique y defina los datos a modificar</h4>
-</div>
-<div class="subHeader">
-  <h4 class="p-4">{{ titleCurrent }}</h4>
-
-  <div class="div-button" *ngIf="getAll().length > 0 && policyData">
-    <button
-      mat-button
-      class="bt bt-primary"
-      (click)="openToAdd('policy')"
-      data-qa-id="sc-rpmf-btn_add-element"
-    >
-      <em class="fal fa-plus-circle icon-button-add"></em>
-      Añadir
-    </button>
+<div class="p-5">
+  <!-- Title and subtitle -->
+  <div class="content_title">
+    <h3 class="title">Modificación</h3>
+    <h4 class="subtitle">Especifique y defina los datos a modificar</h4>
   </div>
 
-  <div class="div-button" *ngIf="getAllRiskField().length > 0 && riskData">
-    <button
-      mat-button
-      class="bt bt-primary"
-      (click)="openToAdd('risk')"
-      data-qa-id="sc-rpmf-btn_add-element"
-    >
-      <em class="fal fa-plus-circle icon-button-add"></em>
-      Añadir
-    </button>
-  </div>
-</div>
-<div style="display: flex; flex-direction: row">
-  <div
-    *ngIf="items1"
-    style="border-radius: 12px; background: white; margin-top: 7px"
-  >
-    <p-panelMenu [model]="items1" [style]="{ width: '260px' }"></p-panelMenu>
-  </div>
-  <div class="p-1" style="width: 1230px">
-    <div
-      style="width: 90%"
-      *ngIf="
-        !policyData &&
-        !riskData &&
-        !showCommercialPlans &&
-        !showCommercialPlansTypes
-      "
-    >
-      <app-no-data-screen
-        *ngIf="getAllFields().length == 0"
-        [data]="complementaryDataControls"
-        [layoutType]="'full'"
-        [emptyTitle]="''"
-        [emptySubTitle]="''"
-        [emptyText]="'Datos básicos'"
-        [emptySubText]="'No se han asociado datos de la póliza al producto'"
-        (action)="openToAdd('policy')"
-      >
-      </app-no-data-screen>
+  <!-- Subheader -->
+  <div class="flex flex-row mx-5 mb-5 justify-between items-center">
+    <div>
+      <h4>{{ titleCurrent }}</h4>
     </div>
-
-    <div
-      style="display: flex; padding: 10px; justify-content: space-between"
-      *ngIf="policyData"
-    >
-      <app-no-data-screen
-        *ngIf="getAllFields().length == 0"
-        [data]="complementaryDataControls"
-        [layoutType]="'full'"
-        [emptyTitle]="''"
-        [emptySubTitle]="''"
-        [emptyText]="'Datos básicos'"
-        [emptySubText]="'No se han asociado datos de la póliza al producto'"
-        (action)="openToAdd('policy')"
+    <div class="div-button" *ngIf="getAll().length > 0 && policyData">
+      <button
+        mat-button
+        class="bt bt-primary"
+        (click)="openToAdd('policy')"
+        data-qa-id="sc-rpmf-btn_add-element"
       >
-      </app-no-data-screen>
+        <em class="fal fa-plus-circle icon-button-add"></em>
+        Añadir
+      </button>
+    </div>
+    <div class="div-button" *ngIf="getAllRiskField().length > 0 && riskData">
+      <button
+        mat-button
+        class="bt bt-primary"
+        (click)="openToAdd('risk')"
+        data-qa-id="sc-rpmf-btn_add-element"
+      >
+        <em class="fal fa-plus-circle icon-button-add"></em>
+        Añadir
+      </button>
+    </div>
+  </div>
 
-      <div style="padding-left: 2rem; width: 90%">
+  <!-- Content -->
+  <div class="flex">
+    <div class="flex-none rounded bg-white mt-1.5" *ngIf="items1">
+      <p-panelMenu [model]="items1"></p-panelMenu>
+    </div>
+    <div class="grow">
+      <div *ngIf="policyData" class="px-2">
         <app-complementary-data
           [applicationLevel]="'types'"
           [title]="''"
@@ -99,69 +64,50 @@
         >
         </app-complementary-data>
       </div>
-    </div>
+      <div *ngIf="riskData" class="px-2">
+        <app-complementary-data
+          [applicationLevel]="'types'"
+          [title]="''"
+          [subtitle]="''"
+          [groupName]="'Datos básicos'"
+          [emptyText]="'Sin datos del riesgo'"
+          [emptySubText]="
+            'No se han seleccionado datos para modificar del tipo de riesgo'
+          "
+          [successAddItemMsg]="
+            'Los datos del riesgo fueron asociados correctamente.'
+          "
+          [removeItemMsg]="
+            '¿Está seguro de querer desasociar el dato del tipo del riesgo seleccionado?'
+          "
+          [titleModalCompData]="'Seleccionar  datos del riesgo'"
+          [subtitleModalCompData]="'Seleccione los datos del tipo de riesgo'"
+          [complementaryData]="getRiskArrayByIdModify(2)"
+          (action)="openToAdd('risk')"
+          [modifyData]="true"
+        >
+        </app-complementary-data>
+      </div>
+      <div class="px-2 mt-2" *ngIf="!riskData && !policyData">
+        <div class="rounded bg-white px-2 py-2">
+          <div *ngIf="!riskData && !policyData && showCommercialPlans">
+            <refactoring-smartcore-mf-modification-types-risk
+              [titleCommercialPlan]="titleCommercialPlan"
+              [titleRisk]="titleRisk"
+              [riskType]="riskType"
+              (addBranch)="onAddBranch($event)"
+            ></refactoring-smartcore-mf-modification-types-risk>
+          </div>
 
-    <div *ngIf="riskData" style="padding-left: 2rem; width: 90%">
-      <app-no-data-screen
-        *ngIf="getAllRiskField().length == 0"
-        [data]="getRiskArrayByIdModify(2)"
-        [layoutType]="'full'"
-        [emptyTitle]="''"
-        [emptySubTitle]="''"
-        [emptyText]="'Sin datos del riesgo'"
-        [emptySubText]="
-          'No se han seleccionado datos para modificar del tipo de riesgo'
-        "
-        (action)="openToAdd('risk')"
-      >
-      </app-no-data-screen>
-
-      <app-complementary-data 
-      *ngIf="getAllRiskField().length > 0"
-        [applicationLevel]="'types'"
-        [title]="''"
-        [subtitle]="''"
-        [groupName]="'Datos básicos'"
-        [emptyText]="'Sin datos del riesgo'"
-        [emptySubText]="
-          'No se han seleccionado datos para modificar del tipo de riesgo'
-        "
-        [successAddItemMsg]="
-          'Los datos del riesgo fueron asociados correctamente.'
-        "
-        [removeItemMsg]="
-          '¿Está seguro de querer desasociar el dato del tipo del riesgo seleccionado?'
-        "
-        [titleModalCompData]="'Seleccionar  datos del riesgo'"
-        [subtitleModalCompData]="'Seleccione los datos del tipo de riesgo'"
-        [complementaryData]="getRiskArrayByIdModify(2)"
-        (action)="openToAdd('risk')"
-        [modifyData]="true"
-      >
-      </app-complementary-data>
-    </div>
-
-    <div
-      style="padding-left: 2rem; width: 90%"
-      *ngIf="showCommercialPlans && !riskData && !policyData"
-    >
-      <refactoring-smartcore-mf-modification-types-risk
-        [titleCommercialPlan]="titleCommercialPlan"
-        [titleRisk]="titleRisk"
-        [riskType]="riskType"
-        (addBranch)="onAddBranch($event)"
-      ></refactoring-smartcore-mf-modification-types-risk>
-    </div>
-
-    <div
-      style="padding-left: 2rem; width: 90%"
-      *ngIf="showCommercialPlansTypes && !riskData && !policyData"
-    >
-      <refactoring-smartcore-mf-commercial-plan-type
-        [titleBussinesPlan]="titleBussinesPlan"
-        [data]="data"
-        [riskDataCode]="riskDataCode"
-      ></refactoring-smartcore-mf-commercial-plan-type>
+          <div *ngIf="!riskData && !policyData && showCommercialPlansTypes">
+            <refactoring-smartcore-mf-commercial-plan-type
+              [titleBussinesPlan]="titleBussinesPlan"
+              [data]="data"
+              [riskDataCode]="riskDataCode"
+            ></refactoring-smartcore-mf-commercial-plan-type>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
