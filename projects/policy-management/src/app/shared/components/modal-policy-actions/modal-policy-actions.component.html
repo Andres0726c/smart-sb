@@ -120,6 +120,9 @@
             <div class="col-span-2">
                 <label>Observación</label>
                 <textarea formControlName="observation" rows="5" cols="30" pInputTextarea class="w-full"></textarea>
+                <div>
+                    <small class="p-error block" *ngIf="formProcess.get('observation')?.hasError('maxlength')">Máximo 2000 caracteres</small>
+                </div>
             </div>
 
             <div class="col-span-2 ml-auto">
