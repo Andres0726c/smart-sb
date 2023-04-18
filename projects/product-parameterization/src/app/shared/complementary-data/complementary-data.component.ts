@@ -577,12 +577,12 @@ export class ComplementaryDataComponent implements OnInit {
     return req1 == 0 ? false : true;
   }
 
-  associateReference(id: number) {
+  associateReference(id: string) {
     if (id) {
-      let obj = this.getGroupArrayById(1).value.find((x: { id: number; }) => x.id === id);
+      let obj = this.getGroupArrayById(1).value.find((x: { businessCode: string; }) => x.businessCode === id);
 
       if (obj.dependency !== null) {
-        let objAux = this.getGroupArrayById(1).value.find((x: { id: number; }) => x.id === obj.dependency);
+        let objAux = this.getGroupArrayById(1).value.find((x: { businessCode: string; }) => x.businessCode === obj.dependency);
 
         while (objAux && objAux.dependency !== null) {
           if (objAux.dependency === this.selectedField.value.id) {
@@ -594,7 +594,7 @@ export class ComplementaryDataComponent implements OnInit {
             this.selectedField?.get('dependency')?.setValue(null);
             break;
           }
-          objAux = this.getGroupArrayById(1).value.find((x: { id: number; }) => x.id === objAux.dependency);
+          objAux = this.getGroupArrayById(1).value.find((x: { businessCode: string; }) => x.businessCode === objAux.dependency);
         }
       }
     } else {
