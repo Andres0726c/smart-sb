@@ -114,6 +114,12 @@ export class ModifyPolicyComponent {
 
   ngOnInit(): void {
 
+    this.formPolicy.valueChanges.subscribe((v) => {
+      console.log(v)
+    });
+    
+    
+
     this.getPolicy();
     this.formPolicy.valueChanges.subscribe((v) => {
       this.result = this.validateSaveButton(this.policyData, this.policyDataControls, this.riskData, this.riskTypesControls);
@@ -336,6 +342,7 @@ export class ModifyPolicyComponent {
     return fieldFG;
   }
   showDomainList(domainList: any[], valueObj: any) {
+    
     let options = [], listStorage: any;
     if (domainList[0].url) {
       let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));

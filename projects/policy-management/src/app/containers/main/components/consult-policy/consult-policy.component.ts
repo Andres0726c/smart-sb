@@ -210,6 +210,9 @@ export class ConsultPolicyComponent implements OnDestroy {
         if (res.dataHeader.code && (res.dataHeader.code = 200)) {
           this.policies = res.body;
           this.totalRecords = res.dataHeader.totalRecords;
+          console.log('policies', this.policies);
+          this.testMethod(this.policies[0].idPolicy);
+          
         } else {
           this.policies = [];
         }
@@ -244,6 +247,8 @@ export class ConsultPolicyComponent implements OnDestroy {
   }
 
   getPolicy() {
+    console.log('entra');
+    
     this.loading = true;
     this.productService.findPolicyDataById(this.selectedPolicy.policyNumber, 0).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
@@ -253,6 +258,8 @@ export class ConsultPolicyComponent implements OnDestroy {
         } else {
           this.showModal(PolicyRenewalComponent, 'Renovación', { policyBasic: this.selectedPolicy, policyData: policy }, 'Renovar', '96%', '100%', '100%');
         }
+        console.log('policyData', policy);
+        
       } else {
         this.showSuccess('error', 'Error interno', 'Por favor intente nuevamente');
       }
@@ -274,4 +281,65 @@ export class ConsultPolicyComponent implements OnDestroy {
       dialog.destroy();
     });
   }
+
+  testMethod(id: number){
+    // let daneCode: any;
+    this.consultPolicyService.getPolicyById(id).subscribe((res) => {
+
+      if (res.body) {
+        let daneCode = res.body.propertiesPolicyData.datos_basicos.DEPAR_COL;
+        console.log('policyBody', daneCode);
+        
+        // daneCode = policyBody['gd002_datosdeldebito']['CIU_TDB'] === '' ? '0' : policyBody['gd002_datosdeldebito']['CIU_TDB'].slice(0, 2);
+        // for(let key of Object.keys(policyBody)){
+        //   console.log('keys', key);
+        //   for(let value of Object.keys(policyBody[key])){
+        //     daneCode = policyBody[key][value];            
+        //     daneCode = daneCode ? daneCode.slice(0, 2) : '';
+        //     console.log('danecode', daneCode);
+        //     if (policyBody[key][value] ===  'CIU_TDB')
+        //     break;
+        //   }
+        // }
+        console.log('resBody', res.body);
+        this.getCity(daneCode)
+        console.log('daneCode', daneCode);
+        
+      }
+  })
 }
+
+  setData(res: any, type: any) {
+    if (Array.isArray(res.body)) {
+      this.addToElementData(res.body, type);
+    } else {
+      this.addToElementData([res.body], type);
+    }
+  }
+
+  addToElementData(res: any[], type: any) {
+    let options: any = [];
+    let list: any = [];
+    let optionsAux: any = [];
+
+    res.forEach((element: any) => {
+      let obj: any = { id: element.code ?? element.businessCode, name: type === 'turnoverperiod' ? element.name : element.description };
+      if (obj.id != '' && obj.id != undefined) {
+        options.push(obj);
+      }
+    });
+
+    localStorage.setItem(type, JSON.stringify(options));
+    list = localStorage.getItem(type);
+    optionsAux = JSON.parse(list);
+  }
+
+  getCity(daneCode: any){
+    this.productService
+    .getApiData('city/findByState', '', daneCode)
+    .subscribe((res) => {
+      this.setData(res, 'city');
+    });
+  }
+}
+

@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ElementTableSearch } from 'projects/product-parameterization/src/app/core/model/ElementTableSearch.model';
 import { ProductService } from '../../../core/services/product/product.service';
 import { ModalResponseRulesComponent } from '../modal-response-rules/modal-response-rules.component';
+import { log } from 'console';
 
 @Component({
   selector: 'smartcore-reactive-group-fields',
@@ -15,6 +16,7 @@ export class ReactiveGroupFieldsComponent {
   @Input() group: any = new FormGroup({});
   @Input() policy: any;
   @Input() level: any;
+  @Input() dependency: any;
   //@Input() validRule: boolean=true;
   @Output() updatePolicy: EventEmitter<any> = new EventEmitter();
   @Output() validRules: EventEmitter<any> = new EventEmitter();
@@ -26,10 +28,12 @@ export class ReactiveGroupFieldsComponent {
     public fb : FormBuilder,
     public dialogService: DialogService,
     public messageService: MessageService,
-    public productService: ProductService
+    public productService: ProductService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
+    
    // TODO document why this method 'ngOnInit' is empty
   }
 
@@ -45,10 +49,11 @@ export class ReactiveGroupFieldsComponent {
 
    let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.id;
 
-    valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id
+    valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id;
+
 
     console.log(groupName,"numero: ",field.value?.validateRule.length)
-    console.log(this.policy.plcy.rsk);
+    console.log(this.policy.plcy);
      console.log(valueCurrent,"actual");
      console.log(valueAfter,"despues");
      console.log(field.value,"field");
@@ -144,6 +149,37 @@ export class ReactiveGroupFieldsComponent {
     });
   }
 
-
+  async changeOptions(field: any){
+    let key = 'id';
+    let fieldAux = field.value.value;
+    let arrFields: any = (<FormArray>this.group.value.fields);
+    let businessCode: string = field.value.businessCode;
+    let arr: any[] = [];
+    await this.productService
+    .getApiData('city/findByState', '', fieldAux[key] !== undefined ? fieldAux.id : fieldAux)
+    .subscribe((res) => {
+      if(res.body){
+        arr = arrFields.filter((object: any) => {
+          return object.dependency === businessCode;        
+        }); 
+        arr = res.body;        
+        // this.cd.detectChanges();
+      }
+      for (const item of this.group.value.fields) {
+        if (item.dependency === businessCode) {
+          item.options = [];
+          item.options = arr;
+          console.log('item Options',item.options);
+          
+        }
+        this.cd.detectChanges();
+        
+      } 
+      console.log('group', this.group.value.fields);
+    });
+      
+    
+    
+  }
 
 }
