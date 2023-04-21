@@ -171,6 +171,10 @@ describe('ModificationTypesRiskComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('ngOnInit', () => {
+    expect(component.ngOnInit()).toBeUndefined();
+  });
+
   it('changeCheckValue', () => {
     const spy = jest.spyOn(component, 'addData').mockImplementation();
     component.changeCheck(
