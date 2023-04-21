@@ -279,7 +279,7 @@
                     <mat-select placeholder="Seleccionar" formControlName="dependency"
                         (selectionChange)="associateReference($event.value)" data-qa-id="sc-rpmf-select_dependency">
                         <mat-option>Seleccionar</mat-option>
-                        <mat-option *ngFor="let cd of dependsArray" [value]="cd.id ">
+                        <mat-option *ngFor="let cd of dependsArray" [value]="cd.businessCode ">
                             <span>
                                 {{cd.label }}
                             </span>
