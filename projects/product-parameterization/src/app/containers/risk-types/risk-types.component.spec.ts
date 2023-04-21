@@ -99,6 +99,119 @@ describe('RiskTypesComponent', () => {
                 name: new FormControl('test1')
               })
             ]),
+            mdfctnPrcss: new FormGroup({
+              mdfcblDt: new FormGroup({
+                plcyDtGrp: new FormArray([
+                  new FormGroup({
+                    id: new FormControl(1),
+                    code: new FormControl('gd002_datosdeldebito', Validators.required),
+                    name: new FormControl('Datos del débito', Validators.required),
+                    fields: new FormArray(
+                      [
+                        new FormGroup({
+                          id: new FormControl(24),
+                          name: new FormControl('Test'),
+                          fieldGroup: new FormControl(1),
+                        }),
+                      ],
+                      Validators.required
+                    ),
+                  }),
+                ]),
+                rskTyp: new FormArray([
+                  new FormGroup({
+                    id: new FormControl(2, Validators.required),
+                    name: new FormControl('Mascota', Validators.required),
+                    description: new FormControl(
+                      'Tipo de riesgo Mascota',
+                      Validators.required
+                    ),
+                    code: new FormArray(
+                      [
+                        new FormGroup({
+                          businessCode: new FormControl('2', Validators.required),
+                        }),
+                      ],
+                      Validators.required
+                    ),
+                    cmmrclPln: new FormArray([
+                      new FormGroup({
+                        name: new FormControl('DAVIPLATA 1'),
+                        description: new FormControl('opcion1 alternativa1'),
+                        code: new FormControl('pc001_opcion1alternativa1'),
+                        athrzdOprtn: new FormControl('MDF'),
+                        cvrg: new FormArray([
+                          new FormGroup({
+                            id: new FormControl(7),
+                            code: new FormArray(
+                              [
+                                new FormGroup({
+                                  businessCode: new FormControl(
+                                    'COB8',
+                                    Validators.required
+                                  ),
+                                }),
+                              ],
+                              Validators.required
+                            ),
+                            name: new FormControl('Gastos exequiales'),
+                            description: new FormControl('Gastos exequiales'),
+                            athrzdOprtn: new FormControl('MDF'),
+                            cvrgDtGrp: new FormArray([
+                              new FormGroup({
+                                id: new FormControl(2),
+                                name: new FormControl('Datos cobertura'),
+                                description: new FormControl(),
+                                code: new FormControl('gd002_datoscobertura'),
+                                fields: new FormArray(
+                                  [
+                                    new FormGroup({
+                                      id: new FormControl(24),
+                                      name: new FormControl('Test'),
+                                      // fieldGroup: new FormControl(1)
+                                    }),
+                                  ],
+                                  Validators.required
+                                ),
+                              }),
+                            ]),
+                          }),
+                        ]),
+                        srvcPln: new FormArray([
+                          new FormGroup({
+                            id: new FormControl(7),
+                            name: new FormControl('Plan básico'),
+                            athrzdOprtn: new FormControl('MDF'),
+                            description: new FormControl(
+                              'Plan básico con mínimo de 3 coberturas'
+                            ),
+                          }),
+                        ]),
+                      }),
+                    ]),
+                    rskTypDtGrp: new FormArray([
+                      new FormGroup({
+                        code: new FormControl(
+                          'gd002_datosmascota',
+                          Validators.required
+                        ),
+                        name: new FormControl('Datos mascota', Validators.required),
+                        fields: new FormArray(
+                          [
+                            new FormGroup({
+                              id: new FormControl(24),
+                              name: new FormControl('Test'),
+                              // fieldGroup: new FormControl(1)
+                            }),
+                          ],
+                          Validators.required
+                        ),
+                      }),
+                    ]),
+                  }),
+                ]),
+              }),
+            }),
           },
         }
       ],
@@ -180,5 +293,10 @@ describe('RiskTypesComponent', () => {
   it('viewRiskType Ok', () => {
     let node = {expandable: false, name: 'test name', level: 1};
     expect(component.viewRiskType(node)).toBeUndefined();
+  });
+
+  it('deleteRiskMdfctPrcss', () => {
+    let node = {expandable: false, name: 'Mascota', level: 1};
+    expect(component.deleteRiskMdfctPrcss(node)).toBeUndefined();
   });
 });

@@ -42,15 +42,12 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   @Input() titleBussinesPlan: string = '';
   @Input() data: string = '';
   @Input() riskDataCode: string = '';
+  @Input() titleRisk: string = '';
 
   coverageflag: boolean = false;
   complementaryFlag:boolean=false;
 
-  items = [
-    { label: 'Mascotas' },
-    { label: 'Planes comerciales' },
-    { label: this.titleBussinesPlan },
-  ];
+  items: any = [];
   tableDataService: any[] = [];
   tableData: Coverages[] = [];
   disabled: boolean = true;
@@ -74,9 +71,11 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     public fb: FormBuilder,
     public toastMessage: MatSnackBar
   ) {}
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
+    console.log('title', this.titleRisk);
+    
     this.items = [
-      { label: 'Mascotas' },
+      { label: this.titleRisk },
       { label: 'Planes comerciales' },
       { label: this.titleBussinesPlan },
     ];
@@ -85,6 +84,8 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     this.addDataTable();
   }
   ngOnInit(): void {
+    console.log('aqui', this.productService);
+    
     // TODO document why this method 'ngOnInit' is empty
   }
 
@@ -120,15 +121,15 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     return this.sortParameterBy('name',res);
   }
 
-  getcmmrclPln(id: number) {
+  getcmmrclPln(name: string) {
     return  (<FormArray>(
       this.policyDataControls.controls
-        .find((x: { value: { id: number } }) => x.value.id === id)
+        .find((x: { value: { name: string } }) => x.value.name === name)
         ?.get('cmmrclPln') )) as FormArray;
   
   }
   getcoveragesPln(code: string) {
-    return (<FormArray>this.getcmmrclPln(2)
+    return (<FormArray>this.getcmmrclPln(this.titleRisk)
       .controls.find((x: { value: { code: string } }) => x.value.code === code)
       ?.get('cvrg')) as FormArray;
   }
@@ -143,7 +144,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   
   getSrvcPln(code: string) {
     
-    return (<FormArray>this.getcmmrclPln(2)
+    return (<FormArray>this.getcmmrclPln(this.titleRisk)
       .controls.find((x: { value: { code: string } }) => x.value.code === code)
       ?.get('srvcPln')) as FormArray;
   }

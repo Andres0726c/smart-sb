@@ -10,7 +10,7 @@
     <div>
       <h4>{{ titleCurrent }}</h4>
     </div>
-    <div class="div-button" *ngIf="getAll().length > 0 && policyData">
+    <div class="div-button" *ngIf="getAll().length > 0 && policyData && flagButton">
       <button
         mat-button
         class="bt bt-primary"
@@ -21,22 +21,11 @@
         Añadir
       </button>
     </div>
-    <div class="div-button" *ngIf="getAllRiskField().length > 0 && riskData">
-      <button
-        mat-button
-        class="bt bt-primary"
-        (click)="openToAdd('risk')"
-        data-qa-id="sc-rpmf-btn_add-element"
-      >
-        <em class="fal fa-plus-circle icon-button-add"></em>
-        Añadir
-      </button>
-    </div>
   </div>
 
   <!-- Content -->
   <div class="flex">
-    <div class="flex-none rounded bg-white mt-1.5" *ngIf="items1">
+    <div class="flex-none rounded bg-white" *ngIf="items1">
       <p-panelMenu [model]="items1"></p-panelMenu>
     </div>
     <div class="grow">
@@ -65,7 +54,9 @@
         </app-complementary-data>
       </div>
       <div *ngIf="riskData" class="px-2">
-        <app-complementary-data
+        <div class="rounded bg-white px-2 py-2">
+          <p-breadcrumb [model]="breadcrumbItem"></p-breadcrumb>
+          <app-complementary-data
           [applicationLevel]="'types'"
           [title]="''"
           [subtitle]="''"
@@ -82,19 +73,18 @@
           "
           [titleModalCompData]="'Seleccionar  datos del riesgo'"
           [subtitleModalCompData]="'Seleccione los datos del tipo de riesgo'"
-          [complementaryData]="getRiskArrayByIdModify(2)"
+          [complementaryData]="getRiskArrayByIdModify(titleRisk)"
           (action)="openToAdd('risk')"
           [modifyData]="true"
         >
         </app-complementary-data>
+        </div>
       </div>
-      <div class="px-2 mt-2" *ngIf="!riskData && !policyData">
+      <div class="px-2" *ngIf="!riskData && !policyData">
         <div class="rounded bg-white px-2 py-2">
           <div *ngIf="!riskData && !policyData && showCommercialPlans">
             <refactoring-smartcore-mf-modification-types-risk
-              [titleCommercialPlan]="titleCommercialPlan"
               [titleRisk]="titleRisk"
-              [riskType]="riskType"
               (addBranch)="onAddBranch($event)"
             ></refactoring-smartcore-mf-modification-types-risk>
           </div>
@@ -104,6 +94,7 @@
               [titleBussinesPlan]="titleBussinesPlan"
               [data]="data"
               [riskDataCode]="riskDataCode"
+              [titleRisk]="titleRisk"
             ></refactoring-smartcore-mf-commercial-plan-type>
           </div>
         </div>
