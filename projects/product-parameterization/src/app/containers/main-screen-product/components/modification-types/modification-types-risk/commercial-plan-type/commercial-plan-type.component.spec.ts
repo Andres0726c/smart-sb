@@ -85,7 +85,6 @@ const ProductServiceMock = {
                           new FormGroup({
                             id: new FormControl(24),
                             name: new FormControl('Test'),
-                            // fieldGroup: new FormControl(1)
                           }),
                         ],
                         Validators.required
@@ -115,7 +114,6 @@ const ProductServiceMock = {
                   new FormGroup({
                     id: new FormControl(24),
                     name: new FormControl('Test'),
-                    // fieldGroup: new FormControl(1)
                   }),
                 ],
                 Validators.required
@@ -150,8 +148,6 @@ const ProductServiceMock = {
                   ],
                   Validators.required
                 ),
-
-                // fieldGroup: new FormControl(1)
               }),
             ],
             Validators.required
@@ -299,14 +295,10 @@ describe('CommercialPlanTypeComponent', () => {
   });
 
   it('ngOnchanges', () => {
-    component.data = 'pc001_daviplata1';
-    component.titleBussinesPlan = 'planA';
-    fixture.detectChanges();
-    const spy = jest.spyOn(component, 'addDataTable').mockImplementation();
-    component.ngOnChanges({
-      data: new SimpleChange(null, 'pc001_opcion1alternativa1', false),
-    });
-    expect(spy).toBeCalled();
+    component.titleRisk = 'Mascota';
+    component.data = 'pc001_opcion1alternativa1';
+    component.titleBussinesPlan = 'DAVIPLATA 1';
+    expect(component.ngOnChanges()).toBeUndefined();
   });
 
   it('getAllFields', () => {
@@ -316,6 +308,7 @@ describe('CommercialPlanTypeComponent', () => {
 
   it('getAll', () => {
     component.idCoverage = 7;
+    component.titleRisk = 'Mascota';
     component.data = 'pc001_opcion1alternativa1';
     const spy= jest.spyOn(component,'sortParameterBy').mockImplementation();
     expect(component.getAll()).toBeUndefined();
@@ -359,23 +352,27 @@ describe('CommercialPlanTypeComponent', () => {
 
   
   it('addDataTable', () => {
+    component.titleRisk = 'Mascota';
     component.data = 'pc001_opcion1alternativa1';
     component.addDataTable();
   });
 
 
   it('getAthrzdOprtnCoveragePln',()=>{
+    component.titleRisk = 'Mascota';
     component.data='pc001_opcion1alternativa1';
     component.getAthrzdOprtnCoveragePln(7);
   })
 
   
   it('getAthrzdOprtnSrvcPln',()=>{
+    component.titleRisk = 'Mascota';
     component.data='pc001_opcion1alternativa1';
     component.getAthrzdOprtnSrvcPln(7);
   })
 
   it('getcoverages',()=>{
+    component.titleRisk = 'Mascota';
     component.data='pc001_opcion1alternativa1';
     component.getcoverages(7);
   })
@@ -388,6 +385,7 @@ describe('CommercialPlanTypeComponent', () => {
   });
 
   it('openToAdd', () => {
+    component.titleRisk = 'Mascota';
     component.data = 'pc001_opcion1alternativa1';
     component.idCoverage = 7;
     const spy = jest.spyOn(component, 'addItem').mockImplementation();
@@ -411,6 +409,7 @@ describe('CommercialPlanTypeComponent', () => {
     expect(component.getNameGroup('datos_basicos')).toBeUndefined();
   });
   it('add', () => {
+    component.titleRisk = 'Mascota';
     component.data = 'pc001_opcion1alternativa1';
     component.idCoverage = 7;
     let group = {

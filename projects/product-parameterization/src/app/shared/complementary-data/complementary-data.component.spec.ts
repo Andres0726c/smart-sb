@@ -358,6 +358,7 @@ describe('ComplementaryDataComponent', () => {
           new FormGroup({
             id: new FormControl(25),
             name: new FormControl('test'),
+            businessCode: new FormControl('test'),
             dependency: new FormControl(24)
           })
         ], Validators.required)
@@ -365,7 +366,7 @@ describe('ComplementaryDataComponent', () => {
     ], Validators.required);
 
     component.getGroupArrayById(1).push(component.selectedField);
-    expect(component.associateReference(24)).toBeUndefined();
+    expect(component.associateReference('test')).toBeUndefined();
     expect(component.associateReference(undefined!)).toBeUndefined();
   });
 
@@ -386,6 +387,7 @@ describe('ComplementaryDataComponent', () => {
       name: component.fb.control('NEGOCIO REFERIDO [S/N]', [
         Validators.required,
       ]),
+      businessCode: new FormControl('test'),
       label: component.fb.control('NEGOCIO REFERIDO [S/N]', [
         Validators.required,
       ]),
@@ -401,7 +403,7 @@ describe('ComplementaryDataComponent', () => {
 
     component.getGroupArrayById(1).push(field);
 
-    expect(component.associateReference(24)).toBeUndefined();
+    expect(component.associateReference('test')).toBeUndefined();
   });
 
   it('showToastMessage warning', () => {

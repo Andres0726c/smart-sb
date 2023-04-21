@@ -257,9 +257,9 @@ describe('ModificationTypesComponent', () => {
     servicesPlans: new FormArray([
       new FormGroup({
         id: new FormControl(7),
-        name:new FormGroup({name:new FormControl('plan básico')})
-      })
-    ])
+        name: new FormGroup({ name: new FormControl('plan básico') }),
+      }),
+    ]),
   };
   let res = [
     {
@@ -294,38 +294,37 @@ describe('ModificationTypesComponent', () => {
       },
     },
   ];
-  let res1 = 
-    {
+  let res1 = {
+    id: 1,
+    name: 'string',
+    description: 'string',
+    details: 'string',
+    shouldDelete: true,
+    cdRuleType: 'string',
+    element: {
       id: 1,
-      name: 'string',
-      description: 'string',
-      details: 'string',
-      shouldDelete: true,
-      cdRuleType: 'string',
-      element: {
-        id: 1,
-        businessCode: 'string',
-        nmLabel: 'string',
-        dsDescription: 'string',
-        dataType: {
-          code: 'string',
-          name: 'string',
-          description: 'string',
-          bdFieldType: 'string',
-          guiComponent: 'string',
-          lenght: 1,
-          precision: 1,
-          scale: 1,
-        },
-        flIsMandatory: 'S',
-        domainList: {
-          code: 'string',
-          name: 'string',
-          description: 'string',
-          valueList: 'String',
-        },
+      businessCode: 'string',
+      nmLabel: 'string',
+      dsDescription: 'string',
+      dataType: {
+        code: 'string',
+        name: 'string',
+        description: 'string',
+        bdFieldType: 'string',
+        guiComponent: 'string',
+        lenght: 1,
+        precision: 1,
+        scale: 1,
       },
-    };
+      flIsMandatory: 'S',
+      domainList: {
+        code: 'string',
+        name: 'string',
+        description: 'string',
+        valueList: 'String',
+      },
+    },
+  };
   class dialogMock {
     open() {
       return {
@@ -403,7 +402,7 @@ describe('ModificationTypesComponent', () => {
             },
           },
         },
-      ])
+      ]);
     }
   }
 
@@ -453,7 +452,7 @@ describe('ModificationTypesComponent', () => {
     expect(component).toBeTruthy();
   });
   it('ngOnInit', () => {
-    const spy = jest.spyOn(component, 'calledMenu').mockImplementation();
+    const spy = jest.spyOn(component, 'updateTree').mockImplementation();
     component.ngOnInit();
     expect(spy).toBeCalled();
   });
@@ -461,6 +460,7 @@ describe('ModificationTypesComponent', () => {
 
   // })
   it('openToAdd', () => {
+    component.titleRisk = 'Mascota';
     component.data = 'pc001_opcion1alternativa1';
     const spy = jest.spyOn(component, 'addItem').mockImplementation();
     const spy1 = jest.spyOn(component, 'getAllRiskField').mockImplementation();
@@ -495,7 +495,7 @@ describe('ModificationTypesComponent', () => {
     const spy5 = jest
       .spyOn(component, 'addGroupArrayByIdRisk')
       .mockImplementation();
-    component.addItem(res, 1, true,'risk');
+    component.addItem(res, 1, true, 'risk');
     expect(spy).toBeCalled();
     expect(spy1).toBeCalled();
     expect(spy2).toBeCalled();
@@ -512,7 +512,7 @@ describe('ModificationTypesComponent', () => {
     const spy3 = jest
       .spyOn(component, 'addGroupArrayById')
       .mockImplementation();
-    component.addItem(res, 1, true,'policy');
+    component.addItem(res, 1, true, 'policy');
     expect(spy).toBeCalled();
     expect(spy1).toBeCalled();
     expect(spy2).toBeCalled();
@@ -520,20 +520,28 @@ describe('ModificationTypesComponent', () => {
   });
 
   it('getAllRiskField', () => {
+    component.titleRisk = 'Mascota';
     expect(component.getAllRiskField()).toBeDefined();
   });
 
   it('getAllRisk', () => {
-    const spy=jest.spyOn(component,'sortParameterBy').mockImplementation();
+    component.titleRisk = 'Mascota';
+    const spy = jest.spyOn(component, 'sortParameterBy').mockImplementation();
     expect(component.getAllRisk()).toBeUndefined();
     expect(spy).toBeCalled();
   });
 
-  it('sortParameterBy',()=>{
-    let res=[{name:'a', description:'a'},{name:'b',description:'b'}]
-    let array=[{name:'b', description:'b'},{name:'a',description:'a'}]
-    expect(component.sortParameterBy('name',array)).toEqual(res);
-  })
+  it('sortParameterBy', () => {
+    let res = [
+      { name: 'a', description: 'a' },
+      { name: 'b', description: 'b' },
+    ];
+    let array = [
+      { name: 'b', description: 'b' },
+      { name: 'a', description: 'a' },
+    ];
+    expect(component.sortParameterBy('name', array)).toEqual(res);
+  });
   it('getAll', () => {
     expect(component.getAll()).toBeDefined();
   });
@@ -542,22 +550,14 @@ describe('ModificationTypesComponent', () => {
     expect(component.getAllFields()).toBeDefined();
   });
 
- 
   it('showMessageGroup', () => {
-    expect(component.showMessageGroup(false,'riks')).toBeUndefined();
+    expect(component.showMessageGroup(false, 'riks')).toBeUndefined();
   });
   it('showMessageGroupTrue', () => {
-    expect(component.showMessageGroup(true,'policy')).toBeUndefined();
+    expect(component.showMessageGroup(true, 'policy')).toBeUndefined();
   });
-  it('addDataRisk',()=>{
-    const spy= jest.spyOn(component,'getServicesPlan').mockImplementation();
-    const spy1=jest.spyOn(component,'getDataCoverages').mockImplementation();
-    component.addDataRisk();
-    expect(spy).toBeCalled();
-    expect(spy1).toBeCalled();
-
-  })
   it('addRisk', () => {
+    component.titleRisk = 'Mascota';
     let group = {
       id: 1,
       code: 'datos_basicos',
@@ -578,10 +578,12 @@ describe('ModificationTypesComponent', () => {
     expect(component.add(group)).toBeUndefined();
   });
   it('getNameGroupPolicyData', () => {
+    component.titleRisk = 'Mascota';
     component.policyData = true;
     expect(component.getNameGroup('datos_basicos')).toBeUndefined();
   });
   it('getNameGroupRisk', () => {
+    component.titleRisk = 'Mascota';
     component.riskData = true;
     expect(component.getNameGroup('datos_basicos')).toBeUndefined();
   });
@@ -598,11 +600,10 @@ describe('ModificationTypesComponent', () => {
     expect(component.addGroupObj(group, 'datos_basicos')).toBeUndefined();
   });
 
-  it('getAthrzdOprtn',()=>{
-    component.getAthrzdOprtn("pc001_opcion1alternativa1");
-  })
-  it('calledMenu', () => {
-    component.flagInit=false;
+  it('updateTree', () => {
+    const spy = jest.spyOn(component, 'addBusinessPlan').mockImplementation();
+    component.flagModify = false;
+    component.flagInit = false;
     let menu = [
       {
         code: 'string',
@@ -610,14 +611,15 @@ describe('ModificationTypesComponent', () => {
         description: 'string',
         name: 'string',
         servicePlans: [{}],
-        athrzdOprtn: ['MDF','RMV'],
+        athrzdOprtn: ['MDF', 'RMV'],
       },
     ];
-    expect(component.calledMenu(menu)).toBeUndefined();
+    expect(component.updateTree(menu)).toBeUndefined();
+    expect(spy).toBeCalled();
   });
 
-  it('onAddBranch',()=>{
-    component.flagInit=false;
+  it('onAddBranch', () => {
+    component.flagInit = false;
     let menu = [
       {
         code: 'string',
@@ -625,67 +627,86 @@ describe('ModificationTypesComponent', () => {
         description: 'string',
         name: 'string',
         servicePlans: [{}],
-        athrzdOprtn: ['MDF','RMV'],
+        athrzdOprtn: ['MDF', 'RMV'],
       },
     ];
-    const spy= jest.spyOn(component,'calledMenu').mockImplementation();
+    const spy = jest.spyOn(component, 'updateTree').mockImplementation();
     component.onAddBranch(menu);
     expect(spy).toBeCalled();
-  })
+  });
   it('sendData', () => {
-    component.showCommercialPlans=true;
-    expect(component.sendData('pc001_opcion1alternativa1', 'risk')).toBeUndefined();
+    component.showCommercialPlans = true;
+    expect(
+      component.sendData('pc001_opcion1alternativa1', 'risk', 'test')
+    ).toBeUndefined();
   });
   it('showRiskType', () => {
-    component.policyData=true;
-    expect(component.showRiskType()).toBeUndefined();
+    component.policyData = true;
+    expect(component.showRiskType({ name: 'test' })).toBeUndefined();
   });
   it('showCommercialPlan', () => {
-    component.showCommercialPlansTypes=true;
+    component.showCommercialPlansTypes = true;
     expect(component.showCommercialPlan({ name: 'Risk' })).toBeUndefined();
   });
 
-  it('getGroupArrayByIdModify',()=>{
+  it('getGroupArrayByIdModify', () => {
+    component.titleRisk = 'Mascota';
     component.getGroupArrayByIdModify(2);
   });
-  it('getGroupArrayById',()=>{
+  it('getGroupArrayById', () => {
     component.getGroupArrayById(1);
-  })
-  it('getDataCoverages',()=>{
-    component.getDataCoverages(7,'name')
-  })
-
-  it('addBranchCoverage',()=>{
-    let menu = [
-      {
-        code: 'string',
-        coverages: [{}],
-        description: 'string',
-        name: 'string',
-        servicePlans: [{}],
-        athrzdOprtn: ['MDF'],
-      },
-    ];
-    component.addBranchCoverage(menu,{athrzdOprtn:['MDF'],code :'string'})
   });
 
-  it('addBusinessPlan',()=>{
+  it('addBusinessPlan', () => {
+    const spy = jest
+      .spyOn(component, 'riskTypeMdfctnPrcss', 'get')
+      .mockImplementation();
     let menu;
-    let menu2 = [
-      {
-        code: 'string',
-        coverages: [{}],
-        description: 'string',
-        name: 'string',
-        servicePlans: [{}],
-        athrzdOprtn: ['MDF'],
-      },
-    ];
-    component.addBusinessPlan(menu2,menu);
-  })
+    let menu2 = {
+      code: 'string',
+      coverages: [{}],
+      description: 'string',
+      name: 'string',
+      servicePlans: [{}],
+      athrzdOprtn: ['MDF'],
+      cmmrclPln: [
+        {
+          athrzdOprtn: ['MDF'],
+        },
+      ],
+    };
+    expect(component.addBusinessPlan(menu2, menu)).toBeDefined();
+  });
 
-  // it('addDataRisk',()=>{
-  //   const spy=jest.spyOn(component,'getCoverages').mockImplementation();
-  //   component.addDataRisk();
-  // })
+  it('verifyCheck', () => {
+    let menu2:any = {
+      code: 'string',
+      coverages: [{}],
+      description: 'string',
+      name: 'string',
+      servicePlans: [{}],
+      athrzdOprtn: ['MDF'],
+      cmmrclPln: [
+        {
+          athrzdOprtn: ['MDF'],
+        },
+      ],
+    };
+    component.items1[1] = {
+      items: [
+        {
+          items: [
+            {
+              items: [
+                {
+                  id: 'string',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    expect(component.verifyCheck(menu2)).toBeDefined();
+  });
 });

@@ -10,7 +10,8 @@ export interface tableColumns {
 export interface FieldArray {
   id: number,
   name: string,
-  label: string
+  label: string,
+  businessCode: string,
   element: {
     id: number,
     businessCode: string

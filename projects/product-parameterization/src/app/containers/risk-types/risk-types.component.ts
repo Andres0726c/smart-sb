@@ -224,6 +224,7 @@ export class RiskTypesComponent implements OnInit {
         const index = this.findIndexRiskType(node);
         const id = this.productService.riskTypes.at(index).value.id;
         this.productService.riskTypes.removeAt(index);
+        this.deleteRiskMdfctPrcss(node);
         this.dataSource.data = this.dataSource.data.filter(
           (item) => item.id != id
         );
@@ -295,7 +296,15 @@ export class RiskTypesComponent implements OnInit {
     }); 
   }
 
-  
+  deleteRiskMdfctPrcss(node: any){
+    let mdfctnPrcss = this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')?.value;
+
+    let index =  mdfctnPrcss.findIndex((obj:any) => obj.name === node.name);
+
+    if (index > -1) {
+      (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')).removeAt(index);
+    }
+  }
 
   
 }
