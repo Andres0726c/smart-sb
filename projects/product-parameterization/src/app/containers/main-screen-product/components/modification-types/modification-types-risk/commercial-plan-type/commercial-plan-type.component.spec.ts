@@ -85,7 +85,6 @@ const ProductServiceMock = {
                           new FormGroup({
                             id: new FormControl(24),
                             name: new FormControl('Test'),
-                            // fieldGroup: new FormControl(1)
                           }),
                         ],
                         Validators.required
@@ -115,7 +114,6 @@ const ProductServiceMock = {
                   new FormGroup({
                     id: new FormControl(24),
                     name: new FormControl('Test'),
-                    // fieldGroup: new FormControl(1)
                   }),
                 ],
                 Validators.required
@@ -150,8 +148,6 @@ const ProductServiceMock = {
                   ],
                   Validators.required
                 ),
-
-                // fieldGroup: new FormControl(1)
               }),
             ],
             Validators.required
@@ -302,9 +298,6 @@ describe('CommercialPlanTypeComponent', () => {
     component.titleRisk = 'Mascota';
     component.data = 'pc001_opcion1alternativa1';
     component.titleBussinesPlan = 'DAVIPLATA 1';
-    // fixture.detectChanges();
-    // const spy = jest.spyOn(component, 'addDataTable').mockImplementation();
-    // expect(spy).toBeCalled();
     expect(component.ngOnChanges()).toBeUndefined();
   });
 
