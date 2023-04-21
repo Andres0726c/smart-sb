@@ -47,15 +47,17 @@ export class ModificationTypesRiskComponent implements OnInit, OnChanges {
   showBranch: BusinessPlans[] = [];
   tableData: any[] = [];
   test: boolean = true;
-  athrzdOprtn: OptionsCommercialP[] = [
-    { name: 'Reemplazar', key: 'RMP' },
-    { name: 'Modificar', key: 'MDF' },
-  ];
+  athrzdOprtn: OptionsCommercialP[] = [];
   selectedCategories: any[] = ['Modificar'];
   group!: FormGroup;
   constructor(public productService: ProductService, public fb: FormBuilder) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.athrzdOprtn = [
+      { name: 'Reemplazar', key: 'RMP' },
+      { name: 'Modificar', key: 'MDF' },
+    ];
+  }
 
   ngOnChanges(): void {
     this.tableData = [];
@@ -63,7 +65,6 @@ export class ModificationTypesRiskComponent implements OnInit, OnChanges {
     this.tableData.push(...this.getcmmrclPln(this.titleRisk).getRawValue());
     this.selectedCategories = this.athrzdOprtn.slice(1, 3);
     console.log('table', this.tableData.length);
-    
   }
 
   get policyDataControls(): FormArray {
