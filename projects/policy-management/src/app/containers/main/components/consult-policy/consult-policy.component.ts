@@ -78,6 +78,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     this.cols = [
       { header: 'Producto' },
       { header: 'Póliza' },
+      { header: 'Póliza externo' },
       { header: 'Tomador' },
       { header: 'Inicio vigencia' },
       { header: 'Fin vigencia' },
