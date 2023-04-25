@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit {
 
     this.cognitoService.signOut()
     .then(() => {
-      this.router.navigate(['/autenticacion']);
+      this.router.navigate(['/autorizacion']);
     });
   }
 

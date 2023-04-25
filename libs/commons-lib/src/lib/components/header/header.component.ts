@@ -49,6 +49,14 @@ export class HeaderComponent implements OnInit {
 
     this.items2 = [
       {
+        icon: 'fas fa-users-cog',
+        label: 'Administrar roles',
+        routerLink: '/autorizacion/admin'
+        /*command: () => {
+          this.signOut();
+        }*/
+      },
+      {
         icon: 'pi pi-sign-in',
         label: 'Cerrar sesión',
         command: () => {
@@ -77,7 +85,7 @@ export class HeaderComponent implements OnInit {
     this.closing = true;
     this.cognitoService.signOut()
     .then(() => {
-      this.router.navigate(['/autenticacion']);
+      this.router.navigate(['/autorizacion']);
     });
   }
 }

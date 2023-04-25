@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
       check = this.verifyAccess(value, state);
     })
     .catch((err) => {
-      this.router.navigate(['/autenticacion']);
+      this.router.navigate(['/autorizacion']);
     });
 
     return check;
@@ -42,7 +42,7 @@ export class AuthGuard implements CanActivate {
     } else {
       this.cognitoService.signOut()
       .then(() => {
-        this.router.navigate(['/autenticacion']);
+        this.router.navigate(['/autorizacion']);
       });
     }
     return access;

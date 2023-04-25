@@ -1,35 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainComponent } from './main.component';
-import { AuthGuard, LoginGuard } from 'commons-lib';
+import { AuthManagementComponent } from './auth-management.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: MainComponent,
-    children: [
+    component: AuthManagementComponent,
+    /*children: [
       {
         path: 'login',
         loadChildren: () =>
           import(
             '../../components/login/login.module'
-          ).then((m) => m.LoginModule),
-        canActivate: [LoginGuard]
+          ).then((m) => m.LoginModule)
       },
       {
         path: 'admin',
         loadChildren: () =>
           import(
-            '../auth-management/auth-management.module'
-          ).then((m) => m.AuthManagementModule),
-        canActivate: [AuthGuard]
+            '../../components/login/login.module'
+          ).then((m) => m.LoginModule)
       },
       {
         path: '**',
         redirectTo: 'login',
         pathMatch: 'full'
       }
-    ]
+    ]*/
   }
 ];
 
@@ -37,4 +34,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class MainRoutingModule { }
+export class AuthManagementRoutingModule { }
