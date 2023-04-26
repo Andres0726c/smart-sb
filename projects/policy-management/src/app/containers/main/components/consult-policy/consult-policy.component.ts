@@ -24,7 +24,7 @@ import { Menu } from 'primeng/menu';
   providers: [MessageService, DialogService],
 })
 export class ConsultPolicyComponent implements OnDestroy {
-  @ViewChild('menu') menu!: Menu; 
+  @ViewChild('menu') menu!: Menu;
   policies: PolicyBrief[] = [];
   cols: any[] = [];
   filters: FilterPolicy = {
@@ -87,13 +87,13 @@ export class ConsultPolicyComponent implements OnDestroy {
     ];
 
     this.items = [
-      { 
-        label: 'Modificar', 
+      {
+        label: 'Modificar',
         icon: 'pi pi-fw pi-pencil',
         command: () => {
           this.router.navigate(
             [`/polizas/modificar/${this.selectedPolicy?.idProduct}`],
-            { state: { policy: this.selectedPolicy }  }
+            { state: { policy: this.selectedPolicy } }
           );
         }
       },
@@ -130,7 +130,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       },
     ];
   }
-  
+
 
   getFieldsControls(group: any) {
     return group.get('fields') as FormArray;
@@ -144,6 +144,14 @@ export class ConsultPolicyComponent implements OnDestroy {
         this.items[2].disabled = true;
         this.items[3].disabled = true; //Se deshabilita por PaP
         this.items[4].disabled = false;
+        break;
+      case 'Rechazada':
+      case 'Provisoria':
+        this.items[0].disabled = true;
+        this.items[1].disabled = true;
+        this.items[2].disabled = true;
+        this.items[3].disabled = true; //Se deshabilita por PaP
+        this.items[4].disabled = true;
         break;
 
       case 'Cancelada':
@@ -228,8 +236,8 @@ export class ConsultPolicyComponent implements OnDestroy {
     this.totalRecords = 0;
   }
 
-  showModalConsulDetails(){
-    this.dialogService.open(PolicyDetailsComponent,{
+  showModalConsulDetails() {
+    this.dialogService.open(PolicyDetailsComponent, {
       data: {
         idPolicy: this.selectedPolicy.idPolicy,
         policy: this.selectedPolicy
@@ -238,8 +246,8 @@ export class ConsultPolicyComponent implements OnDestroy {
       modal: true,
       dismissableMask: true,
       width: '100%',
-      styleClass:'w-full sm:w-4/5 md:w-3/5',
-      contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px'},
+      styleClass: 'w-full sm:w-4/5 md:w-3/5',
+      contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px' },
       baseZIndex: 10000,
     })
   }
@@ -249,7 +257,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     this.productService.findPolicyDataById(this.selectedPolicy.policyNumber, 0).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         const policy = res.body;
-        if (new Date(policy.plcy.plcyDtGrp.datos_basicos['FEC_FIN_VIG_POL']) > new Date(this.selectedPolicy.expirationDate)) {
+        if (new Date(policy.plcy.plcyDtGrp.datos_basicos['FEC_FIN_VIG_POL']) > new Date(this.selectedPolicy.expirationDate)) {
           this.showSuccess('error', 'Proceso pendiente', 'La póliza tiene un endoso pendiente');
         } else {
           this.showModal(PolicyRenewalComponent, 'Renovación', { policyBasic: this.selectedPolicy, policyData: policy }, 'Renovar', '96%', '100%', '100%');
@@ -268,7 +276,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       detail: msg
     });
   }
-  
+
   ngOnDestroy(): void {
     // Cerramos todas las modales al cambiar de componente
     this.dialogService.dialogComponentRefMap.forEach(dialog => {
