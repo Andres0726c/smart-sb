@@ -1,0 +1,11 @@
+.sidenav {
+    user-select: none;
+    background: var(--greyscale-5);
+    border-bottom-right-radius: 25px;
+    border-top-right-radius: 25px;
+    box-shadow: 2px 0px 4px var(--greyscale-5);
+    height: auto;
+    overflow: auto;
+    padding-bottom: 100px;
+    max-width: 342px;
+}

@@ -6,27 +6,27 @@ const routes: Routes = [
   {
     path: '',
     component: AuthManagementComponent,
-    /*children: [
+    children: [
       {
-        path: 'login',
+        path: 'administrar-roles',
         loadChildren: () =>
           import(
-            '../../components/login/login.module'
-          ).then((m) => m.LoginModule)
+            './components/role-administration/role-administration.module'
+          ).then((m) => m.RoleAdministrationModule)
       },
-      {
+      /*{
         path: 'admin',
         loadChildren: () =>
           import(
             '../../components/login/login.module'
           ).then((m) => m.LoginModule)
-      },
+      },*/
       {
         path: '**',
-        redirectTo: 'login',
+        redirectTo: 'administrar-roles',
         pathMatch: 'full'
       }
-    ]*/
+    ]
   }
 ];
 
