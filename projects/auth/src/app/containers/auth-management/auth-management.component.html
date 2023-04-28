@@ -8,18 +8,7 @@
                 Administración de roles y usuarios
             </div>
             <div class="flex-1 px-2">
-                <p-panelMenu [model]="items" styleClass="w-full sb-menu" [multiple]="true">
-                    <ng-template let-item pTemplate="item">
-                        <span class="menuitem-text">{{ item.label }}wenasss</span>
-                        <a [routerLink]="item.routerLink">
-                        <em [ngClass]="item.icon"></em>
-                        <div class="w-full">
-                            <span>{{item.label}} hola <em class="fas fa-bars"></em></span>
-                            <em class="fas fa-bars"></em>
-                        </div>
-                        </a>
-                    </ng-template>
-                </p-panelMenu>
+                <p-panelMenu [model]="items" styleClass="w-full sb-menu" [multiple]="true"></p-panelMenu>
             </div>
             <div class="foot">
                 <div class="logo_sb_text" *ngIf="true"></div>
