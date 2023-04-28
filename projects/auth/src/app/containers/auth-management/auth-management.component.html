@@ -1,20 +1,30 @@
 <div class="min-h-screen h-screen flex flex-col">
     <refactoring-smartcore-mf-header></refactoring-smartcore-mf-header>
     <div class="flex-1 flex flex-row overflow-y-hidden">
-        <nav class="order-first w-[380px] sidenav px-2">
-            <div class="flex items-center my-3 w-full font-bold">
+        <nav class="order-first w-[380px] sidenav flex flex-col">
+            <div class="flex items-center my-3 w-full font-bold px-2">
                 <button pButton pRipple type="button" icon="fas fa-bars" class="p-button-rounded mx-2"></button>
                 <img src="/smartcore-commons/assets/img/v1114_18129.png" class="w-12" alt="Title logo">
                 Administración de roles y usuarios
             </div>
-            <p-panelMenu [model]="items" styleClass="w-full" [multiple]="true">
-                <ng-template let-item pTemplate="item">
-                    <a [routerLink]="item.routerLink">
-                      <em [ngClass]="item.icon"></em>
-                      <span>{{item.label}}</span>
-                    </a>
-                </ng-template>
-            </p-panelMenu>
+            <div class="flex-1 px-2">
+                <p-panelMenu [model]="items" styleClass="w-full sb-menu" [multiple]="true">
+                    <ng-template let-item pTemplate="item">
+                        <span class="menuitem-text">{{ item.label }}wenasss</span>
+                        <a [routerLink]="item.routerLink">
+                        <em [ngClass]="item.icon"></em>
+                        <div class="w-full">
+                            <span>{{item.label}} hola <em class="fas fa-bars"></em></span>
+                            <em class="fas fa-bars"></em>
+                        </div>
+                        </a>
+                    </ng-template>
+                </p-panelMenu>
+            </div>
+            <div class="foot">
+                <div class="logo_sb_text" *ngIf="true"></div>
+                <div class="logo_sb"></div>
+            </div>
         </nav>
         <main class="flex-1 bg-neutral-200 overflow-y-auto">
             <router-outlet></router-outlet>
