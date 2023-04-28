@@ -161,7 +161,7 @@ describe('ConsultPolicyComponent', () => {
     expect(component.totalRecords).toEqual(0)
   })
 
-  it('consult success', fakeAsync(() => {
+  it('consult success', () => {
     const response: ResponseDTO<string[]> = {
       body: ['test'],
       dataHeader: {
@@ -179,10 +179,10 @@ describe('ConsultPolicyComponent', () => {
       .mockReturnValueOnce(of(response));
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual(['test']);
-  }));
+  });
 
 
-  it('consult error 400', fakeAsync(() => {
+  it('consult error 400', () => {
     const response: ResponseDTO<string[]> = {
       body: [],
       dataHeader: {
@@ -201,7 +201,7 @@ describe('ConsultPolicyComponent', () => {
 
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual([]);
-  }));
+  });
 
   it('disable items (Activa)', () => {
     component.disabledItem('Activa')
@@ -238,5 +238,51 @@ describe('ConsultPolicyComponent', () => {
     jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
     expect(component.getPolicy()).toBeUndefined();
   });
+
+  it('setData', () => {
+    let res: any = { body:'' };
+    const spy = component.setData(res, 'city');
+    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
+    expect(spy).toBeUndefined();
+    expect(spy2).toBeDefined();
+  });
+
+  it('addToElementData', () => {
+    let res: any = { body: [{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }] };
+    const spy = component.setData(res, 'city');
+    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
+    expect(spy).toBeUndefined();
+    expect(spy2).toBeDefined();
+  });
+  
+  it('getDaneCode', () => {
+    const service = fixture.debugElement.injector.get(ConsultPolicyService);
+    const response: ResponseDTO<string[]> = {
+      body: [],
+      dataHeader: {
+        code: 200,
+        status: 'OK',
+        errorList: [],
+        hasErrors: false,
+        currentPage: 9,
+        totalPage: 22,
+        totalRecords: 106,
+      },
+    };
+    jest.spyOn(service, 'getPolicyById').mockReturnValue(of (response));
+    const daneCode = '05'
+    
+    expect(component.getDaneCode(1)).toBeUndefined();
+    expect(component.getCity(daneCode)).toBeUndefined();
+  });
+
+  it('getCity', () => {
+    const service = fixture.debugElement.injector.get(ProductService);
+    const spy1 = jest.spyOn(service, 'getApiData').mockReturnValueOnce(of('city/findByState', '', '05'));
+    component.getCity('05');
+    expect(spy1).toHaveBeenCalledTimes(1);
+  });
+
+
   
 });
