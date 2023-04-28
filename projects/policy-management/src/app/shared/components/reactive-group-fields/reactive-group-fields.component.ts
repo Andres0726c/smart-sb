@@ -22,7 +22,6 @@ export class ReactiveGroupFieldsComponent {
   @Output() validRules: EventEmitter<any> = new EventEmitter();
 
   validRule:boolean=true;
-  
 
   constructor(
     public fb : FormBuilder,
@@ -149,37 +148,34 @@ export class ReactiveGroupFieldsComponent {
     });
   }
 
-  async changeOptions(field: any){
+   changeOptions(field: any, formGroup: any){
+    
+    
     let key = 'id';
     let fieldAux = field.value.value;
-    let arrFields: any = (<FormArray>this.group.value.fields);
     let businessCode: string = field.value.businessCode;
     let arr: any[] = [];
-    await this.productService
+     this.productService
     .getApiData('city/findByState', '', fieldAux[key] !== undefined ? fieldAux.id : fieldAux)
     .subscribe((res) => {
       if(res.body){
-        arr = arrFields.filter((object: any) => {
-          return object.dependency === businessCode;        
-        }); 
-        arr = res.body;        
-        // this.cd.detectChanges();
-      }
-      for (const item of this.group.value.fields) {
-        if (item.dependency === businessCode) {
-          item.options = [];
-          item.options = arr;
-          console.log('item Options',item.options);
-          
-        }
-        this.cd.detectChanges();
+        arr = res.body;
         
-      } 
-      console.log('group', this.group.value.fields);
-    });
-      
-    
-    
+        for (const item of this.group.value.fields) {
+            setTimeout(() => {
+              if( item.dependency === businessCode ){
+                let fieldsControls = (<FormArray>(<FormGroup>formGroup).get('fields'));
+                let fieldsControlsValue = (<FormArray>(<FormGroup>formGroup).get('fields')).value;
+                let index = fieldsControlsValue.findIndex((x: any) => x.businessCode === 'CIU_TDB')
+                let fieldcity = (<FormGroup>fieldsControls.controls[index]);
+                fieldcity.get('options')?.setValue(res.body.map((item: any) => {
+                      return { id: item.code, name: item.description };
+                  }));
+              }
+              this.cd.detectChanges();
+            }, 0);
+        } 
+      }
+      });
   }
-
 }

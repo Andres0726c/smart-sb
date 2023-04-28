@@ -211,7 +211,7 @@ export class ConsultPolicyComponent implements OnDestroy {
           this.policies = res.body;
           this.totalRecords = res.dataHeader.totalRecords;
           console.log('policies', this.policies);
-          this.testMethod(this.policies[0].idPolicy);
+          this.getDaneCode(this.policies[0].idPolicy);
           
         } else {
           this.policies = [];
@@ -282,28 +282,12 @@ export class ConsultPolicyComponent implements OnDestroy {
     });
   }
 
-  testMethod(id: number){
-    // let daneCode: any;
+  getDaneCode(id: number){
     this.consultPolicyService.getPolicyById(id).subscribe((res) => {
-
       if (res.body) {
-        let daneCode = res.body.propertiesPolicyData.datos_basicos.DEPAR_COL;
-        console.log('policyBody', daneCode);
-        
-        // daneCode = policyBody['gd002_datosdeldebito']['CIU_TDB'] === '' ? '0' : policyBody['gd002_datosdeldebito']['CIU_TDB'].slice(0, 2);
-        // for(let key of Object.keys(policyBody)){
-        //   console.log('keys', key);
-        //   for(let value of Object.keys(policyBody[key])){
-        //     daneCode = policyBody[key][value];            
-        //     daneCode = daneCode ? daneCode.slice(0, 2) : '';
-        //     console.log('danecode', daneCode);
-        //     if (policyBody[key][value] ===  'CIU_TDB')
-        //     break;
-        //   }
-        // }
-        console.log('resBody', res.body);
+        let daneCode = res.body.propertiesPolicyData.gd002_datosdeldebito.DEPAR_COL;
+        // let daneCode = res.body.propertiesPolicyData.datos_basicos.DEPAR_COL;
         this.getCity(daneCode)
-        console.log('daneCode', daneCode);
         
       }
   })
