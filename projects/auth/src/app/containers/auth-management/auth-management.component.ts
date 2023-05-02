@@ -7,6 +7,7 @@ import { MenuItem } from 'primeng/api';
   styleUrls: ['./auth-management.component.scss']
 })
 export class AuthManagementComponent implements OnInit {
+  isExpanded: boolean = true;
   items!: MenuItem[];
 
   constructor() { 
@@ -17,7 +18,7 @@ export class AuthManagementComponent implements OnInit {
         items: [
             {
               label: 'Administración',
-              routerLink: 'admin'
+              routerLink: 'administrar-roles'
             },
             {
               label: 'Permisos',
