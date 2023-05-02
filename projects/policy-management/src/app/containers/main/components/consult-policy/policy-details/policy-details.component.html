@@ -148,7 +148,7 @@
 
   <div id="div-policy-details">
     <section *ngIf="!isLoading && policy" class="sticky bottom-0 bg-white pb-6 pt-4">
-      <button pButton type="submit" label="Consulta endosos" class="min-w-max" (click)="close()"></button>
+      <button pButton type="submit" label="Consulta endosos" class="min-w-max" (click)="showPolicyEndorsementModal()"></button>
     </section>
 
     <section *ngIf="!isLoading && policy" id="btn-close-policy-details" class="sticky bottom-0 bg-white pb-6 pt-4" >

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Policy } from 'projects/policy-management/src/app/core/interfaces/policy';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { ConsultPolicyService } from '../services/consult-policy.service';
+import { PolicyEndorsementComponent } from '../policy-endorsement/policy-endorsement.component';
 @Component({
   selector: 'app-policy-details',
   templateUrl: './policy-details.component.html',
@@ -25,6 +26,7 @@ export class PolicyDetailsComponent implements OnInit {
   constructor(
     public ref: DynamicDialogRef, 
     public config: DynamicDialogConfig, 
+    public dialogService: DialogService,
     public consultPolicyService: ConsultPolicyService,
     public productService: ProductService
   ) { }
@@ -87,6 +89,22 @@ export class PolicyDetailsComponent implements OnInit {
 
   close() {
     this.ref.close(true)
+  }
+
+  showPolicyEndorsementModal() {
+    this.close();
+    this.dialogService.open(PolicyEndorsementComponent, {
+      data: {
+        idPolicy: this.policy.policyNumber
+      },
+      header: 'Consulta endosos',
+      modal: true,
+      dismissableMask: true,
+      width: '100%',
+      styleClass: 'w-full sm:w-4/5 md:w-3/5',
+      contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px' },
+      baseZIndex: 10000,
+    })
   }
 
 }

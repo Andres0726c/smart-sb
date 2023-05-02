@@ -1,0 +1,50 @@
+<section class="flex flex-col justify-center w-full">
+    <p-table [columns]="cols" [value]="policyEndorsement" responsiveLayout="scroll" [rows]="5" 
+        [paginator]="true" [alwaysShowPaginator]="false" [lazy]="true"
+        [totalRecords]="totalRecords" [loading]="loading" [(first)]="first">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns" scope="col">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr>
+                <td>
+                    {{rowData['turnOverPeriod']}}
+                </td>
+                <td>
+                    {{rowData['endorsementNumber']}}
+                </td>
+                <td>
+                    {{rowData['applicationprocess']}}
+                </td>
+                <td>
+                    {{rowData['issueDate'] | date:'d MMM y, HH:mm:ss'}}
+                </td>
+                <td>
+                    {{rowData['inceptionDate'] | date:'d MMM y, HH:mm:ss'}} - {{rowData['expirationDate'] | date:'d MMM y, HH:mm:ss'}}
+                </td>
+                <td>
+                    <span
+                        class="bagde status-{{rowData['status'].toString().split('-')}}">{{rowData['status'].toUpperCase()}}</span>
+                </td>
+                <td>
+                    <button type="button" pButton pRipple class="p-button p-button-secondary bg-white hover:"
+                        icon="pi pi-eye" (click)="viewObservations()">
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="8">Póliza no contiene endosos</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</section>
+
+<section id="btn-close-policy-details" class="sticky bottom-0 bg-white pb-6 pt-4" >
+    <button pButton type="submit" label="Cerrar" class="min-w-max" (click)="close()"></button>
+</section>

@@ -54,3 +54,13 @@ export interface ServicePlan {
   value: number
 }
 
+export interface PolicyEndorsement {
+  turnOverPeriod: String,
+  endorsementNumber: String,
+  applicationprocess: String,
+  issueDate: String,
+  inceptionDate: String,
+  expirationDate: String,
+  status: String,
+  observation?: String
+}
