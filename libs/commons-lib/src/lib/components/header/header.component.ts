@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { NavigationEnd, Router } from '@angular/router';
 import { CognitoService } from '../../services/cognito.service';
@@ -10,6 +10,8 @@ import { CognitoService } from '../../services/cognito.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+  @Input('title') title: string = 'SmartCore';
+
   items!: MenuItem[];
   items2!: MenuItem[];
 

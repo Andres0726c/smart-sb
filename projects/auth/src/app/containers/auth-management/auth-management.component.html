@@ -1,20 +1,7 @@
 <div class="min-h-screen h-screen flex flex-col">
-    <refactoring-smartcore-mf-header></refactoring-smartcore-mf-header>
+    <refactoring-smartcore-mf-header [title]="'Administración de roles y usuarios'"></refactoring-smartcore-mf-header>
     <div class="flex-1 flex flex-row overflow-y-hidden">
-        <nav class="order-first w-[380px] sidenav flex flex-col">
-            <div class="flex items-center my-3 w-full font-bold px-2">
-                <button pButton pRipple type="button" icon="fas fa-bars" class="p-button-rounded mx-2"></button>
-                <img src="/smartcore-commons/assets/img/v1114_18129.png" class="w-12" alt="Title logo">
-                Administración de roles y usuarios
-            </div>
-            <div class="flex-1 px-2">
-                <p-panelMenu [model]="items" styleClass="w-full sb-menu" [multiple]="true"></p-panelMenu>
-            </div>
-            <div class="foot">
-                <div class="logo_sb_text" *ngIf="true"></div>
-                <div class="logo_sb"></div>
-            </div>
-        </nav>
+        <refactoring-smartcore-mf-sidenav></refactoring-smartcore-mf-sidenav>
         <main class="flex-1 bg-neutral-200 overflow-y-auto">
             <router-outlet></router-outlet>
         </main>
