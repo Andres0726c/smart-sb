@@ -74,11 +74,11 @@ export class FilterPolicyTopComponent {
       this.documentsType = data;
     });
 
-    this.productService
-      .getApiData('city/findByState', '', '0')
-      .subscribe((res) => {
-        this.setData(res, 'city');
-      });
+    // this.productService
+    //   .getApiData('city/findByState', '', '0')
+    //   .subscribe((res) => {
+    //     this.setData(res, 'city');
+    //   });
 
     this.productService
       .getApiData('state/statefindbycountry', '', 'CO')

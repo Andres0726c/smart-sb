@@ -17,9 +17,10 @@ describe('ReactiveGroupFieldsComponent', () => {
   let dialogService1: DialogService;
   let messageService: MessageService;
   let formBuilderMock = new FormBuilder();
+  let detectChanges: any;
   let field: any ={value : {
-    businessCode: "CIU_TDB",
-    code: { businessCode: "CIU_TDB" },
+    businessCode: "DEPAR_COL",
+    code: { businessCode: "DEPAR_COL" },
     value: {id:'05002', name:'Abejorral'},
     test: false,
     initializeRule:  [{
@@ -81,7 +82,7 @@ describe('ReactiveGroupFieldsComponent', () => {
           PRODUCTOS: "mascotadaviviendadiciembre",
           TIPO_DOC_TOMADOR: "CC"
         },
-        gd002_datosdeldebito:{CIU_TDB: "05001",CORREO_PERSO_CONTAC: "ejemplito@example.com",DIR_TDB: "cra 15 #8-10",DTO_CUO_POL: "3",DTO_ENF_POL: "enf_dvv",DTO_VTC_POL: "202511",MEDIO_PAGO: "mep_tcr",METODO_PAGO: "MPG_EFT",NOM_TDB: "Diego Carvajal",NRO_CUENTA: "6087543124",NRO_ID_TDB: "106158765",TEL_TDB: "3109876540",TPO_ID_TDB: "CD"}
+        gd002_datosdeldebito:{CIU_TDB: "05001", DEPAR_COL: "05001", CORREO_PERSO_CONTAC: "ejemplito@example.com",DIR_TDB: "cra 15 #8-10",DTO_CUO_POL: "3",DTO_ENF_POL: "enf_dvv",DTO_VTC_POL: "202511",MEDIO_PAGO: "mep_tcr",METODO_PAGO: "MPG_EFT",NOM_TDB: "Diego Carvajal",NRO_CUENTA: "6087543124",NRO_ID_TDB: "106158765",TEL_TDB: "3109876540",TPO_ID_TDB: "CD"}
       },
       rsk: {
         1: {
@@ -99,6 +100,15 @@ describe('ReactiveGroupFieldsComponent', () => {
           }
         }
       }
+    }
+  }
+
+  let group = {
+    value: {
+      code: 'gd002_datosdeldebito',
+      fields: [],
+      id: 1,
+      name: ''
     }
   }
   beforeEach(async () => {
@@ -216,5 +226,34 @@ describe('ReactiveGroupFieldsComponent', () => {
   
   });
 
- 
+  it('changeOptions',()=>{
+    component.group = [{
+      value: {
+        fields: [{
+          businessCode: 'CIU_TDB',
+          id: 1,
+          dependency: 'DEPAR_COL',
+          name: 'CIUDAD',
+        }]
+      }
+    }]
+    const res: any = {
+      body: ['test'],
+      dataHeader: {
+          code: 200,
+          status: "OK",
+          errorList: [],
+          hasErrors: false,
+          currentPage: 0,
+          totalPage: 0,
+          totalRecords: 0
+      }
+  };
+  const service = fixture.debugElement.injector.get(ProductService);
+  const spy1 = jest.spyOn(service, 'getApiData').mockReturnValueOnce(of(res));
+  component.changeOptions(field,group);
+  expect(spy1).toHaveBeenCalledTimes(1);
+
+  });
+
 });
