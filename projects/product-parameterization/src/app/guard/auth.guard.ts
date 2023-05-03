@@ -88,9 +88,10 @@ export class AuthGuardParameterizer implements CanActivate {
   }
 
    ModuleAccess(value: any) {
-    const moduleAcess: string[] = value.attributes['custom:moduleAccess'].split(",");
-  
-    return moduleAcess.find(x => x === 'Parametrizar') ? true : false;
-       
+    const moduleAcess: string[] = value.attributes['custom:moduleAccess']?.split(",");
+    if(moduleAcess){
+      return moduleAcess.find(x => x === 'Parametrizar') ? true : false;
+    } 
+    return true;
   }
 }

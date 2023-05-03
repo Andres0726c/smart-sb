@@ -138,7 +138,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     this.cognitoService
       .getUser()
       .then((value) => {
-        this.moduleAcess = value.attributes['custom:moduleAccess'].split(",");
+        this.moduleAcess = value.attributes['custom:moduleAccess']?.split(",");
       })
   }
 
@@ -151,10 +151,12 @@ export class ConsultPolicyComponent implements OnDestroy {
     return group.get('fields') as FormArray;
   }
   visibleItem(){
+    if (this.moduleAcess){
     this.items.find((x: any) => x.label === 'Modificar').visible = this.getModule('Modificar')
     this.items.find((x: any) => x.label === 'Cancelar').visible = this.getModule('Cancelar')
     this.items.find((x: any) => x.label === 'Renovar').visible = this.getModule('Renovar')
     this.items.find((x: any) => x.label === 'Rehabilitar').visible = this.getModule('Rehabilitar')
+     }
   }
 
   disabledOption(label:string,status:boolean) {

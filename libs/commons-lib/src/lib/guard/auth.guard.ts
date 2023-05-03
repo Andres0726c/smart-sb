@@ -55,19 +55,19 @@ export class AuthGuard implements CanActivate {
 
   ModuleAccess(value: any,  nameModule:string,state: RouterStateSnapshot) {
     let moduleName =  nameModule;
-  
-    const moduleAcess: string[] = value.attributes['custom:moduleAccess'].split(",");
-
-    if (state.url === '/polizas/consulta'){
-      return moduleAcess.find(x => x === 'Consultar') ? true : false;
-    } else if (state.url === '/productos/menu-productos'){
-      return moduleAcess.find(x => x === 'Parametrizar') ? true : false;
-    }else if (state.url.includes('/polizas/modificar/')){
-      return moduleAcess.find(x => x === 'Modificar') ? true : false;
+    const moduleAcess: string[] = value.attributes['custom:moduleAccess']?.split(",");
+    if (moduleAcess) {
+        if (state.url === '/polizas/consulta'){
+          return moduleAcess.find(x => x === 'Consultar') ? true : false;
+        } else if (state.url === '/productos/menu-productos'){
+          return moduleAcess.find(x => x === 'Parametrizar') ? true : false;
+        }else if (state.url.includes('/polizas/modificar/')){
+          return moduleAcess.find(x => x === 'Modificar') ? true : false;
+        }
+        else{
+          return true
+        }
     }
-    else{
-      return true
-    }
-  
+    return true;
   }
 }
