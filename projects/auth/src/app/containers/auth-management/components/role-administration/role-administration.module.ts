@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RoleAdministrationComponent } from './role-administration.component';
 import { Route, RouterModule } from '@angular/router';
+import { NoDataScreenModule } from '../../../../shared/no-data-screen/no-data-screen.module';
+import { TableModule } from 'primeng/table';
 
 const routes: Route[] = [
   {
@@ -16,7 +18,9 @@ const routes: Route[] = [
   ],
   imports: [
     RouterModule.forChild(routes),
-    CommonModule
+    CommonModule,
+    NoDataScreenModule,
+    TableModule
   ]
 })
 export class RoleAdministrationModule { }
