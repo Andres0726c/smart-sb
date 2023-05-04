@@ -145,7 +145,7 @@ export class SidenavPropertyProductComponent implements OnInit {
     if (menu.formControlName) {
       if (this.formProcess.get(menu.formControlName)?.value.enabled) {
         if(moduleType==='modification'){        
-          this.showMessage(menu);
+           this.showMessage(menu);
         }
       } else {
         menu.show = true;
@@ -156,22 +156,31 @@ export class SidenavPropertyProductComponent implements OnInit {
   }
 
   showMessage(menu:any){
-    const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
+     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
         message:
         `Se perderan la parametrización de ${(menu.name).toLowerCase()} realizada, ¿desea continuar?`,
       },
     });
-    dialogRef.afterClosed().subscribe((res) => {
+      dialogRef.afterClosed().subscribe((res) => {
       if (res) {
           this.setValues(menu,false)
           this.deleteDataModification();
-          this.router.navigate(['/productos/parametrizador/parametros-generales']);
       } else {
         this.setValues(menu,true);
       }
     });
+
+     dialogRef.beforeClosed().subscribe((res)=>{
+      if(res)
+      this.navigateGeneralParams();
+    })
+    
+  }
+
+  async navigateGeneralParams(){
+    await this.router.navigate(['/productos/parametrizador/parametros-generales']);
   }
   setValues(menu: any, value:boolean){
     this.formProcess
@@ -205,7 +214,7 @@ export class SidenavPropertyProductComponent implements OnInit {
   }
 
 
-  deleteDataModification() {
+   deleteDataModification() {
 
     // Elimina todos los elementos del FormArray
     while (this.getComplementaryDataControls().length !== 0) {
@@ -217,6 +226,8 @@ export class SidenavPropertyProductComponent implements OnInit {
     while(this.getMdfctnTchnclCntrl().length!==0){
       this.getMdfctnTchnclCntrl().removeAt(0);
     }
+    
+
   }
 
   setDefaultOpenMenus() {
