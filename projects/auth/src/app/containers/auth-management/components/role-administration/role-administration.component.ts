@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ApiRequestsService } from 'commons-lib';
 import { ModalRoleComponent } from './modal-role/modal-role.component';
+import { AuthManagementService } from '../../services/auth-management.service';
 
 @Component({
   selector: 'refactoring-smartcore-mf-role-administration',
@@ -10,19 +10,18 @@ import { ModalRoleComponent } from './modal-role/modal-role.component';
   providers: [DialogService],
 })
 export class RoleAdministrationComponent implements OnInit {
-  roles!: any[];
+
   cols: any[] = [
     { field: 'name', header: 'Nombre' },
     { field: 'description', header: 'Descripción' },
   ];
   constructor(
     public dialogService: DialogService,
-    public apiService: ApiRequestsService
+    public apiService: AuthManagementService
   ) {}
 
   ngOnInit(): void {
-    this.roles = this.apiService.getRoles()?.value;
-    console.log('roles', this.roles);
+    
   }
 
   openToAdd() {

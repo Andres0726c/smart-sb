@@ -7,14 +7,17 @@
   <div class="mt-5 rounded-xl bg-white p-5">
     <!-- No data screen -->
     <refactoring-smartcore-mf-no-data-screen
-      *ngIf="roles.length === 0"
+      *ngIf="apiService.roles.length === 0"
       [emptyTitle]="'Sin roles creados'"
       [emptySubTitle]="'No se han creado roles'"
       (action)="openToAdd()"
     ></refactoring-smartcore-mf-no-data-screen>
 
     <!-- Search -->
-    <div class="flex items-center justify-between pb-2">
+    <div
+      *ngIf="apiService.roles.length > 0"
+      class="flex items-center justify-between pb-2"
+    >
       <span class="p-input-icon-right">
         <i class="pi pi-search"></i>
         <input type="text" pInputText />
@@ -34,7 +37,11 @@
     </div>
 
     <!-- Table -->
-    <p-table *ngIf="roles.length > 0" [columns]="cols" [value]="roles">
+    <p-table
+      *ngIf="apiService.roles.length > 0"
+      [columns]="cols"
+      [value]="apiService.roles.value"
+    >
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns">

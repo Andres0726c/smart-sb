@@ -13,20 +13,10 @@ export class ApiRequestsService {
     'x-api-key': environment.apiKeyServices
   });
 
-  roles:any = new FormArray([
-    
-  ]);
-
-
   constructor(
     private httpClient: HttpClient,
     public fb: FormBuilder,
-  ) { 
-    this.roles.push(new FormControl({
-      name: 'rol 1',
-      description: 'rol 1'
-    }));
-  }
+  ) {}
 
   /**
    * Function that returns data from general microservices
@@ -35,8 +25,4 @@ export class ApiRequestsService {
     id = (id !== '' ? `/${id}` : '');
     return this.httpClient.get(`${this.apiUrl}${serviceData}${id}`, { headers: this.headers });
   };
-
-  getRoles(){
-    return this.roles;
-  }
 }
