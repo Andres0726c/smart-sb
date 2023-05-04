@@ -69,8 +69,8 @@ export class HeaderComponent implements OnInit {
       .catch((err) => {
         this.isAuthenticated = false;
         this.cognitoService.signOut()
-        .then(() => {
-          this.router.navigate(['/autenticacion']).then();
+        .then(async () => {
+          await this.router.navigate(['/autenticacion']).then();
         })
         .catch((err) => {
           console.error('Error al cerrar sesión');
@@ -81,8 +81,8 @@ export class HeaderComponent implements OnInit {
   signOut(){
     this.closing = true;
     this.cognitoService.signOut()
-    .then(() => {
-      this.router.navigate(['/autenticacion']).then();
+    .then(async () => {
+      await this.router.navigate(['/autenticacion']).then();
     })
     .catch((err) => {
       console.error('Error al cerrar sesión');
