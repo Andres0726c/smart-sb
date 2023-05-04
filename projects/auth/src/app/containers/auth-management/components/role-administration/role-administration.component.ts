@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ApiRequestsService } from 'commons-lib';
-import { ModalFormRoleComponent } from './modal-form-role/modal-form-role.component';
+import { ModalRoleComponent } from './modal-role/modal-role.component';
 
 @Component({
   selector: 'refactoring-smartcore-mf-role-administration',
@@ -26,7 +26,7 @@ export class RoleAdministrationComponent implements OnInit {
   }
 
   openToAdd() {
-    const dialogRef = this.dialogService.open(ModalFormRoleComponent, {
+    const dialogRef = this.dialogService.open(ModalRoleComponent, {
       data: {
         title: 'Crear rol',
         subtitle: 'Especifique los datos para crear el rol',

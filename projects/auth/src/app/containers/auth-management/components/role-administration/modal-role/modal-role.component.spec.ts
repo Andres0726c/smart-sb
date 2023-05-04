@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalFormRoleComponent } from './modal-form-role.component';
+import { ModalRoleComponent } from './modal-role.component';
 
-describe('ModalFormRoleComponent', () => {
-  let component: ModalFormRoleComponent;
-  let fixture: ComponentFixture<ModalFormRoleComponent>;
+describe('ModalRoleComponent', () => {
+  let component: ModalRoleComponent;
+  let fixture: ComponentFixture<ModalRoleComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModalFormRoleComponent ]
+      declarations: [ ModalRoleComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModalFormRoleComponent);
+    fixture = TestBed.createComponent(ModalRoleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

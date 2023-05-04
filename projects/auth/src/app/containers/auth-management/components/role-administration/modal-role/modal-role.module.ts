@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModalFormRoleComponent } from './modal-form-role.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { ModalRoleComponent } from './modal-role.component';
 
 @NgModule({
   declarations: [
-    ModalFormRoleComponent
+    ModalRoleComponent
   ],
   imports: [
     CommonModule,
@@ -14,4 +14,4 @@ import { ButtonModule } from 'primeng/button';
     ButtonModule
   ]
 })
-export class ModalFormRoleModule { }
+export class ModalRoleModule { }

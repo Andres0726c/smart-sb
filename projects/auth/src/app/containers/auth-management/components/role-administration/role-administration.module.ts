@@ -4,6 +4,9 @@ import { RoleAdministrationComponent } from './role-administration.component';
 import { Route, RouterModule } from '@angular/router';
 import { NoDataScreenModule } from '../../../../shared/no-data-screen/no-data-screen.module';
 import { TableModule } from 'primeng/table';
+import { ModalRoleModule } from './modal-role/modal-role.module';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 const routes: Route[] = [
   {
@@ -20,7 +23,10 @@ const routes: Route[] = [
     RouterModule.forChild(routes),
     CommonModule,
     NoDataScreenModule,
-    TableModule
+    TableModule,
+    ModalRoleModule,
+    ButtonModule,
+    InputTextModule
   ]
 })
 export class RoleAdministrationModule { }
