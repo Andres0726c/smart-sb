@@ -147,9 +147,7 @@ export class ConsultPolicyComponent implements OnDestroy {
    }
 
 
-  getFieldsControls(group: any) {
-    return group.get('fields') as FormArray;
-  }
+
   visibleItem(){
     if (this.moduleAcess){
     this.items.find((x: any) => x.label === 'Modificar').visible = this.getModule('Modificar')
