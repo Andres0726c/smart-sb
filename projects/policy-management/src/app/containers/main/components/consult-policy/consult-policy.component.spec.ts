@@ -1,7 +1,6 @@
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
   ResponseDTO,
-  ResponseErrorDTO,
 } from './../../../../core/interfaces/commun/response';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
 import { FilterPolicy } from './interfaces/consult-policy';
@@ -14,17 +13,14 @@ import {
 import { RouterTestingModule } from "@angular/router/testing";
 
 import { MessageService } from 'primeng/api';
-import { of, Observable } from 'rxjs';
+import { of } from 'rxjs';
 import { FormArray,
   FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
   FormGroup,
-  FormsModule,
-  Validators } from '@angular/forms';
+  FormsModule
+   } from '@angular/forms';
 import { ConsultPolicyComponent } from './consult-policy.component';
 import { ConsultPolicyService } from './services/consult-policy.service';
-import { By } from '@angular/platform-browser';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
@@ -38,7 +34,6 @@ describe('ConsultPolicyComponent', () => {
   let fixture: ComponentFixture<ConsultPolicyComponent>;
   let ref: DialogService;
   let router: Router;
-  let location: Location;
   beforeEach(async () => {
     consultPolicyService = ConsultPolicyService.prototype;
     ref = DialogService.prototype
@@ -71,7 +66,6 @@ describe('ConsultPolicyComponent', () => {
     component = fixture.componentInstance;
     productService = fixture.debugElement.injector.get(ProductService);
     router = TestBed.inject(Router); 
-    location = TestBed.inject(Location); 
 
     const res = {
       "body": {
@@ -248,20 +242,14 @@ it('getModuleFalse',()=>{
     const spy=jest.spyOn(component, 'getModule').mockReturnValue(true);
     component.visibleItem();
     expect(spy).toBeDefined();
- 
   })
-  it('group', fakeAsync(() => {
-    component.items[1].command();
-    console.log( component.items[1].command())
-  }));
+
 
   describe('command item',()=>{
-
+    component.selectedPolicy={idProduct:1};
     it('navigate to "consult" to /modificar',() => {
       const spy = jest.spyOn(router, 'navigate').mockImplementation();
-      component.selectedPolicy={idProduct:1};
       component.items[0].command();
-      console.log( component.items[0].command());
       expect(spy).toBeCalled();
     });
     it('command Cancelar',()=>{
