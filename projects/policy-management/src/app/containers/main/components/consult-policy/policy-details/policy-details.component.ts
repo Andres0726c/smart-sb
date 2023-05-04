@@ -95,7 +95,7 @@ export class PolicyDetailsComponent implements OnInit {
     this.close();
     this.dialogService.open(PolicyEndorsementComponent, {
       data: {
-        idPolicy: this.policy.policyNumber
+        policyNumber: this.policy.policyNumber
       },
       header: 'Consulta endosos',
       modal: true,

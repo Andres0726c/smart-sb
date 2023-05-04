@@ -1,7 +1,9 @@
-<section class="flex flex-col justify-center w-full">
-    <p-table [columns]="cols" [value]="policyEndorsement" responsiveLayout="scroll" [rows]="5" 
-        [paginator]="true" [alwaysShowPaginator]="false" [lazy]="true"
-        [totalRecords]="totalRecords" [loading]="loading" [(first)]="first">
+<section id="section-table" class="flex flex-col justify-center w-full">
+    <p-table [columns]="cols" 
+             [value]="policyEndorsement" 
+             [rows]="rowsPerPage" 
+             [paginator]="paginator"
+             [loading]="loading">
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th *ngFor="let col of columns" scope="col">
