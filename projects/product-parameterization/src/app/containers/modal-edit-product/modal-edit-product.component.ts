@@ -62,8 +62,8 @@ export class ModalEditProductComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.getDataInsuranceLine();
+  async ngOnInit(): Promise<void> {
+    await this.getDataInsuranceLine().then();
   }
 
   getDataInsuranceLine = async (id: string = '3', serviceData: string = '') => {
@@ -113,7 +113,7 @@ export class ModalEditProductComponent implements OnInit {
     this.dataSource.data = this.products.slice(0,5);
   }
 
-  addProduct() {
+  async addProduct() {
     for (let object of this.selection.selected) {
       this.element = {
         productJson: object.productJson,
@@ -121,7 +121,7 @@ export class ModalEditProductComponent implements OnInit {
     }
     this.service.getProduct(this.element.productJson);
     this.onNoClick();
-    this.router.navigate(['productos/parametrizador/parametros-generales']);
+    await this.router.navigate(['productos/parametrizador/parametros-generales']).then();
   }
 
   getProductsSearch = async (id: number, search: string = '0', page:number=0) => {
@@ -149,12 +149,12 @@ export class ModalEditProductComponent implements OnInit {
     this.isLoadingInput = false;
   }
 
-  changePage(event: PageEvent){
+  async changePage(event: PageEvent){
     const page = event.pageIndex
     if (this.products.length == this.totalRecords) {
       this.dataSource.data = this.products.slice(page*5, page*5 + 5);
     } else {
-      this.applyFilter(event.pageIndex);
+      await this.applyFilter(event.pageIndex).then();
     }
   }
 

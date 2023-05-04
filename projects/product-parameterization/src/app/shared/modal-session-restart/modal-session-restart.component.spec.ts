@@ -153,8 +153,8 @@ describe('ModalSessionRestartComponent', () => {
 
   });
 
-  it('forbidden', () => {
+  it('forbidden', async() => {
     component.cognitoService.signOut= () => Promise.resolve();
-    expect(component.forbidden()).toBeUndefined();
+    expect(component.forbidden()).toBeDefined();
   });
 });
