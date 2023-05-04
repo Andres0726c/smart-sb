@@ -12,6 +12,7 @@ import {
   FormControl,
   FormGroup,
   FormsModule,
+  Validators
 } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
 import { of } from 'rxjs';
@@ -35,6 +36,7 @@ describe('SidenavPropertyProductComponent', () => {
           useValue: {
             open: () => ({
               afterClosed: () => of(true),
+              beforeClosed: ()=> of(true)
             }),
         }
       },
@@ -162,10 +164,19 @@ describe('SidenavPropertyProductComponent', () => {
     };
     const spy2 = jest.spyOn(component, 'setValues').mockImplementation();
     const spy3 = jest.spyOn(component, 'deleteDataModification').mockImplementation();
+    const spy4 = jest.spyOn(component, 'navigateGeneralParams').mockImplementation();
+
     component.showMessage(menu);
+    expect(spy2).toBeCalled();
+    expect(spy3).toBeCalled();
+    expect(spy4).toBeCalled();
+
     
   })
 
+  it('navigateGeneralParams',()=>{
+    expect(component.navigateGeneralParams()).toBeDefined();
+  })
   it('setValues',()=>{
     component.formProcess
     .get('modification')
@@ -185,14 +196,19 @@ describe('SidenavPropertyProductComponent', () => {
 
   it('deleteDataModification',()=>{
 
-    let ProductServiceMock = component.fb.array([]);
+    let productServiceM= component.fb.array([]);
+   
+    productServiceM.push( new FormControl(1) );
  
-    ProductServiceMock.push(new FormControl(1))
-     const spy1 = jest.spyOn(component, 'getComplementaryDataControls').mockReturnValue(ProductServiceMock);
-     const spy2 = jest.spyOn(component, 'getRiskTypeMdfctnPrcss').mockReturnValue(ProductServiceMock);
-     const spy3 = jest.spyOn(component, 'getMdfctnTchnclCntrl').mockReturnValue(ProductServiceMock);
+     const spy1 = jest.spyOn(component, 'getComplementaryDataControls').mockReturnValue(productServiceM);
+     const spy2 = jest.spyOn(component, 'getRiskTypeMdfctnPrcss').mockReturnValue(productServiceM);
+     const spy3 = jest.spyOn(component, 'getMdfctnTchnclCntrl').mockReturnValue(productServiceM);
 
-    component.deleteDataModification()
+    component.deleteDataModification();
+    expect(spy1).toBeCalled();
+    expect(spy2).toBeCalled();
+    expect(spy3).toBeCalled();
+
   })
-
+ 
 });
