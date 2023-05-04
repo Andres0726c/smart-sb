@@ -72,15 +72,15 @@ export class CognitoService {
 
   public async signOut(): Promise<any> {
     await this.setUserCompany({});
-    return Auth.signOut()
+    return await Auth.signOut()
     .then(() => {
       localStorage.clear();
       this.authenticationSubject.next(false);
     });
   }
 
-  public getUser(): Promise<any> {
-    return Auth.currentAuthenticatedUser();
+  public async getUser(): Promise<any> {
+    return await Auth.currentAuthenticatedUser();
   }
 
   public async getAuth() {

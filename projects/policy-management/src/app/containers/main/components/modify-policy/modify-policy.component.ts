@@ -62,6 +62,8 @@ export class ModifyPolicyComponent {
   errorFlag: boolean = false;
 
   policy: any;
+  policyNumberText: string = "";
+  externalPolicyNumberText: string = "";
   policyAux: any;
   policyData: any;
   policyDataPreview: any;
@@ -214,6 +216,10 @@ export class ModifyPolicyComponent {
     this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
+        this.policyNumberText = " - " + this.policy.plcy.plcyNmbr
+        if (this.policy.extrnlTrnsctnPlcy.plcyNmbr) {
+          this.externalPolicyNumberText = " (" + this.policy.extrnlTrnsctnPlcy.plcyNmbr + ")"
+        }
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
