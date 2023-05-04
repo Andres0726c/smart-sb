@@ -246,8 +246,8 @@ it('getModuleFalse',()=>{
 
 
   describe('command item',()=>{
-    component.selectedPolicy={idProduct:1};
     it('navigate to "consult" to /modificar',() => {
+      component.selectedPolicy={idProduct:1};
       const spy = jest.spyOn(router, 'navigate').mockImplementation();
       component.items[0].command();
       expect(spy).toBeCalled();
