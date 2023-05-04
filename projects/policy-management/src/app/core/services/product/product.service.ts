@@ -75,6 +75,14 @@ export class ProductService {
         })
   };
 
+  modificationPolicyClaimStatus = (smartCorePolicyNumber: string): Observable<any> => {
+    return this.httpClient.get<ResponseDTO<any>>
+      (`${this.apiUrl}policy/modificationPolicyClaimStatus/${smartCorePolicyNumber}`,
+        {
+          headers: this.headers,
+        })
+  };
+
   getPremiumData = (policyNumber: number, endorsementNumber: number): Observable<any> => {
     return this.httpClient.get<ResponseDTO<any>>
       (`${this.apiUrlAdapter}policy/taxes?smartCorePolicyNumber=${policyNumber}&endorsementNumber=${endorsementNumber}`,
