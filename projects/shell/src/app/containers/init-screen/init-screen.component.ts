@@ -24,11 +24,12 @@ export class InitScreenComponent {
        .then((value) => {
          this.moduleAcess = value.attributes['custom:moduleAccess']?.split(",");
        })
+     
   }
 
   getModule(nameModule: any) {
     if(this.moduleAcess){
-     this.moduleAcess.find((x: any) => x === nameModule) ? true : false;
+    return this.moduleAcess.find((x: any) => x === nameModule) ? true : false;
     }
      return true;
   }
