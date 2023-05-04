@@ -110,6 +110,7 @@ describe('ConsultPolicyComponent', () => {
     };
 
     jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
+    jest.spyOn(productService, 'modificationPolicyClaimStatus').mockReturnValue(of (res));
 
     fixture.detectChanges();
   });
@@ -213,6 +214,16 @@ describe('ConsultPolicyComponent', () => {
     expect(component.items[0].disabled).toBeTruthy();
   });
 
+  it('disable items (Rechazada)', () => {
+    component.disabledItem('Rechazada')
+    expect(component.items[0].disabled).toBeTruthy();
+  });
+
+  it('disable items (Provisoria)', () => {
+    component.disabledItem('Provisoria')
+    expect(component.items[0].disabled).toBeTruthy();
+  });
+
   it('show modal consult', () => {
     component.selectedPolicy = { idPolicy: 1 }
     const refOpenSpy = jest.spyOn(ref, 'open')
@@ -237,6 +248,18 @@ describe('ConsultPolicyComponent', () => {
     const res = { dataHeader: { code: 500 } };
     jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
     expect(component.getPolicy()).toBeUndefined();
+  });
+
+  it('getPolicyClaimStatus ok', () => {
+    component.selectedPolicy = { idPolicy: 1, policyNumber: 123};
+    expect(component.getPolicyClaimStatus()).toBeUndefined();
+  });
+
+  it('getPolicyClaimStatus else', () => {
+    component.selectedPolicy = { dPolicy: 1, policyNumber: 123 };
+    const res = { dataHeader: { code: 500 } };
+    jest.spyOn(productService, 'modificationPolicyClaimStatus').mockReturnValue(of (res));
+    expect(component.getPolicyClaimStatus()).toBeUndefined();
   });
   
 });
