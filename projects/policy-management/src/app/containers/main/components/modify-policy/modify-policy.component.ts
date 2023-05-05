@@ -503,10 +503,10 @@ export class ModifyPolicyComponent {
     console.log(this.policy,"policy");
 
     this.productService.saveModify(this.policy).subscribe({
-      next: (resp: any) => {
+      next: async (resp: any): Promise<void> => {
         if (resp.dataHeader.code != 500) {
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
-          this.router.navigate([`/polizas/consulta`]).then().catch();
+          await this.router.navigate([`/polizas/consulta`]).then().catch();
         } else {
           this.showSuccess('error', 'Error al Modificar', resp.dataHeader.status);
         }
