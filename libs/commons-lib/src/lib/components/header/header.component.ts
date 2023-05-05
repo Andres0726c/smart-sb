@@ -25,8 +25,8 @@ export class HeaderComponent implements OnInit {
       {
         icon: 'pi pi-sign-in',
         label: 'Cerrar sesión',
-        command: async() => {
-         await this.signOut().then().catch();
+        command: () => {
+          this.signOut();
         }
       },
     ];
@@ -76,14 +76,14 @@ export class HeaderComponent implements OnInit {
           ];
         }
       }
-    }).then();
+    }).then().catch();
   }
 
-  async signOut(){
+  signOut(){
     this.closing = true;
-    await this.cognitoService.signOut()
+    this.cognitoService.signOut()
     .then(async () => {
-      await this.router.navigate(['/autenticacion']).then();
+      await this.router.navigate(['/autenticacion']).then().catch();
     })
     .catch((err) => {
       console.error('Error al cerrar sesión');
