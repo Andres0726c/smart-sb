@@ -13,7 +13,7 @@ import {
 } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { of, Observable } from 'rxjs';
+import { of, Observable, Observer } from 'rxjs';
 
 import { ConsultPolicyComponent } from './consult-policy.component';
 import { ConsultPolicyService } from './services/consult-policy.service';
@@ -262,4 +262,65 @@ describe('ConsultPolicyComponent', () => {
     expect(component.getPolicyClaimStatus()).toBeUndefined();
   });
   
+  it('getDaneCodeD', () => {
+    const daneCodeD = '05';
+    const service = fixture.debugElement.injector.get(ConsultPolicyService);
+    const response: ResponseDTO<any[]> = {
+      body: [{
+        propertiesPolicyData: {
+          gd002_datosdeldebito: {
+            DEPAR_COL: daneCodeD,
+            CIU_TDB: null
+          }
+        }
+      }],
+      dataHeader: {
+        code: 200,
+        status: 'OK',
+        errorList: [],
+        hasErrors: false,
+        currentPage: 9,
+        totalPage: 22,
+        totalRecords: 106,
+      },
+    };
+    jest.spyOn(service, 'getPolicyById').mockReturnValue(of (response));
+    
+    expect(component.getDaneCode(1)).toBeUndefined();
+    expect(component.getCity(daneCodeD)).toBeUndefined();
+  });
+  it('getDaneCodeC', () => {
+    const daneCodeC = '05001';
+    const service = fixture.debugElement.injector.get(ConsultPolicyService);
+    const response: ResponseDTO<any[]> = {
+      body: [{
+        propertiesPolicyData: {
+          gd002_datosdeldebito: {
+            DEPAR_COL: null,
+            CIU_TDB: daneCodeC
+          }
+        }
+      }],
+      dataHeader: {
+        code: 200,
+        status: 'OK',
+        errorList: [],
+        hasErrors: false,
+        currentPage: 9,
+        totalPage: 22,
+        totalRecords: 106,
+      },
+    };
+    jest.spyOn(service, 'getPolicyById').mockReturnValue(of (response));
+    
+    expect(component.getDaneCode(1)).toBeUndefined();
+    expect(component.getCity(daneCodeC)).toBeUndefined();
+  });
+  
+  it('getCity', () => {
+    const service = fixture.debugElement.injector.get(ProductService);
+    const spy1 = jest.spyOn(service, 'getApiData').mockReturnValueOnce(of('city/findByState', '', '05'));
+    component.getCity('05');
+    expect(spy1).toHaveBeenCalledTimes(1);
+  });
 });
