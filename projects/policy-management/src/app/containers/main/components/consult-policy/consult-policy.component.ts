@@ -286,9 +286,19 @@ export class ConsultPolicyComponent implements OnDestroy {
   getDaneCode(id: number){
     this.consultPolicyService.getPolicyById(id).subscribe((res) => {
       if (res.body) {
-        let daneCode = res.body.propertiesPolicyData.gd002_datosdeldebito.DEPAR_COL;
+        
+        let daneCodeD = res.body.propertiesPolicyData.gd002_datosdeldebito.DEPAR_COL;
+        let daneCodeC = res.body.propertiesPolicyData.gd002_datosdeldebito.CIU_TDB;
+        if(daneCodeD){
+          return this.getCity(daneCodeD)
+        } else if(daneCodeC){
+          let daneCodeAux = daneCodeC.substring(0,2);
+          return this.getCity(daneCodeAux)
+        } else if((daneCodeD === '' || undefined) && (daneCodeC === '' || undefined)){
+          return this.getCity('0')
+        } 
         // let daneCode = res.body.propertiesPolicyData.datos_basicos.DEPAR_COL;
-        this.getCity(daneCode)
+        // this.getCity(daneCode)
         
       }
   })
@@ -320,6 +330,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   }
 
   getCity(daneCode: any){
+    
     this.productService
     .getApiData('city/findByState', '', daneCode)
     .subscribe((res) => {
