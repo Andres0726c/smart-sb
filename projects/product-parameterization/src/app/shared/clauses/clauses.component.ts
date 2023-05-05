@@ -59,9 +59,9 @@ export class ClausesComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginatorClauses;
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     if (!this.productService.ramo){
-    this.getDataInsuranceLine();
+    await this.getDataInsuranceLine().then();
   }
   }
 

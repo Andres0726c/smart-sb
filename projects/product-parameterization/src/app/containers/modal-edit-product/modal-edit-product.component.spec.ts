@@ -96,14 +96,14 @@ describe('ModalEditProductComponent', () => {
     expect(component.onNoClick()).toBeUndefined();
   });
 
-  it('addProduct', () => {
+  it('addProduct', async() => {
     component.selection = new SelectionModel<any>(false, []);
     component.element = {
       productJson: '',
     };
     jest.spyOn(service, 'getProduct').mockReturnValue(of(true));
 
-    expect(component.addProduct()).toBeUndefined();
+    expect(component.addProduct()).toBeDefined();
   });
 
   it('Componente inicializado', () => {

@@ -173,7 +173,7 @@ export class RulesWizardComponent implements OnInit {
    * Method that check the service information and set all the array in the table
    * @param res variable with the data
    */
-  setData(res: any) {
+  async setData(res: any) {
     // Luis, quedamos en este punto para revisar las funciones y la paginación
     if (Array.isArray(res.body)) {
       this.addToElementData(res.body);
@@ -189,7 +189,7 @@ export class RulesWizardComponent implements OnInit {
       }
     }
 
-    this.insertDataToTable();
+    await this.insertDataToTable().then();
   }
 
   /**

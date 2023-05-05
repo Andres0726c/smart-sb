@@ -27,15 +27,15 @@ export class CancellationDataComponent implements OnInit {
     public dialogService: DialogService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.rmsDpndncy = this.productService.prdctDpndncy?.get('insrncLn')?.value;
     this.rm = this.rmsDpndncy?.find(
       (element: any) =>
         element.id ===
         this.productService.initialParameters?.get('insuranceLine')?.value
     );
-    this.loadContextData();
-    this.getCauses();
+    await this.loadContextData().then();
+    await this.getCauses().then();
   }
 
   async loadContextData() {
