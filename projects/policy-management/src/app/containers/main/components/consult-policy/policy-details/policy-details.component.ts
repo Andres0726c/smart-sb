@@ -104,7 +104,7 @@ export class PolicyDetailsComponent implements OnInit {
       styleClass: 'w-full sm:w-4/5 md:w-3/5',
       contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px' },
       baseZIndex: 10000,
-    })
+    });
   }
 
 }

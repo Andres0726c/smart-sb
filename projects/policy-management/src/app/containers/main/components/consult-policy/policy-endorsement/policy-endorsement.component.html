@@ -14,13 +14,13 @@
         <ng-template pTemplate="body" let-rowData let-columns="columns">
             <tr>
                 <td>
-                    {{rowData['turnOverPeriod']}}
+                    {{rowData['turnoverPeriod']}}
                 </td>
                 <td>
                     {{rowData['endorsementNumber']}}
                 </td>
                 <td>
-                    {{rowData['applicationprocess']}}
+                    {{rowData['applicationProcess']}}
                 </td>
                 <td>
                     {{rowData['issueDate'] | date:'d MMM y, HH:mm:ss'}}
@@ -34,7 +34,7 @@
                 </td>
                 <td>
                     <button type="button" pButton pRipple class="p-button p-button-secondary bg-white hover:"
-                        icon="pi pi-eye" (click)="viewObservations()">
+                        icon="pi pi-eye" (click)="viewObservations(rowData)">
                     </button>
                 </td>
             </tr>
@@ -47,6 +47,15 @@
     </p-table>
 </section>
 
-<section id="btn-close-policy-details" class="sticky bottom-0 bg-white pb-6 pt-4" >
+<section id="btn-close-policy-endorsement" class="sticky bottom-0 bg-white pb-6 pt-4" >
     <button pButton type="submit" label="Cerrar" class="min-w-max" (click)="close()"></button>
 </section>
+
+<p-dialog header="Observación endoso" [(visible)]="visibleDialog" [style]="{width: '50vw'}">
+    <section id="observation-section">
+            <input id="observation-value" type="text" pInputText [(ngModel)]="observationValue" class="w-full"/>
+    </section>
+    <section id="btn-close-policy-endorsement" class="sticky bottom-0 bg-white pb-6 pt-4" >
+        <button pButton type="submit" label="Cerrar" class="min-w-max" (click)="closeObservation()"></button>
+    </section>
+</p-dialog>

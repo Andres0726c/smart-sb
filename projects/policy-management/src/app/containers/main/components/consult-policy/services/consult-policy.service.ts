@@ -41,7 +41,7 @@ export class ConsultPolicyService {
 
   getPolicyEndorsementByPolicyNumber(policyNumber:number){
     return this.httpClient.get<ResponseDTO<any>>(
-      `${this.apiUrl}policy/${policyNumber}`,
+      `${this.apiUrl}policyendorsement/findAllPolicyEndorsementByPolicyNumber/${policyNumber}`,
       {
         headers: this.headers,
       }
