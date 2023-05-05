@@ -182,7 +182,6 @@ export class PolicyRenewalComponent implements OnInit {
       fieldFG.addControl(key, this.fb.control(keyValue));
     });
 
-    //fieldFG.addControl('value', this.fb.control({ value: field.dataType.name === 'date' ? new Date(value.value) : value.value, disabled: !field.editable }));
     fieldFG.addControl('value', this.fb.control({ value: field.dataType.guiComponent === 'Calendar' ? new Date(value.value) : value.value, disabled: this.readOnly ?? !field.editable }));
 
     if (field.dataType.guiComponent === 'List box' || field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO') {
@@ -279,11 +278,7 @@ export class PolicyRenewalComponent implements OnInit {
           this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
         }
         this.isSaving = false;
-      },
-      // (error) => {
-      //   this.messageError = true;
-      //   this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
-      // }
+      }
       );
   }
 

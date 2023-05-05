@@ -58,10 +58,10 @@ export class ModalCreateProductComponent implements OnInit {
       this.isAuthenticated = true;
      
     })
-    .catch(err => {
+    .catch(async err => {
       this.isAuthenticated = false;
-      this.cognitoService.signOut();
-      this.router.navigate(['login']);
+      await this.cognitoService.signOut().then();
+      await this.router.navigate(['login']).then();
     });
       
   }
@@ -79,7 +79,7 @@ export class ModalCreateProductComponent implements OnInit {
    * valida y crea el registro inicial del producto
    * @param formValue instancia NewProduct diligenciados del formulario.
    */
-  public createProduct(formValue: NewProduct): void {
+  public async createProduct(formValue: NewProduct): Promise<void> {
 
     
     if (this.formData.valid) {
@@ -105,7 +105,7 @@ export class ModalCreateProductComponent implements OnInit {
     }
     this.service.initialParameters.get('company')?.setValue(this.company);
     this.onNoClick();
-    this.router.navigate(['productos/parametrizador/parametros-generales']);
+    await this.router.navigate(['productos/parametrizador/parametros-generales']).then();
       
     
     }
@@ -159,7 +159,7 @@ export class ModalCreateProductComponent implements OnInit {
       }else
       {
        this.isLoading = false;
-       this.createProduct(formValue);
+      await this.createProduct(formValue).then().catch();
       }
         
       

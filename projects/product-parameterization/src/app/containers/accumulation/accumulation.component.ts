@@ -35,8 +35,8 @@ export class AccumulationComponent implements OnInit {
               private fb:FormBuilder,
               public toastMessage: MatSnackBar) {}
 
-  ngOnInit(): void {
-    this.getAccumulationsType();
+  async ngOnInit(): Promise<void> {
+    await this.getAccumulationsType().then();
     this.dataSource = new MatTableDataSource<any>(this.CoveragesControls.value);
     this.dataSource.paginator = this.paginator;
   }

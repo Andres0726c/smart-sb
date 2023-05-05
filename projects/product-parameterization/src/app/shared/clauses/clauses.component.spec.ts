@@ -65,8 +65,8 @@ describe('ClausesComponent', () => {
     expect(component.ngAfterViewInit()).toBeUndefined();
   });
 
-  it('ngOnInit Ok', () => {
-    expect(component.ngOnInit()).toBeUndefined();
+  it('ngOnInit Ok', async() => {
+    expect(component.ngOnInit()).toBeDefined();
   });
 
   it('openModalC Ok', () => {

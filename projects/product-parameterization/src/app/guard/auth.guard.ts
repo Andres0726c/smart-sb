@@ -25,11 +25,11 @@ export class AuthGuardParameterizer implements CanActivate {
     let check = false;
 
     await this.cognitoService.getUser()
-    .then((value) => {
-      check = this.checkAccess(value, state);
+    .then(async (value) => {
+      check = await this.checkAccess(value, state).then();
     })
-    .catch((err) => {
-      this.router.navigate(['/autenticacion']);
+    .catch(async (err) => {
+      await this.router.navigate(['/autenticacion']).then();
     });
 
     return check;
@@ -43,17 +43,17 @@ export class AuthGuardParameterizer implements CanActivate {
     console.log(check);
 
     await this.cognitoService.getUser()
-    .then((value) => {
-      check = this.checkAccess(value, state);
+    .then(async (value) => {
+      check = await this.checkAccess(value, state).then();
     })
-    .catch((err) => {
-      this.router.navigate(['/autenticacion']);
+    .catch(async (err) => {
+      await this.router.navigate(['/autenticacion']).then();
     });
 
     return check;
   }
   
-  checkAccess(value: any, state: RouterStateSnapshot) {
+  async checkAccess(value: any, state: RouterStateSnapshot) {
     let check = false;
     if (
       value 
@@ -76,13 +76,13 @@ export class AuthGuardParameterizer implements CanActivate {
           });
         } 
       } else if (state.url.indexOf('/parametrizador') > -1 && this.productService.initialParameters.get('productName')?.value === '') {
-        this.router.navigate(['/productos/parametrizador/menu-productos']);
+        await this.router.navigate(['/productos/parametrizador/menu-productos']).then();
       }
     } else {
-      this.cognitoService.signOut()
-      .then(() => {
-        this.router.navigate(['/autenticacion']);
-      });
+     await this.cognitoService.signOut()
+      .then(async () => {
+        await this.router.navigate(['/autenticacion']).then().catch();
+      }).catch();
     }
     return check;
   }

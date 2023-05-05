@@ -24,10 +24,10 @@ export class CognitoService {
     this.authenticationSubject = new BehaviorSubject<boolean>(true);
 
     this.getUser()
-    .then((value) => {
+    .then(async(value) => {
       if (value) {
         this.authenticationSubject.next(true);
-        this.sessionTimer();
+        await this.sessionTimer().then().catch();
       } else {
         this.authenticationSubject.next(false);
       }
@@ -41,11 +41,11 @@ export class CognitoService {
   public async signIn(email: string, password: string): Promise<any> {
     const res = await Auth.signIn(email, password);
     await this.getUser()
-    .then((value) => {
+    .then(async (value) => {
       if (value) {
         localStorage.setItem('CognitoSessionExp', value.signInUserSession.accessToken.payload.exp);
         this.authenticationSubject.next(true);
-        this.sessionTimer();
+        await this.sessionTimer().then().catch() ;
       }
     })
     .catch((err) => {
@@ -54,13 +54,13 @@ export class CognitoService {
     return res;
   }
 
-  sessionTimer() {
-    this.getUser()
+  async sessionTimer() {
+   await this.getUser()
     .then((value) => {
-      localStorage.setItem('CognitoSessionExp', value.signInUserSession.accessToken.payload.exp);
-      this.timeout = (900 * 1000) // se especifica el tiempo de inactividad deseado
-      this.expirationCounter(this.timeout);
-    })
+     localStorage.setItem('CognitoSessionExp', value.signInUserSession.accessToken.payload.exp);
+    this.timeout = (900 * 1000); // se especifica el tiempo de inactividad deseado
+     this.expirationCounter(this.timeout);
+    }).catch();
   }
 
   expirationCounter(timeout: any) {
@@ -72,15 +72,15 @@ export class CognitoService {
 
   public async signOut(): Promise<any> {
     await this.setUserCompany({});
-    return Auth.signOut()
+    return await Auth.signOut()
     .then(() => {
       localStorage.clear();
       this.authenticationSubject.next(false);
     });
   }
 
-  public getUser(): Promise<any> {
-    return Auth.currentAuthenticatedUser();
+  public async getUser(): Promise<any> {
+    return await Auth.currentAuthenticatedUser();
   }
 
   public async getAuth() {

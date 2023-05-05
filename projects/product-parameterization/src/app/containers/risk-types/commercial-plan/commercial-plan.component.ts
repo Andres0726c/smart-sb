@@ -541,15 +541,7 @@ export class CommercialPlanComponent implements OnInit {
           description: this.fb.control(
             this.getDataCoverages(coverage.value.id, 'description')?.value
           ),
-          athrzdOprtn:action=='edit'
-            ? this.validateMadatory(
-                this.getAthrzdOprtnCoveragePln(
-                  coverage.value.id,
-                  result['step1'].value.code
-                ),
-                coverage.value.required
-              )
-            : this.fb.array([]),
+          athrzdOprtn: this.fb.array([]),
           cvrgDtGrp: this.fb.array([], []),
         })
       );
@@ -566,15 +558,7 @@ export class CommercialPlanComponent implements OnInit {
           description: this.fb.control(
             this.getServicesPlan(servicePlan.value.id, 'description')?.value
           ),
-          athrzdOprtn: action=='edit'
-            ? this.validateMadatory(
-                this.getAthrzdOprtnSrvcPln(
-                  servicePlan.value.id,
-                  result['step1'].value.code
-                ),
-                servicePlan.value.required
-              )
-            : this.fb.array([]),
+          athrzdOprtn: this.fb.array([]),
         })
       );
     }

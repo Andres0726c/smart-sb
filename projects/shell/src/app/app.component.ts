@@ -47,7 +47,7 @@ export class AppComponent {
   resetSessionTimer() {
     clearTimeout(this.userActivity);
     this.cognitoService.getUser()
-      .then((value) => {
+      .then(async(value) => {
         if (
           value
           && value.attributes['custom:sessionInformation'] 
@@ -56,7 +56,7 @@ export class AppComponent {
         ) {
           this.userName = value.username;
           this.company = JSON.parse(value.attributes['custom:sessionInformation']);
-          this.cognitoService.sessionTimer();
+         await this.cognitoService.sessionTimer().then().catch();
         }
       })
       .catch((err) => {
@@ -66,8 +66,8 @@ export class AppComponent {
 
   signOut() {
     this.cognitoService.signOut()
-    .then((value) => {
-      this.router.navigate(['/autenticacion']);
+    .then(async (value) => {
+      await this.router.navigate(['/autenticacion']).then();
     })
     .catch((err) => {
       console.log('Ha ocurrido un error al cerrar la sesión')

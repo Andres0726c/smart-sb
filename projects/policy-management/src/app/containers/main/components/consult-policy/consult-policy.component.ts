@@ -93,11 +93,8 @@ export class ConsultPolicyComponent implements OnDestroy {
       {
         label: 'Modificar',
         icon: 'pi pi-fw pi-pencil',
-        command: () => {
-          this.router.navigate(
-            [`/polizas/modificar/${this.selectedPolicy?.idProduct}`],
-            { state: { policy: this.selectedPolicy } }
-          );
+        command: (event: any, row: any) => {
+          this.getPolicyClaimStatus();
         }
       },
       {
@@ -188,7 +185,6 @@ export class ConsultPolicyComponent implements OnDestroy {
         this.items[3].disabled = true; //Se deshabilita por PaP
         this.items[4].disabled = true;*/
         break;
-
       case 'Cancelada':
         this.disabledOption('Modificar', true)
         this.disabledOption('Cancelar', true)
@@ -306,6 +302,21 @@ export class ConsultPolicyComponent implements OnDestroy {
         }
       } else {
         this.showSuccess('error', 'Error interno', 'Por favor intente nuevamente');
+      }
+      this.loading = false;
+    });
+  }
+
+  getPolicyClaimStatus() {
+    this.loading = true;
+    this.productService.modificationPolicyClaimStatus(this.selectedPolicy.policyNumber).subscribe((res: any) => {
+      if (res.dataHeader.code && res.dataHeader.code == 200) {
+        this.router.navigate(
+          [`/polizas/modificar/${this.selectedPolicy?.idProduct}`],
+          { state: { policy: this.selectedPolicy } }
+        );
+      } else {
+        this.showSuccess('error', 'Error al modificar', res.dataHeader.status);
       }
       this.loading = false;
     });
