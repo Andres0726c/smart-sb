@@ -54,7 +54,7 @@ export class MainComponent {
         backdropClass: 'backdrop-bg',
         disableClose: true
       });
-      dialogRef.afterClosed().subscribe( async(res) => {
+      dialogRef.afterClosed().subscribe((res) => {
         if (!res) {
            this.router.navigate(['/autenticacion']).then().catch();
         }
