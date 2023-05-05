@@ -99,6 +99,7 @@ describe('AuthGuard', () => {
         attributes: {
           'custom:company': '1',
           'custom:sessionInformation':'{}',
+          'custom:moduleAccess':'',
         },
         username: '',
       })
@@ -145,6 +146,7 @@ describe('AuthGuard', () => {
         attributes: {
           'custom:company': '1',
           'custom:sessionInformation':'',
+          'custom:moduleAccess':'consultar',
         },
         username: '',
       })
@@ -180,6 +182,7 @@ describe('AuthGuard', () => {
       attributes: {
         'custom:company': '1',
         'custom:sessionInformation':'{ username: username }',
+        'custom:moduleAccess':'consultar',
       },
       username: '',
     }
@@ -205,6 +208,7 @@ describe('AuthGuard', () => {
       attributes: {
         'custom:company': '1',
         'custom:sessionInformation':'{ username: username }',
+        'custom:moduleAccess':'consultar',
       },
       username: '',
     }
