@@ -54,13 +54,13 @@ export class CognitoService {
     return res;
   }
 
-  sessionTimer() {
-    this.getUser()
-    .then(async(value) => {
-    await localStorage.setItem('CognitoSessionExp', value.signInUserSession.accessToken.payload.exp);
+  async sessionTimer() {
+   await this.getUser()
+    .then((value) => {
+     localStorage.setItem('CognitoSessionExp', value.signInUserSession.accessToken.payload.exp);
     this.timeout = (900 * 1000); // se especifica el tiempo de inactividad deseado
-    await this.expirationCounter(this.timeout);
-    })
+     this.expirationCounter(this.timeout);
+    }).catch();
   }
 
   expirationCounter(timeout: any) {

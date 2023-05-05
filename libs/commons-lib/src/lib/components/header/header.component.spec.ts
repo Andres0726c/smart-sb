@@ -39,7 +39,7 @@ describe('HeaderComponent', () => {
   });
 
   it('singOut ok', () => {
-    expect(component.signOut()).toBeUndefined();
+    expect(component.signOut()).toBeDefined();
   });
 
   it('ngOnInit ok', async () => {

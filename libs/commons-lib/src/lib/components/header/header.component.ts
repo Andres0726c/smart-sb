@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit {
         icon: 'pi pi-sign-in',
         label: 'Cerrar sesión',
         command: () => {
-          this.signOut();
+          this.signOut().then().catch();
         }
       },
     ];
@@ -78,9 +78,9 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-  signOut(){
+  async signOut(){
     this.closing = true;
-    this.cognitoService.signOut()
+    await this.cognitoService.signOut()
     .then(async () => {
       await this.router.navigate(['/autenticacion']).then();
     })
