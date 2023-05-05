@@ -503,10 +503,10 @@ export class ModifyPolicyComponent {
     console.log(this.policy,"policy");
 
     this.productService.saveModify(this.policy).subscribe({
-      next: async (resp: any): Promise<void> => {
+      next: async (resp: any) => {
         if (resp.dataHeader.code != 500) {
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
-          await this.router.navigate([`/polizas/consulta`]).then().catch();
+          this.goToPage('/polizas/consulta').then().catch();
         } else {
           this.showSuccess('error', 'Error al Modificar', resp.dataHeader.status);
         }
@@ -544,6 +544,10 @@ export class ModifyPolicyComponent {
       summary: title,
       detail: msg
     });
+  }
+
+  async goToPage(route: string) {
+    await this.router.navigate([route]);
   }
 
 
