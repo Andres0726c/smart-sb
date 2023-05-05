@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
             this.companySelectionComplete = false;
             this.showCompanySelection = true;
           } else {
-            this.setCompany(this.companies[0]);
+           await this.setCompany(this.companies[0]).then();
           }
         } else {
           this.forbidden();
@@ -123,8 +123,8 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     await this.cognitoService
       .setUserCompany(company)
-      .then((res) => {
-        this.router.navigate(['inicio']);
+      .then(async(res) => {
+       await this.router.navigate(['inicio']).then();
       })
       .catch((err) => {
         this.isLoading = false;
@@ -135,9 +135,9 @@ export class LoginComponent implements OnInit {
   /**
    * Función que permite mostrar un mensaje de error cuando el usuario no tiene los permisos suficientes para ingresar a la aplicación
    */
-  forbidden() {
+  async forbidden() {
     this.showModalForbhidden = true;
-    this.cognitoService.signOut();
+    await this.cognitoService.signOut().then();
   }
 
   /**
@@ -155,10 +155,10 @@ export class LoginComponent implements OnInit {
   /**
    * Función que detecta el cierre de la modal de selección de compañía y cierra la sesión del usuario al no completarse la autenticación correctamente
    */
-  closeModalCompany() {
+  async closeModalCompany() {
     if (!this.companySelectionComplete) {
-      this.cognitoService.signOut().then(() => {
-        this.isLoading = false;
+    await this.cognitoService.signOut().then(() => {
+          this.isLoading = false;
       });
     }
   }
