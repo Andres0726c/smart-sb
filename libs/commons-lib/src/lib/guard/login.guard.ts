@@ -10,9 +10,9 @@ export class LoginGuard implements CanActivate {
   async canActivate(): Promise<boolean> {
     return await new Promise((resolve) => {
       this.cognitoService.getAuth()
-        .then((value) => {
+        .then(async(value) => {
           if (value) {
-            this.route.navigate(['/inicio']);
+           await this.route.navigate(['/inicio']).then();
           }
         })
         .catch(() => {

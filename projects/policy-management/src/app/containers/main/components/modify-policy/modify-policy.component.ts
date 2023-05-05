@@ -519,10 +519,10 @@ export class ModifyPolicyComponent {
   }
 
 
-  cancelModification() {
-    this.router.navigate(
+ async cancelModification() {
+   await this.router.navigate(
       [`/polizas/consulta`],
-    );
+    ).then();
     for (let type of this.types) {
       localStorage.removeItem(type)
     }

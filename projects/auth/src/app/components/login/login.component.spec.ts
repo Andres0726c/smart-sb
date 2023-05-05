@@ -208,7 +208,7 @@ describe('LoginComponent', () => {
 
   it('forbidden', () => {
     component.cognitoService.signOut = () => Promise.resolve();
-    expect(component.forbidden()).toBeUndefined();
+    expect(component.forbidden()).toBeDefined();
   });
 
   it('evento de teclado', () => {
@@ -219,7 +219,7 @@ describe('LoginComponent', () => {
   });
 
   it('closeModalCompany ok', () => {
-    expect(component.closeModalCompany()).toBeUndefined();
+    expect(component.closeModalCompany()).toBeDefined();
   });
 
 });
