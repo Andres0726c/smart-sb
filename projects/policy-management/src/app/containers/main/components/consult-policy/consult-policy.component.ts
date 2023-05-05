@@ -336,4 +336,59 @@ export class ConsultPolicyComponent implements OnDestroy {
       dialog.destroy();
     });
   }
+
+  getDaneCode(id: number){
+    this.consultPolicyService.getPolicyById(id).subscribe((res) => {
+      if (res.body) {
+        
+        let daneCodeD = res.body.propertiesPolicyData.gd002_datosdeldebito.DEPAR_COL;
+        let daneCodeC = res.body.propertiesPolicyData.gd002_datosdeldebito.CIU_TDB;
+        if(daneCodeD){
+          return this.getCity(daneCodeD)
+        } else if(daneCodeC){
+          let daneCodeAux = daneCodeC.substring(0,2);
+          return this.getCity(daneCodeAux)
+        } else if((daneCodeD === '' || undefined) && (daneCodeC === '' || undefined)){
+          return this.getCity('0')
+        } 
+        // let daneCode = res.body.propertiesPolicyData.datos_basicos.DEPAR_COL;
+        // this.getCity(daneCode)
+        
+      }
+  })
+}
+
+  setData(res: any, type: any) {
+    if (Array.isArray(res.body)) {
+      this.addToElementData(res.body, type);
+    } else {
+      this.addToElementData([res.body], type);
+    }
+  }
+
+  addToElementData(res: any[], type: any) {
+    let options: any = [];
+    let list: any = [];
+    let optionsAux: any = [];
+
+    res.forEach((element: any) => {
+      let obj: any = { id: element.code ?? element.businessCode, name: type === 'turnoverperiod' ? element.name : element.description };
+      if (obj.id != '' && obj.id != undefined) {
+        options.push(obj);
+      }
+    });
+
+    localStorage.setItem(type, JSON.stringify(options));
+    list = localStorage.getItem(type);
+    optionsAux = JSON.parse(list);
+  }
+
+  getCity(daneCode: any){
+    
+    this.productService
+    .getApiData('city/findByState', '', daneCode)
+    .subscribe((res) => {
+      this.setData(res, 'city');
+    });
+  }
 }
