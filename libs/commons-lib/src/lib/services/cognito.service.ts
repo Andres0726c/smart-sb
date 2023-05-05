@@ -24,10 +24,10 @@ export class CognitoService {
     this.authenticationSubject = new BehaviorSubject<boolean>(true);
 
     this.getUser()
-    .then((value) => {
+    .then(async(value) => {
       if (value) {
         this.authenticationSubject.next(true);
-        this.sessionTimer();
+        await this.sessionTimer().then().catch();
       } else {
         this.authenticationSubject.next(false);
       }
@@ -41,11 +41,11 @@ export class CognitoService {
   public async signIn(email: string, password: string): Promise<any> {
     const res = await Auth.signIn(email, password);
     await this.getUser()
-    .then((value) => {
+    .then(async (value) => {
       if (value) {
         localStorage.setItem('CognitoSessionExp', value.signInUserSession.accessToken.payload.exp);
         this.authenticationSubject.next(true);
-        this.sessionTimer();
+        await this.sessionTimer().then().catch() ;
       }
     })
     .catch((err) => {
