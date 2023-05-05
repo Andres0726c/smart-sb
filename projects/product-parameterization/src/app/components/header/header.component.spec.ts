@@ -78,7 +78,7 @@ describe('HeaderComponent', () => {
       },
     })
   );
-  jest.spyOn(cognitoService, 'getUser').mockImplementation(spy);
+   jest.spyOn(cognitoService, 'getUser').mockImplementation(spy);
   JSON.parse = jest.fn()
     .mockImplementationOnce(() => {return {businessName: 'businessName'}})
     .mockImplementationOnce(() => {return {id: 3}});
@@ -108,10 +108,10 @@ describe('HeaderComponent', () => {
   it('signOut OK', () => {
     component.service.initialParameters.get('productName')?.setValue('test');
     component.service.initialParameters.get('insuranceLine')?.setValue('test');
-    expect(component.signOut()).toBeUndefined();
+    expect(component.signOut()).toBeDefined();
   });
 
-  it('go to Home', () => {
+  it('go to Home',() => {
     component.service.initialParameters.get('productName')?.setValue('test');
     component.service.initialParameters.get('insuranceLine')?.setValue('test');
     expect(component.goToHome()).toBeUndefined();

@@ -56,7 +56,7 @@ export class MainComponent {
       });
       dialogRef.afterClosed().subscribe((res) => {
         if (!res) {
-          this.router.navigate(['/autenticacion']);
+           this.router.navigate(['/autenticacion']).then().catch();
         }
       });
     })

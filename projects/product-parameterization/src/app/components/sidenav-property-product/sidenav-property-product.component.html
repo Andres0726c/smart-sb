@@ -1,7 +1,11 @@
 <mat-sidenav-container class="container" autosize="true">
   <mat-sidenav #sidenav class="sidenav" mode="side" opened="true">
     <div class="company">
-      <button mat-icon-button class="burger-button" (click)="isExpanded = !isExpanded">
+      <button
+        mat-icon-button
+        class="burger-button"
+        (click)="isExpanded = !isExpanded"
+      >
         <em id="burger-icon" class="fal fa-bars"></em>
       </button>
       <div class="company-logo" *ngIf="isExpanded"></div>
@@ -17,37 +21,55 @@
             class="sidenav-principal-opt"
             [ngClass]="{ 'fill-select ': isExpanded }"
           >
-            <span class="text-format" *ngIf="isExpanded">Producto {{ productService.initialParameters.get('productName')?.value }}</span>
+            <span class="text-format" *ngIf="isExpanded"
+              >Producto
+              {{
+                productService.initialParameters.get("productName")?.value
+              }}</span
+            >
           </div>
         </div>
-          <form [formGroup]="formProcess">
-            <div *ngFor="let menu of menus">
-              <div (click)="validateShow(menu)">
-                <div class="fill-select product-menu">
-                  <em
-                    id="angle-double-icon"
-                    class="fal fa-angle-double-down"
-                    [ngClass]="{ 'rotate-row': menu.show }"
-                  ></em>
-                  <span>{{menu.name}}</span>
-                  <div *ngIf="menu.showEnable" [formGroupName]="menu.formControlName || ''" class="grid justify-items-end">
-                    <mat-checkbox (click)="menu.show = !formProcess.get(menu.formControlName || '')?.value.enabled; $event.stopImmediatePropagation(); clearData(menu.formControlName)" formControlName="enabled"></mat-checkbox>
-                  </div>
+        <form [formGroup]="formProcess">
+          <div *ngFor="let menu of menus">
+            <div (click)="validateShow(menu)">
+              <div class="fill-select product-menu">
+                <em
+                  id="angle-double-icon"
+                  class="fal fa-angle-double-down"
+                  [ngClass]="{ 'rotate-row': menu.show }"
+                ></em>
+                <span>{{ menu.name }}</span>
+                <div
+                  *ngIf="menu.showEnable"
+                  [formGroupName]="menu.formControlName || ''"
+                  class="grid justify-items-end"
+                >
+                  <mat-checkbox
+                    (click)="
+                      changeCheck(menu, menu.formControlName);
+                      $event.stopImmediatePropagation();
+                      clearData(menu.formControlName)
+                    "
+                    formControlName="enabled"
+                  ></mat-checkbox>
                 </div>
               </div>
-              <div class="canvas" *ngIf="menu.isExpanded" [hidden]="!menu.show">
-                <ul class="submenu" [ngClass]="{ expanded: menu.show }">
-                  <li *ngFor="let submenu of menu.submenus" routerLinkActive="fill-select">
-                    <a [routerLink]="submenu.routerLink">
-                      <span>{{submenu.name}}</span>
-                      <em class="fal fa-angle-right"></em>
-                    </a>
-                  </li>
-                </ul>
-              </div>
             </div>
-          </form>
-        
+            <div class="canvas" *ngIf="menu.isExpanded" [hidden]="!menu.show">
+              <ul class="submenu" [ngClass]="{ expanded: menu.show }">
+                <li
+                  *ngFor="let submenu of menu.submenus"
+                  routerLinkActive="fill-select"
+                >
+                  <a [routerLink]="submenu.routerLink">
+                    <span>{{ submenu.name }}</span>
+                    <em class="fal fa-angle-right"></em>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -56,7 +78,6 @@
       <div class="logo_sb"></div>
     </div>
   </mat-sidenav>
-
   <mat-sidenav-content>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

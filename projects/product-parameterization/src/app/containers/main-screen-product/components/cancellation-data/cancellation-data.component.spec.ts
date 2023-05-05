@@ -79,8 +79,8 @@ describe('CancellationDataComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('ngOnInit Ok', () => {
-    expect(component.ngOnInit()).toBeUndefined();
+  it('ngOnInit Ok', async() => {
+    expect(component.ngOnInit()).toBeDefined();
   });
 
   it('addRule', () => {

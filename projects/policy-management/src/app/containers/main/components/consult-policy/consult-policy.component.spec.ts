@@ -13,7 +13,7 @@ import {
 } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { of, Observable } from 'rxjs';
+import { of, Observable, Observer } from 'rxjs';
 
 import { ConsultPolicyComponent } from './consult-policy.component';
 import { ConsultPolicyService } from './services/consult-policy.service';
@@ -110,6 +110,7 @@ describe('ConsultPolicyComponent', () => {
     };
 
     jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
+    jest.spyOn(productService, 'modificationPolicyClaimStatus').mockReturnValue(of (res));
 
     fixture.detectChanges();
   });
@@ -161,7 +162,7 @@ describe('ConsultPolicyComponent', () => {
     expect(component.totalRecords).toEqual(0)
   })
 
-  it('consult success', () => {
+  it('consult success', fakeAsync(() => {
     const response: ResponseDTO<string[]> = {
       body: ['test'],
       dataHeader: {
@@ -179,10 +180,10 @@ describe('ConsultPolicyComponent', () => {
       .mockReturnValueOnce(of(response));
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual(['test']);
-  });
+  }));
 
 
-  it('consult error 400', () => {
+  it('consult error 400', fakeAsync(() => {
     const response: ResponseDTO<string[]> = {
       body: [],
       dataHeader: {
@@ -201,7 +202,7 @@ describe('ConsultPolicyComponent', () => {
 
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual([]);
-  });
+  }));
 
   it('disable items (Activa)', () => {
     component.disabledItem('Activa')
@@ -210,6 +211,16 @@ describe('ConsultPolicyComponent', () => {
 
   it('disable items (Cancelada)', () => {
     component.disabledItem('Cancelada')
+    expect(component.items[0].disabled).toBeTruthy();
+  });
+
+  it('disable items (Rechazada)', () => {
+    component.disabledItem('Rechazada')
+    expect(component.items[0].disabled).toBeTruthy();
+  });
+
+  it('disable items (Provisoria)', () => {
+    component.disabledItem('Provisoria')
     expect(component.items[0].disabled).toBeTruthy();
   });
 
@@ -239,26 +250,30 @@ describe('ConsultPolicyComponent', () => {
     expect(component.getPolicy()).toBeUndefined();
   });
 
-  it('setData', () => {
-    let res: any = { body:'' };
-    const spy = component.setData(res, 'city');
-    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
-    expect(spy).toBeUndefined();
-    expect(spy2).toBeDefined();
+  it('getPolicyClaimStatus ok', () => {
+    component.selectedPolicy = { idPolicy: 1, policyNumber: 123};
+    expect(component.getPolicyClaimStatus()).toBeUndefined();
   });
 
-  it('addToElementData', () => {
-    let res: any = { body: [{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }] };
-    const spy = component.setData(res, 'city');
-    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
-    expect(spy).toBeUndefined();
-    expect(spy2).toBeDefined();
+  it('getPolicyClaimStatus else', () => {
+    component.selectedPolicy = { dPolicy: 1, policyNumber: 123 };
+    const res = { dataHeader: { code: 500 } };
+    jest.spyOn(productService, 'modificationPolicyClaimStatus').mockReturnValue(of (res));
+    expect(component.getPolicyClaimStatus()).toBeUndefined();
   });
   
-  it('getDaneCode', () => {
+  it('getDaneCodeD', () => {
+    const daneCodeD = '05';
     const service = fixture.debugElement.injector.get(ConsultPolicyService);
-    const response: ResponseDTO<string[]> = {
-      body: [],
+    const response: ResponseDTO<any[]> = {
+      body: [{
+        propertiesPolicyData: {
+          gd002_datosdeldebito: {
+            DEPAR_COL: daneCodeD,
+            CIU_TDB: null
+          }
+        }
+      }],
       dataHeader: {
         code: 200,
         status: 'OK',
@@ -270,19 +285,42 @@ describe('ConsultPolicyComponent', () => {
       },
     };
     jest.spyOn(service, 'getPolicyById').mockReturnValue(of (response));
-    const daneCode = '05'
     
     expect(component.getDaneCode(1)).toBeUndefined();
-    expect(component.getCity(daneCode)).toBeUndefined();
+    expect(component.getCity(daneCodeD)).toBeUndefined();
   });
-
+  it('getDaneCodeC', () => {
+    const daneCodeC = '05001';
+    const service = fixture.debugElement.injector.get(ConsultPolicyService);
+    const response: ResponseDTO<any[]> = {
+      body: [{
+        propertiesPolicyData: {
+          gd002_datosdeldebito: {
+            DEPAR_COL: null,
+            CIU_TDB: daneCodeC
+          }
+        }
+      }],
+      dataHeader: {
+        code: 200,
+        status: 'OK',
+        errorList: [],
+        hasErrors: false,
+        currentPage: 9,
+        totalPage: 22,
+        totalRecords: 106,
+      },
+    };
+    jest.spyOn(service, 'getPolicyById').mockReturnValue(of (response));
+    
+    expect(component.getDaneCode(1)).toBeUndefined();
+    expect(component.getCity(daneCodeC)).toBeUndefined();
+  });
+  
   it('getCity', () => {
     const service = fixture.debugElement.injector.get(ProductService);
     const spy1 = jest.spyOn(service, 'getApiData').mockReturnValueOnce(of('city/findByState', '', '05'));
     component.getCity('05');
     expect(spy1).toHaveBeenCalledTimes(1);
   });
-
-
-  
 });
