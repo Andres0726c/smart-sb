@@ -18,13 +18,10 @@ export class AuthGuard implements CanActivate {
   ): Promise<boolean> {
     let check = false;
 
-    const nameModule = routerSnap.data['module'];
-    console.log(routerSnap);
-    console.log(state);
 
     await this.cognitoService.getUser()
     .then((value) => {
-      check = this.verifyAccess(value, state, nameModule);
+      check = this.verifyAccess(value, state);
     })
     .catch(async (err) => {
       await this.router.navigate(['/autenticacion']).then();
@@ -33,7 +30,7 @@ export class AuthGuard implements CanActivate {
     return check;
   }
   
-  verifyAccess(value: any, state: RouterStateSnapshot, nameModule:string) {
+  verifyAccess(value: any, state: RouterStateSnapshot) {
     let access = false;
     if (
       value 
@@ -41,7 +38,7 @@ export class AuthGuard implements CanActivate {
       && value.attributes['custom:sessionInformation'] 
       && value.attributes['custom:sessionInformation'] !== '{}' 
       && value.attributes['custom:sessionInformation'] !== ''
-      && this.ModuleAccess(value,nameModule,state)
+      && this.ModuleAccess(value,state)
     ) {
       access = true;
     } else {
@@ -56,8 +53,8 @@ export class AuthGuard implements CanActivate {
     return access;
   }
 
-  ModuleAccess(value: any,  nameModule:string,state: RouterStateSnapshot) {
-    let moduleName =  nameModule;
+  ModuleAccess(value: any, state: RouterStateSnapshot) {
+    
     const moduleAcess: string[] = value.attributes['custom:moduleAccess']?.split(",");
     if (moduleAcess) {
         if (state.url === '/polizas/consulta'){
