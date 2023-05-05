@@ -80,8 +80,8 @@ export class AuthGuardParameterizer implements CanActivate {
     } else {
       this.cognitoService.signOut()
       .then(async () => {
-        await this.router.navigate(['/autenticacion']).then();
-      });
+        await this.router.navigate(['/autenticacion']).then().catch();
+      }).catch();
     }
     return check;
   }
