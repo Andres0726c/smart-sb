@@ -51,8 +51,8 @@ export class HeaderComponent implements OnInit {
       {
         icon: 'pi pi-sign-in',
         label: 'Cerrar sesión',
-        command: () => {
-          this.signOut().then().catch();
+        command: async() => {
+         await this.signOut().then().catch();
         }
       },
     ];
