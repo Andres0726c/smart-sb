@@ -45,7 +45,7 @@ export class MainComponent {
     });
   }
 
- async signOut() {
+  signOut() {
     this.cognitoService.signOut()
     .then((value) => {
       this.dialog.closeAll();
@@ -54,14 +54,11 @@ export class MainComponent {
         backdropClass: 'backdrop-bg',
         disableClose: true
       });
-    try {
-      let res = dialogRef.afterClosed();
+      dialogRef.afterClosed().subscribe( async(res) => {
         if (!res) {
            this.router.navigate(['/autenticacion']).then().catch();
         }
-    } catch (error) {
-      console.log('Ha ocurrido un error al cerrar la sesión',error);
-    } 
+      });
     })
     .catch((err) => {
       console.log('Ha ocurrido un error al cerrar la sesión')

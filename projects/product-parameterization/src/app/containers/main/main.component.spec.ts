@@ -74,6 +74,6 @@ describe('MainComponent', () => {
   });
 
   it(`signOut`, () => {
-    expect(component.signOut()).toBeDefined();
+    expect(component.signOut()).toBeUndefined();
   });
 });
