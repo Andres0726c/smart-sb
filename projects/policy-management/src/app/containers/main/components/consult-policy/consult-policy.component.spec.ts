@@ -110,6 +110,7 @@ describe('ConsultPolicyComponent', () => {
     };
 
     jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
+    jest.spyOn(productService, 'modificationPolicyClaimStatus').mockReturnValue(of (res));
 
     fixture.detectChanges();
   });
@@ -161,7 +162,7 @@ describe('ConsultPolicyComponent', () => {
     expect(component.totalRecords).toEqual(0)
   })
 
-  it('consult success', () => {
+  it('consult success', fakeAsync(() => {
     const response: ResponseDTO<string[]> = {
       body: ['test'],
       dataHeader: {
@@ -179,10 +180,10 @@ describe('ConsultPolicyComponent', () => {
       .mockReturnValueOnce(of(response));
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual(['test']);
-  });
+  }));
 
 
-  it('consult error 400', () => {
+  it('consult error 400', fakeAsync(() => {
     const response: ResponseDTO<string[]> = {
       body: [],
       dataHeader: {
@@ -201,7 +202,7 @@ describe('ConsultPolicyComponent', () => {
 
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual([]);
-  });
+  }));
 
   it('disable items (Activa)', () => {
     component.disabledItem('Activa')
@@ -210,6 +211,16 @@ describe('ConsultPolicyComponent', () => {
 
   it('disable items (Cancelada)', () => {
     component.disabledItem('Cancelada')
+    expect(component.items[0].disabled).toBeTruthy();
+  });
+
+  it('disable items (Rechazada)', () => {
+    component.disabledItem('Rechazada')
+    expect(component.items[0].disabled).toBeTruthy();
+  });
+
+  it('disable items (Provisoria)', () => {
+    component.disabledItem('Provisoria')
     expect(component.items[0].disabled).toBeTruthy();
   });
 
@@ -239,20 +250,16 @@ describe('ConsultPolicyComponent', () => {
     expect(component.getPolicy()).toBeUndefined();
   });
 
-  it('setData', () => {
-    let res: any = { body:'' };
-    const spy = component.setData(res, 'city');
-    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
-    expect(spy).toBeUndefined();
-    expect(spy2).toBeDefined();
+  it('getPolicyClaimStatus ok', () => {
+    component.selectedPolicy = { idPolicy: 1, policyNumber: 123};
+    expect(component.getPolicyClaimStatus()).toBeUndefined();
   });
 
-  it('addToElementData', () => {
-    let res: any = { body: [{ code: 'abc', description: 'abc' }, { code: 'bcd', description: 'bcd' }] };
-    const spy = component.setData(res, 'city');
-    const spy2 = jest.spyOn(component, 'addToElementData').mockImplementation();
-    expect(spy).toBeUndefined();
-    expect(spy2).toBeDefined();
+  it('getPolicyClaimStatus else', () => {
+    component.selectedPolicy = { dPolicy: 1, policyNumber: 123 };
+    const res = { dataHeader: { code: 500 } };
+    jest.spyOn(productService, 'modificationPolicyClaimStatus').mockReturnValue(of (res));
+    expect(component.getPolicyClaimStatus()).toBeUndefined();
   });
   
   it('getDaneCodeD', () => {

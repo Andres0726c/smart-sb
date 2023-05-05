@@ -124,7 +124,7 @@ describe('ModalCreateProductComponent', () => {
   });
 
 
-  it('createProduct', () => {
+  it('createProduct', async() => {
     const product = {
       name: 'test',
       comercialName: 'test',
@@ -137,9 +137,9 @@ describe('ModalCreateProductComponent', () => {
     component.data.name = 'copy';
     component.data.product = product;
     jest.spyOn(service, 'getProduct').mockReturnValue(of(true));
-    expect(component.createProduct(product)).toBeUndefined();
+    expect(component.createProduct(product)).toBeDefined();
     component.data.name = 'test';
-    expect(component.createProduct(product)).toBeUndefined();
+    expect(component.createProduct(product)).toBeDefined();
   });
 
   it('validProduct', async() => {

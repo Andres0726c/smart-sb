@@ -42,8 +42,8 @@ export class CoveragesRatesComponent implements AfterViewInit, OnChanges {
     private fb: FormBuilder
   ) { }
 
-  ngAfterViewInit() {
-    this.loadContextData();
+  async ngAfterViewInit() {
+    await this.loadContextData().then();
   }
 
   ngOnChanges(changes: SimpleChanges) {

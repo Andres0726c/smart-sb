@@ -1,7 +1,7 @@
 import { FilterPolicy } from './../interfaces/consult-policy';
 import { ConsultPolicyService } from './../services/consult-policy.service';
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Identification } from '../interfaces/identification';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
@@ -74,11 +74,11 @@ export class FilterPolicyTopComponent {
       this.documentsType = data;
     });
 
-    // this.productService
-    //   .getApiData('city/findByState', '', '0')
-    //   .subscribe((res) => {
-    //     this.setData(res, 'city');
-    //   });
+    this.productService
+      .getApiData('city/findByState', '', '0')
+      .subscribe((res) => {
+        this.setData(res, 'city');
+      });
 
     this.productService
       .getApiData('state/statefindbycountry', '', 'CO')

@@ -39,6 +39,15 @@ export class ConsultPolicyService {
     )
   }
 
+  getPolicyEndorsementByPolicyNumber(policyNumber:number){
+    return this.httpClient.get<ResponseDTO<any>>(
+      `${this.apiUrl}policyendorsement/findAllPolicyEndorsementByPolicyNumber/${policyNumber}`,
+      {
+        headers: this.headers,
+      }
+    )
+  }
+
   getQueryParams = (params: any): string => {
     let parameters: HttpParams = new HttpParams({ fromObject: params });
     return parameters.toString();

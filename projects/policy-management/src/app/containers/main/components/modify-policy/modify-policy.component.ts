@@ -115,7 +115,7 @@ export class ModifyPolicyComponent {
   }
 
   ngOnInit(): void {
-    
+
     this.getPolicy();
     this.formPolicy.valueChanges.subscribe((v) => {
       this.result = this.validateSaveButton(this.policyData, this.policyDataControls, this.riskData, this.riskTypesControls);
@@ -246,20 +246,20 @@ export class ModifyPolicyComponent {
   }
 
   getProduct(code: string) {
-    this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
+    this.productService.getProductByCode(code).subscribe( (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
 
 
-        this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
+        this.formPolicy.setControl('policyDataPreview',  this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
 
-        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
+        this.formPolicy.setControl('riskDataPreview',  this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
 
         this.formPolicy.setControl('policyData',
-          await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp, this.policyData));
-        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
+           this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp, this.policyData));
+        this.formPolicy.setControl('riskData',  this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
 
-        
+
         this.isLoading = false;
 
       }
@@ -335,18 +335,13 @@ export class ModifyPolicyComponent {
     fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
 
     if (field.dataType.guiComponent === 'List box') {
-      let options: any = [], domainList: any = null; //= field.domainList.valueList; 
-      try {
-        domainList = JSON.parse(field.domainList.valueList);
-      } catch (error) {
-        domainList = field.domainList.valueList;
-      }
+      let options: any = [], domainList = field.domainList.valueList;
       field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
       fieldFG.addControl('options', this.fb.control(options));
     }
     return fieldFG;
   }
-  showDomainList(domainList: any[], valueObj: any) {    
+  showDomainList(domainList: any[], valueObj: any) {
     let options = [], listStorage: any;
     if (domainList[0].url) {
       let url = domainList[0].url.slice(11), type = url.slice(0, url.slice(0, -1).search('/'));
@@ -372,7 +367,6 @@ export class ModifyPolicyComponent {
   }
   orderData(domainList: any, dataList?: any) {
     let options: any = [];
-    
     domainList.forEach((element: any) => {
       let obj: any = { id: element.code, name: element.description }
       if (obj.id != '' || obj != undefined) {
@@ -514,7 +508,7 @@ export class ModifyPolicyComponent {
 
         if (resp.dataHeader.code != 500) {
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
-          setTimeout(() => {this.router.navigate([`/polizas/consulta`]); }, 2000);
+          setTimeout(() => { this.router.navigate([`/polizas/consulta`]).then().catch(); }, 2000);
         } else {
           this.showSuccess('error', 'Error al Modificar', resp.dataHeader.status);
         }
@@ -525,10 +519,10 @@ export class ModifyPolicyComponent {
   }
 
 
-  cancelModification() {
-    this.router.navigate(
+ async cancelModification() {
+   await this.router.navigate(
       [`/polizas/consulta`],
-    );
+    ).then();
     for (let type of this.types) {
       localStorage.removeItem(type)
     }

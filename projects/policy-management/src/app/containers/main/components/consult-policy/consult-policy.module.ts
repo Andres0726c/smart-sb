@@ -30,6 +30,7 @@ import { ModalPolicyActionsModule } from 'projects/policy-management/src/app/sha
 import { ModalRenewalModule } from './modal-renewal/modal-renewal.module';
 import { PolicyDetailsModule } from './policy-details/policy-details.module';
 import { PolicyRenewalModule } from '../policy-renewal/policy-renewal.module';
+import { PolicyEndorsementModule } from './policy-endorsement/policy-endorsement.module';
 
 const routes: Routes = [
   {
@@ -74,7 +75,8 @@ const routes: Routes = [
     ModalPolicyActionsModule,
     ModalRenewalModule,
     PolicyDetailsModule,
-    PolicyRenewalModule
+    PolicyRenewalModule,
+    PolicyEndorsementModule
   ],
   exports: [ConsultPolicyComponent],
 })

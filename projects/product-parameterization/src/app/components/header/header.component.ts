@@ -28,8 +28,8 @@ export class HeaderComponent implements OnInit {
               private cognitoService: CognitoService,
               public dialog: MatDialog) { }
 
-  ngOnInit(): void {
-    this.cognitoService.getUser()
+  async ngOnInit(): Promise<void> {
+   await this.cognitoService.getUser()
     .then((value) => {
       this.company = JSON.parse(value.attributes['custom:sessionInformation']).businessName;
       this.service.companyId = JSON.parse(value.attributes['custom:sessionInformation']).id;
@@ -37,10 +37,10 @@ export class HeaderComponent implements OnInit {
       this.role = value.signInUserSession.accessToken.payload['cognito:groups'];
       this.isAuthenticated = true;
     })
-    .catch(err => {
+    .catch(async(err) => {
       this.isAuthenticated = false;
-      this.cognitoService.signOut();
-      this.router.navigate(['login']);
+      await this.cognitoService.signOut().then().catch();
+      await this.router.navigate(['login']).then().catch();
     });
     // console.log("");
   }
@@ -70,16 +70,17 @@ export class HeaderComponent implements OnInit {
     this.service.downloadFile(this.service.initialParameters.get('productName')?.value);
   }
 
-  signOut(): void {
+  async signOut(): Promise<void> {
     this.closing = true;
     if(this.service.initialParameters.get('productName')?.value !== "" && this.service.initialParameters.get('insuranceLine')?.value !== "") {
       this.saveProduct(false);        
     }        
 
-    this.cognitoService.signOut()
-    .then(() => {
-      this.router.navigate(['/autenticacion']);
-    });
+   await this.cognitoService.signOut()
+    .then(async() => {
+      await this.router.navigate(['/autenticacion']).then().catch();
+    })
+    .catch();
   }
 
   /**
@@ -106,7 +107,7 @@ export class HeaderComponent implements OnInit {
         if(flagValidProductForSave) {
           this.saveProduct(false);
         }
-        this.router.navigate(['productos/menu-productos'])
+         this.router.navigate(['productos/menu-productos']).then().catch()
       }
     })
   }
