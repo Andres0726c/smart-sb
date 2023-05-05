@@ -62,7 +62,7 @@ export class ModalSessionRestartComponent implements OnInit {
       if (groups && groups.includes('TLN') && user.attributes['custom:company']) {
         await this.setCompany(this.data.company).then();
       } else { 
-        this.forbidden()
+        await this.forbidden().then().catch();
         this.isLoading = false;
       }
     })
