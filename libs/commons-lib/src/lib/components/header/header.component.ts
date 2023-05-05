@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit {
   closing = false;
 
   constructor(public router: Router, private cognitoService: CognitoService) {
-    router.events.forEach(async(event) => {
+    router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         if (this.router.url !== '/inicio') {
           this.sessionLocation = '- Gestión de Póliza';
@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit {
           ];
         }
       }
-    });
+    }).then();
 
     this.items2 = [
       {
