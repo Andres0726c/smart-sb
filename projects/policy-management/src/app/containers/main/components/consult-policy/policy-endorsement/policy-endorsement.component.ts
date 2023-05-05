@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { PolicyEndorsement } from "./../../../../../core/interfaces/policy";
 import { ConsultPolicyService } from "../services/consult-policy.service";
 import { ResponseDTO, ResponseErrorDTO } from "./../../../../../core/interfaces/commun/response";
@@ -21,8 +21,7 @@ import { ResponseDTO, ResponseErrorDTO } from "./../../../../../core/interfaces/
 
     constructor(
         public ref: DynamicDialogRef, 
-        public config: DynamicDialogConfig, 
-        public dialogService: DialogService,
+        public config: DynamicDialogConfig,
         public consultPolicyService: ConsultPolicyService
       ) {
         this.observationValue = "";
@@ -42,7 +41,7 @@ import { ResponseDTO, ResponseErrorDTO } from "./../../../../../core/interfaces/
           this.consultPolicyService.getPolicyEndorsementByPolicyNumber(this.config.data.policyNumber).subscribe({
             next: (res: ResponseDTO<PolicyEndorsement[]>) => {
       
-              if (res.dataHeader.code && (res.dataHeader.code = 200)) {
+              if (res.dataHeader.code && (res.dataHeader.code === 200)) {
                 this.policyEndorsement = res.body;
               } else {
                 this.policyEndorsement = [];
@@ -50,14 +49,15 @@ import { ResponseDTO, ResponseErrorDTO } from "./../../../../../core/interfaces/
               this.loading = false;
               if (this.policyEndorsement.length <= this.rowsPerPage) {
                 this.paginator = false
+              } else {
+                this.paginator = true;
               }
             },
             error: (error: ResponseErrorDTO) => {
               console.error('error', error);
               this.loading = false;
-              if (this.policyEndorsement.length <= this.rowsPerPage) {
-                this.paginator = false
-              }
+              this.policyEndorsement = [];
+              this.paginator = false;
             },
           });
     }
