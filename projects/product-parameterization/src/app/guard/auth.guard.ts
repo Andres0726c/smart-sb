@@ -78,7 +78,7 @@ export class AuthGuardParameterizer implements CanActivate {
         await this.router.navigate(['/productos/parametrizador/menu-productos']).then();
       }
     } else {
-      this.cognitoService.signOut()
+     await this.cognitoService.signOut()
       .then(async () => {
         await this.router.navigate(['/autenticacion']).then().catch();
       }).catch();
