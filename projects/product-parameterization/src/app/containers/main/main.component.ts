@@ -54,9 +54,9 @@ export class MainComponent {
         backdropClass: 'backdrop-bg',
         disableClose: true
       });
-      dialogRef.afterClosed().subscribe( (res) => {
+      dialogRef.afterClosed().subscribe( async(res) => {
         if (!res) {
-           this.router.navigate(['/autenticacion']).then().catch();
+          await this.router.navigate(['/autenticacion']).then().catch();
         }
       });
     })

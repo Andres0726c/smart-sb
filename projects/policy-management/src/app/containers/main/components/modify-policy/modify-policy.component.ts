@@ -508,7 +508,7 @@ export class ModifyPolicyComponent {
 
         if (resp.dataHeader.code != 500) {
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
-          setTimeout(async() => {await this.router.navigate([`/polizas/consulta`]).then().catch(); }, 2000);
+          setTimeout(() => { this.router.navigate([`/polizas/consulta`]).then().catch(); }, 2000);
         } else {
           this.showSuccess('error', 'Error al Modificar', resp.dataHeader.status);
         }

@@ -159,7 +159,7 @@ export class ModalCreateProductComponent implements OnInit {
       }else
       {
        this.isLoading = false;
-       this.createProduct(formValue).then().catch();
+      await this.createProduct(formValue).then().catch();
       }
         
       
