@@ -5,7 +5,7 @@
     <h1 class="title-init">Bienvenidos a SmartCore</h1>
   </div>
   <div class="content-card">
-    <p-card class="card" routerLink="/polizas/consulta">
+    <p-card class="card" routerLink="/polizas/consulta" *ngIf="getModule('Consultar')">
       <div class="img-display">
         <img src="smartcore-commons/assets/img/policy-management.svg" alt="" />
       </div>
@@ -21,7 +21,7 @@
         Permite realizar la gestión de reclamaciones
       </p>
     </p-card>
-    <p-card class="card" routerLink="/productos/menu-productos">
+    <p-card class="card" routerLink="/productos/menu-productos" *ngIf="getModule('Parametrizar')">
       <div class="img-display">
         <img src="smartcore-commons/assets/img/parameterizer.svg" alt="" />
       </div>

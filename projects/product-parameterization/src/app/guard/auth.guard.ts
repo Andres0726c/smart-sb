@@ -61,6 +61,7 @@ export class AuthGuardParameterizer implements CanActivate {
       && value.attributes['custom:sessionInformation'] 
       && value.attributes['custom:sessionInformation'] !== '{}' 
       && value.attributes['custom:sessionInformation'] !== ''
+      && this.ModuleAccess(value)
     ) {
       check = true;
       if ( this.router.url === '/productos/parametrizador/cumulos' && state.url !== '/productos/parametrizador/cumulos') {
@@ -84,5 +85,13 @@ export class AuthGuardParameterizer implements CanActivate {
       }).catch();
     }
     return check;
+  }
+
+   ModuleAccess(value: any) {
+    const moduleAcess: string[] = value.attributes['custom:moduleAccess']?.split(",");
+    if(moduleAcess){
+      return moduleAcess.find(x => x === 'Parametrizar') ? true : false;
+    } 
+    return true;
   }
 }
