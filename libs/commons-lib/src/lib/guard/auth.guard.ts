@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate {
   ): Promise<boolean> {
     let check = false;
 
+
     await this.cognitoService.getUser()
     .then((value) => {
       check = this.verifyAccess(value, state);
@@ -37,6 +38,7 @@ export class AuthGuard implements CanActivate {
       && value.attributes['custom:sessionInformation'] 
       && value.attributes['custom:sessionInformation'] !== '{}' 
       && value.attributes['custom:sessionInformation'] !== ''
+      && this.ModuleAccess(value,state)
     ) {
       access = true;
     } else {
@@ -49,5 +51,23 @@ export class AuthGuard implements CanActivate {
       });
     }
     return access;
+  }
+
+  ModuleAccess(value: any, state: RouterStateSnapshot) {
+    
+    const moduleAcess: string[] = value.attributes['custom:moduleAccess']?.split(",");
+    if (moduleAcess) {
+        if (state.url === '/polizas/consulta'){
+          return moduleAcess.find(x => x === 'Consultar') ? true : false;
+        } else if (state.url === '/productos/menu-productos'){
+          return moduleAcess.find(x => x === 'Parametrizar') ? true : false;
+        }else if (state.url.includes('/polizas/modificar/')){
+          return moduleAcess.find(x => x === 'Modificar') ? true : false;
+        }
+        else{
+          return true
+        }
+    }
+    return true;
   }
 }

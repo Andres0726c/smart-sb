@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { of } from 'rxjs';
 import { PolicyDetailsComponent } from './policy-details.component';
@@ -30,11 +30,14 @@ describe('PolicyDetailsComponent', () => {
   let component: PolicyDetailsComponent;
   let fixture: ComponentFixture<PolicyDetailsComponent>;
   let ref: DynamicDialogRef;
+  let ref2: DialogService;
 
   beforeEach(async () => {
+    ref2 = DialogService.prototype
     await TestBed.configureTestingModule({
       declarations: [],
       providers: [
+        DialogService,
         PolicyDetailsComponent,
         DynamicDialogRef,
         {
@@ -215,6 +218,40 @@ describe('PolicyDetailsComponent', () => {
 
   it('close modal', () => {
     expect(component.close()).toBeUndefined();
+  });
+
+  it('show modal endorsement', () => {
+    component.policy = {
+      productName: "",
+      idPolicy: 1,
+      policyNumber: "1",
+      policyExternalNumber: "",
+      inceptionDate: "",
+      effectiveStartDatePolicy: "",
+      expirationDate: "",
+      premiumValue: 1,
+      agent: "",
+      policyEmail: "",
+      complementaryData: {
+        petType: "",
+        petName: "",
+        petAge: "",
+        petBrand: ""
+      },
+      payment: {
+        method: "",
+        type: "",
+        account: "",
+      },
+      servicePlan: {
+        name: "",
+        description: "",
+        value: 1
+      }
+    };
+    const refOpenSpy = jest.spyOn(ref2, 'open')
+    component.showPolicyEndorsementModal()
+    expect(refOpenSpy).toHaveBeenCalled();
   });
 
 });
