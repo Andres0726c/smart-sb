@@ -16,7 +16,6 @@ import { Router } from '@angular/router';
 import { PolicyRenewalComponent } from '../policy-renewal/policy-renewal.component';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { Menu } from 'primeng/menu';
-import { CognitoService } from 'commons-lib';
 
 @Component({
   selector: 'app-consult-policy',
@@ -60,7 +59,6 @@ export class ConsultPolicyComponent implements OnDestroy {
 
   loading: boolean = false;
   loadingMenu: boolean = false;
-  moduleAcess:any;
 
   constructor(
     public consultPolicyService: ConsultPolicyService,
@@ -68,8 +66,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     public fb: FormBuilder,
     public dialogService: DialogService,
     public messageService: MessageService,
-    public router: Router,
-     private cognitoService: CognitoService
+    public router: Router
   ) {
     this.formDate = fb.group({
       processDate: fb.control(null, Validators.required),
@@ -93,8 +90,11 @@ export class ConsultPolicyComponent implements OnDestroy {
       {
         label: 'Modificar',
         icon: 'pi pi-fw pi-pencil',
-        command: (event: any, row: any) => {
-          this.getPolicyClaimStatus();
+        command: () => {
+          this.router.navigate(
+            [`/polizas/modificar/${this.selectedPolicy?.idProduct}`],
+            { state: { policy: this.selectedPolicy } }
+          );
         }
       },
       {
@@ -131,76 +131,38 @@ export class ConsultPolicyComponent implements OnDestroy {
     ];
   }
 
-  ngOnInit(): void {
-    this.cognitoService
-      .getUser()
-      .then((value) => {
-        this.moduleAcess = value.attributes['custom:moduleAccess']?.split(",");
-      })
-  }
 
-   getModule(nameModule: any) {
-     return this.moduleAcess.find((x: any) => x === nameModule) ? true : false;
-   }
-
-
-
-  visibleItem(){
-    if (this.moduleAcess){
-    this.items.find((x: any) => x.label === 'Modificar').visible = this.getModule('Modificar')
-    this.items.find((x: any) => x.label === 'Cancelar').visible = this.getModule('Cancelar')
-    this.items.find((x: any) => x.label === 'Renovar').visible = this.getModule('Renovar')
-    this.items.find((x: any) => x.label === 'Rehabilitar').visible = this.getModule('Rehabilitar')
-     }
-  }
-
-  disabledOption(label:string,status:boolean) {
-    this.items.find((x: any) => x.label === label).disabled = status;
+  getFieldsControls(group: any) {
+    return group.get('fields') as FormArray;
   }
 
   disabledItem(status: string) {
     switch (status) {
       case 'Activa':
-       this.disabledOption('Modificar', false)
-       this.disabledOption('Cancelar', false)
-       this.disabledOption('Rehabilitar', true)
-       this.disabledOption('Renovar', true)
-       this.disabledOption('Ver detalle', false)
-        //this.items[0].disabled = false;
-        //this.items[1].disabled = false;
-        //this.items[2].disabled = true;
-        //this.items[3].disabled = true; //Se deshabilita por PaP
-        //this.items[4].disabled = false;
+        this.items[0].disabled = false;
+        this.items[1].disabled = false;
+        this.items[2].disabled = true;
+        this.items[3].disabled = true; //Se deshabilita por PaP
+        this.items[4].disabled = false;
         break;
       case 'Rechazada':
       case 'Provisoria':
-        this.disabledOption('Modificar', true)
-        this.disabledOption('Cancelar', true)
-        this.disabledOption('Rehabilitar', true)
-        this.disabledOption('Renovar', true)
-        this.disabledOption('Ver detalle', true)
-        /*this.items[0].disabled = true;
+        this.items[0].disabled = true;
         this.items[1].disabled = true;
         this.items[2].disabled = true;
         this.items[3].disabled = true; //Se deshabilita por PaP
-        this.items[4].disabled = true;*/
+        this.items[4].disabled = true;
         break;
+
       case 'Cancelada':
-        this.disabledOption('Modificar', true)
-        this.disabledOption('Cancelar', true)
-        this.disabledOption('Rehabilitar', false)
-        this.disabledOption('Renovar', true)
-        this.disabledOption('Ver detalle', false)
-        /*this.items[0].disabled = true;
+        this.items[0].disabled = true;
         this.items[1].disabled = true;
         this.items[2].disabled = false;
         this.items[3].disabled = true;
-        this.items[4].disabled = false;*/
+        this.items[4].disabled = false;
         break;
     }
   }
-
-  
 
   showModal(component: any, process: string, policy: any, buttonAction: any, width?: string, height?: string, mxHeight?: string) {
     const ref = this.dialogService.open(component, {
@@ -307,21 +269,6 @@ export class ConsultPolicyComponent implements OnDestroy {
     });
   }
 
-  getPolicyClaimStatus() {
-    this.loading = true;
-    this.productService.modificationPolicyClaimStatus(this.selectedPolicy.policyNumber).subscribe((res: any) => {
-      if (res.dataHeader.code && res.dataHeader.code == 200) {
-        this.router.navigate(
-          [`/polizas/modificar/${this.selectedPolicy?.idProduct}`],
-          { state: { policy: this.selectedPolicy } }
-        );
-      } else {
-        this.showSuccess('error', 'Error al modificar', res.dataHeader.status);
-      }
-      this.loading = false;
-    });
-  }
-
   showSuccess(status: string, title: string, msg: string) {
     this.messageService.add({
       severity: status,
@@ -334,61 +281,6 @@ export class ConsultPolicyComponent implements OnDestroy {
     // Cerramos todas las modales al cambiar de componente
     this.dialogService.dialogComponentRefMap.forEach(dialog => {
       dialog.destroy();
-    });
-  }
-
-  getDaneCode(id: number){
-    this.consultPolicyService.getPolicyById(id).subscribe((res) => {
-      if (res.body) {
-        
-        let daneCodeD = res.body.propertiesPolicyData.gd002_datosdeldebito.DEPAR_COL;
-        let daneCodeC = res.body.propertiesPolicyData.gd002_datosdeldebito.CIU_TDB;
-        if(daneCodeD){
-          return this.getCity(daneCodeD)
-        } else if(daneCodeC){
-          let daneCodeAux = daneCodeC.substring(0,2);
-          return this.getCity(daneCodeAux)
-        } else if((daneCodeD === '' || undefined) && (daneCodeC === '' || undefined)){
-          return this.getCity('0')
-        } 
-        // let daneCode = res.body.propertiesPolicyData.datos_basicos.DEPAR_COL;
-        // this.getCity(daneCode)
-        
-      }
-  })
-}
-
-  setData(res: any, type: any) {
-    if (Array.isArray(res.body)) {
-      this.addToElementData(res.body, type);
-    } else {
-      this.addToElementData([res.body], type);
-    }
-  }
-
-  addToElementData(res: any[], type: any) {
-    let options: any = [];
-    let list: any = [];
-    let optionsAux: any = [];
-
-    res.forEach((element: any) => {
-      let obj: any = { id: element.code ?? element.businessCode, name: type === 'turnoverperiod' ? element.name : element.description };
-      if (obj.id != '' && obj.id != undefined) {
-        options.push(obj);
-      }
-    });
-
-    localStorage.setItem(type, JSON.stringify(options));
-    list = localStorage.getItem(type);
-    optionsAux = JSON.parse(list);
-  }
-
-  getCity(daneCode: any){
-    
-    this.productService
-    .getApiData('city/findByState', '', daneCode)
-    .subscribe((res) => {
-      this.setData(res, 'city');
     });
   }
 }

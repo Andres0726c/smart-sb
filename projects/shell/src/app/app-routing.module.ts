@@ -2,6 +2,7 @@ import { loadRemoteModule } from '@angular-architects/module-federation';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard, environment, LoginGuard } from 'commons-lib';
+import { AuthGuardParameterizer } from 'projects/product-parameterization/src/app/guard/auth.guard';
 import { InitScreenComponent } from './containers/init-screen/init-screen.component';
 
 let mfManifest = {
@@ -42,7 +43,7 @@ const routes: Routes = [
         remoteEntry: mfManifest['product-parameterization'],
         exposedModule: './Module'
       }).then(m => m.MainModule),
-    canActivate: [AuthGuard],data: { module: 'Parametrizar'}
+    canActivate: [AuthGuard]
   },
   {
     path: 'polizas',
@@ -52,7 +53,7 @@ const routes: Routes = [
         remoteEntry: mfManifest['policy-management'],
         exposedModule: './Module'
       }).then(m => m.MainModule),
-    canActivate: [AuthGuard],data: { module: 'Consultar'}
+    canActivate: [AuthGuard]
   },
   {
     path: '**',

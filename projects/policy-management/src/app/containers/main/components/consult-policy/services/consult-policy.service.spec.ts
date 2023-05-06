@@ -6,7 +6,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { ConsultPolicyService } from './consult-policy.service';
-import { PolicyBrief, PolicyEndorsement } from 'projects/policy-management/src/app/core/interfaces/policy';
+import { PolicyBrief } from 'projects/policy-management/src/app/core/interfaces/policy';
 import { Identification } from '../interfaces/identification';
 import { environment } from 'commons-lib';
 
@@ -28,19 +28,6 @@ const mockPolicyBrief: PolicyBrief[] = [
     insuredDocument: '1131345121',
     insuredTypeDocument: '1',
     insuredName: 'insuredName',
-  },
-];
-
-const mockPolicyEndorsement: PolicyEndorsement[] = [
-  {
-    turnOverPeriod:"Mensual",
-    endorsementNumber: "0",
-    applicationprocess: "Emisión",
-    issueDate: "2022-10-20 09:58:42.771",
-    inceptionDate:"2022-10-20 09:58:42.771",
-    expirationDate:"2022-12-31 12:53:00.000",
-    status: "Activo",
-    observation: ""
   },
 ];
 
@@ -95,17 +82,6 @@ describe('ConsultPolicyService', () => {
     const req = httpController.expectOne({
       method: 'GET',
       url: `${apiUrl}identificationtype/findAll`,
-    });
-    req.flush(mockIdentification);
-  });
-
-  it('getPolicyEndorsementByPolicyNumber', () => {
-    service.getPolicyEndorsementByPolicyNumber(1234).subscribe((res) => {
-      expect(res).toEqual(mockPolicyEndorsement);
-    });
-    const req = httpController.expectOne({
-      method: 'GET',
-      url: `${apiUrl}policyendorsement/findAllPolicyEndorsementByPolicyNumber/${1234}`,
     });
     req.flush(mockIdentification);
   });

@@ -55,7 +55,6 @@ export class LoginComponent implements OnInit {
         this.formData.get('password')?.value
       )
       .then(async (user) => {
-        console.log(user,"user cognito");
         if (user.challengeName && user.challengeName === 'NEW_PASSWORD_REQUIRED') {
           window.location.href = environment.urlCognitoHostedUI;
         }

@@ -9,7 +9,6 @@ import { Product } from '../../interfaces/product/product';
 import { ProductService } from './product.service';
 
 const apiUrl: string = environment.urlPolicyIssuerMS;
-const apiUrlAdapter: string = environment.urlAdapterMS;
 const mockProducts: Product[] = [
   {
     id: 1,
@@ -108,38 +107,4 @@ describe('ProductService', () => {
     });
     req.flush(mockProducts);
   });
-
-  it('modificationPolicyClaimStatus', () => {
-    service.modificationPolicyClaimStatus("1").subscribe((res) => {
-      expect(res).toEqual(mockProducts);
-    });
-    const req = httpController.expectOne({
-      method: 'GET',
-      url: `${apiUrl}policy/modificationPolicyClaimStatus/1`,
-    });
-    req.flush(mockProducts);
-  });
-
-  it('findByIdPolicy', () => {
-    service.findByIdPolicy(1).subscribe((res) => {
-      expect(res).toEqual(mockProducts);
-    });
-    const req = httpController.expectOne({
-      method: 'GET',
-      url: `${apiUrl}policy/findByIdPolicy/1`,
-    });
-    req.flush(mockProducts);
-  });
-
-  it('getPremiumData', () => {
-    service.getPremiumData(1,2).subscribe((res) => {
-      expect(res).toEqual(mockProducts);
-    });
-    const req = httpController.expectOne({
-      method: 'GET',
-      url: `${apiUrlAdapter}policy/taxes?smartCorePolicyNumber=1&endorsementNumber=2`,
-    });
-    req.flush(mockProducts);
-  });
-
 });

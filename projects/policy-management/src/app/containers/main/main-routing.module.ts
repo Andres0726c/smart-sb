@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
-import { AuthGuard } from 'commons-lib';
 
 const routes: Routes = [
     {
@@ -20,8 +19,7 @@ const routes: Routes = [
                 loadChildren: () =>
                     import(
                         './components/modify-policy/modify-policy.module'
-                    ).then((m) => m.ModifyPolicyModule),
-                    canActivate: [AuthGuard]
+                    ).then((m) => m.ModifyPolicyModule)
             },
             {
                 path: 'sincronizar',

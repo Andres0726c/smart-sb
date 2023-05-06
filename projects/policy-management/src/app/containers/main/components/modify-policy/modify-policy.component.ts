@@ -246,18 +246,18 @@ export class ModifyPolicyComponent {
   }
 
   getProduct(code: string) {
-    this.productService.getProductByCode(code).subscribe( async(res: ResponseDTO<Product>) => {
+    this.productService.getProductByCode(code).subscribe( (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
 
 
-        this.formPolicy.setControl('policyDataPreview',  await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
+        this.formPolicy.setControl('policyDataPreview',  this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
 
-        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
+        this.formPolicy.setControl('riskDataPreview',  this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
 
         this.formPolicy.setControl('policyData',
-        await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp, this.policyData));
-        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
+           this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp, this.policyData));
+        this.formPolicy.setControl('riskData',  this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
 
 
         this.isLoading = false;
