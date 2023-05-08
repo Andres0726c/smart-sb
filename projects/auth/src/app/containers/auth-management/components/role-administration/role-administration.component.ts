@@ -73,17 +73,20 @@ export class RoleAdministrationComponent implements OnInit {
         </div>
       `,
       accept: () => {
-        for (let rol of this.selectedRole) {
-          let index = this.apiService.roles.value.indexOf(rol);
-
-          this.apiService.roles.removeAt(index);
-          this.data = this.apiService.roles.value;
-          this.selectedRole = [];
-        }
+        this.deleteRoleConfirm();
       },
     });
   }
 
+  deleteRoleConfirm(){
+    for (let rol of this.selectedRole) {
+      let index = this.apiService.roles.value.indexOf(rol);
+
+      this.apiService.roles.removeAt(index);
+      this.data = this.apiService.roles.value;
+      this.selectedRole = [];
+    }
+  }
   openToEdit(rol: any) {
     const dialogRef = this.dialogService.open(ModalRoleComponent, {
       data: {
@@ -102,18 +105,20 @@ export class RoleAdministrationComponent implements OnInit {
   }
 
   copyRol(rol: any) {
-    let id = this.apiService.roles.length + 1;
-
-    console.log(rol);
-    console.log(id);
-
-    let form: FormGroup = new FormGroup({
-      id: new FormControl(id),
-      name: new FormControl(rol.name),
-      description: new FormControl(rol.description),
+    const dialogRef = this.dialogService.open(ModalRoleComponent, {
+      data: {
+        title: 'Copiar rol',
+        subtitle: 'Especifique los datos para copiar el rol',
+        action: 'copy',
+        rol: rol,
+      },
+      showHeader: false,
+      width: '600px',
     });
-    this.apiService.roles.push(form);
-    console.log('roles', this.apiService.roles);
+
+    dialogRef.onClose.subscribe((res) => {
+      this.data = this.apiService.roles.value;
+    })
   }
 
   applyFilter(event: Event, filterType: string){

@@ -4,23 +4,21 @@
     <span class="ml-2"> Especifique los datos del rol que quiere crear </span>
   </div>
 
-  <div class="mt-5 rounded-xl bg-white p-5">
-    <!-- No data screen -->
-    <refactoring-smartcore-mf-no-data-screen
-      *ngIf="apiService.roles.length === 0"
-      [emptyTitle]="'Sin roles creados'"
-      [emptySubTitle]="'No se han creado roles'"
-      (action)="openToAdd()"
-    ></refactoring-smartcore-mf-no-data-screen>
+  <!-- No data screen -->
+  <refactoring-smartcore-mf-no-data-screen
+    *ngIf="apiService.roles.length === 0"
+    [emptyTitle]="'Sin roles creados'"
+    [emptySubTitle]="'No se han creado roles'"
+    (action)="openToAdd()"
+  ></refactoring-smartcore-mf-no-data-screen>
 
+  <div class="mt-5 rounded-xl bg-white p-5" *ngIf="apiService.roles.length > 0">
     <!-- Search -->
-    <div
-      *ngIf="apiService.roles.length > 0"
-      class="flex items-center justify-between pb-2"
-    >
+    <div class="flex items-center justify-between pb-2">
       <span class="p-input-icon-right">
         <i class="pi pi-search"></i>
         <input
+          class="input-text"
           type="text"
           pInputText
           (keyup)="applyFilter($event, 'contains')"
@@ -53,7 +51,7 @@
     >
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th [style]="{'width': '20px'}">
+          <th [style]="{ width: '20px' }">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
           <th *ngFor="let col of columns">
@@ -64,7 +62,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-columns="columns">
         <tr>
-          <td [style]="{'width': '20px'}">
+          <td [style]="{ width: '20px' }">
             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
           </td>
           <td *ngFor="let col of columns">

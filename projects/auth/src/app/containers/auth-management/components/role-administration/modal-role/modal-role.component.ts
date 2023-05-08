@@ -12,6 +12,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 export class ModalRoleComponent implements OnInit {
   modal!: any;
   formRole!: FormGroup;
+  flagErrorName: boolean = false;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -26,20 +27,45 @@ export class ModalRoleComponent implements OnInit {
     if (this.modal.data.action === 'create') {
       this.formRole = new FormGroup({
         id: new FormControl(''),
-        name: new FormControl('', Validators.required),
-        description: new FormControl('', Validators.required),
+        name: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(200),
+        ]),
+        description: new FormControl('', [
+          Validators.required,
+          Validators.maxLength(2000),
+        ]),
       });
-      console.log(this.formRole);
     }
 
     if (this.modal.data.action === 'edit') {
       let rol = this.modal.data.rol;
       this.formRole = new FormGroup({
-        name: new FormControl(rol.name, Validators.required),
-        description: new FormControl(rol.description, Validators.required),
+        name: new FormControl(rol.name, [
+          Validators.required,
+          Validators.maxLength(200),
+        ]),
+        description: new FormControl(rol.description, [
+          Validators.required,
+          Validators.maxLength(2000),
+        ]),
       });
     }
-    console.log(this.modal);
+
+    if (this.modal.data.action === 'copy') {
+      let rol = this.modal.data.rol;
+      this.formRole = new FormGroup({
+        name: new FormControl(`${rol.name} - copia`, [
+          Validators.required,
+          Validators.maxLength(200),
+        ]),
+        description: new FormControl(rol.description, [
+          Validators.required,
+          Validators.maxLength(2000),
+        ]),
+      });
+    }
+    this.validateName(this.formRole.get('name')?.value);
   }
 
   addRole() {
@@ -69,11 +95,36 @@ export class ModalRoleComponent implements OnInit {
           let rol = this.modal.data.rol;
           let index = this.apiService.roles.value.indexOf(rol);
           this.apiService.roles.value[index].name = this.formRole.value.name;
-          this.apiService.roles.value[index].description = this.formRole.value.description;
+          this.apiService.roles.value[index].description =
+            this.formRole.value.description;
         },
       });
     }
+    if (this.modal.data.action === 'copy') {
+      let id = this.apiService.roles.length + 1;
+      this.formRole.get('id')?.setValue(id);
+      this.apiService.roles.push(this.formRole);
+    }
 
     this.ref.close(this.apiService.roles);
+  }
+
+  verifyName(event: Event) {
+    console.log(event);
+    
+    let filterValue = (event.target as HTMLInputElement).value;
+    this.validateName(filterValue);
+  }
+
+  validateName(name: any) {
+    let object = this.apiService.roles.value.filter((obj: any) => {
+      return obj.name === name;
+    });
+
+    if (object.length > 0) {
+      this.flagErrorName = true;
+    } else {
+      this.flagErrorName = false;
+    }
   }
 }
