@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-
-  DoCheck,
-} from '@angular/core';
+import { Component, OnInit, ViewChild, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { ModalConfirmDeleteComponent } from '../../shared/modal-confirm-delete/modal-confirm-delete.component';
+import { AnyARecord } from 'dns';
 @Component({
   selector: 'app-sidenav-property-product',
   templateUrl: './sidenav-property-product.component.html',
@@ -139,13 +134,11 @@ export class SidenavPropertyProductComponent implements OnInit {
     },
   ];
 
-
-
   changeCheck(menu: any, moduleType: any) {
     if (menu.formControlName) {
       if (this.formProcess.get(menu.formControlName)?.value.enabled) {
-        if(moduleType==='modification'){        
-           this.showMessage(menu);
+        if (moduleType === 'modification') {
+          this.showMessage(menu);
         }
       } else {
         menu.show = true;
@@ -155,81 +148,117 @@ export class SidenavPropertyProductComponent implements OnInit {
     }
   }
 
-  showMessage(menu:any){
-     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
+  showMessage(menu: any) {
+    const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
-        message:
-        `Se perderan la parametrización de ${(menu.name).toLowerCase()} realizada, ¿desea continuar?`,
+        message: `Se perderan la parametrización de ${menu.name.toLowerCase()} realizada, ¿desea continuar?`,
       },
     });
-      dialogRef.afterClosed().subscribe((res) => {
+    dialogRef.afterClosed().subscribe((res) => {
       if (res) {
-          this.setValues(menu,false)
-          this.deleteDataModification();
+        this.setValues(menu, false);
+        this.deleteCascade();
       } else {
-        this.setValues(menu,true);
+        this.setValues(menu, true);
       }
     });
 
-     dialogRef.beforeClosed().subscribe(async (res)=>{
-      if(res)
-      await this.navigateGeneralParams().then().catch();
-    })
-    
+    dialogRef.beforeClosed().subscribe(async (res) => {
+    console.log(this.getRiskType())
+      if (res) await this.navigateGeneralParams().then().catch();
+    });
   }
 
-  async navigateGeneralParams(){
-    await this.router.navigate(['/productos/parametrizador/parametros-generales']);
+  async navigateGeneralParams() {
+    await this.router.navigate([
+      '/productos/parametrizador/parametros-generales',
+    ]);
   }
-  setValues(menu: any, value:boolean){
-    this.formProcess
-    .get(menu.formControlName)
-    ?.get('enabled')
-    ?.setValue(value);
+  setValues(menu: any, value: boolean) {
+    this.formProcess.get(menu.formControlName)?.get('enabled')?.setValue(value);
 
-  menu.show = this.formProcess
-    .get(menu.formControlName)
-    ?.get('enabled')?.value;
+    menu.show = this.formProcess
+      .get(menu.formControlName)
+      ?.get('enabled')?.value;
   }
 
-      // Obtiene el FormArray
+  // Obtiene el FormArray
 
   getComplementaryDataControls(): FormArray {
-    return (<FormArray>(
+    return <FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
-    ));
+    );
   }
 
-  getRiskTypeMdfctnPrcss(): FormArray {
-    return (<FormArray>(
+  getRiskType(): FormArray {
+    return <FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
-    ));
+    );
   }
+
+  getRiskTypeCmmrclPln(control: any): FormArray {
+    return <FormArray>control?.get('cmmrclPln');
+  }
+
+
 
   getMdfctnTchnclCntrl(): FormArray {
-    return (<FormArray>(
-      this.productService.mdfctnPrcss?.get('mdfctnTchnclCntrl')
-    ));
+    return <FormArray>this.productService.mdfctnPrcss?.get('mdfctnTchnclCntrl');
   }
 
+  deleteCascade() {
+      while (this.getComplementaryDataControls().length !== 0) {
+        this.getComplementaryDataControls().removeAt(0);
+      }
 
-   deleteDataModification() {
+      while (this.getMdfctnTchnclCntrl().length !== 0) {
+        this.getMdfctnTchnclCntrl().removeAt(0);
+      }
 
-    // Elimina todos los elementos del FormArray
-    while (this.getComplementaryDataControls().length !== 0) {
-      this.getComplementaryDataControls().removeAt(0);
-    }
-    while (this.getRiskTypeMdfctnPrcss().length !== 0) {
-      this.getRiskTypeMdfctnPrcss().removeAt(0);
-    }
-    while(this.getMdfctnTchnclCntrl().length!==0){
-      this.getMdfctnTchnclCntrl().removeAt(0);
-    }
+      for (let i = 0; i < this.getRiskType().length; i++) {
+        const control = this.getRiskType().at(i);
+        this.deleteDataModification(control);
+      }
     
-
   }
 
+  deleteAthrzdOprtn(formArray: FormArray,type:string){
+    if(type==='athrzdOprtn'){
+        while (formArray.length !== 0) {
+          formArray.removeAt(0);
+        }
+      }else{
+        for (let i = 0; i < formArray.length; i++) {
+          let athrzdOprtn: FormArray = formArray.at(i).get('athrzdOprtn') as FormArray, cvrgDtGrp: FormArray = formArray.at(i).get('cvrgDtGrp') as FormArray;  
+          this.deleteAthrzdOprtn(athrzdOprtn,'athrzdOprtn');
+          if(cvrgDtGrp)
+          this.deleteAthrzdOprtn(cvrgDtGrp,'athrzdOprtn');
+        }
+      }
+  }
+
+  deleteDataModification(control: any) {
+    let cmmrclPln = this.getRiskTypeCmmrclPln(control), i = 0;
+    console.log("cmmrclPln: ",cmmrclPln)
+    if (cmmrclPln) {
+      while (cmmrclPln.length != i) {
+        let cmmrclPln: FormArray = control.get('cmmrclPln') as FormArray,rskTypDtGrp: FormArray = control.get('rskTypDtGrp') as FormArray;
+        this.deleteAthrzdOprtn(rskTypDtGrp,'athrzdOprtn');
+        this.deleteCvrgModify(cmmrclPln);
+        i++;
+      }
+    }
+  }
+
+  deleteCvrgModify(cmmrclPln:any){
+    for (let i = 0; i < cmmrclPln.length; i++) {
+      let cvrg: FormArray = cmmrclPln.at(i).get('cvrg') as FormArray, srvcPln: FormArray = cmmrclPln.at(i).get('srvcPln') as FormArray, athrzdOprtn: FormArray = cmmrclPln.at(i).get('athrzdOprtn') as FormArray; 
+      this.deleteAthrzdOprtn(athrzdOprtn,'athrzdOprtn');
+      this.deleteAthrzdOprtn(cvrg,'');
+      this.deleteAthrzdOprtn(srvcPln,'');
+    }
+  }
   setDefaultOpenMenus() {
     this.menus.forEach((menu) => {
       menu.show =
