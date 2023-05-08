@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
            await this.setCompany(this.companies[0]).then();
           }
         } else {
-          await this.forbidden().then().catch();cf
+          await this.forbidden().then().catch();
           this.isLoading = false;
         }
       })
