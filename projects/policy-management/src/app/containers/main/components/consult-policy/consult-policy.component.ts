@@ -182,7 +182,7 @@ export class ConsultPolicyComponent implements OnDestroy {
         /*this.items[0].disabled = true;
         this.items[1].disabled = true;
         this.items[2].disabled = true;
-        this.items[3].disabled = true; //Se deshabilita por PaP
+        this.items[3].disabled = false;
         this.items[4].disabled = true;*/
         break;
       case 'Cancelada':
