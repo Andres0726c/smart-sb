@@ -1,5 +1,6 @@
 #section-table {
-    padding-top: 1em;
+    padding-top: 2em;
+    padding-bottom: 1em;
 }
 
 #btn-close-policy-endorsement {
@@ -32,13 +33,13 @@
     box-shadow: 0px 0px 4px var(--primary-focus);
     border-color: var(--primary-base);
 }
-  
+
 #observation-value.ng-dirty.ng-invalid {
     border-color: var(--danger-base);
 }
-  
+
 #observation-value:disabled {
     background-color: var(--greyscale-6);
     color: var(--greyscale-3);
     opacity: 1;
-  }
+}

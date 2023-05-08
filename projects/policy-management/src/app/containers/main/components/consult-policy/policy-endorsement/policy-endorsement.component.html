@@ -1,7 +1,7 @@
 <section id="section-table" class="flex flex-col justify-center w-full">
-    <p-table [columns]="cols" 
-             [value]="policyEndorsement" 
-             [rows]="rowsPerPage" 
+    <p-table [columns]="cols"
+             [value]="policyEndorsement"
+             [rows]="rowsPerPage"
              [paginator]="paginator"
              [loading]="loading">
         <ng-template pTemplate="header" let-columns>
@@ -51,9 +51,9 @@
     <button pButton type="submit" label="Cerrar" class="min-w-max" (click)="close()"></button>
 </section>
 
-<p-dialog header="Observación endoso" [(visible)]="visibleDialog" [style]="{width: '50vw'}">
+<p-dialog header="Observación endoso" [modal]="true" [(visible)]="visibleDialog" [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
     <section id="observation-section">
-            <input id="observation-value" type="text" pInputText [(ngModel)]="observationValue" class="w-full"/>
+            <input id="observation-value" type="text" pInputText [(ngModel)]="observationValue" class="w-full" readonly/>
     </section>
     <section id="btn-close-policy-endorsement" class="sticky bottom-0 bg-white pb-6 pt-4" >
         <button pButton type="submit" label="Cerrar" class="min-w-max" (click)="closeObservation()"></button>

@@ -24,8 +24,8 @@ export class PolicyDetailsComponent implements OnInit {
   premiumData: any = null;
 
   constructor(
-    public ref: DynamicDialogRef, 
-    public config: DynamicDialogConfig, 
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
     public dialogService: DialogService,
     public consultPolicyService: ConsultPolicyService,
     public productService: ProductService
