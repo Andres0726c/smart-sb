@@ -7,18 +7,20 @@ import { TableModule } from 'primeng/table';
 import { ModalRoleModule } from './modal-role/modal-role.module';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TooltipModule } from 'primeng/tooltip';
 
 const routes: Route[] = [
   {
     path: '',
-    component: RoleAdministrationComponent
-  }
+    component: RoleAdministrationComponent,
+  },
 ];
 
 @NgModule({
-  declarations: [
-    RoleAdministrationComponent
-  ],
+  declarations: [RoleAdministrationComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
@@ -26,7 +28,11 @@ const routes: Route[] = [
     TableModule,
     ModalRoleModule,
     ButtonModule,
-    InputTextModule
-  ]
+    InputTextModule,
+    CheckboxModule,
+    ConfirmDialogModule,
+    TooltipModule
+  ],
+  providers: [ConfirmationService, MessageService],
 })
-export class RoleAdministrationModule { }
+export class RoleAdministrationModule {}
