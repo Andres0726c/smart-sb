@@ -165,7 +165,6 @@ export class SidenavPropertyProductComponent implements OnInit {
     });
 
     dialogRef.beforeClosed().subscribe(async (res) => {
-    console.log(this.getRiskType())
       if (res) await this.navigateGeneralParams().then().catch();
     });
   }
@@ -240,7 +239,6 @@ export class SidenavPropertyProductComponent implements OnInit {
 
   deleteDataModification(control: any) {
     let cmmrclPln = this.getRiskTypeCmmrclPln(control), i = 0;
-    console.log("cmmrclPln: ",cmmrclPln)
     if (cmmrclPln) {
       while (cmmrclPln.length != i) {
         let cmmrclPln: FormArray = control.get('cmmrclPln') as FormArray,rskTypDtGrp: FormArray = control.get('rskTypDtGrp') as FormArray;
