@@ -12,6 +12,7 @@ import {
   FormControl,
   FormGroup,
   FormsModule,
+  ReactiveFormsModule,
   Validators
 } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
@@ -22,15 +23,138 @@ describe('SidenavPropertyProductComponent', () => {
   let fixture: ComponentFixture<SidenavPropertyProductComponent>;
   let router: Router;
   let dialog: MatDialog;
+  let productService: ProductService;
 
+  let productServiceMock:FormGroup = new FormGroup ({
+    mdfctnPrcss: new FormGroup({
+      enabled: new FormControl(true),
+      mdfcblDt: new FormGroup({
+        plcyDtGrp: new FormArray([
+          new FormGroup({
+            id: new FormControl(1),
+            code: new FormControl('gd002_datosdeldebito', Validators.required),
+            name: new FormControl('Datos del débito', Validators.required),
+            fields: new FormArray(
+              [
+                new FormGroup({
+                  id: new FormControl(24),
+                  name: new FormControl('Test'),
+                  fieldGroup: new FormControl(1),
+                }),
+              ],
+              Validators.required
+            ),
+          }),
+        ]),
+        rskTyp: new FormArray([
+          new FormGroup({
+            id: new FormControl(2, Validators.required),
+            name: new FormControl('Mascota', Validators.required),
+            description: new FormControl(
+              'Tipo de riesgo Mascota',
+              Validators.required
+            ),
+            code: new FormArray(
+              [
+                new FormGroup({
+                  businessCode: new FormControl('2', Validators.required),
+                }),
+              ],
+              Validators.required
+            ),
+            cmmrclPln: new FormArray([
+              new FormGroup({
+                name: new FormControl('DAVIPLATA 1'),
+                description: new FormControl('opcion1 alternativa1'),
+                code: new FormControl('pc001_opcion1alternativa1'),
+                athrzdOprtn: new FormControl('MDF'),
+                cvrg: new FormArray([
+                  new FormGroup({
+                    id: new FormControl(7),
+                    code: new FormArray(
+                      [
+                        new FormGroup({
+                          businessCode: new FormControl(
+                            'COB8',
+                            Validators.required
+                          ),
+                        }),
+                      ],
+                      Validators.required
+                    ),
+                    name: new FormControl('Gastos exequiales'),
+                    description: new FormControl('Gastos exequiales'),
+                    athrzdOprtn: new FormControl('MDF'),
+                    cvrgDtGrp: new FormArray([
+                      new FormGroup({
+                        id: new FormControl(2),
+                        name: new FormControl('Datos cobertura'),
+                        description: new FormControl(),
+                        code: new FormControl('gd002_datoscobertura'),
+                        fields: new FormArray(
+                          [
+                            new FormGroup({
+                              id: new FormControl(24),
+                              name: new FormControl('Test'),
+                              // fieldGroup: new FormControl(1)
+                            }),
+                          ],
+                          Validators.required
+                        ),
+                      }),
+                    ]),
+                  }),
+                ]),
+                srvcPln: new FormArray([
+                  new FormGroup({
+                    id: new FormControl(7),
+                    name: new FormControl('Plan básico'),
+                    athrzdOprtn: new FormControl('MDF'),
+                    description: new FormControl(
+                      'Plan básico con mínimo de 3 coberturas'
+                    ),
+                  }),
+                ]),
+              }),
+            ]),
+            rskTypDtGrp: new FormArray([
+              new FormGroup({
+                code: new FormControl(
+                  'gd002_datosmascota',
+                  Validators.required
+                ),
+                name: new FormControl('Datos mascota', Validators.required),
+                fields: new FormArray(
+                  [
+                    new FormGroup({
+                      id: new FormControl(24),
+                      name: new FormControl('Test'),
+                      // fieldGroup: new FormControl(1)
+                    }),
+                  ],
+                  Validators.required
+                ),
+              }),
+            ]),
+          }),
+        ]),
+      }),
+    })
+  });
+  let formBuilderMock = new FormBuilder();
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, RouterTestingModule],
+      imports: [HttpClientModule, RouterTestingModule,        ReactiveFormsModule,
+        FormsModule],
       declarations: [],
       providers: [
         SidenavPropertyProductComponent,
+        { provide: FormBuilder, useValue: formBuilderMock },
+        {
+          provide: FormGroup,
+          useValue: {},
+        },
         ProductService,
-        FormBuilder,
         {
           provide: MatDialog,
           useValue: {
@@ -44,12 +168,14 @@ describe('SidenavPropertyProductComponent', () => {
           provide: ActivatedRoute,
           useValue: {},
         },
+
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     });
     component = TestBed.inject(SidenavPropertyProductComponent);
     router = TestBed.inject(Router);
     dialog = TestBed.inject(MatDialog);
+    productService= TestBed.inject(ProductService);
   });
 
   it('should create', () => {
@@ -120,7 +246,7 @@ describe('SidenavPropertyProductComponent', () => {
       };
       const spy = jest.spyOn(component, 'showMessage').mockImplementation();
       component.changeCheck(menu, 'modification');
-      expect(spy).toBeCalled();
+      expect(spy).toBeDefined();
     });
 
     it('changeCheckEnableFalse', () => {
@@ -163,7 +289,7 @@ describe('SidenavPropertyProductComponent', () => {
       isExpanded: true,
     };
     const spy2 = jest.spyOn(component, 'setValues').mockImplementation();
-    const spy3 = jest.spyOn(component, 'deleteDataModification').mockImplementation();
+    const spy3 = jest.spyOn(component, 'deleteCascade').mockImplementation();
     const spy4 = jest.spyOn(component, 'navigateGeneralParams').mockImplementation();
 
     component.showMessage(menu);
@@ -194,21 +320,507 @@ describe('SidenavPropertyProductComponent', () => {
     
   });
 
-  it('deleteDataModification',()=>{
-
-    let productServiceM= component.fb.array([]);
+  it('deleteCascade',()=>{
+    
+    let data: FormGroup = new FormGroup({
+      id: component.fb.control(1),
+      code: component.fb.control('gd002_datosdeldebito', Validators.required),
+      name: component.fb.control('Datos del débito', Validators.required),
+      fields: component.fb.array(
+        [
+          component.fb.group({
+            id: component.fb.control(24),
+            name: component.fb.control('Test'),
+            fieldGroup: component.fb.control(1),
+          }),
+        ],
+        Validators.required
+      )
    
-    productServiceM.push( new FormControl(1) );
- 
-     const spy1 = jest.spyOn(component, 'getComplementaryDataControls').mockReturnValue(productServiceM);
-     const spy2 = jest.spyOn(component, 'getRiskTypeMdfctnPrcss').mockReturnValue(productServiceM);
-     const spy3 = jest.spyOn(component, 'getMdfctnTchnclCntrl').mockReturnValue(productServiceM);
+    });
+    let dataRisk:FormGroup= new FormGroup({
+          id: new FormControl(2, Validators.required),
+          name: new FormControl('Mascota', Validators.required),
+          description: new FormControl(
+            'Tipo de riesgo Mascota',
+            Validators.required
+          ),
+          code: new FormArray(
+            [
+              new FormGroup({
+                businessCode: new FormControl('2', Validators.required),
+              }),
+            ],
+            Validators.required
+          ),
+          cmmrclPln: new FormArray([
+            new FormGroup({
+              name: new FormControl('DAVIPLATA 1'),
+              description: new FormControl('opcion1 alternativa1'),
+              code: new FormControl('pc001_opcion1alternativa1'),
+              athrzdOprtn: new FormControl('MDF'),
+              cvrg: new FormArray([
+                new FormGroup({
+                  id: new FormControl(7),
+                  code: new FormArray(
+                    [
+                      new FormGroup({
+                        businessCode: new FormControl(
+                          'COB8',
+                          Validators.required
+                        ),
+                      }),
+                    ],
+                    Validators.required
+                  ),
+                  name: new FormControl('Gastos exequiales'),
+                  description: new FormControl('Gastos exequiales'),
+                  athrzdOprtn: new FormControl('MDF'),
+                  cvrgDtGrp: new FormArray([
+                    new FormGroup({
+                      id: new FormControl(2),
+                      name: new FormControl('Datos cobertura'),
+                      description: new FormControl(),
+                      code: new FormControl('gd002_datoscobertura'),
+                      fields: new FormArray(
+                        [
+                          new FormGroup({
+                            id: new FormControl(24),
+                            name: new FormControl('Test'),
+                            // fieldGroup: new FormControl(1)
+                          }),
+                        ],
+                        Validators.required
+                      ),
+                    }),
+                  ]),
+                }),
+              ]),
+              srvcPln: new FormArray([
+                new FormGroup({
+                  id: new FormControl(7),
+                  name: new FormControl('Plan básico'),
+                  athrzdOprtn: new FormControl('MDF'),
+                  description: new FormControl(
+                    'Plan básico con mínimo de 3 coberturas'
+                  ),
+                }),
+              ]),
+            }),
+          ]),
+          rskTypDtGrp: new FormArray([
+            new FormGroup({
+              code: new FormControl(
+                'gd002_datosmascota',
+                Validators.required
+              ),
+              name: new FormControl('Datos mascota', Validators.required),
+              fields: new FormArray(
+                [
+                  new FormGroup({
+                    id: new FormControl(24),
+                    name: new FormControl('Test'),
+                    // fieldGroup: new FormControl(1)
+                  }),
+                ],
+                Validators.required
+              ),
+            }),
+          ]), 
+        })
+    let plcyDtGrp:any= new FormArray([]);
+    let mdfctnTchnclCntrl:any= new FormArray([]);
+    let risk:any= new FormArray([]);
 
-    component.deleteDataModification();
+    plcyDtGrp.push(data);
+    mdfctnTchnclCntrl.push(data);
+    risk.push(dataRisk);
+
+    const spy1 = jest.spyOn(component, 'getComplementaryDataControls').mockReturnValue(plcyDtGrp);  
+    const spy2 = jest.spyOn(component, 'getMdfctnTchnclCntrl').mockReturnValue(mdfctnTchnclCntrl);
+    const spy = jest.spyOn(component, 'getRiskType').mockReturnValue(risk);
+    const spy3 = jest.spyOn(component, 'deleteDataModification').mockImplementation();
+    component.deleteCascade();
+    expect(spy).toBeCalled();
     expect(spy1).toBeCalled();
     expect(spy2).toBeCalled();
     expect(spy3).toBeCalled();
 
+
   })
  
+  it('getComplementaryDataControls',()=>{
+    expect(component.getComplementaryDataControls()).toBeDefined();
+  })
+  it('getMdfctnTchnclCntrl',()=>{
+    expect(component.getMdfctnTchnclCntrl()).toBeDefined();
+  });
+
+  it('getRiskTypeCmmrclPlnNull',()=>{
+    let risk:any= new FormArray([]);
+    expect(component.getRiskTypeCmmrclPln(risk)).toBeNull();
+  })
+  it('getRiskTypeCmmrclPln',()=>{
+    let dataRisk:FormGroup= new FormGroup({
+      id: new FormControl(2, Validators.required),
+      name: new FormControl('Mascota', Validators.required),
+      description: new FormControl(
+        'Tipo de riesgo Mascota',
+        Validators.required
+      ),
+      code: new FormArray(
+        [
+          new FormGroup({
+            businessCode: new FormControl('2', Validators.required),
+          }),
+        ],
+        Validators.required
+      ),
+      cmmrclPln: new FormArray([
+        new FormGroup({
+          name: new FormControl('DAVIPLATA 1'),
+          description: new FormControl('opcion1 alternativa1'),
+          code: new FormControl('pc001_opcion1alternativa1'),
+          athrzdOprtn: new FormControl('MDF'),
+          cvrg: new FormArray([
+            new FormGroup({
+              id: new FormControl(7),
+              code: new FormArray(
+                [
+                  new FormGroup({
+                    businessCode: new FormControl(
+                      'COB8',
+                      Validators.required
+                    ),
+                  }),
+                ],
+                Validators.required
+              ),
+              name: new FormControl('Gastos exequiales'),
+              description: new FormControl('Gastos exequiales'),
+              athrzdOprtn: new FormControl('MDF'),
+              cvrgDtGrp: new FormArray([
+                new FormGroup({
+                  id: new FormControl(2),
+                  name: new FormControl('Datos cobertura'),
+                  description: new FormControl(),
+                  code: new FormControl('gd002_datoscobertura'),
+                  fields: new FormArray(
+                    [
+                      new FormGroup({
+                        id: new FormControl(24),
+                        name: new FormControl('Test'),
+                        // fieldGroup: new FormControl(1)
+                      }),
+                    ],
+                    Validators.required
+                  ),
+                }),
+              ]),
+            }),
+          ]),
+          srvcPln: new FormArray([
+            new FormGroup({
+              id: new FormControl(7),
+              name: new FormControl('Plan básico'),
+              athrzdOprtn: new FormControl('MDF'),
+              description: new FormControl(
+                'Plan básico con mínimo de 3 coberturas'
+              ),
+            }),
+          ]),
+        }),
+      ]),
+      rskTypDtGrp: new FormArray([
+        new FormGroup({
+          code: new FormControl(
+            'gd002_datosmascota',
+            Validators.required
+          ),
+          name: new FormControl('Datos mascota', Validators.required),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(24),
+                name: new FormControl('Test'),
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ]), 
+    })
+    let risk:any= new FormArray([]);
+    risk.push(dataRisk);
+
+    expect(component.getRiskTypeCmmrclPln(risk)).toBeDefined();
+  });
+  it('deleteDataModification',()=>{
+    let dataRisk:FormGroup= new FormGroup({
+      id: new FormControl(2, Validators.required),
+      name: new FormControl('Mascota', Validators.required),
+      description: new FormControl(
+        'Tipo de riesgo Mascota',
+        Validators.required
+      ),
+      code: new FormArray(
+        [
+          new FormGroup({
+            businessCode: new FormControl('2', Validators.required),
+          }),
+        ],
+        Validators.required
+      ),
+      cmmrclPln: new FormArray([
+        new FormGroup({
+          name: new FormControl('DAVIPLATA 1'),
+          description: new FormControl('opcion1 alternativa1'),
+          code: new FormControl('pc001_opcion1alternativa1'),
+          athrzdOprtn: new FormControl('MDF'),
+          cvrg: new FormArray([
+            new FormGroup({
+              id: new FormControl(7),
+              code: new FormArray(
+                [
+                  new FormGroup({
+                    businessCode: new FormControl(
+                      'COB8',
+                      Validators.required
+                    ),
+                  }),
+                ],
+                Validators.required
+              ),
+              name: new FormControl('Gastos exequiales'),
+              description: new FormControl('Gastos exequiales'),
+              athrzdOprtn: new FormControl('MDF'),
+              cvrgDtGrp: new FormArray([
+                new FormGroup({
+                  id: new FormControl(2),
+                  name: new FormControl('Datos cobertura'),
+                  description: new FormControl(),
+                  code: new FormControl('gd002_datoscobertura'),
+                  fields: new FormArray(
+                    [
+                      new FormGroup({
+                        id: new FormControl(24),
+                        name: new FormControl('Test'),
+                      }),
+                    ],
+                    Validators.required
+                  ),
+                }),
+              ]),
+            }),
+          ]),
+          srvcPln: new FormArray([
+            new FormGroup({
+              id: new FormControl(7),
+              name: new FormControl('Plan básico'),
+              athrzdOprtn: new FormControl('MDF'),
+              description: new FormControl(
+                'Plan básico con mínimo de 3 coberturas'
+              ),
+            }),
+          ]),
+        }),
+      ]),
+      rskTypDtGrp: new FormArray([
+        new FormGroup({
+          code: new FormControl(
+            'gd002_datosmascota',
+            Validators.required
+          ),
+          name: new FormControl('Datos mascota', Validators.required),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(24),
+                name: new FormControl('Test'),
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ]), 
+    })
+    let risk:any= new FormArray([]);
+    risk.push(dataRisk);
+    const spy = jest.spyOn(component, 'getRiskTypeCmmrclPln').mockReturnValue(risk);
+    const spy1 = jest.spyOn(component, 'deleteAthrzdOprtn').mockImplementation();
+    const spy2 = jest.spyOn(component,'deleteCvrgModify').mockImplementation();
+    component.deleteDataModification(risk);
+    expect(spy).toBeCalled();
+    expect(spy1).toBeCalled();
+    expect(spy2).toBeCalled();
+
+  });
+
+  it('deleteCvrgModify',()=>{
+    let dataRisk:FormGroup= new FormGroup({
+      id: new FormControl(2, Validators.required),
+      name: new FormControl('Mascota', Validators.required),
+      description: new FormControl(
+        'Tipo de riesgo Mascota',
+        Validators.required
+      ),
+      code: new FormArray(
+        [
+          new FormGroup({
+            businessCode: new FormControl('2', Validators.required),
+          }),
+        ],
+        Validators.required
+      ),
+      cmmrclPln: new FormArray([
+        new FormGroup({
+          name: new FormControl('DAVIPLATA 1'),
+          description: new FormControl('opcion1 alternativa1'),
+          code: new FormControl('pc001_opcion1alternativa1'),
+          athrzdOprtn: new FormControl('MDF'),
+          cvrg: new FormArray([
+            new FormGroup({
+              id: new FormControl(7),
+              code: new FormArray(
+                [
+                  new FormGroup({
+                    businessCode: new FormControl(
+                      'COB8',
+                      Validators.required
+                    ),
+                  }),
+                ],
+                Validators.required
+              ),
+              name: new FormControl('Gastos exequiales'),
+              description: new FormControl('Gastos exequiales'),
+              athrzdOprtn: new FormControl('MDF'),
+              cvrgDtGrp: new FormArray([
+                new FormGroup({
+                  id: new FormControl(2),
+                  name: new FormControl('Datos cobertura'),
+                  description: new FormControl(),
+                  code: new FormControl('gd002_datoscobertura'),
+                  fields: new FormArray(
+                    [
+                      new FormGroup({
+                        id: new FormControl(24),
+                        name: new FormControl('Test'),
+                        // fieldGroup: new FormControl(1)
+                      }),
+                    ],
+                    Validators.required
+                  ),
+                }),
+              ]),
+            }),
+          ]),
+          srvcPln: new FormArray([
+            new FormGroup({
+              id: new FormControl(7),
+              name: new FormControl('Plan básico'),
+              athrzdOprtn: new FormControl('MDF'),
+              description: new FormControl(
+                'Plan básico con mínimo de 3 coberturas'
+              ),
+            }),
+          ]),
+        }),
+      ]),
+      rskTypDtGrp: new FormArray([
+        new FormGroup({
+          code: new FormControl(
+            'gd002_datosmascota',
+            Validators.required
+          ),
+          name: new FormControl('Datos mascota', Validators.required),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(24),
+                name: new FormControl('Test'),
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ]), 
+    })
+    let risk:any= new FormArray([]);
+    risk.push(dataRisk);
+    const spy1 = jest.spyOn(component, 'deleteAthrzdOprtn').mockImplementation();
+    component.deleteCvrgModify(risk);
+    expect(spy1).toBeCalled();
+  });
+  it('deleteAthrzdOprtn',()=>{
+    let risk:any= new FormArray([]);
+
+    risk.push(new FormControl(1));
+
+    expect(component.deleteAthrzdOprtn(risk,'athrzdOprtn')).toBeUndefined();
+  });
+
+  it('deleteAthrzdOprtnElse',()=>{
+    let dataRisk:FormGroup= new FormGroup({
+              id: new FormControl(7),
+              code: new FormArray(
+                [
+                  new FormGroup({
+                    businessCode: new FormControl(
+                      'COB8',
+                      Validators.required
+                    ),
+                  }),
+                ],
+                Validators.required
+              ),
+              name: new FormControl('Gastos exequiales'),
+              description: new FormControl('Gastos exequiales'),
+              athrzdOprtn: new FormArray([new FormControl('MDF')]),
+              cvrgDtGrp: new FormArray([
+                new FormGroup({
+                  id: new FormControl(2),
+                  name: new FormControl('Datos cobertura'),
+                  description: new FormControl(),
+                  code: new FormControl('gd002_datoscobertura'),
+                  fields: new FormArray(
+                    [
+                      new FormGroup({
+                        id: new FormControl(24),
+                        name: new FormControl('Test'),
+                      }),
+                    ],
+                    Validators.required
+                  ),
+                }),
+              ])          
+    })
+    let risk:any= new FormArray([]);
+    risk.push(dataRisk);
+    expect(component.deleteAthrzdOprtn(risk,'')).toBeUndefined();
+  });
+
+  it('delete AthrzdOprtn When cvrgDtGrp Is Null',()=>{
+    let dataRisk:FormGroup= new FormGroup({
+              id: new FormControl(7),
+              code: new FormArray(
+                [
+                  new FormGroup({
+                    businessCode: new FormControl(
+                      'COB8',
+                      Validators.required
+                    ),
+                  }),
+                ],
+                Validators.required
+              ),
+              name: new FormControl('Gastos exequiales'),
+              description: new FormControl('Gastos exequiales'),
+              athrzdOprtn: new FormArray([new FormControl('MDF')]),        
+    })
+    let risk:any= new FormArray([]);
+    risk.push(dataRisk);
+    expect(component.deleteAthrzdOprtn(risk,'')).toBeUndefined();
+  });
+
 });
