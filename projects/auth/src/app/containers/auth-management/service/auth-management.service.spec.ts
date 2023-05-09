@@ -1,21 +1,24 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 
 import { AuthManagementService } from './auth-management.service';
+import { FormArray, FormBuilder } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('AuthManagementService', () => {
   let service: AuthManagementService;
-  let fixture: ComponentFixture<AuthManagementService>;
-
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AuthManagementService],
+      providers: [
+        FormBuilder,
+        {
+          provide: FormArray,
+          useValue: {},
+        },
+      ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
-    fixture = TestBed.createComponent(AuthManagementService);
-    service = fixture.componentInstance;
-    fixture.detectChanges()
+    service = TestBed.inject(AuthManagementService);
   });
 
   it('should be created', () => {

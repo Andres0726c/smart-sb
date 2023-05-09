@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RoleAdministrationComponent } from './role-administration.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { AuthManagementService } from '../../services/auth-management.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { of } from 'rxjs';
+import { AuthManagementService } from '../../service/auth-management.service';
 
 describe('RoleAdministrationComponent', () => {
   let component: RoleAdministrationComponent;

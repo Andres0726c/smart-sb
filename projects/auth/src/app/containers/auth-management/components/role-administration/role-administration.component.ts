@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ModalRoleComponent } from './modal-role/modal-role.component';
-import { AuthManagementService } from '../../services/auth-management.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { filter } from 'rxjs';
 import { Table } from 'primeng/table';
+import { AuthManagementService } from '../../service/auth-management.service';
 
 @Component({
   selector: 'refactoring-smartcore-mf-role-administration',

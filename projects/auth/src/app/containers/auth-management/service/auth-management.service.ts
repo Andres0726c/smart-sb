@@ -2,14 +2,11 @@ import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthManagementService {
-  roles: FormArray;
-
-  constructor(
-    fb: FormBuilder
-  ) {
+  roles!: FormArray;
+  constructor(fb: FormBuilder) {
     this.roles = fb.array([]);
   }
 }

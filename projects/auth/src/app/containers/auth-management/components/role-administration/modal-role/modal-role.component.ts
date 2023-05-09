@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { AuthManagementService } from '../../../services/auth-management.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { AuthManagementService } from '../../../service/auth-management.service';
 
 @Component({
   selector: 'refactoring-smartcore-mf-modal-role',

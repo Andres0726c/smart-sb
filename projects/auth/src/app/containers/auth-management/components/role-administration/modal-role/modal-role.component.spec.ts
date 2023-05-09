@@ -4,8 +4,8 @@ import { ModalRoleComponent } from './modal-role.component';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { AuthManagementService } from '../../../services/auth-management.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { AuthManagementService } from '../../../service/auth-management.service';
 
 describe('ModalRoleComponent', () => {
   let component: ModalRoleComponent;

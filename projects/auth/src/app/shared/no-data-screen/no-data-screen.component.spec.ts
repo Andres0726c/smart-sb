@@ -20,4 +20,8 @@ describe('NoDataScreenComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('shootAction', () => {
+    expect(component.shootAction()).toBeUndefined();
+  });
 });
