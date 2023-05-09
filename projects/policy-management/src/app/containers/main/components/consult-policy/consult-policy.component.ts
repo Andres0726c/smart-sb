@@ -351,8 +351,6 @@ export class ConsultPolicyComponent implements OnDestroy {
         } else if((daneCodeD === '' || undefined) && (daneCodeC === '' || undefined)){
           return this.getCity('0')
         } 
-        // let daneCode = res.body.propertiesPolicyData.datos_basicos.DEPAR_COL;
-        // this.getCity(daneCode)
         
       }
   })
