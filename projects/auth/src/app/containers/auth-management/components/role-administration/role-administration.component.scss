@@ -8,3 +8,12 @@
     border-radius: 30px;
     width: 250px;
 }
+
+:ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    text-align: left;
+    padding: 0.5rem 1rem;
+    font-size: 12px;
+    line-height: normal;
+    align-items: center;
+    overflow-wrap: anywhere;
+}

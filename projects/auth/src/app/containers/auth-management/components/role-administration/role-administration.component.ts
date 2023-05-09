@@ -90,8 +90,8 @@ export class RoleAdministrationComponent implements OnInit {
   openToEdit(rol: any) {
     const dialogRef = this.dialogService.open(ModalRoleComponent, {
       data: {
-        title: 'Editar rol',
-        subtitle: 'Especifique los datos para editar el rol',
+        title: 'Modificar rol',
+        subtitle: 'Especifique los datos para modificar el rol',
         action: 'edit',
         rol: rol,
       },
