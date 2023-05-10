@@ -216,7 +216,7 @@ describe('ConsultPolicyComponent', () => {
   it('show modal consult', () => {
     component.selectedPolicy = { idPolicy: 1 }
     const refOpenSpy = jest.spyOn(ref, 'open')
-    component.showModalConsulDetails()
+    component.showModalConsulDetails();
     expect(refOpenSpy).toHaveBeenCalled();
   });
 
@@ -238,5 +238,5 @@ describe('ConsultPolicyComponent', () => {
     jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
     expect(component.getPolicy()).toBeUndefined();
   });
-  
+
 });
