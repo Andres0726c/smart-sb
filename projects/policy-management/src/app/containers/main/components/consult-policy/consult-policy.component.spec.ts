@@ -64,7 +64,7 @@ describe('ConsultPolicyComponent', () => {
     fixture = TestBed.createComponent(ConsultPolicyComponent);
     component = fixture.componentInstance;
     productService = fixture.debugElement.injector.get(ProductService);
-    router = TestBed.inject(Router); 
+    router = TestBed.inject(Router);
 
     const res = {
       "body": {
@@ -225,10 +225,10 @@ describe('ConsultPolicyComponent', () => {
     const spy=jest.spyOn(component, 'getModule').mockReturnValue(true);
     component.visibleItem();
     expect(spy).toBeCalled();
- 
+
   })
 it('getModuleTrue',()=>{
-  component.moduleAcess=['Consultar', 'Modificar', 'Rehabilitar', 'Renovar', 'Cancelar', 'Parametrizar']; 
+  component.moduleAcess=['Consultar', 'Modificar', 'Rehabilitar', 'Renovar', 'Cancelar', 'Parametrizar'];
   expect(component.getModule('Modificar')).toBeTruthy();
 });
 
@@ -303,7 +303,7 @@ it('getModuleFalse',()=>{
   it('show modal consult', () => {
     component.selectedPolicy = { idPolicy: 1 }
     const refOpenSpy = jest.spyOn(ref, 'open')
-    component.showModalConsulDetails()
+    component.showModalConsulDetails();
     expect(refOpenSpy).toHaveBeenCalled();
   });
 
@@ -337,7 +337,7 @@ it('getModuleFalse',()=>{
     jest.spyOn(productService, 'modificationPolicyClaimStatus').mockReturnValue(of (res));
     expect(component.getPolicyClaimStatus()).toBeUndefined();
   });
-  
+
   it('getDaneCodeD', () => {
     const daneCodeD = '05';
     const service = fixture.debugElement.injector.get(ConsultPolicyService);
@@ -361,7 +361,7 @@ it('getModuleFalse',()=>{
       },
     };
     jest.spyOn(service, 'getPolicyById').mockReturnValue(of (response));
-    
+
     expect(component.getDaneCode(1)).toBeUndefined();
     expect(component.getCity(daneCodeD)).toBeUndefined();
   });
@@ -388,11 +388,11 @@ it('getModuleFalse',()=>{
       },
     };
     jest.spyOn(service, 'getPolicyById').mockReturnValue(of (response));
-    
+
     expect(component.getDaneCode(1)).toBeUndefined();
     expect(component.getCity(daneCodeC)).toBeUndefined();
   });
-  
+
   it('getCity', () => {
     const service = fixture.debugElement.injector.get(ProductService);
     const spy1 = jest.spyOn(service, 'getApiData').mockReturnValueOnce(of('city/findByState', '', '05'));
