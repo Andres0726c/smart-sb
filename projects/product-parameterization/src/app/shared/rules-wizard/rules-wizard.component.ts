@@ -160,7 +160,7 @@ export class RulesWizardComponent implements OnInit {
   getApiData(requestParams: any, search: string) {
     this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false && res.body) {
-         this.setData(res).then().catch();
+         this.setData(res).then(result => {}).catch(error => {});
         this.flagServiceError = false;
       } else {
         this.flagServiceError = true;

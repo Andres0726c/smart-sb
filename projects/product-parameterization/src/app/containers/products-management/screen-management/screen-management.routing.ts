@@ -76,10 +76,6 @@ export const screenManagementRoutes: Route[] = [
                 path: 'control-tecnico-reclamacion',
                 loadChildren: () => import('../../../containers/claim-technical-control/claim-technical-control.module').then(m => m.ClaimTechnicalControlModule)
             },
-            {
-                path: 'hidden-view',
-                loadChildren: () => import('../../../containers/hidden-view/hidden-view.module').then(m => m.HiddenViewModule)
-            },
             /*Cancelación */
             {
                 path: 'datos-cancelacion',
