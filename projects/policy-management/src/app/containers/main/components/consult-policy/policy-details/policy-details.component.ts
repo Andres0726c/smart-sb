@@ -22,7 +22,7 @@ export class PolicyDetailsComponent implements OnInit {
   paymentType = 'No aplica';
   turnoverPeriod = 'No Aplica';
   premiumData: any = null;
-  refEndorsement: DynamicDialogRef | undefined;
+  refEndorsement: DynamicDialogRef = new DynamicDialogRef;
 
   constructor(
     public ref: DynamicDialogRef,

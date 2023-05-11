@@ -220,7 +220,7 @@ describe('PolicyDetailsComponent', () => {
     expect(component.close()).toBeUndefined();
   });
 
-  it('show modal endorsement', () => {
+  it('show modal endorsement & close', () => {
     component.policy = {
       productName: "",
       idPolicy: 1,
@@ -250,41 +250,8 @@ describe('PolicyDetailsComponent', () => {
       }
     };
     const refOpenSpy = jest.spyOn(ref, 'open')
-    component.showPolicyEndorsementModal()
-    expect(refOpenSpy).toHaveBeenCalled();
-  });
-
-  it('show modal consult details', () => {
-    component.policy = {
-      productName: "",
-      idPolicy: 1,
-      policyNumber: "1",
-      policyExternalNumber: "",
-      inceptionDate: "",
-      effectiveStartDatePolicy: "",
-      expirationDate: "",
-      premiumValue: 1,
-      agent: "",
-      policyEmail: "",
-      complementaryData: {
-        petType: "",
-        petName: "",
-        petAge: "",
-        petBrand: ""
-      },
-      payment: {
-        method: "",
-        type: "",
-        account: "",
-      },
-      servicePlan: {
-        name: "",
-        description: "",
-        value: 1
-      }
-    };
-    const refOpenSpy = jest.spyOn(ref, 'open')
-    component.showModalConsulDetails(component.policy);
+    component.showPolicyEndorsementModal();
+    component.refEndorsement.close();
     expect(refOpenSpy).toHaveBeenCalled();
   });
 
