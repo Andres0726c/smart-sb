@@ -37,7 +37,7 @@ import { ResponseDTO, ResponseErrorDTO } from "./../../../../../core/interfaces/
             { header: 'Acciones' },
           ];
 
-          this.consultPolicyService.getPolicyEndorsementByPolicyNumber(this.config.data.policyNumber).subscribe({
+          this.consultPolicyService.getPolicyEndorsementByPolicyNumber(this.config.data.selectedPolicy.policyNumber).subscribe({
             next: (res: ResponseDTO<PolicyEndorsement[]>) => {
 
               if (res.dataHeader.code && (res.dataHeader.code === 200)) {
