@@ -61,7 +61,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'autenticacion',
+    redirectTo: 'autorizacion',
     pathMatch: 'full'
   }
 ];

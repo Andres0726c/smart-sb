@@ -13,7 +13,7 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule.withRoutes([
           {
-            path: 'autenticacion',
+            path: 'autorizacion',
             component: InitScreenComponent
           }
         ])
