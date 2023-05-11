@@ -108,6 +108,12 @@ export class ConsultPolicyComponent implements OnDestroy {
         },
       },
       {
+        label: 'Anular cancelación', icon: 'pi pi-fw pi-file-excel',
+        command: (event: any, row: any) => {
+          this.getDeleteCancellation();
+        }
+      },
+      {
         label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open',
         command: (event: any, row: any) => {
           this.formDate.reset();
@@ -305,6 +311,11 @@ export class ConsultPolicyComponent implements OnDestroy {
       }
       this.loading = false;
     });
+  }
+
+  getDeleteCancellation() {
+    this.loading = true;
+    setTimeout(() => {this.loading = false}, 5000)
   }
 
   getPolicyClaimStatus() {
