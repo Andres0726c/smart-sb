@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
+import { FormArray, FormBuilder, FormControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,9 @@ export class ApiRequestsService {
   });
 
   constructor(
-    private httpClient: HttpClient
-  ) { 
-    //
-  }
+    private httpClient: HttpClient,
+    public fb: FormBuilder,
+  ) {}
 
   /**
    * Function that returns data from general microservices

@@ -1,0 +1,79 @@
+<div class="p-5">
+  <div class="w-full text-right mt-5">
+    <p-button
+      icon="pi pi-times"
+      (click)="ref.close()"
+      styleClass="p-button-rounded p-button-text"
+    ></p-button>
+  </div>
+  <div class="flex flex-col text-center mb-5">
+    <span class="title">{{ modal.data.title }}</span>
+    <span class="subtitle">{{ modal.data.subtitle }}</span>
+  </div>
+  <form [formGroup]="formRole">
+    <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-2">
+        <label htmlFor="name">Nombre</label>
+        <input
+          formControlName="name"
+          pInputText
+          id="name"
+          aria-describedby="name-help"
+          (keyup)="verifyName($event)"
+        />
+        <div *ngIf="formRole.get('name')?.dirty">
+          <small
+            *ngIf="formRole.get('name')?.hasError('required')"
+            id="name-help"
+            class="text-warn"
+            >Ingrese un nombre para el rol.</small
+          >
+          <small
+            *ngIf="formRole.get('name')?.hasError('maxlength')"
+            id="name-help"
+            class="text-warn"
+            >El nombre supera el máximo de caracteres requerido.</small
+          >
+        </div>
+        <small
+            *ngIf="flagErrorName"
+            id="name-help"
+            class="text-warn"
+            >El nombre del rol ya existe.</small
+          >
+      </div>
+      <div class="flex flex-col gap-2">
+        <label htmlFor="name">Descipción</label>
+        <input
+          formControlName="description"
+          pInputText
+          id="name"
+          aria-describedby="name-help"
+        />
+        <div *ngIf="formRole.get('description')?.dirty">
+          <small
+            *ngIf="formRole.get('description')?.hasError('required')"
+            id="name-help"
+            class="text-warn"
+            >Ingrese una descripción para el rol.</small
+          >
+          <small
+            *ngIf="formRole.get('description')?.hasError('maxlength')"
+            id="name-help"
+            class="text-warn"
+            >La descripción superael máximo de caracteres requerido.</small
+          >
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="flex justify-center mt-4">
+    <button
+      pButton
+      label="Añadir"
+      styleClass="p-button-rounded"
+      (click)="addRole()"
+      [disabled]="!formRole.valid || flagErrorName"
+    ></button>
+  </div>
+</div>

@@ -76,9 +76,9 @@ export class HeaderComponent implements OnInit {
       this.saveProduct(false);        
     }        
 
-   await this.cognitoService.signOut()
+    await this.cognitoService.signOut()
     .then(async() => {
-      await this.router.navigate(['/autenticacion']).then().catch();
+      await this.router.navigate(['/autorizacion']).then().catch();
     })
     .catch();
   }
