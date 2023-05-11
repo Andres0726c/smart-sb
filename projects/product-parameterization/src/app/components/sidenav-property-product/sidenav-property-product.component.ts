@@ -139,6 +139,8 @@ export class SidenavPropertyProductComponent implements OnInit {
       if (this.formProcess.get(menu.formControlName)?.value.enabled) {
         if (moduleType === 'modification') {
           this.showMessage(menu);
+        }else{
+        menu.show = false;
         }
       } else {
         menu.show = true;
