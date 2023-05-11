@@ -2,7 +2,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
 import { ApiRequestsService } from './api-requests.service';
-import { FormBuilder } from '@angular/forms';
 
 describe('ApiRequestsService', () => {
   let service: ApiRequestsService;
