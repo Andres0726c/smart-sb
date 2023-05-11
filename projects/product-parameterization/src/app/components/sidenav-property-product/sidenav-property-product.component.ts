@@ -165,7 +165,7 @@ export class SidenavPropertyProductComponent implements OnInit {
     });
 
     dialogRef.beforeClosed().subscribe(async (res) => {
-      if (res) await this.navigateGeneralParams().then().catch();
+      if (res) await this.navigateGeneralParams().then(result => {}).catch(error => {});
     });
   }
 
