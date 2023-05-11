@@ -374,6 +374,8 @@ export class ModifyPolicyComponent {
       }
     });
 
+    options = options.sort((a: any, b: any) => (a.name < b.name ? -1 : 1));
+    
     return options;
   }
 
