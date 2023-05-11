@@ -74,7 +74,7 @@ export class PolicyDetailsComponent implements OnInit {
       return 'No aplica';
     }
     const valueList = JSON.parse(field.domainList.valueList);
-    const value = valueList.find((x: any) => x.code.toString()===code.toString());
+    const value = valueList.find((x: any) => x.code.toString()===code?.toString());
     return value ? value.description : 'No aplica';
   }
 
