@@ -1,16 +1,11 @@
-import { DialogService, DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
-import { ConsultPolicyService } from "../services/consult-policy.service";
+import { DynamicDialogConfig, DynamicDialogRef } from "primeng/dynamicdialog";
 import { PolicyEndorsementComponent } from "./policy-endorsement.component";
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
     ComponentFixture,
     TestBed,
-    fakeAsync,
   } from '@angular/core/testing';
-import { HttpClientModule } from "@angular/common/http";
-import { MessageService } from "primeng/api";
 import { of, throwError } from "rxjs";
-import { FormBuilder } from "@angular/forms";
 import { ResponseDTO } from "./../../../../../../../../policy-management/src/app/core/interfaces/commun/response";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 
@@ -28,7 +23,7 @@ describe('PolicyEndorsementComponent response 200', () => {
             DynamicDialogRef,
             {
             provide: DynamicDialogConfig,
-            useValue: { data: { policyNumber: 100000000001653 } },
+            useValue: { data: { selectedPolicy: { policyNumber: 100000000001653 } } },
             },
         ],
         imports: [HttpClientTestingModule],
@@ -72,11 +67,11 @@ describe('PolicyEndorsementComponent response 200', () => {
             totalRecords: 106,
         },
         };
-        
+
         jest
         .spyOn(component.consultPolicyService, 'getPolicyEndorsementByPolicyNumber')
         .mockReturnValue(of(response));
-        
+
         fixture.detectChanges();
     });
 
@@ -135,7 +130,7 @@ describe('PolicyEndorsementComponent response 200 > 5 rows', () => {
             DynamicDialogRef,
             {
             provide: DynamicDialogConfig,
-            useValue: { data: { policyNumber: 100000000001653 } },
+            useValue: { data: { selectedPolicy: { policyNumber: 100000000001653 } } },
             },
         ],
         imports: [HttpClientTestingModule],
@@ -219,11 +214,11 @@ describe('PolicyEndorsementComponent response 200 > 5 rows', () => {
             totalRecords: 106,
         },
         };
-        
+
         jest
         .spyOn(component.consultPolicyService, 'getPolicyEndorsementByPolicyNumber')
         .mockReturnValue(of(response));
-        
+
         fixture.detectChanges();
     });
 
@@ -247,7 +242,7 @@ describe('PolicyEndorsementComponent response 400', () => {
             DynamicDialogRef,
             {
             provide: DynamicDialogConfig,
-            useValue: { data: { policyNumber: 100000000001653 } },
+            useValue: { data: { selectedPolicy: { policyNumber: 100000000001653 } } },
             },
         ],
         imports: [HttpClientTestingModule],
@@ -270,11 +265,11 @@ describe('PolicyEndorsementComponent response 400', () => {
               totalRecords: 106,
             },
           };
-        
+
         jest
         .spyOn(component.consultPolicyService, 'getPolicyEndorsementByPolicyNumber')
         .mockReturnValue(of(response));
-        
+
         fixture.detectChanges();
     });
 
@@ -298,7 +293,7 @@ describe('PolicyEndorsementComponent response error', () => {
             DynamicDialogRef,
             {
             provide: DynamicDialogConfig,
-            useValue: { data: { policyNumber: 100000000001653 } },
+            useValue: { data: { selectedPolicy: { policyNumber: 100000000001653 } } },
             },
         ],
         imports: [HttpClientTestingModule],
@@ -308,11 +303,11 @@ describe('PolicyEndorsementComponent response error', () => {
 
         fixture = TestBed.createComponent(PolicyEndorsementComponent);
         component = fixture.componentInstance;
-        
+
         jest
         .spyOn(component.consultPolicyService, 'getPolicyEndorsementByPolicyNumber')
         .mockReturnValue(throwError(() => new Error('test')));
-        
+
         fixture.detectChanges();
     });
 
