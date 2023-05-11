@@ -41,7 +41,9 @@ describe('PolicyDetailsComponent', () => {
         DynamicDialogRef,
         {
           provide: DynamicDialogConfig,
-          useValue: { data: { idPolicy: 1 } },
+          useValue: {
+            data: { idPolicy: 1 },
+            onClose: of(true)  },
         },
       ],
       imports: [HttpClientTestingModule],

@@ -107,7 +107,7 @@ export class HeaderComponent implements OnInit {
         if(flagValidProductForSave) {
           this.saveProduct(false);
         }
-         this.router.navigate(['productos/menu-productos']).then().catch()
+         this.router.navigate(['productos/menu-productos']).then(result => {}).catch(error => {})
       }
     })
   }
