@@ -5,15 +5,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   templateUrl: './no-data-screen.component.html',
   styleUrls: ['./no-data-screen.component.scss']
 })
-export class NoDataScreenComponent implements OnInit {
+export class NoDataScreenComponent {
 
   @Input() emptyTitle:string = '';
   @Input() emptySubTitle:string = '';
   @Output() action: EventEmitter<any> = new EventEmitter();
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor() { 
+    //
   }
 
   shootAction(){
