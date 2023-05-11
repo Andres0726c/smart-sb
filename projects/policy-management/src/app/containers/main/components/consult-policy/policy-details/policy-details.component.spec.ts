@@ -23,17 +23,16 @@ const localStorageMock = (function() {
     }
   };
 })();
-  
+
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 describe('PolicyDetailsComponent', () => {
   let component: PolicyDetailsComponent;
   let fixture: ComponentFixture<PolicyDetailsComponent>;
-  let ref: DynamicDialogRef;
-  let ref2: DialogService;
+  let ref: DialogService;
 
   beforeEach(async () => {
-    ref2 = DialogService.prototype
+    ref = DialogService.prototype
     await TestBed.configureTestingModule({
       declarations: [],
       providers: [
@@ -220,7 +219,7 @@ describe('PolicyDetailsComponent', () => {
     expect(component.close()).toBeUndefined();
   });
 
-  it('show modal endorsement', () => {
+  it('show modal endorsement & close', () => {
     component.policy = {
       productName: "",
       idPolicy: 1,
@@ -249,8 +248,9 @@ describe('PolicyDetailsComponent', () => {
         value: 1
       }
     };
-    const refOpenSpy = jest.spyOn(ref2, 'open')
-    component.showPolicyEndorsementModal()
+    const refOpenSpy = jest.spyOn(ref, 'open')
+    component.showPolicyEndorsementModal();
+    component.refEndorsement.close();
     expect(refOpenSpy).toHaveBeenCalled();
   });
 
