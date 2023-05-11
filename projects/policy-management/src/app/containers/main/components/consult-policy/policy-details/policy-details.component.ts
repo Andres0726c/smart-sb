@@ -22,6 +22,7 @@ export class PolicyDetailsComponent implements OnInit {
   paymentType = 'No aplica';
   turnoverPeriod = 'No Aplica';
   premiumData: any = null;
+  refEndorsement: DynamicDialogRef = new DynamicDialogRef;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -93,11 +94,30 @@ export class PolicyDetailsComponent implements OnInit {
 
   showPolicyEndorsementModal() {
     this.close();
-    this.dialogService.open(PolicyEndorsementComponent, {
+    this.refEndorsement = this.dialogService.open(PolicyEndorsementComponent, {
       data: {
-        policyNumber: this.policy.policyNumber
+        selectedPolicy: this.config.data.policy
       },
       header: 'Consulta endosos',
+      modal: true,
+      dismissableMask: true,
+      width: '100%',
+      styleClass: 'w-full sm:w-4/5 md:w-3/5',
+      contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px' },
+      baseZIndex: 10000,
+    });
+    this.refEndorsement.onClose.subscribe(() => {
+      this.showModalConsulDetails(this.config.data.policy);
+    });
+  }
+
+  showModalConsulDetails(policy: any) {
+    this.dialogService.open(PolicyDetailsComponent, {
+      data: {
+        idPolicy: policy.idPolicy,
+        policy: policy
+      },
+      header: 'Consulta detalle póliza',
       modal: true,
       dismissableMask: true,
       width: '100%',
