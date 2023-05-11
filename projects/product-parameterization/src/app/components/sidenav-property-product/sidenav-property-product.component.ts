@@ -152,7 +152,7 @@ export class SidenavPropertyProductComponent implements OnInit {
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
-        message: `Se perderan la parametrización de ${menu.name.toLowerCase()} realizada, ¿desea continuar?`,
+        message: `Se perderá la parametrización de ${menu.name.toLowerCase()} realizada, ¿desea continuar?`,
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
