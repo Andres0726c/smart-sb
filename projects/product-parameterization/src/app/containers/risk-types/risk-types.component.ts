@@ -259,6 +259,7 @@ export class RiskTypesComponent implements OnInit {
   }
 
   updateTree = (): void => {
+    this.dataSource.data = this.dataSource.data;
     for (let value of this.treeControl.dataNodes) {
       this.treeControl.expand(value);
     }
