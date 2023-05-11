@@ -1,0 +1,45 @@
+#section-table {
+    padding-top: 2em;
+    padding-bottom: 1em;
+}
+
+#btn-close-policy-endorsement {
+    text-align: center;
+}
+
+#observation-section {
+    padding-top: 1em;
+}
+
+#observation-value {
+  font-size: 1rem;
+  color: #333333;
+  background: #ffffff;
+  padding: 0.5rem 1rem;
+  border: 1px solid #CCCCCC;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  appearance: none;
+  border-radius: 6px;
+}
+
+#observation-value:enabled:hover {
+    border-color: var(--primary-base);
+}
+
+#observation-value:enabled:focus {
+    outline: 0 none;
+    outline-offset: 0;
+    // box-shadow: 0 0 0 0.2rem var(--primary-focus);
+    box-shadow: 0px 0px 4px var(--primary-focus);
+    border-color: var(--primary-base);
+}
+
+#observation-value.ng-dirty.ng-invalid {
+    border-color: var(--danger-base);
+}
+
+#observation-value:disabled {
+    background-color: var(--greyscale-6);
+    color: var(--greyscale-3);
+    opacity: 1;
+}

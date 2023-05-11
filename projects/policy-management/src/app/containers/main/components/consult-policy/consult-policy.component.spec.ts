@@ -1,7 +1,6 @@
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import {
   ResponseDTO,
-  ResponseErrorDTO,
 } from './../../../../core/interfaces/commun/response';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
 import { FilterPolicy } from './interfaces/consult-policy';
@@ -11,16 +10,21 @@ import {
   TestBed,
   fakeAsync,
 } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { RouterTestingModule } from "@angular/router/testing";
 import { MessageService } from 'primeng/api';
-import { of, Observable } from 'rxjs';
-
+import { of } from 'rxjs';
+import { FormArray,
+  FormBuilder,
+  FormGroup,
+  FormsModule
+   } from '@angular/forms';
 import { ConsultPolicyComponent } from './consult-policy.component';
 import { ConsultPolicyService } from './services/consult-policy.service';
-import { By } from '@angular/platform-browser';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 describe('ConsultPolicyComponent', () => {
   let component: ConsultPolicyComponent;
@@ -28,26 +32,39 @@ describe('ConsultPolicyComponent', () => {
   let productService: ProductService;
   let fixture: ComponentFixture<ConsultPolicyComponent>;
   let ref: DialogService;
-
-  beforeEach(() => {
+  let router: Router;
+  beforeEach(async () => {
     consultPolicyService = ConsultPolicyService.prototype;
     ref = DialogService.prototype
 
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule,FormsModule,RouterTestingModule.withRoutes([]),],
       declarations: [],
       providers: [
         DialogService,
         ConsultPolicyComponent,
         MessageService,
         FormBuilder,
-        { provide: DynamicDialogRef, useValue: { onClose: of(true) } }
+        { provide: DynamicDialogRef,
+          useValue: { onClose: of(true) } },
+          {
+            provide: FormArray,
+            useValue: {},
+          },
+          {
+            provide: FormGroup,
+            useValue: {},
+          },
+          { provide: Location, useValue: {path:'/polizas/modificar/1'} },
+
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     });
+
     fixture = TestBed.createComponent(ConsultPolicyComponent);
     component = fixture.componentInstance;
     productService = fixture.debugElement.injector.get(ProductService);
+    router = TestBed.inject(Router);
 
     const res = {
       "body": {
@@ -110,6 +127,7 @@ describe('ConsultPolicyComponent', () => {
     };
 
     jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
+    jest.spyOn(productService, 'modificationPolicyClaimStatus').mockReturnValue(of (res));
 
     fixture.detectChanges();
   });
@@ -202,6 +220,65 @@ describe('ConsultPolicyComponent', () => {
     component.consultPolicies(component.filters);
     expect(component.policies).toEqual([]);
   }));
+  it('visibleItem',()=>{
+    component.moduleAcess=true;
+    const spy=jest.spyOn(component, 'getModule').mockReturnValue(true);
+    component.visibleItem();
+    expect(spy).toBeCalled();
+
+  })
+it('getModuleTrue',()=>{
+  component.moduleAcess=['Consultar', 'Modificar', 'Rehabilitar', 'Renovar', 'Cancelar', 'Parametrizar'];
+  expect(component.getModule('Modificar')).toBeTruthy();
+});
+
+it('getModuleFalse',()=>{
+  component.moduleAcess=['Consultar','Rehabilitar', 'Renovar', 'Cancelar', 'Parametrizar'];
+  expect(component.getModule('Modificar')).toBeFalsy();
+});
+
+  it('visibleItemFalse',()=>{
+    component.moduleAcess=false;
+    const spy=jest.spyOn(component, 'getModule').mockReturnValue(true);
+    component.visibleItem();
+    expect(spy).toBeDefined();
+  })
+
+
+  describe('command item',()=>{
+    it('navigate to "consult" to /modificar',() => {
+      component.selectedPolicy={idProduct:1};
+      const spy = jest.spyOn(router, 'navigate').mockImplementation();
+      component.items[0].command();
+      expect(spy).toBeCalled();
+    });
+    it('command Cancelar',()=>{
+      expect(component.items[1].command()).toBeUndefined();
+    });
+
+    it('command Rehabilitar',()=>{
+      expect(component.items[2].command()).toBeUndefined();
+    });
+    it('command Renovar',()=>{
+      const spy = jest.spyOn(component, 'getPolicy').mockImplementation();
+      component.items[3].command();
+      expect(spy).toBeCalled();
+    })
+    it('command Ver detalle',()=>{
+      const spy = jest.spyOn(component, 'showModalConsulDetails').mockImplementation();
+      component.items[4].command();
+      expect(spy).toBeCalled();
+    });
+  })
+
+
+  it('disable items (Provisoria)', () => {
+    component.disabledItem('Provisoria')
+    expect(component.items[0].disabled).toBeTruthy();
+  });
+  it('disable items (Rechazada)', () => {
+    expect(component.disabledItem('Rechazada')).toBeUndefined();
+  });
 
   it('disable items (Activa)', () => {
     component.disabledItem('Activa')
@@ -213,10 +290,20 @@ describe('ConsultPolicyComponent', () => {
     expect(component.items[0].disabled).toBeTruthy();
   });
 
+  it('disable items (Rechazada)', () => {
+    component.disabledItem('Rechazada')
+    expect(component.items[0].disabled).toBeTruthy();
+  });
+
+  it('disable items (Provisoria)', () => {
+    component.disabledItem('Provisoria')
+    expect(component.items[0].disabled).toBeTruthy();
+  });
+
   it('show modal consult', () => {
     component.selectedPolicy = { idPolicy: 1 }
     const refOpenSpy = jest.spyOn(ref, 'open')
-    component.showModalConsulDetails()
+    component.showModalConsulDetails();
     expect(refOpenSpy).toHaveBeenCalled();
   });
 
@@ -238,5 +325,78 @@ describe('ConsultPolicyComponent', () => {
     jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
     expect(component.getPolicy()).toBeUndefined();
   });
-  
+
+  it('getPolicyClaimStatus ok', () => {
+    component.selectedPolicy = { idPolicy: 1, policyNumber: 123};
+    expect(component.getPolicyClaimStatus()).toBeUndefined();
+  });
+
+  it('getPolicyClaimStatus else', () => {
+    component.selectedPolicy = { dPolicy: 1, policyNumber: 123 };
+    const res = { dataHeader: { code: 500 } };
+    jest.spyOn(productService, 'modificationPolicyClaimStatus').mockReturnValue(of (res));
+    expect(component.getPolicyClaimStatus()).toBeUndefined();
+  });
+
+  it('getDaneCodeD', () => {
+    const daneCodeD = '05';
+    const service = fixture.debugElement.injector.get(ConsultPolicyService);
+    const response: ResponseDTO<any[]> = {
+      body: [{
+        propertiesPolicyData: {
+          gd002_datosdeldebito: {
+            DEPAR_COL: daneCodeD,
+            CIU_TDB: null
+          }
+        }
+      }],
+      dataHeader: {
+        code: 200,
+        status: 'OK',
+        errorList: [],
+        hasErrors: false,
+        currentPage: 9,
+        totalPage: 22,
+        totalRecords: 106,
+      },
+    };
+    jest.spyOn(service, 'getPolicyById').mockReturnValue(of (response));
+
+    expect(component.getDaneCode(1)).toBeUndefined();
+    expect(component.getCity(daneCodeD)).toBeUndefined();
+  });
+  it('getDaneCodeC', () => {
+    const daneCodeC = '05001';
+    const service = fixture.debugElement.injector.get(ConsultPolicyService);
+    const response: ResponseDTO<any[]> = {
+      body: [{
+        propertiesPolicyData: {
+          gd002_datosdeldebito: {
+            DEPAR_COL: null,
+            CIU_TDB: daneCodeC
+          }
+        }
+      }],
+      dataHeader: {
+        code: 200,
+        status: 'OK',
+        errorList: [],
+        hasErrors: false,
+        currentPage: 9,
+        totalPage: 22,
+        totalRecords: 106,
+      },
+    };
+    jest.spyOn(service, 'getPolicyById').mockReturnValue(of (response));
+
+    expect(component.getDaneCode(1)).toBeUndefined();
+    expect(component.getCity(daneCodeC)).toBeUndefined();
+  });
+
+  it('getCity', () => {
+    const service = fixture.debugElement.injector.get(ProductService);
+    const spy1 = jest.spyOn(service, 'getApiData').mockReturnValueOnce(of('city/findByState', '', '05'));
+    component.getCity('05');
+    expect(spy1).toHaveBeenCalledTimes(1);
+  });
 });

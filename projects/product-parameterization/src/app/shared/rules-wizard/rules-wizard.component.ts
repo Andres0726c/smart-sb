@@ -160,7 +160,7 @@ export class RulesWizardComponent implements OnInit {
   getApiData(requestParams: any, search: string) {
     this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false && res.body) {
-        this.setData(res);
+         this.setData(res).then(result => {}).catch(error => {});
         this.flagServiceError = false;
       } else {
         this.flagServiceError = true;
@@ -173,7 +173,7 @@ export class RulesWizardComponent implements OnInit {
    * Method that check the service information and set all the array in the table
    * @param res variable with the data
    */
-  setData(res: any) {
+  async setData(res: any) {
     // Luis, quedamos en este punto para revisar las funciones y la paginación
     if (Array.isArray(res.body)) {
       this.addToElementData(res.body);
@@ -189,7 +189,7 @@ export class RulesWizardComponent implements OnInit {
       }
     }
 
-    this.insertDataToTable();
+    await this.insertDataToTable().then();
   }
 
   /**

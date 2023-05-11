@@ -60,9 +60,9 @@ export class ModalSessionRestartComponent implements OnInit {
     .then(async user => {
       const groups = user.signInUserSession.accessToken.payload["cognito:groups"]
       if (groups && groups.includes('TLN') && user.attributes['custom:company']) {
-        this.setCompany(this.data.company);
+        await this.setCompany(this.data.company).then();
       } else { 
-        this.forbidden()
+        await this.forbidden().then().catch();
         this.isLoading = false;
       }
     })
@@ -86,12 +86,12 @@ export class ModalSessionRestartComponent implements OnInit {
     });
   }
   
-  forbidden(){
+  async forbidden(){
     this.dialog.open(ModalAlertComponent,
       {
         data: {message:'El usuario no cuenta con los permisos para ingresar a la aplicación. Por favor contacte al administrador del sistema.'}
     })
-    this.cognitoService.signOut();
+    await this.cognitoService.signOut().then();
   }
 
 }

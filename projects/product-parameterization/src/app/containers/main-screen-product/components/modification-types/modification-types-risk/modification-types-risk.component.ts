@@ -64,7 +64,6 @@ export class ModificationTypesRiskComponent implements OnInit, OnChanges {
     this.items = [{ label: this.titleRisk }, { label: 'Planes comerciales' }];
     this.tableData.push(...this.getcmmrclPln(this.titleRisk).getRawValue());
     this.selectedCategories = this.athrzdOprtn.slice(1, 3);
-    console.log('table', this.tableData.length);
   }
 
   get policyDataControls(): FormArray {

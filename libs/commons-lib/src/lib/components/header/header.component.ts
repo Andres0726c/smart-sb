@@ -23,7 +23,46 @@ export class HeaderComponent implements OnInit {
   closing = false;
 
   constructor(public router: Router, private cognitoService: CognitoService) {
-    router.events.forEach((event) => {
+    this.items2 = [
+      {
+        icon: 'fas fa-users-cog',
+        label: 'Administrar roles',
+        routerLink: '/autorizacion/admin'
+        /*command: () => {
+          this.signOut();
+        }*/
+      },
+      {
+        icon: 'pi pi-sign-in',
+        label: 'Cerrar sesión',
+        command: () => {
+          this.signOut();
+        }
+      },
+    ];
+  }
+
+  async ngOnInit() {
+    this.cognitoService
+      .getUser()
+      .then((value) => {
+        this.company = JSON.parse(value.attributes['custom:sessionInformation']).businessName;
+        this.userSesion = value.username;
+        this.rolSesion = value.signInUserSession.accessToken.payload['cognito:groups'];
+        this.isAuthenticated = true;
+      })
+      .catch((err) => {
+        this.isAuthenticated = false;
+        this.cognitoService.signOut()
+        .then(async () => {
+          await this.router.navigate(['/autorizacion']).then();
+        })
+        .catch((err) => {
+          console.error('Error al cerrar sesión');
+        });
+      });
+    
+    await this.router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         if (this.router.url !== '/inicio') {
           this.sessionLocation = '- Gestión de Póliza';
@@ -47,47 +86,17 @@ export class HeaderComponent implements OnInit {
           ];
         }
       }
-    });
-
-    this.items2 = [
-      {
-        icon: 'fas fa-users-cog',
-        label: 'Administrar roles',
-        routerLink: '/autorizacion/admin'
-        /*command: () => {
-          this.signOut();
-        }*/
-      },
-      {
-        icon: 'pi pi-sign-in',
-        label: 'Cerrar sesión',
-        command: () => {
-          this.signOut();
-        }
-      },
-    ];
-  }
-  ngOnInit() {
-    this.cognitoService
-      .getUser()
-      .then((value) => {
-        this.company = JSON.parse(value.attributes['custom:sessionInformation']).businessName;
-        this.userSesion = value.username;
-        this.rolSesion = value.signInUserSession.accessToken.payload['cognito:groups'];
-        this.isAuthenticated = true;
-      })
-      .catch((err) => {
-        this.isAuthenticated = false;
-        this.cognitoService.signOut();
-        this.router.navigate(['login']);
-      });
+    }).then().catch();
   }
 
   signOut(){
     this.closing = true;
     this.cognitoService.signOut()
-    .then(() => {
-      this.router.navigate(['/autorizacion']);
+    .then(async () => {
+      await this.router.navigate(['/autorizacion']).then().catch();
+    })
+    .catch((err) => {
+      console.error('Error al cerrar sesión');
     });
   }
 }

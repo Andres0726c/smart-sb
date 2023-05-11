@@ -27,15 +27,15 @@ export class RehabilitationDataComponent implements OnInit {
     public dialogService: DialogService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.rmsDpndncy = this.productService.prdctDpndncy?.get('insrncLn')?.value;
     this.rm = this.rmsDpndncy?.find(
       (element: any) =>
         element.id ===
         this.productService.initialParameters?.get('insuranceLine')?.value
     );
-    this.loadContextData();
-    this.getCauses();
+    await this.loadContextData().then();
+    await this.getCauses().then();
   }
 
   async loadContextData() {
@@ -123,21 +123,14 @@ export class RehabilitationDataComponent implements OnInit {
       this.productService.deleteDependencyRef('rl', this.rulePrevValue.rlCd, 'rhClcltnRl');
     }
     let arr: any[] = [];
-    let parametersList: any = {};
-
-    try {
-      parametersList = JSON.parse(objRule.rule.nmParameterList);
-    } catch (error) {
-      parametersList = {};
-    }
-
+  
     let elementDp: any = {
       id: objRule.rule.id,
       cd: objRule.rule.cdBusinessCode,
       nm: objRule.rule.name,
       vrsn: objRule.rule.vrsn,
       dscrptn: objRule.rule.description,
-      prmtrLst: parametersList,
+      prmtrLst: objRule.rule.nmParameterList,
       rtrnLst: objRule.rule.rtrnLst,
       rlTypItm: objRule.rule.cdRuleType,
       aplctnLvlItm: objRule.rule.aplctnLvlItm,

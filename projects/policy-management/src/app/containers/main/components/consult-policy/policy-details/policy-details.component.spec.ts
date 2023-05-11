@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { of } from 'rxjs';
 import { PolicyDetailsComponent } from './policy-details.component';
@@ -23,23 +23,27 @@ const localStorageMock = (function() {
     }
   };
 })();
-  
+
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 describe('PolicyDetailsComponent', () => {
   let component: PolicyDetailsComponent;
   let fixture: ComponentFixture<PolicyDetailsComponent>;
-  let ref: DynamicDialogRef;
+  let ref: DialogService;
 
   beforeEach(async () => {
+    ref = DialogService.prototype
     await TestBed.configureTestingModule({
       declarations: [],
       providers: [
+        DialogService,
         PolicyDetailsComponent,
         DynamicDialogRef,
         {
           provide: DynamicDialogConfig,
-          useValue: { data: { idPolicy: 1 } },
+          useValue: {
+            data: { idPolicy: 1 },
+            onClose: of(true)  },
         },
       ],
       imports: [HttpClientTestingModule],
@@ -215,6 +219,41 @@ describe('PolicyDetailsComponent', () => {
 
   it('close modal', () => {
     expect(component.close()).toBeUndefined();
+  });
+
+  it('show modal endorsement & close', () => {
+    component.policy = {
+      productName: "",
+      idPolicy: 1,
+      policyNumber: "1",
+      policyExternalNumber: "",
+      inceptionDate: "",
+      effectiveStartDatePolicy: "",
+      expirationDate: "",
+      premiumValue: 1,
+      agent: "",
+      policyEmail: "",
+      complementaryData: {
+        petType: "",
+        petName: "",
+        petAge: "",
+        petBrand: ""
+      },
+      payment: {
+        method: "",
+        type: "",
+        account: "",
+      },
+      servicePlan: {
+        name: "",
+        description: "",
+        value: 1
+      }
+    };
+    const refOpenSpy = jest.spyOn(ref, 'open')
+    component.showPolicyEndorsementModal();
+    component.refEndorsement.close();
+    expect(refOpenSpy).toHaveBeenCalled();
   });
 
 });

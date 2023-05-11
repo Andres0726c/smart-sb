@@ -45,7 +45,7 @@ describe('AppComponent', () => {
       username: 'test',
     });
 
-    jest.spyOn(component.cognitoService, 'sessionTimer').mockReturnValue();
+    jest.spyOn(component.cognitoService, 'sessionTimer').mockResolvedValue();
 
     fixture.detectChanges();
   });

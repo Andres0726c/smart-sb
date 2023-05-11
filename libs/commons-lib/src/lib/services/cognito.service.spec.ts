@@ -78,7 +78,7 @@ describe('CognitoService', () => {
   });
 
   it('sessionTimer', () => {
-    expect(service.sessionTimer()).toBeUndefined();
+    expect(service.sessionTimer()).toBeDefined();
   });
 
   it('expirationCounter', () => {

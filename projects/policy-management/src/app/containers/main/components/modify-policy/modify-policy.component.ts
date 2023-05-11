@@ -62,6 +62,8 @@ export class ModifyPolicyComponent {
   errorFlag: boolean = false;
 
   policy: any;
+  policyNumberText: string = "";
+  externalPolicyNumberText: string = "";
   policyAux: any;
   policyData: any;
   policyDataPreview: any;
@@ -214,6 +216,10 @@ export class ModifyPolicyComponent {
     this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
+        this.policyNumberText = " - " + this.policy.plcy.plcyNmbr
+        if (this.policy.extrnlTrnsctnPlcy.plcyNmbr) {
+          this.externalPolicyNumberText = " (" + this.policy.extrnlTrnsctnPlcy.plcyNmbr + ")"
+        }
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.riskData = this.mapData(this.policy?.plcy.rsk['1'].rskDtGrp);
@@ -240,17 +246,17 @@ export class ModifyPolicyComponent {
   }
 
   getProduct(code: string) {
-    this.productService.getProductByCode(code).subscribe(async (res: ResponseDTO<Product>) => {
+    this.productService.getProductByCode(code).subscribe( async(res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
 
 
-        this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
+        this.formPolicy.setControl('policyDataPreview',  await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
 
         this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
 
         this.formPolicy.setControl('policyData',
-          await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp, this.policyData));
+        await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp, this.policyData));
         this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
 
 
@@ -368,6 +374,8 @@ export class ModifyPolicyComponent {
       }
     });
 
+    options = options.sort((a: any, b: any) => (a.name < b.name ? -1 : 1));
+    
     return options;
   }
 
@@ -496,27 +504,28 @@ export class ModifyPolicyComponent {
 
     console.log(this.policy,"policy");
 
-    this.productService.saveModify(this.policy)
-    
-      .subscribe((resp: any) => {
-
+    this.productService.saveModify(this.policy).subscribe({
+      next: (resp: any) => {
         if (resp.dataHeader.code != 500) {
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
-          setTimeout(() => {this.router.navigate([`/polizas/consulta`]); }, 2000);
+          setTimeout(() => { this.router.navigate([`/polizas/consulta`]).then().catch(); }, 2000);
         } else {
           this.showSuccess('error', 'Error al Modificar', resp.dataHeader.status);
         }
         this.isSaving = false;
+      },
+      error: (error) => {
+        console.error('Error al guardar las modificaciones de la póliza.')
       }
-      );
+    });
       
   }
 
 
-  cancelModification() {
-    this.router.navigate(
+ async cancelModification() {
+   await this.router.navigate(
       [`/polizas/consulta`],
-    );
+    ).then();
     for (let type of this.types) {
       localStorage.removeItem(type)
     }
@@ -538,6 +547,5 @@ export class ModifyPolicyComponent {
       detail: msg
     });
   }
-
 
 }

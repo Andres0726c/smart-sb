@@ -25,6 +25,9 @@
                             {{rowData['policyNumber']}}
                         </td>
                         <td>
+                            {{rowData['policyExternalNumber']}}
+                        </td>
+                        <td>
                             {{rowData['holderName']?rowData['holderName']:'-'}}
                         </td>
 
@@ -40,7 +43,7 @@
                         </td>
                         <td>
                             <button type="button" pButton pRipple class="p-button p-button-secondary bg-white hover:"
-                                icon="pi pi-ellipsis-v" (click)="selectedPolicy=rowData; menu.toggle($event); disabledItem(rowData.policyStatus)">
+                                icon="pi pi-ellipsis-v" (click)="selectedPolicy=rowData; menu.toggle($event); disabledItem(rowData.policyStatus);visibleItem();">
                             </button>
                             <p-menu #menu [popup]="true" [model]="items" appendTo="body">
                             </p-menu>
@@ -58,24 +61,6 @@
         </section>
     </div>
 </div>
-
-<!-- <p-toast position="bottom-right">
-    <ng-template let-message pTemplate="message">
-        <div class="flex flex-column alert-description" style="flex: 1">
-            <span *ngIf="message.severity === 'success'" style="border: 3px solid var(--success-base);" class="line-border"></span>
-            <span *ngIf="message.severity === 'error'" style="border: 3px solid var(--danger-base);" class="line-border"></span>
-            <div class="flex flex-column text-center">
-                <em *ngIf="message.severity === 'success'" class="fas fa-check-circle"></em>
-                <em *ngIf="message.severity === 'error'" class="fas fa-times-circle"></em>
-            </div>
-            <div class="text-center" style="margin-left: 8px;">
-                <h5 *ngIf="message.severity === 'success'" style="margin-left: -40px;">{{message.summary}}</h5>
-                <h5 *ngIf="message.severity === 'error'" style="margin-left: -120px;">{{message.summary}}</h5>
-                <p>{{message.detail}}</p>
-            </div>
-        </div>
-    </ng-template>
-</p-toast> -->
 
 <p-toast position="bottom-right">
     <ng-template let-message pTemplate="message">

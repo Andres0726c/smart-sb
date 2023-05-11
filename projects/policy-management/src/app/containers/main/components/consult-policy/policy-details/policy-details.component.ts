@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Policy } from 'projects/policy-management/src/app/core/interfaces/policy';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { ConsultPolicyService } from '../services/consult-policy.service';
+import { PolicyEndorsementComponent } from '../policy-endorsement/policy-endorsement.component';
 @Component({
   selector: 'app-policy-details',
   templateUrl: './policy-details.component.html',
@@ -21,10 +22,12 @@ export class PolicyDetailsComponent implements OnInit {
   paymentType = 'No aplica';
   turnoverPeriod = 'No Aplica';
   premiumData: any = null;
+  refEndorsement: DynamicDialogRef = new DynamicDialogRef;
 
   constructor(
-    public ref: DynamicDialogRef, 
-    public config: DynamicDialogConfig, 
+    public ref: DynamicDialogRef,
+    public config: DynamicDialogConfig,
+    public dialogService: DialogService,
     public consultPolicyService: ConsultPolicyService,
     public productService: ProductService
   ) { }
@@ -72,7 +75,7 @@ export class PolicyDetailsComponent implements OnInit {
       return 'No aplica';
     }
     const valueList = JSON.parse(field.domainList.valueList);
-    const value = valueList.find((x: any) => x.code.toString()===code.toString());
+    const value = valueList.find((x: any) => x.code.toString()===code?.toString());
     return value ? value.description : 'No aplica';
   }
 
@@ -87,6 +90,41 @@ export class PolicyDetailsComponent implements OnInit {
 
   close() {
     this.ref.close(true)
+  }
+
+  showPolicyEndorsementModal() {
+    this.close();
+    this.refEndorsement = this.dialogService.open(PolicyEndorsementComponent, {
+      data: {
+        selectedPolicy: this.config.data.policy
+      },
+      header: 'Consulta endosos',
+      modal: true,
+      dismissableMask: true,
+      width: '100%',
+      styleClass: 'w-full sm:w-4/5 md:w-3/5',
+      contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px' },
+      baseZIndex: 10000,
+    });
+    this.refEndorsement.onClose.subscribe(() => {
+      this.showModalConsulDetails(this.config.data.policy);
+    });
+  }
+
+  showModalConsulDetails(policy: any) {
+    this.dialogService.open(PolicyDetailsComponent, {
+      data: {
+        idPolicy: policy.idPolicy,
+        policy: policy
+      },
+      header: 'Consulta detalle póliza',
+      modal: true,
+      dismissableMask: true,
+      width: '100%',
+      styleClass: 'w-full sm:w-4/5 md:w-3/5',
+      contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px' },
+      baseZIndex: 10000,
+    });
   }
 
 }

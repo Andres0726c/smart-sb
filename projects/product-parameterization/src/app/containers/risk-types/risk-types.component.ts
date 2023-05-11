@@ -175,18 +175,19 @@ export class RiskTypesComponent implements OnInit {
         );
 
         //RiskModify
-        // this.riskTypeControls.push(
-        // this.fb.group({
-        //   id: this.fb.control(riskType.id, Validators.required),
-        //   name: this.fb.control(riskType.name, Validators.required),
-        //   description: this.fb.control(
-        //     riskType.description,
-        //     Validators.required
-        //   ),
-        //   rskTypDtGrp:this.fb.array([],Validators.required),
-        //   cmmrclPln:this.fb.array([],Validators.required)
-        // })
-        // )
+        this.riskTypeControls.push(
+          this.fb.group({
+            id: this.fb.control(riskType.id, Validators.required),
+            name: this.fb.control(riskType.name, Validators.required),
+            description: this.fb.control(
+              riskType.description,
+              Validators.required
+            ),
+            rskTypDtGrp:this.fb.array([],Validators.required),
+            cmmrclPln:this.fb.array([],Validators.required)
+          })
+        )
+
         this.dataSource.data.push({
           name: riskType.name,
           id: riskType.id,
@@ -207,6 +208,12 @@ export class RiskTypesComponent implements OnInit {
       });
     }
   };
+
+  get riskTypeControls(): FormArray {
+    return (<FormArray>(
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
+    )) as FormArray;
+  }
 
   removeRiskType = (node: ExampleFlatNode): void => {
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {

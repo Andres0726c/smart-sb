@@ -72,7 +72,6 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     public toastMessage: MatSnackBar
   ) {}
   ngOnChanges() {
-    console.log('title', this.titleRisk);
     
     this.items = [
       { label: this.titleRisk },
@@ -84,7 +83,6 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     this.addDataTable();
   }
   ngOnInit(): void {
-    console.log('aqui', this.productService);
     
     // TODO document why this method 'ngOnInit' is empty
   }
@@ -241,7 +239,6 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     this.getAthrzdOprtnCoveragePln(id).value.find((x:any)=>x==="MDF")?(flag=false):(flag=true);
 
     if(flag){
-      console.log("entro");
       this.getcover(id).clear();
     }
 
