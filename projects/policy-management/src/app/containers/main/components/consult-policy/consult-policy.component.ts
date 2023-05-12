@@ -155,6 +155,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     if (this.moduleAcess){
     this.items.find((x: any) => x.label === 'Modificar').visible = this.getModule('Modificar')
     this.items.find((x: any) => x.label === 'Cancelar').visible = this.getModule('Cancelar')
+    this.items.find((x: any) => x.label === 'Anular cancelación').visible = this.getModule('Anular cancelación')
     this.items.find((x: any) => x.label === 'Renovar').visible = this.getModule('Renovar')
     this.items.find((x: any) => x.label === 'Rehabilitar').visible = this.getModule('Rehabilitar')
      }
@@ -169,6 +170,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       case 'Activa':
        this.disabledOption('Modificar', false)
        this.disabledOption('Cancelar', false)
+       this.disabledOption('Anular cancelación', true)
        this.disabledOption('Rehabilitar', true)
        this.disabledOption('Renovar', false)
        this.disabledOption('Ver detalle', false)
@@ -182,6 +184,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       case 'Provisoria':
         this.disabledOption('Modificar', true)
         this.disabledOption('Cancelar', true)
+        this.disabledOption('Anular cancelación', true)
         this.disabledOption('Rehabilitar', true)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', true)
@@ -194,6 +197,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       case 'Cancelada':
         this.disabledOption('Modificar', true)
         this.disabledOption('Cancelar', true)
+        this.disabledOption('Anular cancelación', true)
         this.disabledOption('Rehabilitar', false)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', false)
@@ -398,6 +402,16 @@ export class ConsultPolicyComponent implements OnDestroy {
     .getApiData('city/findByState', '', daneCode)
     .subscribe((res) => {
       this.setData(res, 'city');
+    });
+  }
+
+  getFutureCancelationStatus(){
+    this.productService
+    .getApiData('policy/futureCancellationStatus?smartCorePolicyNumber=' + this.selectedPolicy.policyNumber, '', '')
+    .subscribe((res) => {
+      if (res.body?.startDate) {
+        this.disabledOption('Anular cancelación', false)
+      }
     });
   }
 }
