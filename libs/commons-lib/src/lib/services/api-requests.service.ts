@@ -14,7 +14,9 @@ export class ApiRequestsService {
 
   constructor(
     private httpClient: HttpClient
-  ) {}
+  ) {
+    //
+  }
 
   /**
    * Function that returns data from general microservices

@@ -4,6 +4,7 @@
       icon="pi pi-times"
       (click)="ref.close()"
       styleClass="p-button-rounded p-button-text"
+      data-qa-id="sc-rpmf-btn_close_modal"
     ></p-button>
   </div>
   <div class="flex flex-col text-center mb-5">
@@ -20,6 +21,7 @@
           id="name"
           aria-describedby="name-help"
           (keyup)="verifyName($event)"
+          data-qa-id="sc-rpmf-input_name_role"
         />
         <div *ngIf="formRole.get('name')?.dirty">
           <small
@@ -49,6 +51,7 @@
           pInputText
           id="name"
           aria-describedby="name-help"
+          data-qa-id="sc-rpmf-input_desc_role"
         />
         <div *ngIf="formRole.get('description')?.dirty">
           <small
@@ -74,6 +77,7 @@
       styleClass="p-button-rounded"
       (click)="addRole()"
       [disabled]="!formRole.valid || flagErrorName"
+      data-qa-id="sc-rpmf-btn_add_role_modal"
     ></button>
   </div>
 </div>
