@@ -22,6 +22,7 @@
           type="text"
           pInputText
           (keyup)="applyFilter($event, 'contains')"
+          data-qa-id="sc-rpmf-input_filter_role"
         />
       </span>
       <div class="flex gap-2">
@@ -30,6 +31,7 @@
           (click)="openToAdd()"
           icon="pi pi-plus-circle"
           styleClass="p-button-rounded"
+          data-qa-id="sc-rpmf-btn_add_role"
         ></p-button>
         <p-button
           *ngIf="selectedRole.length > 0"
@@ -37,6 +39,7 @@
           icon="pi pi-plus-circle"
           styleClass="p-button-rounded p-button-danger"
           (click)="deleteRole()"
+          data-qa-id="sc-rpmf-btn_delete_role"
         ></p-button>
       </div>
     </div>
@@ -51,13 +54,13 @@
     >
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th [style]="{ width: '20px' }">
+          <th scope="col" [style]="{ width: '20px' }">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th *ngFor="let col of columns">
+          <th scope="col" *ngFor="let col of columns">
             <span class="flex justify-center">{{ col.header }}</span>
           </th>
-          <th><span class="flex justify-center">Acciones</span></th>
+          <th scope="col"><span class="flex justify-center">Acciones</span></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -74,6 +77,7 @@
                 icon="fal fa-pencil"
                 styleClass="p-button-rounded p-button-text"
                 (click)="openToEdit(rowData)"
+                data-qa-id="sc-rpmf-btn_edit_role"
               >
               </p-button>
             </div>
@@ -82,6 +86,7 @@
                 icon="pi pi-copy"
                 styleClass="p-button-rounded p-button-text"
                 (click)="copyRol(rowData)"
+                data-qa-id="sc-rpmf-btn_copy_rol"
               ></p-button>
             </div>
           </td>
@@ -99,6 +104,7 @@
           icon="pi pi-times"
           (click)="cd.reject()"
           styleClass="p-button-rounded p-button-text"
+          data-qa-id="sc-rpmf-btn_close_dialog"
         ></p-button>
       </div>
     </ng-template>
@@ -108,11 +114,13 @@
           label="Cancelar"
           (click)="cd.reject()"
           styleClass="p-button-outlined text-green-700 border-green-700"
+          data-qa-id="sc-rpmf-btn_cancel_dialog"
         ></p-button>
         <p-button
           label="Aceptar"
           (click)="cd.accept()"
           styleClass="p-button-rounded"
+          data-qa-id="sc-rpmf-btn_confirm_dialog"
         ></p-button>
       </div>
     </ng-template>
