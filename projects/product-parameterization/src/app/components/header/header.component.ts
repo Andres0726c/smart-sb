@@ -76,9 +76,9 @@ export class HeaderComponent implements OnInit {
       this.saveProduct(false);        
     }        
 
-   await this.cognitoService.signOut()
+    await this.cognitoService.signOut()
     .then(async() => {
-      await this.router.navigate(['/autenticacion']).then().catch();
+      await this.router.navigate(['/autorizacion']).then().catch();
     })
     .catch();
   }
@@ -107,7 +107,7 @@ export class HeaderComponent implements OnInit {
         if(flagValidProductForSave) {
           this.saveProduct(false);
         }
-         this.router.navigate(['productos/menu-productos']).then().catch()
+         this.router.navigate(['productos/menu-productos']).then(result => {}).catch(error => {})
       }
     })
   }

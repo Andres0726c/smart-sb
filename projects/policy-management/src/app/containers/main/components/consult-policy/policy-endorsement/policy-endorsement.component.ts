@@ -17,10 +17,9 @@ import { ResponseDTO, ResponseErrorDTO } from "./../../../../../core/interfaces/
     rowsPerPage: number = 5;
     visibleDialog: boolean = false;
     observationValue: string;
-    selectedPolicyEndorsement: any;
 
     constructor(
-        public ref: DynamicDialogRef, 
+        public ref: DynamicDialogRef,
         public config: DynamicDialogConfig,
         public consultPolicyService: ConsultPolicyService
       ) {
@@ -33,14 +32,14 @@ import { ResponseDTO, ResponseErrorDTO } from "./../../../../../core/interfaces/
             { header: 'Endoso' },
             { header: 'Movimiento' },
             { header: 'Emitido' },
-            { header: 'Vigencia' },
+            { header: 'Vigencia del endoso' },
             { header: 'Estado' },
             { header: 'Acciones' },
           ];
 
-          this.consultPolicyService.getPolicyEndorsementByPolicyNumber(this.config.data.policyNumber).subscribe({
+          this.consultPolicyService.getPolicyEndorsementByPolicyNumber(this.config.data.selectedPolicy.policyNumber).subscribe({
             next: (res: ResponseDTO<PolicyEndorsement[]>) => {
-      
+
               if (res.dataHeader.code && (res.dataHeader.code === 200)) {
                 this.policyEndorsement = res.body;
               } else {
@@ -68,7 +67,7 @@ import { ResponseDTO, ResponseErrorDTO } from "./../../../../../core/interfaces/
     }
 
     close() {
-        this.ref.close(true)
+        this.ref.close(true);
     }
 
     closeObservation() {
@@ -76,3 +75,4 @@ import { ResponseDTO, ResponseErrorDTO } from "./../../../../../core/interfaces/
     }
 
 }
+

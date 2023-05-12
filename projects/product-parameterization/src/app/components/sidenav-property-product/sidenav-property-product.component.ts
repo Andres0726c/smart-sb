@@ -139,6 +139,8 @@ export class SidenavPropertyProductComponent implements OnInit {
       if (this.formProcess.get(menu.formControlName)?.value.enabled) {
         if (moduleType === 'modification') {
           this.showMessage(menu);
+        }else{
+        menu.show = false;
         }
       } else {
         menu.show = true;
@@ -152,7 +154,7 @@ export class SidenavPropertyProductComponent implements OnInit {
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
-        message: `Se perderan la parametrización de ${menu.name.toLowerCase()} realizada, ¿desea continuar?`,
+        message: `Se perderá la parametrización de ${menu.name.toLowerCase()} realizada, ¿desea continuar?`,
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
@@ -165,7 +167,7 @@ export class SidenavPropertyProductComponent implements OnInit {
     });
 
     dialogRef.beforeClosed().subscribe(async (res) => {
-      if (res) await this.navigateGeneralParams().then().catch();
+      if (res) await this.navigateGeneralParams().then(result => {}).catch(error => {});
     });
   }
 

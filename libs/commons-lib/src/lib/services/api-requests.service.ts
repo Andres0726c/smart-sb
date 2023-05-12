@@ -14,7 +14,7 @@ export class ApiRequestsService {
 
   constructor(
     private httpClient: HttpClient
-  ) { 
+  ) {
     //
   }
 

@@ -23,7 +23,7 @@ export class InitScreenComponent {
        .getUser()
        .then((value) => {
          this.moduleAcess = value.attributes['custom:moduleAccess']?.split(",");
-       })
+       }).catch(error => {})
      
   }
 

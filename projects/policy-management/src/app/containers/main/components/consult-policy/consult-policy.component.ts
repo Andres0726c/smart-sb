@@ -142,7 +142,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       .getUser()
       .then((value) => {
         this.moduleAcess = value.attributes['custom:moduleAccess']?.split(",");
-      })
+      }).catch(error => {});
   }
 
    getModule(nameModule: any) {
