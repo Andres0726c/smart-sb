@@ -28,9 +28,6 @@ export class HeaderComponent implements OnInit {
         icon: 'fas fa-users-cog',
         label: 'Administrar roles',
         routerLink: '/autorizacion/admin'
-        /*command: () => {
-          this.signOut();
-        }*/
       },
       {
         icon: 'pi pi-sign-in',
