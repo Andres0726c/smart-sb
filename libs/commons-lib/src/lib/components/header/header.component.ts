@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { NavigationEnd, Router } from '@angular/router';
 import { CognitoService } from '../../services/cognito.service';
@@ -10,6 +10,8 @@ import { CognitoService } from '../../services/cognito.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+  @Input('title') title: string = 'SmartCore';
+
   items!: MenuItem[];
   items2!: MenuItem[];
 
@@ -22,6 +24,11 @@ export class HeaderComponent implements OnInit {
 
   constructor(public router: Router, private cognitoService: CognitoService) {
     this.items2 = [
+      {
+        icon: 'fas fa-users-cog',
+        label: 'Administrar roles',
+        routerLink: '/autorizacion/admin'
+      },
       {
         icon: 'pi pi-sign-in',
         label: 'Cerrar sesión',
@@ -45,7 +52,7 @@ export class HeaderComponent implements OnInit {
         this.isAuthenticated = false;
         this.cognitoService.signOut()
         .then(async () => {
-          await this.router.navigate(['/autenticacion']).then();
+          await this.router.navigate(['/autorizacion']).then();
         })
         .catch((err) => {
           console.error('Error al cerrar sesión');
@@ -83,7 +90,7 @@ export class HeaderComponent implements OnInit {
     this.closing = true;
     this.cognitoService.signOut()
     .then(async () => {
-      await this.router.navigate(['/autenticacion']).then().catch();
+      await this.router.navigate(['/autorizacion']).then().catch();
     })
     .catch((err) => {
       console.error('Error al cerrar sesión');

@@ -29,7 +29,7 @@ export class AuthGuardParameterizer implements CanActivate {
       check = await this.checkAccess(value, state).then();
     })
     .catch(async (err) => {
-      await this.router.navigate(['/autenticacion']).then();
+      await this.router.navigate(['/autorizacion']).then();
     });
 
     return check;
@@ -47,7 +47,7 @@ export class AuthGuardParameterizer implements CanActivate {
       check = await this.checkAccess(value, state).then();
     })
     .catch(async (err) => {
-      await this.router.navigate(['/autenticacion']).then();
+      await this.router.navigate(['/autorizacion']).then();
     });
 
     return check;
@@ -79,9 +79,9 @@ export class AuthGuardParameterizer implements CanActivate {
         await this.router.navigate(['/productos/parametrizador/menu-productos']).then();
       }
     } else {
-     await this.cognitoService.signOut()
+      await this.cognitoService.signOut()
       .then(async () => {
-        await this.router.navigate(['/autenticacion']).then().catch();
+        await this.router.navigate(['/autorizacion']).then().catch();
       }).catch();
     }
     return check;

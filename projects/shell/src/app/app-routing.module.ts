@@ -25,14 +25,14 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'autenticacion',
+    path: 'autorizacion',
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
         remoteEntry: mfManifest['auth'],
         exposedModule: './Module'
       }).then(m => m.MainModule),
-    canActivate: [LoginGuard]
+    //canActivate: [LoginGuard]
   },
   {
     path: 'productos',
@@ -55,8 +55,13 @@ const routes: Routes = [
     canActivate: [AuthGuard],data: { module: 'Consultar'}
   },
   {
+    path: '',
+    redirectTo: 'inicio',
+    pathMatch: 'full'
+  },
+  {
     path: '**',
-    redirectTo: 'autenticacion',
+    redirectTo: 'autorizacion',
     pathMatch: 'full'
   }
 ];
