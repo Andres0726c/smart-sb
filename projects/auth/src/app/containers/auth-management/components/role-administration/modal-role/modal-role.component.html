@@ -20,7 +20,7 @@
           pInputText
           id="name"
           aria-describedby="name-help"
-          (keyup)="verifyName($event)"
+          (keyup)="verifyName($event, this.formRole.get('id')?.value)"
           data-qa-id="sc-rpmf-input_name_role"
         />
         <div *ngIf="formRole.get('name')?.dirty">
@@ -34,7 +34,7 @@
             *ngIf="formRole.get('name')?.hasError('maxlength')"
             id="name-help"
             class="text-warn"
-            >El nombre supera el máximo de caracteres requerido.</small
+            >El nombre supera los 200 caracteres permitidos.</small
           >
         </div>
         <small
@@ -45,7 +45,7 @@
           >
       </div>
       <div class="flex flex-col gap-2">
-        <label htmlFor="name">Descipción</label>
+        <label htmlFor="name">Descripción</label>
         <input
           formControlName="description"
           pInputText
@@ -64,7 +64,7 @@
             *ngIf="formRole.get('description')?.hasError('maxlength')"
             id="name-help"
             class="text-warn"
-            >La descripción superael máximo de caracteres requerido.</small
+            >La descripción supera los 2000 caracteres permitidos.</small
           >
         </div>
       </div>

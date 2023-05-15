@@ -24,6 +24,7 @@ export class ModalRoleComponent implements OnInit {
 
   ngOnInit(): void {
     this.modal = this.dataSourceModal;
+    let rol = this.modal.data.rol;
     if (this.modal.data.action === 'create') {
       this.formRole = new FormGroup({
         id: new FormControl(''),
@@ -39,8 +40,8 @@ export class ModalRoleComponent implements OnInit {
     }
 
     if (this.modal.data.action === 'edit') {
-      let rol = this.modal.data.rol;
       this.formRole = new FormGroup({
+        id: new FormControl(rol.id),
         name: new FormControl(rol.name, [
           Validators.required,
           Validators.maxLength(200),
@@ -53,8 +54,8 @@ export class ModalRoleComponent implements OnInit {
     }
 
     if (this.modal.data.action === 'copy') {
-      let rol = this.modal.data.rol;
       this.formRole = new FormGroup({
+        id: new FormControl(rol.id),
         name: new FormControl(`${rol.name} - copia`, [
           Validators.required,
           Validators.maxLength(200),
@@ -65,7 +66,6 @@ export class ModalRoleComponent implements OnInit {
         ]),
       });
     }
-    this.validateName(this.formRole.get('name')?.value);
   }
 
   addRole() {
@@ -109,16 +109,14 @@ export class ModalRoleComponent implements OnInit {
     this.ref.close(this.apiService.roles);
   }
 
-  verifyName(event: Event) {
-    console.log(event);
-    
+  verifyName(event: Event, id:any) {
     let filterValue = (event.target as HTMLInputElement).value;
-    this.validateName(filterValue);
+    this.validateName(filterValue, id);
   }
 
-  validateName(name: any) {
+  validateName(name: any, id:any) {
     let object = this.apiService.roles.value.filter((obj: any) => {
-      return obj.name === name;
+      return this.modal.data.action !== 'copy' ? obj.name === name.trim() && obj.id !== id : obj.name === name.trim();
     });
 
     if (object.length > 0) {
