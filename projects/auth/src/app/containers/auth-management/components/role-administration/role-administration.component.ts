@@ -24,6 +24,7 @@ export class RoleAdministrationComponent implements OnInit {
 
   selectedRole: any = [];
   data:any = [];
+  totalSize = 0;
 
   constructor(
     public dialogService: DialogService,
@@ -52,6 +53,7 @@ export class RoleAdministrationComponent implements OnInit {
 
     dialogRef.onClose.subscribe((res) => {
       this.data = this.apiService.roles.value;
+      this.totalSize = this.apiService.roles.length;
     })
   }
 
