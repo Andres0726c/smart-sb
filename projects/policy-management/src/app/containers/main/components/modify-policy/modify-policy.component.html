@@ -157,6 +157,22 @@
               </p-tabView>
           </div>
       </div>
+      <div>
+        <p-divider align="left" type="dashed" styleClass="my-2">
+          <div class="inline-flex items-center">
+            <em class="fal fa-ballot mr-2"></em>
+            <strong class="text-2xl font-bold">Datos del proceso </strong>
+          </div>
+        </p-divider>
+    
+        <div class="p-5">
+          <label>Observación</label>
+          <textarea data-qa-id="sc-rsmf-btn-txta-modifycation-observation"
+              formControlName="observation" rows="5" cols="30" pInputTextarea class="w-full" required></textarea>
+          <small class="p-error block" *ngIf="formPolicy.get('observation')?.hasError('maxlength')">Máximo 2000 caracteres</small>
+          <small class="p-error block" *ngIf="formPolicy.get('observation')?.hasError('required')">Este campo es obligatorio</small>
+        </div>
+      </div>
       <div class="flex justify-end mt-5">
         <button
           pButton
@@ -170,7 +186,7 @@
           pButton
           type="submit"
           class="p-button p-component ml-5 w-[100px]"
-          [disabled]="isNextDisabled || !validRule"
+          [disabled]="isNextDisabled || !validRule || !validateObservation()"
         >
           <span class="p-button-label">Guardar</span>
         </button>

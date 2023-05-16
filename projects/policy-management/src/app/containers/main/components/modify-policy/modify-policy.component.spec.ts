@@ -368,4 +368,9 @@ describe('ModifyPolicyComponent', () => {
     const spy=component.showSuccess(status, title, msg);
     console.log(spy);
   });
+
+  it('validateObservation',()=>{
+    const spy=component.validateObservation();
+    expect(spy).toBeDefined;
+  });
 });
