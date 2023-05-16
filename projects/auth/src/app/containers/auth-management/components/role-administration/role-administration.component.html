@@ -51,6 +51,11 @@
       *ngIf="apiService.roles.length > 0"
       [columns]="cols"
       [value]="data"
+      [paginator]="true" 
+      [rows]="5"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="{first} - {last} de {totalRecords}"
+      [totalRecords]="totalSize"
     >
       <ng-template pTemplate="header" let-columns>
         <tr>
