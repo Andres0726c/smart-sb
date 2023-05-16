@@ -553,9 +553,14 @@ describe('PolicyRenewalComponent', () => {
   });
 
   it('fillRiskData', () => {
-    let riskTypes: any = [{id: 1,code: { businessCode: "aaa" },name: "abc",description: "abcd",complementaryData: {id: 1,name: "string",code: "string",fields: [],},businessPlans: []
+    let riskTypes: any = [{id: 1,code: { businessCode: "aaa" }, rskTypCd: 'test', name: "abc",description: "abcd",complementaryData: {id: 1,name: "string",code: "string",fields: [],},businessPlans: []
     }];
     const spy2 = jest.spyOn(component, 'fillGroupData').mockImplementation();
+    component.productDeps = {
+        rskTyp: [
+            { nm: 'test', cd: 'test' }
+        ]
+    };
     component.fillRiskData(riskTypes);
     expect(spy2).toBeCalled();
   });

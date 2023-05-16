@@ -19,13 +19,16 @@ export class PolicyRenewalComponent implements OnInit {
   policy: any;
   policyData: any;
   riskData: any;
-  product: Product = {
+  product: any/*Product = {
     id: 0,
     nmName: '',
     dsDescription: '',
     nmHashCode: 0,
     nmContent: undefined,
-  };
+  };*/
+
+  productDeps: any = [];
+  renewalProcess: any;
 
   formPolicy: FormGroup;
   isLoading: boolean = false;
@@ -53,7 +56,7 @@ export class PolicyRenewalComponent implements OnInit {
     this.formPolicy = this.fb.group({
       policyData: this.fb.array([]),
       riskData: this.fb.array([]),
-      causeType: this.fb.control({ value: '', disabled: true }),
+      causeType: this.fb.control('', [Validators.required]),
       observation: this.fb.control('', [Validators.maxLength(200)]),
     });
   }
@@ -79,7 +82,7 @@ export class PolicyRenewalComponent implements OnInit {
     this.modalAPService.getCauses(applicationProcess)
     .subscribe( causes => {
       this.causes = causes.body;
-      this.formPolicy.get('causeType')?.setValue(136)
+      //this.formPolicy.get('causeType')?.setValue(136)
       });
     }
 
@@ -88,6 +91,7 @@ export class PolicyRenewalComponent implements OnInit {
     this.isLoading = true;
     this.policy = this.config.data.policy.policyData;
     this.policyData = this.mapData(this.policy.plcy.plcyDtGrp);
+    //console.log('policyData', this.policyData);
     this.riskData = this.mapData(this.policy.plcy.rsk['1'].rskDtGrp);
     this.getProduct(this.policy.prdct);
   }
@@ -111,9 +115,32 @@ export class PolicyRenewalComponent implements OnInit {
   getProduct(code: string) {
     this.productService.getProductByCode(code).subscribe((res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
+        console.log('producto', res.body)
         this.product = res.body;
-        this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmContent?.policyData, this.policyData));
-        this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
+        this.productDeps = this.product.nmDefinition.prdctDpndncy;
+        this.formPolicy.setControl('policyData', this.fillGroupData(this.product.nmDefinition?.prdct.issPrcss.plcyDtGrp, this.policyData));
+        this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmDefinition?.prdct.issPrcss.rskTyp));
+        //this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmContent?.riskTypes));
+        this.renewalProcess = this.product.nmDefinition?.prdct.rnwlPrcss;
+        /* Mockeo tmp del proceso */
+        this.renewalProcess = {
+          rnwlCsCd: ["RNV_CRE_1"],
+          clcltnRl: [
+            {
+              "rlCd": "201PVV001",
+              "argmntLst": {
+                "prdctCd": "COD_PRODUCTO",
+                "issueDt": "FEC_EMI_POL"
+              }
+            }
+          ],
+          isNwIssPlcy: true,
+          rnwlTchnclCntrl: null
+        };
+        /* */
+        /* Filtramos las causas con respecto a la parametrización del producto */
+        this.causes = this.causes.filter((cause: any) => this.renewalProcess.rnwlCsCd.every((csCd: string) => csCd === cause.businessCode));
+        /* */
         this.isLoading = false;
       }
     });
@@ -123,12 +150,13 @@ export class PolicyRenewalComponent implements OnInit {
     let risksArrayData: any = this.fb.array([]);
 
     for (let risk of riskTypes) {
+      const riskDep = this.productService.findDependencyByKeyCode(this.productDeps, 'rskTyp', risk.rskTypCd);
+
       let groupRisk = this.fb.group({
-        id: risk.id,
-        name: risk.name,
-        description: risk.description,
-        code: risk.code,
-        complementaryData: this.fillGroupData(risk.complementaryData, this.riskData)
+        nm: riskDep.nm,
+        dscrptn: riskDep.dscrptn,
+        cd: riskDep.cd,
+        complementaryData: this.fillGroupData(risk.rskTypDtGrp, this.riskData)
       });
 
       (<FormArray>risksArrayData).push(groupRisk);
@@ -142,14 +170,14 @@ export class PolicyRenewalComponent implements OnInit {
 
     for (let group of groupsArray) {
       let groupFG = this.fb.group({
-        id: group.id,
-        code: group.code,
-        name: group.name,
+        //id: group.id,
+        code: group.dtGrpCd,
+        name: group.dtGrpNm,
         fields: this.fb.array([])
       });
 
-      for (let field of group.fields) {
-        let valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
+      for (let field of group.fld) {
+        let valueObj = arrayData.find((x: any) => x.name === field.dtCd);
 
         if (valueObj) {
           (<FormArray>groupFG.get('fields')).push(this.getFieldControls(field, valueObj));
@@ -164,12 +192,35 @@ export class PolicyRenewalComponent implements OnInit {
   getFieldControls(field: any, value: any) {
     let fieldFG = this.fb.group({});
 
+    /* buscamos la dependencia del campo */
+    field.dt = this.productService.findDependencyByKeyCode(this.productDeps, 'dt', field.dtCd);
+    
+    /* */
+
+    /* buscamos la dependencia de datatype y la insertamos en el campo */
+    field.dt.dtTyp = this.productService.findDependencyByKeyCode(this.productDeps, 'dtTyp', field.dt.dtTypCd);
+    /* */
+
+    /* buscamos la dependencia de domainList y la insertamos en el campo */
+    field.dt.dmnLst = this.productService.findDependencyByKeyCode(this.productDeps, 'dmnLst', field.dt.dmnLstCd);
+    console.log('field', field);
+    /* */
+
+    if (field.dtCd === 'PERIODO_FACT') {
+      field.dt.dmnLst = {
+        "cd": "LDM_PF",
+        "nm": "Periodos de facturación",
+        "dscrptn": "Periodos de facturación",
+        "vlLst": "[{\"url\": \"/emisor/v1/turnoverperiod/findAll\", \"rlEngnCd\": \"MTR_SMT\"}]"
+      };
+    }
+
     Object.keys(field).forEach(key => {
       let keyValue: any = field[key];
-      if(key === 'dataType' && (field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO')) {
+      /*if(key === 'dataType' && (field.dtCd === 'TIPO_MASCOTA' || field.dtCd === 'METODO_PAGO')) {
         keyValue.guiComponent = 'List box';
-      }
-      if (key === 'domainList' && field.businessCode === 'PERIODO_FACT') {
+      }*/
+      /*if (key === 'domainList' && field.dtCd === 'PERIODO_FACT') {
         keyValue = {
           "code": "LDM_PF",
           "name": "Periodos de facturación",
@@ -178,15 +229,20 @@ export class PolicyRenewalComponent implements OnInit {
         }
 
         field[key] = keyValue;
-      }
+      }*/
       fieldFG.addControl(key, this.fb.control(keyValue));
     });
 
-    fieldFG.addControl('value', this.fb.control({ value: field.dataType.guiComponent === 'Calendar' ? new Date(value.value) : value.value, disabled: this.readOnly ?? !field.editable }));
+    fieldFG.addControl('value', this.fb.control({ value: field.dt.dtTyp.guiCmpnntItm === 'Calendar' ? new Date(value.value) : value.value, disabled: this.readOnly ?? !field.editable }));
 
-    if (field.dataType.guiComponent === 'List box' || field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO') {
-      let options: any = [], domainList = field.domainList?.valueList;
-      options = field.domainList ? this.showDomainList(JSON.parse(domainList), value) : [{ id: value.value, name: value.value }];
+    if (field.dt.dtTyp.guiCmpnntItm === 'List box' /*|| field.businessCode === 'TIPO_MASCOTA' || field.businessCode === 'METODO_PAGO'*/) {
+      let options: any = [], domainList = field.dt.dmnLst?.vlLst;
+      try {
+        domainList = JSON.parse(domainList);
+      } catch (error) {
+        //domainList = [];
+      }
+      options = field.dt.dmnLst ? this.showDomainList(domainList, value) : [{ id: value.value, name: value.value }];
       fieldFG.addControl('options', this.fb.control(options));
     }
 
