@@ -33,7 +33,7 @@ interface RiskTypeNode {
   children?: RiskTypeNode[];
 }
 
-interface subItemsRiskType {
+interface SubItemsRiskType {
   name: string,
   formArray: string,
   distance: number,
@@ -83,7 +83,7 @@ export class RiskTypesComponent implements OnInit {
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
   //Finished to definition component tree angular material
 
-  subItemsRiskTypes: subItemsRiskType[] = [
+  subItemsRiskTypes: SubItemsRiskType[] = [
     { name: 'Datos del riesgo', formArray: 'complementaryData', distance: 1 },
     { name: 'Planes comerciales', formArray: 'businessPlans', distance: 2 },
   ];
@@ -106,7 +106,9 @@ export class RiskTypesComponent implements OnInit {
         ],
       });
     });
-    this.updateTree()
+
+    this.updateTree();
+      
   }
 
   ngOnInit(): void {
@@ -196,8 +198,9 @@ export class RiskTypesComponent implements OnInit {
             { name: 'Planes comerciales' },
           ],
         });
-      }
-      this.updateTree();
+      }    
+        this.updateTree();
+
       let dataToast: DataToast = {
         status: STATES.success,
         title: 'Asociación exitosa',
@@ -210,9 +213,8 @@ export class RiskTypesComponent implements OnInit {
   };
 
   get riskTypeControls(): FormArray {
-    return (<FormArray>(
-      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
-    )) as FormArray;
+    return this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp') as FormArray;
+
   }
 
   removeRiskType = (node: ExampleFlatNode): void => {
@@ -238,8 +240,8 @@ export class RiskTypesComponent implements OnInit {
         if (id == this.selectedRiskType.value.id || index == 0) {
           this.index = 0;
         }
-        this.selectedRiskType = this.riskTypeGroup;
-        this.updateTree(); 
+        this.selectedRiskType = this.riskTypeGroup
+        this.updateTree();
         if (this.complementaryDataComponent) {
           this.complementaryDataComponent?.reset();
         }
@@ -258,12 +260,12 @@ export class RiskTypesComponent implements OnInit {
     );
   }
 
-  updateTree = (): void => {
-    this.dataSource.data = this.dataSource.data;
+  updateTree() {
+    this.dataSource.data = [...this.dataSource.data];
     for (let value of this.treeControl.dataNodes) {
       this.treeControl.expand(value);
     }
-  };
+  }
 
   viewRiskType = (node: ExampleFlatNode): void => {
     this.index = this.findIndexRiskType(node);
@@ -275,7 +277,7 @@ export class RiskTypesComponent implements OnInit {
 
   quantityItems = (node: ExampleFlatNode): number => {
     const startIndex = this.treeControl.dataNodes.indexOf(node);
-    const subItemsRiskType: subItemsRiskType = this.subItemsRiskTypes.filter(item => item.name == this.flatNodeMap.get(node)?.name)[0]
+    const subItemsRiskType: SubItemsRiskType = this.subItemsRiskTypes.filter(item => item.name == this.flatNodeMap.get(node)?.name)[0]
     const currentNode = this.treeControl.dataNodes[startIndex-subItemsRiskType.distance];
     const index = this.findIndexRiskType(currentNode);
     if(node.name==="Datos del riesgo" && this.productService.riskTypes.controls[index].get(subItemsRiskType.formArray)?.value[0]){  
