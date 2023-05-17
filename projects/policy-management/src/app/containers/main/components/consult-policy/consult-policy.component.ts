@@ -393,7 +393,6 @@ export class ConsultPolicyComponent implements OnDestroy {
   }
 
   activateCancellation(id: number){
-    setTimeout(()=>{
       this.consultPolicyService.getPolicyById(id).subscribe((res) => {
         const isCancellable = res.body.productFactory.nmDefinition.prdct?.cnclltnPrcss?.isCncllblIncptnDt;
         console.log("isCancellable_VALUE::",isCancellable)
@@ -403,7 +402,6 @@ export class ConsultPolicyComponent implements OnDestroy {
 
         }
     })
-    },2000)
 
 }
 }
