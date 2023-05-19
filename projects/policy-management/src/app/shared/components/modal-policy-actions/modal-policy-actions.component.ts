@@ -25,6 +25,9 @@ export class ModalPolicyActionsComponent implements OnInit {
   policies: any;
   paymentMethod: string = '';
   premiumData: any = null;
+  cancellationCsCd: any[] = []
+  reinstatementCsCd: any[] = []
+  isCancellable = false;
 
 
   constructor(
@@ -52,10 +55,9 @@ export class ModalPolicyActionsComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit(){
     this.getPremiumData(this.config.data.policy);
-    this.getCauses(this.config.data.process);
-    this.consultPoliciesById(this.config.data.policy.idPolicy)
+    this.consultPoliciesById(this.config.data.policy.idPolicy);
   }
 
   getPremiumData(policy: any) {
@@ -65,16 +67,44 @@ export class ModalPolicyActionsComponent implements OnInit {
     });
   }
 
-  consultPoliciesById(id: number) {
-  this.consultPolicyService.getPolicyById(id).subscribe( policies => {
-    this.paymentMethod = policies.body.payment.method;
-  });
+  consultPoliciesById(id: number){
+      this.consultPolicyService.getPolicyById(id).subscribe(
+        {
+          next:(policies) => {
+            this.paymentMethod = policies.body.payment.method;
+            this.cancellationCsCd = policies.body.productFactory.nmDefinition.prdct?.cnclltnPrcss?.cnclltnCsCd;
+            this.reinstatementCsCd = policies.body.productFactory.nmDefinition.prdct?.rnsttmntPrcs?.rnsttmntCsCd;
+            this.isCancellable = policies.body.productFactory.nmDefinition.prdct?.cnclltnPrcss?.isCncllblIncptnDt;
+            this.getCauses(this.config.data.process);
+          },
+          error: (errors) =>{
+            console.error("Error_Getting_Service_Response:",errors);
+          }
+        }
+      );
   }
 
   getCauses(applicationProcess: string){
     this.modalAPService.getCauses(applicationProcess)
     .subscribe( causes => {
-      this.causes = causes.body;
+
+      if(applicationProcess == "Cancelación"){
+        this.cancellationCsCd != null && this.cancellationCsCd !== undefined && this.cancellationCsCd.length>0 ?
+        this.causes = causes.body.filter((item: { businessCode: string; }) =>
+          this.cancellationCsCd.includes(item.businessCode)
+        ):
+        this.causes = causes.body;
+      }
+      else if(applicationProcess == "Rehabilitación"){
+        this.reinstatementCsCd != null && this.reinstatementCsCd !== undefined && this.reinstatementCsCd.length>0 ?
+        this.causes = causes.body.filter((item: { businessCode: string; }) =>
+          this.reinstatementCsCd.includes(item.businessCode)
+        ):
+        this.causes = causes.body;
+      }else{
+        this.causes = causes.body;
+      }
+
       });
     }
 
@@ -88,9 +118,9 @@ export class ModalPolicyActionsComponent implements OnInit {
 
   /**
    * Method for calculate ammount to return, based on selected process date, expiration date and premium value
-   * @param premiumValue 
-   * @param processDate 
-   * @param expirationDate 
+   * @param premiumValue
+   * @param processDate
+   * @param expirationDate
    */
   getPremiumReturnValue(premiumValue: any, processDate: any, expirationDate: any){
     expirationDate = new Date(expirationDate).toISOString();
@@ -160,7 +190,7 @@ export class ModalPolicyActionsComponent implements OnInit {
             } else {
               this.showSuccess('success', resp.body.message, 'La cancelación fue agendada y se hará efectiva en la fecha seleccionada');
             }
-            
+
           } else  {
               this.messageError = true;
               this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
