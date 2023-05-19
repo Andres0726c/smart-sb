@@ -161,9 +161,8 @@ export class ConsultPolicyComponent implements OnDestroy {
   disabledItem(status: string) {
     switch (status) {
       case 'Activa':
-        console.log("CASE_ACTIVE")
        this.disabledOption('Modificar', false)
-       this.disabledOption('Cancelar', true)
+       this.disabledOption('Cancelar', false)
        this.disabledOption('Rehabilitar', true)
        this.disabledOption('Renovar', false)
        this.disabledOption('Ver detalle', false)
@@ -180,7 +179,6 @@ export class ConsultPolicyComponent implements OnDestroy {
         this.disabledOption('Rehabilitar', true)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', true)
-        console.log("CASE_PROVISORIA")
         /*this.items[0].disabled = true;
         this.items[1].disabled = true;
         this.items[2].disabled = true;
@@ -391,17 +389,4 @@ export class ConsultPolicyComponent implements OnDestroy {
       this.setData(res, 'city');
     });
   }
-
-  activateCancellation(id: number){
-      this.consultPolicyService.getPolicyById(id).subscribe((res) => {
-        const isCancellable = res.body.productFactory.nmDefinition.prdct?.cnclltnPrcss?.isCncllblIncptnDt;
-        console.log("isCancellable_VALUE::",isCancellable)
-        if (!isCancellable) {
-          console.log("Ingreso a habilitar opción")
-          this.disabledOption('Cancelar', false);
-
-        }
-    })
-
-}
 }
