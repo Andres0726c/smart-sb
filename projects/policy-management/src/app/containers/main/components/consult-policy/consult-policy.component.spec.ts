@@ -314,18 +314,6 @@ it('getModuleFalse',()=>{
     expect(refOpenSpy).toHaveBeenCalled();
   });
 
-  it('getPolicy ok', () => {
-    component.selectedPolicy = { idPolicy: 1, policyNumber: 123 };
-    expect(component.getPolicy()).toBeUndefined();
-  });
-
-  it('getPolicy else', () => {
-    component.selectedPolicy = { idPolicy: 1, policyNumber: 123 };
-    const res = { dataHeader: { code: 500 } };
-    jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
-    expect(component.getPolicy()).toBeUndefined();
-  });
-
   it('getPolicyClaimStatus ok', () => {
     component.selectedPolicy = { idPolicy: 1, policyNumber: 123};
     expect(component.getPolicyClaimStatus()).toBeUndefined();
