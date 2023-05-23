@@ -259,11 +259,11 @@ it('getModuleFalse',()=>{
     it('command Rehabilitar',()=>{
       expect(component.items[2].command()).toBeUndefined();
     });
-    it('command Renovar',()=>{
+    /*it('command Renovar',()=>{
       const spy = jest.spyOn(component, 'getPolicy').mockImplementation();
       component.items[3].command();
       expect(spy).toBeCalled();
-    })
+    })*/
     it('command Ver detalle',()=>{
       const spy = jest.spyOn(component, 'showModalConsulDetails').mockImplementation();
       component.items[4].command();

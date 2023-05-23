@@ -1,13 +1,15 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { ModalPolicyActionsService } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/services/modal-policy-actions.service';
 import { of } from 'rxjs';
 import { PolicyRenewalComponent } from './policy-renewal.component';
+import { ActivatedRoute } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PolicyRenewalComponent', () => {
   let component: PolicyRenewalComponent;
@@ -17,9 +19,9 @@ describe('PolicyRenewalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule],
       declarations: [ PolicyRenewalComponent ],
-      providers: [DynamicDialogRef, DynamicDialogConfig, DialogService, MessageService, FormBuilder],
+      providers: [MessageService, FormBuilder],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
@@ -29,7 +31,7 @@ describe('PolicyRenewalComponent', () => {
     productService = fixture.debugElement.injector.get(ProductService);
     modalAPService = fixture.debugElement.injector.get(ModalPolicyActionsService);
 
-    component.config = {
+    /*component.config = {
       data: {
         policy: {
             policyBasic: {
@@ -37,11 +39,14 @@ describe('PolicyRenewalComponent', () => {
             }
         }
       }
-    };
+    };*/
 
     const res = {
       "body": {
         "prdct": "producto_seguro_mascota",
+        "extrnlTrnsctnPlcy": {
+            "plcyNmbr": "123"
+        },
         "plcy": {
             "rqstNmbr": "406",
             "plcyNmbr": "100000000000393",
@@ -99,7 +104,7 @@ describe('PolicyRenewalComponent', () => {
       }
     };
 
-    component.config.data.policy.policyData = res.body;
+    //component.config.data.policy.policyData = res.body;
 
     const resProduct = {
       "body": {
@@ -470,6 +475,192 @@ describe('PolicyRenewalComponent', () => {
                   }
               ]
           },
+          "nmDefinition": {
+            "prdctDpndncy": {
+                "dmnLst": [
+                    {
+                        "id": 33,
+                        "cd": "LDM_TPI",
+                        "nm": "Tipos de identificación",
+                        "dscrptn": "Tipos de identificación",
+                        "vlLst": [
+                          {
+                            "url": "/emisor/v1/identificationtype/findAllIdentification",
+                            "rlEngnCd": "MTR_SMT"
+                          }
+                        ]
+                    },
+                    {
+                        "id": 33,
+                        "cd": "TEST",
+                        "nm": "Test",
+                        "dscrptn": "Test",
+                        "vlLst": [{id: 1, name: 'test'}]
+                    }
+                ],
+                "dt": [
+                    {
+                        "id": 69,
+                        "cd": "TIPO_DOC_TOMADOR",
+                        "dscrptn": "Tipo de documento del tomador",
+                        "sttsCd": "ACT",
+                        "vrsn": 1,
+                        "lbl": "Tipo de documento del tomador",
+                        "tltp": "Ingrese tipo de documento del tomador",
+                        "dtTypCd": "TDL1",
+                        "dmnLstCd": "LDM_TPI",
+                        "insrncLnCd": [
+                          "23"
+                        ],
+                        "essntlDt": null
+                    },
+                    {
+                        "id": 72,
+                        "cd": "PERIODO_FACT",
+                        "dscrptn": "Periodo de facturación",
+                        "sttsCd": "ACT",
+                        "vrsn": 1,
+                        "lbl": "Periodo de facturación",
+                        "tltp": "Ingrese periodo de facturación",
+                        "dtTypCd": "TDL1",
+                        "dmnLstCd": "TEST",
+                        "insrncLnCd": [
+                          "23"
+                        ],
+                        "essntlDt": null
+                    }
+                ],
+                "dtTyp": [
+                    {
+                        "id": 3,
+                        "cd": "TDL1",
+                        "nm": "Lista de valores",
+                        "dscrptn": "Campo para selección de opciones de una lista desplegable",
+                        "dbFieldTypeItm": "Varchar",
+                        "guiCmpnntItm": "List box",
+                        "lngth": 30,
+                        "prcsn": 0,
+                        "scl": 0
+                    }
+                ]
+            },
+            "prdct": {
+                "issPrcss": {
+                    "plcyDtGrp": [
+                        {
+                          "dtGrpCd": "datos_basicos",
+                          "dtGrpNm": "Datos básicos",
+                          "fld": [
+                            {
+                              "dtCd": "TIPO_DOC_TOMADOR",
+                              "isRqrd": true,
+                              "isVsbl": true,
+                              "vldtRl": [],
+                              "intlzRl": [],
+                              "isEdtbl": true,
+                              "dtDpndncy": null
+                            },
+                            {
+                              "dtCd": "PERIODO_FACT",
+                              "isRqrd": true,
+                              "isVsbl": true,
+                              "vldtRl": [],
+                              "intlzRl": [],
+                              "isEdtbl": true,
+                              "dtDpndncy": null
+                            }
+                          ]
+                        },
+                        {
+                          "dtGrpCd": "gd002_datosdeldebito",
+                          "dtGrpNm": "Datos del débito",
+                          "fld": [
+                            {
+                              "dtCd": "METODO_PAGO",
+                              "isRqrd": true,
+                              "isVsbl": true,
+                              "vldtRl": [],
+                              "intlzRl": [],
+                              "isEdtbl": true,
+                              "dtDpndncy": null
+                            }
+                          ]
+                        }
+                    ],
+                    "rskTyp": [
+                        {
+                          "rskTypCd": "2",
+                          "rskTypDtGrp": [
+                            {
+                              "dtGrpCd": "datos_basicos",
+                              "dtGrpNm": "Datos básicos",
+                              "fld": [
+                                {
+                                  "dtCd": "TIPO_DOC_ASEGURADO",
+                                  "isRqrd": true,
+                                  "isVsbl": true,
+                                  "vldtRl": [],
+                                  "intlzRl": [],
+                                  "isEdtbl": true,
+                                  "dtDpndncy": null
+                                }
+                              ]
+                            },
+                            {
+                              "dtGrpCd": "gd002_datosmascota",
+                              "dtGrpNm": "Datos mascota",
+                              "fld": [
+                                {
+                                  "dtCd": "TIPO_MASCOTA",
+                                  "isRqrd": true,
+                                  "isVsbl": true,
+                                  "vldtRl": [
+                                    {
+                                      "rlCd": "RVL_TMS_RGO",
+                                      "argmntLst": {
+                                        "code": "TIPO_MASCOTA"
+                                      }
+                                    }
+                                  ],
+                                  "intlzRl": [],
+                                  "isEdtbl": true,
+                                  "dtDpndncy": null
+                                }
+                              ]
+                            }
+                          ],
+                          "cmmrclPln": [
+                            {
+                              "cmmrclPlnCd": "pc001_opcion1alternativa1",
+                              "cmmrclPlnNm": "pc001_opcion1alternativa1",
+                              "cmmrclPlnDscrptn": "opcion1 alternativa1",
+                              "cvrg": [
+                                {
+                                  "cvrgCd": "COB5",
+                                  "isRqrd": true
+                                },
+                                {
+                                  "cvrgCd": "COB7",
+                                  "isRqrd": true
+                                },
+                                {
+                                  "cvrgCd": "COB8",
+                                  "isRqrd": true
+                                }
+                              ],
+                              "srvcPln": [
+                                {
+                                  "srvcPlnCd": "1004",
+                                  "isRqrd": true
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                    ]
+                }
+            }
+          },
           "idStatus": 1,
           "nmVersion": 2,
           "businessCode": "producto_seguro_mascota"
@@ -526,6 +717,7 @@ describe('PolicyRenewalComponent', () => {
     jest.spyOn(modalAPService, 'getCauses').mockReturnValue(of (resCauses));
     jest.spyOn(modalAPService, 'savePolicyRenewal').mockReturnValue(of (resSave));
     jest.spyOn(productService, 'getProductByCode').mockReturnValue(of (resProduct));
+    jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
 
     fixture.detectChanges();
   });
@@ -550,6 +742,17 @@ describe('PolicyRenewalComponent', () => {
 
   it('confirmSave', () => {
     expect(component.confirmSave()).toBeUndefined();
+  });
+
+  it('show internal error', () => {
+    expect(component.showInternalError()).toBeUndefined();
+  });
+
+  it('getGroupsControls', () => {
+    const risk = new FormGroup({
+        complementaryData: new FormArray([])
+    });
+    expect(component.getGroupsControls(risk).value).toEqual([]);
   });
 
   it('fillRiskData', () => {

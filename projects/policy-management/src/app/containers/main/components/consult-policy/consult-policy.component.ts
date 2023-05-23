@@ -119,7 +119,8 @@ export class ConsultPolicyComponent implements OnDestroy {
       {
         label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
-          this.getPolicy();
+          //this.getPolicy();
+          this.router.navigate([`/polizas/renovar/${this.selectedPolicy?.policyNumber}`]);
         }
       },
       {
@@ -298,7 +299,12 @@ export class ConsultPolicyComponent implements OnDestroy {
         if (new Date(policy.plcy.plcyDtGrp.datos_basicos['FEC_FIN_VIG_POL']) > new Date(this.selectedPolicy.expirationDate)) {
           this.showSuccess('error', 'Proceso pendiente', 'La póliza tiene un endoso pendiente');
         } else {
-          this.showModal(PolicyRenewalComponent, 'Renovación', { policyBasic: this.selectedPolicy, policyData: policy }, 'Renovar', '96%', '100%', '100%');
+          //this.showModal(PolicyRenewalComponent, 'Renovación', { policyBasic: this.selectedPolicy, policyData: policy }, 'Renovar', '96%', '100%', '100%');
+          console.log('policy', this.selectedPolicy.idPolicy);
+          this.router.navigate(
+            [`/polizas/renovar/${this.selectedPolicy.policyNumber}`],
+            //{ state: { policy: this.selectedPolicy } }
+          );
         }
       } else {
         this.showSuccess('error', 'Error interno', 'Por favor intente nuevamente');
