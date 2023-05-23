@@ -118,7 +118,12 @@ export class PolicyRenewalComponent implements OnInit {
           this.policy = res.body;
           const expirationDate = this.policy.plcy.plcyDtGrp.datos_basicos['FEC_FIN_VIG_POL'];
           this.externalNumber = this.policy.extrnlTrnsctnPlcy.plcyNmbr;
-          this.getPolicyLastEndorsement(policyNumber, expirationDate);
+          if (this.policy.plcy.stts === 'POL_ACT') {
+            this.getPolicyLastEndorsement(policyNumber, expirationDate);
+          } else {
+            this.errorFlag = true;
+            this.errorMsg = 'La póliza se encuentra inactiva';
+          }
         } else {
           this.showInternalError();
         }

@@ -53,6 +53,7 @@ describe('PolicyRenewalComponent', () => {
             "mnPlcyNmbr": "0",
             "endrsmntNmbr": "0",
             "chngActvtyTyp": "EMI_ORI",
+            "stts": "POL_ACT",
             "plcyDtGrp": {
                 "datos_basicos": {
                     "MONEDA": "COP",
