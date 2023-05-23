@@ -109,6 +109,7 @@ export class ModifyPolicyComponent {
       policyData: this.fb.array([]),
       riskData: this.fb.array([]),
       riskDataPreview: this.fb.array([]),
+      observation: this.fb.control('', [Validators.maxLength(2000), Validators.required]),
     });
 
 
@@ -501,6 +502,7 @@ export class ModifyPolicyComponent {
 
     this.policy.plcy.plcyDtGrp[this.Business] = this.policyAux.plcy.plcyDtGrp[this.Business];
     this.policy.plcy.rsk['1'].rskDtGrp[this.Business] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.Business];
+    this.policy.observation = this.formPolicy.get('observation')?.value;
 
     console.log(this.policy,"policy");
 
@@ -546,6 +548,10 @@ export class ModifyPolicyComponent {
       summary: title,
       detail: msg
     });
+  }
+
+  validateObservation() {
+    return this.formPolicy.get('observation')?.value ? true : false
   }
 
 }
