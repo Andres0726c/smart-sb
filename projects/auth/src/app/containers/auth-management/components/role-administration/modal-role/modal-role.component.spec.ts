@@ -72,7 +72,8 @@ describe('ModalRoleComponent', () => {
       description: new FormControl('test'),
     });
     authService.roles.push(rol);
-    expect(component.verifyName(event)).toBeUndefined();
+    expect(component.verifyName(event, 2)).toBeUndefined();
+    expect(component.verifyName(event, 1)).toBeUndefined();
   });
 
   it('addRole create', () => {
