@@ -208,6 +208,7 @@ export class ConsultPolicyComponent implements OnDestroy {
         this.items[4].disabled = false;*/
         break;
     }
+    this.items = this.items.slice(); //refresh menu content
   }
 
   
@@ -409,7 +410,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     this.productService
     .getApiData('policy/futureCancellationStatus?smartCorePolicyNumber=' + this.selectedPolicy.policyNumber, '', '')
     .subscribe((res) => {
-      if (res.body?.startDate) {
+      if (res.body?.expirationDate) {
         this.disabledOption('Anular cancelación', false)
       }
     });
