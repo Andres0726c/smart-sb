@@ -200,7 +200,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     }
   }
 
-  
+
 
   showModal(component: any, process: string, policy: any, buttonAction: any, width?: string, height?: string, mxHeight?: string) {
     const ref = this.dialogService.open(component, {
@@ -323,7 +323,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   getDaneCode(id: number){
     this.consultPolicyService.getPolicyById(id).subscribe((res) => {
       if (res.body) {
-        
+
         let daneCodeD = res.body.propertiesPolicyData.gd002_datosdeldebito.DEPAR_COL;
         let daneCodeC = res.body.propertiesPolicyData.gd002_datosdeldebito.CIU_TDB;
         if(daneCodeD){
@@ -333,8 +333,8 @@ export class ConsultPolicyComponent implements OnDestroy {
           return this.getCity(daneCodeAux)
         } else if((daneCodeD === '' || undefined) && (daneCodeC === '' || undefined)){
           return this.getCity('0')
-        } 
-        
+        }
+
       }
   })
 }
@@ -365,7 +365,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   }
 
   getCity(daneCode: any){
-    
+
     this.productService
     .getApiData('city/findByState', '', daneCode)
     .subscribe((res) => {
