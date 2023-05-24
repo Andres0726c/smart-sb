@@ -88,18 +88,14 @@ export class ModalPolicyActionsComponent implements OnInit {
     this.modalAPService.getCauses(applicationProcess)
     .subscribe( causes => {
       if(applicationProcess == "Cancelación"){
-        this.cancellationCsCd != null && this.cancellationCsCd !== undefined && this.cancellationCsCd.length>0 ?
-        this.causes = causes.body.filter((item: { businessCode: string; }) =>
-          this.cancellationCsCd.includes(item.businessCode)
-        ):
-        this.causes = causes.body;
+        this.causes = causes?.body?.filter((item: { businessCode: string; }) =>
+          this.cancellationCsCd?.includes(item.businessCode)
+        )
       }
       else if(applicationProcess == "Rehabilitación"){
-        this.reinstatementCsCd != null && this.reinstatementCsCd !== undefined && this.reinstatementCsCd.length>0 ?
-        this.causes = causes.body.filter((item: { businessCode: string; }) =>
-          this.reinstatementCsCd.includes(item.businessCode)
-        ):
-        this.causes = causes.body;
+        this.causes = causes?.body?.filter((item: { businessCode: string; }) =>
+          this.reinstatementCsCd?.includes(item.businessCode)
+        )
       }else{
         this.causes = causes.body;
       }
