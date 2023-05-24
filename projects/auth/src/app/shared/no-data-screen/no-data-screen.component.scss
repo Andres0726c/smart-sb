@@ -1,0 +1,28 @@
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/buttons";
+@import "../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+.title {
+  font-family: "Roboto Condensed" !important;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 35px;
+  display: flex;
+  align-items: center;
+  margin: 0 0 16px 20px;
+  color: $titleSubtitle;
+}
+.subtitle {
+  font-family: "Roboto Condensed" !important;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  margin: 0 0 16px 20px;
+  color: $titleSubtitle;
+}
+.no-data-screen{
+  padding-top: 20%;
+}

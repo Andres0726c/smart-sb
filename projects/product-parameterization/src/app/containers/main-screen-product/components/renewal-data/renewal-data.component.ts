@@ -121,21 +121,14 @@ export class RenewalDataComponent implements OnInit {
       this.productService.deleteDependencyRef('rl', this.rulePrevValue.rlCd, 'rnClcltnRl');
     }
     let arr: any[] = [];
-    let parametersList: any = {};
-
-    try {
-      parametersList = JSON.parse(objRule.rule.nmParameterList);
-    } catch (error) {
-      parametersList = {};
-    }
-
+    
     let elementDp: any = {
       id: objRule.rule.id,
       cd: objRule.rule.cdBusinessCode,
       nm: objRule.rule.name,
       vrsn: objRule.rule.nmVersion,
       dscrptn: objRule.rule.description,
-      prmtrLst: parametersList,
+      prmtrLst: objRule.rule.nmParameterList,
       rtrnLst: objRule.rule.nmReturnList,
       rlTypItm: objRule.rule.cdRuleType,
       aplctnLvlItm: objRule.rule.applicationLevel,

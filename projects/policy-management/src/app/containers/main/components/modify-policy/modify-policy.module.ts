@@ -26,6 +26,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CommonsLibModule } from 'commons-lib';
 import { ToastModule } from 'primeng/toast';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 
 const routes: Routes = [
@@ -64,7 +65,8 @@ const routes: Routes = [
     ModalResponseRulesModule,
     ConfirmDialogModule,
     DialogModule,
-    ToastModule
+    ToastModule,
+    InputTextareaModule
   ]
 })
 export class ModifyPolicyModule { }

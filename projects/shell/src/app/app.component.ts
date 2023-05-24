@@ -67,7 +67,7 @@ export class AppComponent {
   signOut() {
     this.cognitoService.signOut()
     .then(async (value) => {
-      await this.router.navigate(['/autenticacion']).then();
+      await this.router.navigate(['/autorizacion']).then();
     })
     .catch((err) => {
       console.log('Ha ocurrido un error al cerrar la sesión')
