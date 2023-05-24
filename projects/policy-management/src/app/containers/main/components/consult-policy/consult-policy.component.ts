@@ -320,7 +320,16 @@ export class ConsultPolicyComponent implements OnDestroy {
 
   getDeleteCancellation() {
     this.loading = true;
-    setTimeout(() => {this.loading = false}, 5000)
+    const dataDeletion = {
+      smartCorePolicyNumber: this.selectedPolicy.policyNumber
+    }
+    this.productService
+    .saveDeleteCancellation(dataDeletion)
+    .subscribe((res) => {
+      if (res.body?.expirationDate) {
+        this.loading = false
+      }
+    });
   }
 
   getPolicyClaimStatus() {
