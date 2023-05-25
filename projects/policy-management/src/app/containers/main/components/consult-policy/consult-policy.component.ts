@@ -7,7 +7,7 @@ import { ConsultPolicyService } from './services/consult-policy.service';
 import { FilterPolicy } from './interfaces/consult-policy';
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
@@ -194,7 +194,6 @@ export class ConsultPolicyComponent implements OnDestroy {
         this.disabledOption('Ver detalle', false)
         break;
     }
-    this.items = this.items.slice(); //refresh menu content
   }
 
 
@@ -412,8 +411,16 @@ export class ConsultPolicyComponent implements OnDestroy {
     .subscribe((res) => {
       if (res.body?.expirationDate) {
         this.disabledOption('Reversar movimiento', false)
+        this.items = this.items.slice(); //refresh menu content
       }
     });
+  }
+
+  clickDetails(rowData: { policyStatus: string; }) {
+    this.selectedPolicy = rowData; 
+    this.disabledItem(rowData.policyStatus);
+    this.visibleItem(); 
+    this.getFutureCancelationStatus()
   }
 
   confirmDeleteCancellation() {
