@@ -262,7 +262,7 @@ it('getModuleFalse',()=>{
     
     it('command Ver detalle',()=>{
       const spy = jest.spyOn(component, 'showModalConsulDetails').mockImplementation();
-      component.items[4].command();
+      component.items[5].command();
       expect(spy).toBeCalled();
     });
   })
