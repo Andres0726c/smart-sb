@@ -174,11 +174,6 @@ export class ConsultPolicyComponent implements OnDestroy {
        this.disabledOption('Rehabilitar', true)
        this.disabledOption('Renovar', false)
        this.disabledOption('Ver detalle', false)
-        //this.items[0].disabled = false;
-        //this.items[1].disabled = false;
-        //this.items[2].disabled = true;
-        //this.items[3].disabled = true; //Se deshabilita por PaP
-        //this.items[4].disabled = false;
         break;
       case 'Rechazada':
       case 'Provisoria':
@@ -188,11 +183,6 @@ export class ConsultPolicyComponent implements OnDestroy {
         this.disabledOption('Rehabilitar', true)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', true)
-        /*this.items[0].disabled = true;
-        this.items[1].disabled = true;
-        this.items[2].disabled = true;
-        this.items[3].disabled = false;
-        this.items[4].disabled = true;*/
         break;
       case 'Cancelada':
         this.disabledOption('Modificar', true)
@@ -201,11 +191,6 @@ export class ConsultPolicyComponent implements OnDestroy {
         this.disabledOption('Rehabilitar', false)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', false)
-        /*this.items[0].disabled = true;
-        this.items[1].disabled = true;
-        this.items[2].disabled = false;
-        this.items[3].disabled = true;
-        this.items[4].disabled = false;*/
         break;
     }
     this.items = this.items.slice(); //refresh menu content
