@@ -6,3 +6,33 @@
     text-align: left;
     padding: 10px;
 }
+
+.p-component * {
+    padding: 8px (left margin), 16px;
+}
+
+:host ::ng-deep .p-toast .p-toast-message {
+
+    & .p-toast-message-content {
+        background: var(--greyscale-white);
+        }
+    
+}
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-success {
+    border-style: none !important;
+    border-width: 0px 0px 0px 0.5px !important;
+    color: var(--success-base);
+}
+
+:host ::ng-deep .p-toast .p-toast-message.p-toast-message-error {
+    border-style: none !important;
+    border-width: 0px 0px 0px 0.5px !important;
+    color: var(--danger-base);
+}
+
+:host ::ng-deep .p-toast .p-toast-message .p-toast-message-content {
+    padding-left: 2px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-width: 0 !important; 
+}

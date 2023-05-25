@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import {
   DialogService,
   DynamicDialogConfig,
@@ -284,6 +284,89 @@ it('verify Date else', () => {
     component.formProcess.get('checked')?.setValue(false);
     expect(component.verifyCheck()).toBeUndefined();
   });
+
+  it('getCausesForCancellation', fakeAsync(() => {
+    const causesData = {body:[
+      {
+          "id": 166,
+          "businessCode": "CNC_CRE_128",
+          "name": "No pago de prima (MORA)",
+          "description": "No pago de prima (MORA)",
+          "applicationProcess": "Cancelación",
+          "applicationSubprocess": 13,
+          "idStatus": 1
+      },
+      {
+          "id": 160,
+          "businessCode": "CNC_CRE_121",
+          "name": "Mal servicio seguros Bolívar",
+          "description": "Mal servicio seguros Bolívar",
+          "applicationProcess": "Cancelación",
+          "applicationSubprocess": 13,
+          "idStatus": 1
+      }
+  ]};
+    const applicationProcess = 'Cancelación';
+
+    jest.spyOn(modalAPService, 'getCauses').mockReturnValue(of(causesData));
+    component.getCauses(applicationProcess);
+    tick();
+
+    if (applicationProcess === 'Cancelación') {
+      expect(component.causes).toEqual(
+        causesData?.body?.filter((item: { businessCode: string }) =>
+          component.cancellationCsCd?.includes(item.businessCode)
+        )
+      );
+    }
+  }));
+
+  it('getCausesForRehabilitation', fakeAsync(() => {
+    const causesData = {
+      body:[
+        {
+            "id": 137,
+            "businessCode": "RHB_CRE_1",
+            "name": "Solicitud del tomador",
+            "description": "Solicitud del tomador",
+            "applicationProcess": "Rehabilitación",
+            "applicationSubprocess": 11,
+            "idStatus": 1
+        }
+    ]};
+    const applicationProcess = 'Rehabilitación';
+    jest.spyOn(modalAPService, 'getCauses').mockReturnValue(of(causesData));
+    component.getCauses(applicationProcess);
+    tick();
+
+if (applicationProcess === 'Rehabilitación') {
+      expect(component.causes).toEqual(
+        causesData?.body?.filter((item: { businessCode: string }) =>
+          component.reinstatementCsCd?.includes(item.businessCode)
+        )
+      );
+    }
+  }));
+
+  it('getCausesForOthers', fakeAsync(() => {
+    const causesData = {body:[
+      {
+          "id": 136,
+          "businessCode": "RNV_CRE_1",
+          "name": "Solicitud del tomador",
+          "description": "Solicitud del tomador",
+          "applicationProcess": "Renovación",
+          "applicationSubprocess": 9,
+          "idStatus": 1
+      }
+    ]};
+    const applicationProcess = 'Renovación';
+
+    jest.spyOn(modalAPService, 'getCauses').mockReturnValue(of(causesData));
+    component.getCauses(applicationProcess);
+    tick();
+    expect(component.causes).toEqual(causesData?.body);
+  }));
 
 });
 

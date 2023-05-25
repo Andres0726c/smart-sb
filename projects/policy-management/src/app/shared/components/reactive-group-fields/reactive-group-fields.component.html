@@ -1,6 +1,6 @@
 <ng-template #inputText let-groupName="groupName" let-field="field">
-    <div [hidden]="field.value.label ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
-        <label>{{ field.value.label }}</label>
+    <div [hidden]="field.value.dt.lbl ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.dt.lbl }}</label>
         <input data-qa-id="sc-rsmf-txt-process-field"
             type="text" pInputText formControlName="value"
             (focusout)="executeRule(field,groupName,false)">
@@ -11,8 +11,8 @@
 </ng-template>
 
 <ng-template #calendar let-groupName="groupName" let-field="field">
-    <div [hidden]="field.value.label ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
-        <label>{{ field.value.label }}</label>
+    <div [hidden]="field.value.dt.lbl ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.dt.lbl }}</label>
         <p-calendar data-qa-id="sc-rsmf-cal-process-field"
             [showIcon]="true" styleClass="w-full" dateFormat="d M yy," [showTime]="true" hourFormat="24" [showSeconds]="true" formControlName="value" (focusout)="executeRule(field,groupName,false)" (click)="executeRule(field,groupName,false)"></p-calendar>
         <div *ngIf="(field.get('value')?.touched || field.get('value')?.dirty)">
@@ -22,8 +22,8 @@
 </ng-template>
 
 <ng-template #dropDown let-groupName="groupName" let-field="field">
-    <div [hidden]="field.value.label ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
-        <label>{{ field.value.label }}</label>
+    <div [hidden]="field.value.dt.lbl ==='PERIODO_FACT'" [formGroup]="field" class="flex flex-col m-3">
+        <label>{{ field.value.dt.lbl }}</label>
         <p-dropdown data-qa-id="sc-rsmf-drpdwn-process-field" 
             [options]="field.value.options" optionLabel="name" [filter]="true" filterBy="name" styleClass="w-full" formControlName="value" (focusout)="executeRule(field,groupName,false)" ></p-dropdown>
         <div *ngIf="(field.get('value')?.touched || field.get('value')?.dirty)">
@@ -41,7 +41,7 @@
             <div class="grid grid-cols-3 p-3 gap-x-3" formArrayName="fields">
                 <div *ngFor="let field of getFieldsControls(group)?.controls; let j = index;" formGroupName="{{j}}">
                     <ng-container
-                        [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataType.guiComponent]"
+                        [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dt.dtTyp.guiCmpnntItm]"
                         [ngTemplateOutletContext]="{ field: field,groupName:group }"
                     ></ng-container>
                 </div>

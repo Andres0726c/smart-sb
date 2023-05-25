@@ -67,7 +67,6 @@ const routes: Routes = [
     OverlayPanelModule,
     MenuModule,
     DialogModule,
-    FormsModule,
     PaginatorModule,
     InputTextareaModule,
     MessagesModule,

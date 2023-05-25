@@ -105,4 +105,9 @@ export class ProductService {
   saveDeleteCancellation( data: any): Observable<any>{
     return this.httpClient.post<any>(`${this.apiUrl}policy/deleteFutureCancellation`, data, {headers: this.headers});
   }
+
+  findDependencyByKeyCode(deps: any, key: string, code: string) {
+    return deps[key].find((x: any) => x.cd === code);
+
+  }
 }

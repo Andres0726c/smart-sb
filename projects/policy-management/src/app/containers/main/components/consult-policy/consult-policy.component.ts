@@ -126,7 +126,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       {
         label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
-          this.getPolicy();
+          this.router.navigate([`/polizas/renovar/${this.selectedPolicy?.policyNumber}`]);
         }
       },
       {
@@ -197,7 +197,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     this.items = this.items.slice(); //refresh menu content
   }
 
-  
+
 
   showModal(component: any, process: string, policy: any, buttonAction: any, width?: string, height?: string, mxHeight?: string) {
     const ref = this.dialogService.open(component, {
@@ -287,6 +287,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     })
   }
 
+
   getPolicy() {
     this.loading = true;
     this.productService.findPolicyDataById(this.selectedPolicy.policyNumber, 0).subscribe((res: any) => {
@@ -321,6 +322,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     });
   }
 
+
   getPolicyClaimStatus() {
     this.loading = true;
     this.productService.modificationPolicyClaimStatus(this.selectedPolicy.policyNumber).subscribe((res: any) => {
@@ -354,7 +356,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   getDaneCode(id: number){
     this.consultPolicyService.getPolicyById(id).subscribe((res) => {
       if (res.body) {
-        
+
         let daneCodeD = res.body.propertiesPolicyData.gd002_datosdeldebito.DEPAR_COL;
         let daneCodeC = res.body.propertiesPolicyData.gd002_datosdeldebito.CIU_TDB;
         if(daneCodeD){
@@ -364,8 +366,8 @@ export class ConsultPolicyComponent implements OnDestroy {
           return this.getCity(daneCodeAux)
         } else if((daneCodeD === '' || undefined) && (daneCodeC === '' || undefined)){
           return this.getCity('0')
-        } 
-        
+        }
+
       }
   })
 }
@@ -396,7 +398,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   }
 
   getCity(daneCode: any){
-    
+
     this.productService
     .getApiData('city/findByState', '', daneCode)
     .subscribe((res) => {
