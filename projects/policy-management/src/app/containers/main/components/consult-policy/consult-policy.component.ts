@@ -13,7 +13,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
 import { PolicyDetailsComponent } from './policy-details/policy-details.component';
 import { Router } from '@angular/router';
-import { PolicyRenewalComponent } from '../policy-renewal/policy-renewal.component';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { Menu } from 'primeng/menu';
 import { CognitoService } from 'commons-lib';
@@ -284,24 +283,6 @@ export class ConsultPolicyComponent implements OnDestroy {
       contentStyle: { 'max-height': '600px', 'overflow': 'auto', 'padding-bottom': '0px' },
       baseZIndex: 10000,
     })
-  }
-
-
-  getPolicy() {
-    this.loading = true;
-    this.productService.findPolicyDataById(this.selectedPolicy.policyNumber, 0).subscribe((res: any) => {
-      if (res.dataHeader.code && res.dataHeader.code == 200) {
-        const policy = res.body;
-        if (new Date(policy.plcy.plcyDtGrp.datos_basicos['FEC_FIN_VIG_POL']) > new Date(this.selectedPolicy.expirationDate)) {
-          this.showSuccess('error', 'Proceso pendiente', 'La póliza tiene un endoso pendiente');
-        } else {
-          this.showModal(PolicyRenewalComponent, 'Renovación', { policyBasic: this.selectedPolicy, policyData: policy }, 'Renovar', '96%', '100%', '100%');
-        }
-      } else {
-        this.showSuccess('error', 'Error interno', 'Por favor intente nuevamente');
-      }
-      this.loading = false;
-    });
   }
 
   getDeleteCancellation() {

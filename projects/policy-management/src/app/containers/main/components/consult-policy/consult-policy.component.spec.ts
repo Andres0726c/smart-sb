@@ -383,4 +383,51 @@ it('getModuleFalse',()=>{
     component.getCity('05');
     expect(spy1).toHaveBeenCalledTimes(1);
   });
+
+  it('getDeleteCancellation', () => {
+    component.selectedPolicy = { idPolicy: 1, policyNumber: 123 };
+    const res = {
+      body: {
+        expirationDate: "2023-05-25"
+      }
+    }
+    jest.spyOn(productService, 'saveDeleteCancellation').mockReturnValue(of (res));
+    expect(component.getDeleteCancellation()).toBeUndefined();
+  });
+
+  it('getDeleteCancellation else', () => {
+    component.selectedPolicy = { idPolicy: 1, policyNumber: 123 };
+    const res = {
+      body: null
+    }
+    jest.spyOn(productService, 'saveDeleteCancellation').mockReturnValue(of (res));
+    expect(component.getDeleteCancellation()).toBeUndefined();
+  });
+
+  it('getFutureCancelationStatus', () => {
+    component.selectedPolicy = { idPolicy: 1, policyNumber: 123 };
+    const res = {
+      body: {
+        expirationDate: "2023-05-25"
+      }
+    }
+    jest.spyOn(productService, 'getApiData').mockReturnValue(of (res));
+    expect(component.getFutureCancelationStatus()).toBeUndefined();
+  });
+
+  it('getFutureCancelationStatus else', () => {
+    component.selectedPolicy = { idPolicy: 1, policyNumber: 123 };
+    const res = {
+      body: null
+    }
+    jest.spyOn(productService, 'getApiData').mockReturnValue(of (res));
+    expect(component.getFutureCancelationStatus()).toBeUndefined();
+  });
+
+  it('clickDetails', () => {
+    expect(component.clickDetails({ policyStatus: '' })).toBeUndefined();
+  });
+
+
+
 });
