@@ -73,7 +73,7 @@ export class ModalPolicyActionsComponent implements OnInit {
           next:(policies) => {
             this.paymentMethod = policies.body.payment.method;
             this.cancellationCsCd = policies.body.productFactory.nmDefinition.prdct?.cnclltnPrcss?.cnclltnCsCd;
-            this.reinstatementCsCd = policies.body.productFactory.nmDefinition.prdct?.rnsttmntPrcs?.rnsttmntCsCd;
+            this.reinstatementCsCd = policies.body.productFactory.nmDefinition.prdct?.rnsttmntPrcss?.rnsttmntCsCd;
             this.isCancellable = policies.body.productFactory.nmDefinition.prdct?.cnclltnPrcss?.isCncllblIncptnDt;
             this.getCauses(this.config.data.process);
           },
