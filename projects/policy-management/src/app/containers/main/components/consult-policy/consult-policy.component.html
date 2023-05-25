@@ -43,7 +43,7 @@
                         </td>
                         <td>
                             <button type="button" pButton pRipple class="p-button p-button-secondary bg-white hover:"
-                                icon="pi pi-ellipsis-v" (click)="selectedPolicy=rowData; menu.toggle($event); disabledItem(rowData.policyStatus);visibleItem(); getFutureCancelationStatus()">
+                                icon="pi pi-ellipsis-v" (click)="clickDetails(rowData); menu.toggle($event)">
                             </button>
                             <p-menu #menu [popup]="true" [model]="items" appendTo="body">
                             </p-menu>
