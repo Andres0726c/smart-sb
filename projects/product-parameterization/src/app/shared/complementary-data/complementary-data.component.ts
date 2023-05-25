@@ -1,6 +1,22 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray, Validators, AbstractControl, ValidationErrors, ValidatorFn, } from '@angular/forms';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  FormGroup,
+  FormBuilder,
+  FormArray,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { lastValueFrom, Observable } from 'rxjs';
@@ -10,13 +26,17 @@ import { ElementReturn, FieldArray } from '../../core/model/SearchModal.model';
 import { ProductService } from '../../services/product.service';
 import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
 import { ModalSearchSmallComponent } from '../modal-search-small/modal-search-small.component';
-import { DataToast, STATES, ToastMessageComponent } from '../toast-message/toast-message.component';
-import { RulesWizardComponent } from "./rules-wizard/rules-wizard";
+import {
+  DataToast,
+  STATES,
+  ToastMessageComponent,
+} from '../toast-message/toast-message.component';
+import { RulesWizardComponent } from './rules-wizard/rules-wizard';
 
 @Component({
   selector: 'app-complementary-data',
   templateUrl: './complementary-data.component.html',
-  styleUrls: ['./complementary-data.component.scss']
+  styleUrls: ['./complementary-data.component.scss'],
 })
 export class ComplementaryDataComponent implements OnInit {
   @ViewChild('groupNameInput') groupNameInput!: ElementRef;
@@ -45,7 +65,7 @@ export class ComplementaryDataComponent implements OnInit {
 
   formGroupTitle: FormGroup;
   matcher = new MyErrorStateMatcher();
-  Rule! : FormGroup;
+  Rule!: FormGroup;
 
   constructor(
     public dialog: MatDialog,
@@ -57,14 +77,14 @@ export class ComplementaryDataComponent implements OnInit {
       groupTitle: fb.control('', [
         Validators.required,
         Validators.maxLength(200),
-        Validators.pattern('^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 \s]+$'),
-        this.nameValidationModify()
-      ])
+        Validators.pattern('^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9 s]+$'),
+        this.nameValidationModify(),
+      ]),
     });
   }
 
   ngOnInit() {
-    // console.log(this.complementaryData);
+    //empty
   }
 
   ngAfterViewInit() {
@@ -77,35 +97,36 @@ export class ComplementaryDataComponent implements OnInit {
     this.loadContextData();
   }
 
-  shootAction(){
-    this.action.emit()
+  shootAction() {
+    this.action.emit();
+  }
+  setInitialParameter(flag:boolean) {
+    return (
+      (this.productService.initialParameters?.get('insuranceLine')?.value !==
+      null? 
+      this.productService.initialParameters?.get('insuranceLine')?.value +
+          ''
+        : '0') + this.setApplicationLevel(flag)
+    );
+
   }
 
+  setApplicationLevel(flag:boolean){
+    return (flag?
+      '/' +
+      this.applicationLevel:'')
+  }
   async loadData() {
     try {
       this.isLoading = true;
 
-      const parameters =
-        (this.productService.initialParameters?.get('insuranceLine')?.value !== null
-          ? this.productService.initialParameters?.get('insuranceLine')?.value + ''
-          : '0') + '/' + this.applicationLevel;
-
-      let res: any
-
-      // if (this.modifyData && this.productService.policyData.value.length > 0 && this.productService.policyData.value[0].fields.length > 0) {
-      //   res = await lastValueFrom(this.productService.getApiData(`displayEssential/findByProcess/`+this.productService.initialParameters?.get('insuranceLine')?.value+`/0/0/0/0`));
-      //  } 
-      //else if(!this.modifyData) {
-      //   res = await lastValueFrom(this.productService.getApiData(`complementaryData/findEssentialDataByInsuranceLineApplicationLevel/${parameters}`));
-      // }
-
-      res = await lastValueFrom(this.productService.getApiData(`complementaryData/findEssentialDataByInsuranceLineApplicationLevel/${parameters}`));
-      // if (this.modifyData && this.productService.policyData.value.length > 0 && this.productService.policyData.value[0].fields.length > 0) {
-      //   res = await lastValueFrom(this.productService.getApiData(`displayEssential/findByProcess/`+this.productService.initialParameters?.get('insuranceLine')?.value+`/0/0/0`));
-      // } else if(!this.modifyData) {
-      //   res = await lastValueFrom(this.productService.getApiData(`complementaryData/findEssentialDataByInsuranceLineApplicationLevel/${parameters}`));
-      // }
-
+      const parameters = this.setInitialParameter(true);
+      let res: any;
+      res = await lastValueFrom(
+        this.productService.getApiData(
+          `complementaryData/findEssentialDataByInsuranceLineApplicationLevel/${parameters}`
+        )
+      );
       this.isLoading = false;
 
       if (res && res.body) {
@@ -121,21 +142,26 @@ export class ComplementaryDataComponent implements OnInit {
       console.log('Hubo un error:', error);
     }
 
-   // if(!this.modifyData){
+ 
     this.setEssentialData(this.essentialData);
     this.updateEssentialDataProperties();
-    //}
+
   }
 
   async loadContextData() {
     try {
-      let res: any
-      res = await lastValueFrom(this.productService.getApiData(`domainList/DATOS_CONTEXTO`));
+      let res: any;
+      res = await lastValueFrom(
+        this.productService.getApiData(`domainList/DATOS_CONTEXTO`)
+      );
 
       this.contextData = res.body.nmValueList;
       //se filtra los datos de contexto dependiendo del nivel de aplicación
-      this.contextData =  this.contextData.filter( (data:any) => data.applctnLvl.includes(this.applicationLevel) || data.applctnLvl.includes("*") )
-
+      this.contextData = this.contextData.filter(
+        (data: any) =>
+          data.applctnLvl.includes(this.applicationLevel) ||
+          data.applctnLvl.includes('*')
+      );
     } catch (error) {
       this.flagServiceError = true;
     }
@@ -144,42 +170,57 @@ export class ComplementaryDataComponent implements OnInit {
   setEssentialData(data: any[]) {
     let dataGroup: any[] = [];
 
-    let arrayGroups = this.fb.array([
-      this.fb.group({
-        id: 1,
-        name: 'Datos básicos',
-        code: 'datos_basicos',
-        isEditing: false,
-        fields: this.fb.array([], Validators.required)
-      }),
-      this.fb.group({
-        id: 2,
-        name: 'Datos complementarios',
-        code: 'datos_complementarios',
-        isEditing: false,
-        fields: this.fb.array([], Validators.required)
-      })
-    ], Validators.required);
-
-    if (arrayGroups.length > 0) {
-      arrayGroups = this.fb.array([
+    let arrayGroups = this.fb.array(
+      [
         this.fb.group({
           id: 1,
-          name: this.groupName,
+          name: 'Datos básicos',
           code: 'datos_basicos',
           isEditing: false,
-          fields: this.fb.array([], Validators.required)
-        })
-      ], Validators.required);
+          fields: this.fb.array([], Validators.required),
+        }),
+        this.fb.group({
+          id: 2,
+          name: 'Datos complementarios',
+          code: 'datos_complementarios',
+          isEditing: false,
+          fields: this.fb.array([], Validators.required),
+        }),
+      ],
+      Validators.required
+    );
+
+    if (arrayGroups.length > 0) {
+      arrayGroups = this.fb.array(
+        [
+          this.fb.group({
+            id: 1,
+            name: this.groupName,
+            code: 'datos_basicos',
+            isEditing: false,
+            fields: this.fb.array([], Validators.required),
+          }),
+        ],
+        Validators.required
+      );
     }
 
     for (let item of arrayGroups.controls) {
-      const index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === item.value.id);
+      const index = this.complementaryDataControls.value.findIndex(
+        (x: { id: number }) => x.id === item.value.id
+      );
       if (index === -1) {
         this.complementaryDataControls.push(item);
       } else {
-        if (this.complementaryDataControls.controls[index] && !(<FormGroup>this.complementaryDataControls.controls[index]).contains('isEditing')){
-          (<FormGroup>this.complementaryDataControls.controls[index]).addControl('isEditing', this.fb.control(false));
+        if (
+          this.complementaryDataControls.controls[index] &&
+          !(<FormGroup>this.complementaryDataControls.controls[index]).contains(
+            'isEditing'
+          )
+        ) {
+          (<FormGroup>(
+            this.complementaryDataControls.controls[index]
+          )).addControl('isEditing', this.fb.control(false));
         }
       }
     }
@@ -198,27 +239,39 @@ export class ComplementaryDataComponent implements OnInit {
     }
     this.addItem(dataGroup, 1, false);
     if (this.getGroupArrayById(1).length > 0) {
-      this.selectComplementaryData(<FormGroup>this.getGroupArrayById(1).controls[0])
+      this.selectComplementaryData(
+        <FormGroup>this.getGroupArrayById(1).controls[0]
+      );
     }
   }
 
   getGroupArrayById(id: number) {
-    return (<FormArray>this.complementaryDataControls.controls.find(x => x.value.id === id)?.get('fields'));
+    return <FormArray>(
+      this.complementaryDataControls.controls
+        .find((x) => x.value.id === id)
+        ?.get('fields')
+    );
   }
 
   openDialogPolicyData(code: string): void {
     let parameter!: string;
     if (code === 'complementaryDataControls') {
-      parameter =
-        this.productService.initialParameters?.get('insuranceLine')?.value !== null
-          ? this.productService.initialParameters?.get('insuranceLine')?.value + ''
-          : '0';
+      parameter = this.setInitialParameter(false);
     }
 
-    
     const columns = [
-      { name: 'name', header: 'Nombre', displayValue: ['nmLabel'], dbColumnName:['nmLabel'] },
-      { name: 'dataType.description', header: 'Descripción', displayValue:['dataType.description'], dbColumnName:['description'] },
+      {
+        name: 'name',
+        header: 'Nombre',
+        displayValue: ['nmLabel'],
+        dbColumnName: ['nmLabel'],
+      },
+      {
+        name: 'dataType.description',
+        header: 'Descripción',
+        displayValue: ['dataType.description'],
+        dbColumnName: ['description'],
+      },
       { name: 'shouldDelete', displayValue: [true] },
       { name: 'element', displayValue: ['element'] },
     ];
@@ -254,8 +307,16 @@ export class ComplementaryDataComponent implements OnInit {
     subtitle?: string
   ): Observable<ElementReturn[]> {
     const dialogRef = this.dialog.open(ModalSearchSmallComponent, {
-      data: { code, columns: columns, list, parameter, title, subtitle, multiSelect: multiSelect },
-      panelClass: 'custom-dialog-container'
+      data: {
+        code,
+        columns: columns,
+        list,
+        parameter,
+        title,
+        subtitle,
+        multiSelect: multiSelect,
+      },
+      panelClass: 'custom-dialog-container',
     });
     return dialogRef.afterClosed();
   }
@@ -276,11 +337,17 @@ export class ComplementaryDataComponent implements OnInit {
     complementaryData: any,
     contextData: any
   ) {
-
     const dialogRef = this.dialog.open(RulesWizardComponent, {
-      data: { code, columns: columns, list, multiSelect: multiSelect, complementaryData:complementaryData, contextData: contextData },
+      data: {
+        code,
+        columns: columns,
+        list,
+        multiSelect: multiSelect,
+        complementaryData: complementaryData,
+        contextData: contextData,
+      },
       panelClass: 'custom-dialog-container',
-      disableClose: true
+      disableClose: true,
     });
 
     return dialogRef.afterClosed();
@@ -291,15 +358,16 @@ export class ComplementaryDataComponent implements OnInit {
    * @param code //Code that allows knowing what service and request to make to show the coverage data
    */
   openDialogEmissionData(code: string): void {
-
-
-
     let sendData = [];
     sendData = this.productService.policyData?.value[0].fields;
 
     const columns = [
       { name: 'name', header: 'Nombre', displayValue: ['label'] },
-      { name: 'description', header: 'Descripción', displayValue: ['description'] },
+      {
+        name: 'description',
+        header: 'Descripción',
+        displayValue: ['description'],
+      },
       { name: 'shouldDelete', displayValue: [true] },
       { name: 'element', displayValue: ['element'] },
     ];
@@ -310,8 +378,8 @@ export class ComplementaryDataComponent implements OnInit {
         code: code,
         columns: columns,
         list: this.getGroupArrayById(1)?.value,
-        data: this.productService.policyData?.value[0].fields
-      }
+        data: this.productService.policyData?.value[0].fields,
+      },
     });
     dialogRef.afterClosed().subscribe((res: ElementReturn[]) => {
       this.addItem(res, 1, true);
@@ -333,74 +401,76 @@ export class ComplementaryDataComponent implements OnInit {
       };
 
       for (let object of obj) {
-        const index = this.getAllFields().findIndex((x: { id: number; }) => x.id === object.id);
+        const index = this.getAllFields().findIndex(
+          (x: { id: number }) => x.id === object.id
+        );
 
-       // if (this.modifyData) {
-
-          // if (index === -1) {
-          //   this.getGroupArrayById(group).push(new FormGroup({
-          //     id: this.fb.control(object.id, [Validators.required]),
-          //     name: this.fb.control(object.name, [Validators.required]),
-          //     label: this.fb.control(object.element.nmLabel ? object.element.nmLabel : object.element.label, [Validators.required]),
-          //     dataType: this.fb.control(object.element.dataType),
-          //     shouldDelete: this.fb.control(object.shouldDelete, [Validators.required]),
-          //     businessCode:this.fb.control(object.element.businessCode),
-          //     domainList:this.fb.control(object.element.domainList)
-          //   }));
-
-          //   if (this.getGroupArrayById(1).length > 0 && this.getGroupArrayById(1).controls.length === 1) {
-          //     this.selectComplementaryData(<FormGroup>this.getGroupArrayById(1).controls[0])
-          //   }
-          // }
-
-        // }
-        // else {
-
-          if (index === -1) {
-
-
-            this.getGroupArrayById(group).push(new FormGroup({
+        if (index === -1) {
+          this.getGroupArrayById(group).push(
+            new FormGroup({
               id: this.fb.control(object.id, [Validators.required]),
               name: this.fb.control(object.name, [Validators.required]),
-              label: this.fb.control(object.element.nmLabel ? object.element.nmLabel : object.element.label, [Validators.required]),
+              label: this.fb.control(
+                object.element.nmLabel
+                  ? object.element.nmLabel
+                  : object.element.label,
+                [Validators.required]
+              ),
               dataType: this.fb.control(object.element.dataType),
               initializeRule: this.fb.array([], []),
               validateRule: this.fb.array([], []),
               dependency: this.fb.control(null, []),
-              requiredEssential: this.fb.control(object.element.flIsMandatory === "S" ? true : false, [Validators.required]),
-              required: this.fb.control(object.element.flIsMandatory === "S" ? true : false, [Validators.required]),
+              requiredEssential: this.fb.control(
+                object.element.flIsMandatory === 'S' ? true : false,
+                [Validators.required]
+              ),
+              required: this.fb.control(
+                object.element.flIsMandatory === 'S' ? true : false,
+                [Validators.required]
+              ),
               editable: this.fb.control(true, [Validators.required]),
               visible: this.fb.control(true, [Validators.required]),
               fieldGroup: this.fb.control(1, []),
-              shouldDelete: this.fb.control(object.shouldDelete, [Validators.required]),
-              businessCode:this.fb.control(object.element.businessCode),
-              domainList:this.fb.control(object.element.domainList)
-            }));
+              shouldDelete: this.fb.control(object.shouldDelete, [
+                Validators.required,
+              ]),
+              businessCode: this.fb.control(object.element.businessCode),
+              domainList: this.fb.control(object.element.domainList),
+            })
+          );
+        } else {
+          const field = this.getGroupArrayById(group).controls[index];
 
-          } else {
-            const field = this.getGroupArrayById(group).controls[index];
+          if (field && !(<FormGroup>field).contains('fieldGroup')) {
+            (<FormGroup>field).addControl('fieldGroup', this.fb.control(1));
+          }
 
-            if (field && !(<FormGroup>field).contains('fieldGroup')){
-              (<FormGroup>field).addControl('fieldGroup',this.fb.control(1));
-            }
-
-            if (field && !(<FormGroup>field).contains('requiredEssential')){
-              const valueRequiredEssential = object.element.flIsMandatory === 'S' ? true : false;
-              (<FormGroup>field).addControl('requiredEssential', this.fb.control(valueRequiredEssential));
-              (<FormGroup>field).get('required')?.setValue(valueRequiredEssential);
-              if (valueRequiredEssential) {
-                (<FormGroup>field).get('required')?.disable();
-              } else {
-                (<FormGroup>field).get('required')?.enable();
-              }
-
+          if (field && !(<FormGroup>field).contains('requiredEssential')) {
+            const valueRequiredEssential =
+              object.element.flIsMandatory === 'S' ? true : false;
+            (<FormGroup>field).addControl(
+              'requiredEssential',
+              this.fb.control(valueRequiredEssential)
+            );
+            (<FormGroup>field)
+              .get('required')
+              ?.setValue(valueRequiredEssential);
+            if (valueRequiredEssential) {
+              (<FormGroup>field).get('required')?.disable();
+            } else {
+              (<FormGroup>field).get('required')?.enable();
             }
           }
         }
-    //  }
+      }
 
-      if (this.getGroupArrayById(1).length > 0 && !this.selectedField?.get('id')) {
-        this.selectComplementaryData(<FormGroup>this.getGroupArrayById(1).controls[0])
+      if (
+        this.getGroupArrayById(1).length > 0 &&
+        !this.selectedField?.get('id')
+      ) {
+        this.selectComplementaryData(
+          <FormGroup>this.getGroupArrayById(1).controls[0]
+        );
       }
 
       if (showMessage) {
@@ -409,122 +479,175 @@ export class ComplementaryDataComponent implements OnInit {
         });
       }
     }
-
   };
 
   removeComplementaryData() {
-    let obj = this.getAllFields().find((x: { id: number; }) => x.id === this.selectedField.value.id)
-   
-    let index = this.getGroupArrayById(obj.fieldGroup).value.findIndex((x: { id: number; }) => x.id === this.selectedField.value.id);
+    let obj = this.getAllFields().find(
+      (x: { id: number }) => x.id === this.selectedField.value.id
+    );
+
+    let index = this.getGroupArrayById(obj.fieldGroup).value.findIndex(
+      (x: { id: number }) => x.id === this.selectedField.value.id
+    );
 
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
-        message: this.removeItemMsg
+        message: this.removeItemMsg,
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
         if (index >= 0) {
-          if(!this.modifyData){
-          this.removeAssociatedReference();
-          }
-          this.getGroupArrayById(obj.fieldGroup).removeAt(index);
-          if (this.policyData){this.DeleteCascadeDateModify(obj.fieldGroup,obj.businessCode);}
-          this.selectedField = new FormGroup({});
-          if (this.getGroupArrayById(1).length > 0) {
-            this.selectComplementaryData(<FormGroup>this.getGroupArrayById(1).controls[0]);
-          }
-
-          
+          this.validateData(obj,index)
         }
-        
       }
-
-      
     });
-
   }
-  
 
+  validateData(obj:any,index:number){
+    if (!this.modifyData) {
+      this.removeAssociatedReference();
+    }
+    this.getGroupArrayById(obj.fieldGroup).removeAt(index);
+    if (this.policyData) {
+      this.DeleteCascadeDateModify(obj.fieldGroup, obj.businessCode);
+    }
+    this.selectedField = new FormGroup({});
+    if (this.getGroupArrayById(1).length > 0) {
+      this.selectComplementaryData(
+        <FormGroup>this.getGroupArrayById(1).controls[0]
+      );
+    }
+  }
+getComplementaryData(group:any){
+return this.complementaryDataControls.value.findIndex(
+  (x: { id: number }) => x.id === group.get('id')?.value
+);
+}
   removeGroup(group: any) {
-    let index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === group.get('id')?.value);
-   
-    
+    let index = this.getComplementaryData(group);
+
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
         img: 'picto-delete',
-        message: '¿Está seguro de querer eliminar el grupo "' + group.get('name')?.value + '"?',
-        subMessage: 'Los datos asociados al grupo pasarán al <br> grupo de datos básicos'
-      }
+        message:
+          '¿Está seguro de querer eliminar el grupo "' +
+          group.get('name')?.value +
+          '"?',
+        subMessage:
+          'Los datos asociados al grupo pasarán al <br> grupo de datos básicos',
+      },
     });
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
+
         if (index >= 0) {
-          const groupBk = [...this.getGroupArrayById(group.get('id')?.value).controls];
+
+          const groupBk = [
+            ...this.getGroupArrayById(group.get('id')?.value).controls,
+          ];
+
           this.complementaryDataControls.removeAt(index);
           for (let field of groupBk) {
             field.get('fieldGroup')?.setValue(1);
             this.getGroupArrayById(1).push(field);
           }
           this.removeGroupCascade(group);
-         
         }
       }
     });
   }
 
- /**
+  /**
    * remueve la asociación de datos de poliza y tipos de modificación
    */
-  DeleteCascadeDateModify(id: number,code:any) {
+  DeleteCascadeDateModify(id: number, code: any) {
+    let mdfctnPrcss:any = (<FormArray>(
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
+    )).controls
+      .find((x) => x.value.id === id)
+      ?.get('fields');
 
-    let mdfctnPrcss =  (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).controls.find(x => x.value.id === id)?.get('fields');
-      
-      let index:any = (<FormArray>mdfctnPrcss).controls.findIndex(x => x.value.businessCode ===code);
-
-     (<FormArray>mdfctnPrcss).removeAt(index);
-
-    
-
-     if ( (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).value[id-1].fields.length === 0){
-
-     (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).removeAt(id-1);
-
-    }
-
+      if(mdfctnPrcss){
+        this.deleteMdfctnPrcss(mdfctnPrcss,id,code)
+  }
     //PreviewData
 
-      let preview =  (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).controls.find(x => x.value.id === id)?.get('fields');
-      
-      let indexPreview:any = (<FormArray>preview).controls.findIndex(x => x.value.businessCode ===code);
+    let preview:any = (<FormArray>(
+      this.productService.prvwDt?.get('plcyDtGrp')
+    )).controls
+      .find((x) => x.value.id === id)
+      ?.get('fields');
 
-     (<FormArray>preview).removeAt(indexPreview);
-     if ( (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).value[id-1].fields.length === 0){
+      if(preview){
+        this.deletePreviewData(preview,id,code);
+      }
+   
+  }
+  deleteMdfctnPrcss(mdfctnPrcss:FormArray, id:number,code:any){
+    let index: any = (<FormArray>mdfctnPrcss).controls.findIndex(
+      (x) => x.value.businessCode === code
+    );
 
-      (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).removeAt(id-1);
+    (<FormArray>mdfctnPrcss).removeAt(index);
 
+    if (
+      (<FormArray>(
+        this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
+      )).value[id - 1].fields.length === 0
+    ) {
+      (<FormArray>(
+        this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
+      )).removeAt(id - 1);
     }
+  }
 
+  deletePreviewData(preview:FormArray,id:number,code:any){
+    let indexPreview: any = (<FormArray>preview).controls.findIndex(
+      (x) => x.value.businessCode === code
+    );
 
-
+    (<FormArray>preview).removeAt(indexPreview);
+    if (
+      (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).value[id - 1]
+        .fields.length === 0
+    ) {
+      (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).removeAt(
+        id - 1
+      );
+    }
   }
 
   /**
    * remueve la asociación de grupos en los demes componentes
    */
+getPlcyDtGrp(group:any){
+  return (<FormArray>(
+    this.productService.prvwDt?.get('plcyDtGrp')
+  )).controls.findIndex((x) => x.value.id === group.get('id')?.value);
+}
+
+getMdfcblDtPlcyDtGrp(group:any){
+  return(<FormArray>(
+    this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
+  )).controls.findIndex((x) => x.value.id === group.get('id')?.value);
+
+
+}
 
   removeGroupCascade(group: any): void {
+    let indexGroup: any = this.getPlcyDtGrp(group);
 
-    let indexGroup:any = (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).controls.findIndex(x => x.value.id ===group.get('id')?.value);
+    (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).removeAt(
+      indexGroup
+    );
 
-    (<FormArray>this.productService.prvwDt?.get('plcyDtGrp')).removeAt(indexGroup);
+    let index = this.getMdfcblDtPlcyDtGrp(group);
 
-    let index = (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).controls.findIndex(x => x.value.id ===group.get('id')?.value);
-
-    (<FormArray>this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')).removeAt(index);
- 
-    
+    (<FormArray>(
+      this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
+    )).removeAt(index);
   }
 
   removeAssociatedReference() {
@@ -539,66 +662,78 @@ export class ComplementaryDataComponent implements OnInit {
     this.selectedField = itemParam;
     this.dependsArray = [];
 
-   
-
-
-
-    for (const item of this.getGroupArrayById(1).value.filter((e: any) => e.id != this.selectedField?.get('id')?.value)) {
-      this.dependsArray.push(item)
+    for (const item of this.getGroupArrayById(1).value.filter(
+      (e: any) => e.id != this.selectedField?.get('id')?.value
+    )) {
+      this.dependsArray.push(item);
     }
-    this.dependsArray.sort((a, b) => (a.name < b.name ? -1 : 1))
+    this.dependsArray.sort((a, b) => (a.name < b.name ? -1 : 1));
 
-    let obj = this.getGroupArrayById(this.selectedField.get('fieldGroup')?.value);
-    if(obj && obj.value.length <= 1) {
+    let obj = this.getGroupArrayById(
+      this.selectedField.get('fieldGroup')?.value
+    );
+    if (obj && obj.value.length <= 1) {
       this.selectedField.get('fieldGroup')?.disable();
     } else {
       this.selectedField.get('fieldGroup')?.enable();
     }
+    this.validateComplementaryData();
 
-    if (this.selectedField.get('requiredEssential')?.value === true) {
+  }
+
+  validateComplementaryData(){
+ if (this.selectedField.get('requiredEssential')?.value === true) {
       setTimeout(() => {
         this.selectedField.get('required')?.disable();
       });
-    }else{
+    } else {
       setTimeout(() => {
         this.selectedField.get('required')?.enable();
       });
     }
   }
-
   isConfigured(item: any) {
-
-    let req1 = item.value.required == false ? 0 : 1
-    req1 += item.value.editable == true ? 0 : 1
-    req1 += item.value.visible == true ? 0 : 1
-    req1 += item.value.initializeRule.length == 0 ? 0 : 1
-    req1 += item.value.validateRule.length == 0 ? 0 : 1
-    req1 += item.value.dependency == null ? 0 : 1
+    let req1 = item.value.required == false ? 0 : 1;
+    req1 += item.value.editable == true ? 0 : 1;
+    req1 += item.value.visible == true ? 0 : 1;
+    req1 += item.value.initializeRule.length == 0 ? 0 : 1;
+    req1 += item.value.validateRule.length == 0 ? 0 : 1;
+    req1 += item.value.dependency == null ? 0 : 1;
     return req1 == 0 ? false : true;
   }
 
   associateReference(id: string) {
     if (id) {
-      let obj = this.getGroupArrayById(1).value.find((x: { businessCode: string; }) => x.businessCode === id);
-
+      let obj = this.getGroupArrayById(1).value.find(
+        (x: { businessCode: string }) => x.businessCode === id
+      );
       if (obj.dependency !== null) {
-        let objAux = this.getGroupArrayById(1).value.find((x: { businessCode: string; }) => x.businessCode === obj.dependency);
-
-        while (objAux && objAux.dependency !== null) {
-          if (objAux.dependency === this.selectedField.value.id) {
-            this.showToastMessage(
-              STATES.warning,
-              'Asociación con ciclos',
-              'No se puede generar esta asociación'
-            );
-            this.selectedField?.get('dependency')?.setValue(null);
-            break;
-          }
-          objAux = this.getGroupArrayById(1).value.find((x: { businessCode: string; }) => x.businessCode === objAux.dependency);
-        }
+        let objAux = this.getGroupArrayById(1).value.find(
+          (x: { businessCode: string }) => x.businessCode === obj.dependency
+        );
+        this.showMessageError(objAux)
       }
     } else {
       this.selectedField?.get('dependency')?.setValue(null);
+    }
+  }
+
+  showMessageError(objAux:any){
+
+    while (objAux && objAux.dependency !== null) {
+      if (objAux.dependency === this.selectedField.value.id) {
+        this.showToastMessage(
+          STATES.warning,
+          'Asociación con ciclos',
+          'No se puede generar esta asociación'
+        );
+        this.selectedField?.get('dependency')?.setValue(null);
+        break;
+      }
+      objAux = this.getGroupArrayById(1).value.find(
+        (x: { businessCode: any }) =>
+          x.businessCode === objAux.dependency
+      );
     }
   }
 
@@ -623,21 +758,35 @@ export class ComplementaryDataComponent implements OnInit {
       status: STATES.success,
       title: title,
       msg: message,
-    }
-  }
+    };
+  };
 
   /**
    * Abre el modal de carga de datos de reglas de inicializaci\u00f3n.
    */
   openModalInitializeRule() {
     const columns = [
-      { name: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname']  },
-      { name: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription']  },
-      { name: 'cdRuleType', displayValue: ['cdRuleType'], dbColumnName:['cdRuleType']  },
+      {
+        name: 'name',
+        header: 'Nombre',
+        displayValue: ['nmName'],
+        dbColumnName: ['nmname'],
+      },
+      {
+        name: 'description',
+        header: 'Descripción',
+        displayValue: ['dsDescription'],
+        dbColumnName: ['dsdescription'],
+      },
+      {
+        name: 'cdRuleType',
+        displayValue: ['cdRuleType'],
+        dbColumnName: ['cdRuleType'],
+      },
       { name: 'endPoint', displayValue: ['endPoint'] },
       { name: 'nmParameterList', displayValue: ['nmParameterList'] },
       { name: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { name: 'rlEngnCd', displayValue: ['rlEngnCd'] }
+      { name: 'rlEngnCd', displayValue: ['rlEngnCd'] },
     ];
 
     this.openDialogWizard(
@@ -657,11 +806,18 @@ export class ComplementaryDataComponent implements OnInit {
           cdRuleType: response.RulesForm.rule.cdRuleType,
           endPoint: response.RulesForm.rule.endPoint,
           rlEngnCd: response.RulesForm.rule.rlEngnCd,
-          argmntLst:response.RulesForm.parameters
+          argmntLst: response.RulesForm.parameters,
         };
         (<FormArray>this.selectedField?.get('initializeRule')).removeAt(0);
-        (<FormArray>this.selectedField?.get('initializeRule')).push(this.fb.control(element));
-        this.toastMessage.openFromComponent(ToastMessageComponent, { data: this.getSuccessStatus('Asociaci\u00f3n exitosa', 'La regla de inicializaci\u00f3n fue asociada correctamente.') });
+        (<FormArray>this.selectedField?.get('initializeRule')).push(
+          this.fb.control(element)
+        );
+        this.toastMessage.openFromComponent(ToastMessageComponent, {
+          data: this.getSuccessStatus(
+            'Asociaci\u00f3n exitosa',
+            'La regla de inicializaci\u00f3n fue asociada correctamente.'
+          ),
+        });
       }
     });
   }
@@ -674,17 +830,31 @@ export class ComplementaryDataComponent implements OnInit {
   };
 
   /**
-  * Abre el modal de carga de datos de reglas de inicializaci\u00f3n.
-  */
+   * Abre el modal de carga de datos de reglas de inicializaci\u00f3n.
+   */
   openModalValidateRule() {
     const columns = [
-      { name: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname']  },
-      { name: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription']  },
-      { name: 'cdRuleType', displayValue: ['cdRuleType'], dbColumnName:['cdRuleType']  },
+      {
+        name: 'name',
+        header: 'Nombre',
+        displayValue: ['nmName'],
+        dbColumnName: ['nmname'],
+      },
+      {
+        name: 'description',
+        header: 'Descripción',
+        displayValue: ['dsDescription'],
+        dbColumnName: ['dsdescription'],
+      },
+      {
+        name: 'cdRuleType',
+        displayValue: ['cdRuleType'],
+        dbColumnName: ['cdRuleType'],
+      },
       { name: 'endPoint', displayValue: ['endPoint'] },
       { name: 'nmParameterList', displayValue: ['nmParameterList'] },
       { name: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { name: 'rlEngnCd', displayValue: ['rlEngnCd'] }
+      { name: 'rlEngnCd', displayValue: ['rlEngnCd'] },
     ];
 
     this.openDialogWizard(
@@ -694,8 +864,7 @@ export class ComplementaryDataComponent implements OnInit {
       false,
       this.complementaryData,
       this.contextData
-    )
-    .subscribe((response: any) => {
+    ).subscribe((response: any) => {
       if (response) {
         let element: any = {
           id: response.RulesForm.rule.id,
@@ -705,12 +874,19 @@ export class ComplementaryDataComponent implements OnInit {
           cdRuleType: response.RulesForm.rule.cdRuleType,
           endPoint: response.RulesForm.rule.endPoint,
           rlEngnCd: response.RulesForm.rule.rlEngnCd,
-          argmntLst:response.RulesForm.parameters
+          argmntLst: response.RulesForm.parameters,
         };
         (<FormArray>this.selectedField?.get('validateRule')).removeAt(0);
-        (<FormArray>this.selectedField?.get('validateRule')).push(this.fb.control(element));
+        (<FormArray>this.selectedField?.get('validateRule')).push(
+          this.fb.control(element)
+        );
 
-        this.toastMessage.openFromComponent(ToastMessageComponent, { data: this.getSuccessStatus('Asociaci\u00f3n exitosa', 'La regla de validación fue asociada correctamente.') });
+        this.toastMessage.openFromComponent(ToastMessageComponent, {
+          data: this.getSuccessStatus(
+            'Asociaci\u00f3n exitosa',
+            'La regla de validación fue asociada correctamente.'
+          ),
+        });
       }
     });
   }
@@ -729,8 +905,10 @@ export class ComplementaryDataComponent implements OnInit {
   //metodos drag and drop
 
   drop(event: CdkDragDrop<any>, fieldsArray: FormArray) {
-    fieldsArray.controls[event.previousContainer.data.index] = event.container.data.item;
-    fieldsArray.controls[event.container.data.index] = event.previousContainer.data.item;
+    fieldsArray.controls[event.previousContainer.data.index] =
+      event.container.data.item;
+    fieldsArray.controls[event.container.data.index] =
+      event.previousContainer.data.item;
   }
 
   reset() {
@@ -741,7 +919,7 @@ export class ComplementaryDataComponent implements OnInit {
   }
 
   getFieldsFormArray(form: any) {
-    return (<FormArray>form);
+    return <FormArray>form;
   }
 
   associateGroup(id: number) {
@@ -749,7 +927,7 @@ export class ComplementaryDataComponent implements OnInit {
     for (const element of this.complementaryDataControls.controls) {
       let fields = element.get('fields');
       let index = (<FormArray>fields).value.indexOf(this.selectedField.value);
-      if(index >= 0) {
+      if (index >= 0) {
         let objectAux = (<FormArray>fields).controls[index];
         (<FormArray>fields).removeAt(index);
         obj.push(objectAux);
@@ -759,7 +937,7 @@ export class ComplementaryDataComponent implements OnInit {
   }
 
   getMax(arr: any[], prop: string) {
-    return (arr.length > 0) ? Math.max(...arr.map(o => Number(o[prop]))) : 0;
+    return arr.length > 0 ? Math.max(...arr.map((o) => Number(o[prop]))) : 0;
   }
 
   getGroupBusinessCode(id: number, name: string) {
@@ -774,24 +952,33 @@ export class ComplementaryDataComponent implements OnInit {
   }
 
   isAvailableName(name: string) {
-    return this.complementaryDataControls.value.find((x: { name: string; }) => x.name === name) ? false: true;
+    return this.complementaryDataControls.value.find(
+      (x: { name: string }) => x.name === name
+    )
+      ? false
+      : true;
   }
 
   /**
    * Function to handle the error of the name field in the form that is in step 1
    */
   get errorMessageName(): string {
-    return this.formGroupTitle.controls['groupTitle'].hasError('required') ? 'Ingrese el nombre del grupo' :
-      this.formGroupTitle.controls['groupTitle'].hasError('pattern') ? 'El nombre del grupo no recibe caracteres especiales' :
-      this.formGroupTitle.controls['groupTitle'].hasError('maxlength') ? 'La longitud máxima es de 200 caracteres' :
-      this.formGroupTitle.controls['groupTitle'].hasError('name') ? 'Ya existe un grupo con el nombre ingresado' : '';
+    return this.formGroupTitle.controls['groupTitle'].hasError('required')
+      ? 'Ingrese el nombre del grupo'
+      : this.formGroupTitle.controls['groupTitle'].hasError('pattern')
+      ? 'El nombre del grupo no recibe caracteres especiales'
+      : this.formGroupTitle.controls['groupTitle'].hasError('maxlength')
+      ? 'La longitud máxima es de 200 caracteres'
+      : this.formGroupTitle.controls['groupTitle'].hasError('name')
+      ? 'Ya existe un grupo con el nombre ingresado'
+      : '';
   }
 
   addNewGroup() {
     let newGroupName = 'Nuevo grupo';
     let nameDiff = 0;
 
-    while(!this.isAvailableName(newGroupName)) {
+    while (!this.isAvailableName(newGroupName)) {
       nameDiff++;
       newGroupName = 'Nuevo grupo';
       newGroupName += ' ' + nameDiff;
@@ -802,11 +989,13 @@ export class ComplementaryDataComponent implements OnInit {
       name: newGroupName,
       code: null,
       fields: this.fb.array([], Validators.required),
-      isEditing: this.fb.control(false)
+      isEditing: this.fb.control(false),
     });
 
     this.complementaryDataControls.push(newGroup);
-    this.startGroupEdit(this.complementaryData.controls[this.complementaryData.length - 1]);
+    this.startGroupEdit(
+      this.complementaryData.controls[this.complementaryData.length - 1]
+    );
   }
 
   startGroupEdit(group: any) {
@@ -815,22 +1004,30 @@ export class ComplementaryDataComponent implements OnInit {
 
     setTimeout(() => {
       this.formGroupTitle.get('groupTitle')?.setValue(group.get('name')?.value);
-      this.groupNameInput.nativeElement.select();
+      this.actionEvent();
     }, 0);
+  }
+  actionEvent(){
+    this.groupNameInput.nativeElement.select();
   }
 
   finishGroupEdit(event: any, group: any) {
     const nameValue = (event.target as HTMLInputElement).value;
     group.get('isEditing')?.setValue(false);
-
     if (this.formGroupTitle.valid) {
-      group.get('name')?.setValue(nameValue.trim())
+      group.get('name')?.setValue(nameValue.trim());
       if (!group.get('code')?.value) {
-        group.get('code')?.setValue(this.getGroupBusinessCode(group.get('id')?.value, nameValue.trim()))
+        group
+          .get('code')
+          ?.setValue(
+            this.getGroupBusinessCode(group.get('id')?.value, nameValue.trim())
+          );
       }
     } else {
-      if(!group.get('code')?.value) {
-        const index = this.complementaryDataControls.value.findIndex((x: { id: number; }) => x.id === group.get('id')?.value);
+      if (!group.get('code')?.value) {
+        const index = this.complementaryDataControls.value.findIndex(
+          (x: { id: number }) => x.id === group.get('id')?.value
+        );
         this.complementaryDataControls.removeAt(index);
       }
     }
@@ -840,52 +1037,52 @@ export class ComplementaryDataComponent implements OnInit {
   }
 
   /**
-  * validation of field name
-  * @returns ValidatorFn instance
-  */
+   * validation of field name
+   * @returns ValidatorFn instance
+   */
   private nameValidationModify(): ValidatorFn {
     let isValid = true;
 
     return (control: AbstractControl): ValidationErrors | null => {
       let currentValue = ('' + (control.value || '').toLowerCase()).trim();
-      let array: any[] = this.complementaryDataControls.getRawValue().filter(x => x.name !== this.selectedGroup.get('name')?.value);
+      let array: any[] = this.complementaryDataControls
+        .getRawValue()
+        .filter((x) => x.name !== this.selectedGroup.get('name')?.value);
 
-      isValid = !array.find((x: { name: string; }) => this.removeAccents(x.name.toLowerCase()) === this.removeAccents(currentValue));
+      isValid = !array.find(
+        (x: { name: string }) =>
+          this.removeAccents(x.name.toLowerCase()) ===
+          this.removeAccents(currentValue)
+      );
       return isValid ? null : { name: true };
     };
   }
 
   removeAccents(text: string) {
-    return text.normalize('NFD').replace(/[\u0300-\u036f]/g,"");
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
   getAllFields() {
     let res: any[] = [];
-    for(const group of this.complementaryDataControls.getRawValue()) {
+    for (const group of this.complementaryDataControls.getRawValue()) {
       res = res.concat(group.fields);
     }
     return res;
   }
 
   updateEssentialDataProperties() {
-
     for (const group of this.complementaryDataControls.controls) {
-      
       (<FormArray>group.get('fields')).controls.forEach((controlsGroup) => {
-
-        const essentialField = this.essentialData.find((obj: any) => obj.id === controlsGroup.get('id')?.value);
+        const essentialField = this.essentialData.find(
+          (obj: any) => obj.id === controlsGroup.get('id')?.value
+        );
 
         if (essentialField) {
-          (<FormGroup>controlsGroup).controls['dataType'].setValue(essentialField.dataType);
+          (<FormGroup>controlsGroup).controls['dataType'].setValue(
+            essentialField.dataType
+          );
         }
-
       });
     }
-
-    // if(this.modifyData && this.getAllFields().length===0)
-    //  console.log("entra")
-    //  console.log(this.complementaryDataControls);
-    //   this.complementaryDataControls.clear();
   }
-  
 }
