@@ -9,7 +9,7 @@ import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
 import { PolicyDetailsComponent } from './policy-details/policy-details.component';
 import { Router } from '@angular/router';
@@ -22,7 +22,7 @@ import { CognitoService } from 'commons-lib';
   selector: 'app-consult-policy',
   templateUrl: './consult-policy.component.html',
   styleUrls: ['./consult-policy.component.scss'],
-  providers: [MessageService, DialogService],
+  providers: [MessageService, DialogService, ConfirmationService],
 })
 export class ConsultPolicyComponent implements OnDestroy {
   @ViewChild('menu') menu!: Menu;
@@ -63,6 +63,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   moduleAcess:any;
 
   constructor(
+    private confirmationService: ConfirmationService,
     public consultPolicyService: ConsultPolicyService,
     public productService: ProductService,
     public fb: FormBuilder,
@@ -108,9 +109,9 @@ export class ConsultPolicyComponent implements OnDestroy {
         },
       },
       {
-        label: 'Anular cancelación', icon: 'pi pi-fw pi-file-excel',
+        label: 'Reversar movimiento', icon: 'pi pi-fw pi-file-excel',
         command: (event: any, row: any) => {
-          this.getDeleteCancellation();
+          this.confirmDeleteCancellation();
         }
       },
       {
@@ -155,7 +156,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     if (this.moduleAcess){
     this.items.find((x: any) => x.label === 'Modificar').visible = this.getModule('Modificar')
     this.items.find((x: any) => x.label === 'Cancelar').visible = this.getModule('Cancelar')
-    this.items.find((x: any) => x.label === 'Anular cancelación').visible = this.getModule('Anular cancelación')
+    this.items.find((x: any) => x.label === 'Reversar movimiento').visible = this.getModule('Reversar movimiento')
     this.items.find((x: any) => x.label === 'Renovar').visible = this.getModule('Renovar')
     this.items.find((x: any) => x.label === 'Rehabilitar').visible = this.getModule('Rehabilitar')
      }
@@ -170,7 +171,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       case 'Activa':
        this.disabledOption('Modificar', false)
        this.disabledOption('Cancelar', false)
-       this.disabledOption('Anular cancelación', true)
+       this.disabledOption('Reversar movimiento', true)
        this.disabledOption('Rehabilitar', true)
        this.disabledOption('Renovar', false)
        this.disabledOption('Ver detalle', false)
@@ -179,7 +180,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       case 'Provisoria':
         this.disabledOption('Modificar', true)
         this.disabledOption('Cancelar', true)
-        this.disabledOption('Anular cancelación', true)
+        this.disabledOption('Reversar movimiento', true)
         this.disabledOption('Rehabilitar', true)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', true)
@@ -187,7 +188,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       case 'Cancelada':
         this.disabledOption('Modificar', true)
         this.disabledOption('Cancelar', true)
-        this.disabledOption('Anular cancelación', true)
+        this.disabledOption('Reversar movimiento', true)
         this.disabledOption('Rehabilitar', false)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', false)
@@ -311,8 +312,11 @@ export class ConsultPolicyComponent implements OnDestroy {
     this.productService
     .saveDeleteCancellation(dataDeletion)
     .subscribe((res) => {
+      this.loading = false
       if (res.body?.expirationDate) {
-        this.loading = false
+        this.showSuccess('success', 'Proceso exitoso', 'El movimiento ha sido reversado correctamente');
+      } else {
+        this.showSuccess('error', 'Error al actualizar', 'Error inesperado al reversar el movimiento');
       }
     });
   }
@@ -405,8 +409,27 @@ export class ConsultPolicyComponent implements OnDestroy {
     .getApiData('policy/futureCancellationStatus?smartCorePolicyNumber=' + this.selectedPolicy.policyNumber, '', '')
     .subscribe((res) => {
       if (res.body?.expirationDate) {
-        this.disabledOption('Anular cancelación', false)
+        this.disabledOption('Reversar movimiento', false)
       }
+    });
+  }
+
+  confirmDeleteCancellation() {
+    this.confirmationService.confirm({
+        message: `
+          <div class="flex justify-center pt-5 pb-3">
+              <img src="smartcore-commons/assets/styles/material-theme/icons/picto-alert.svg" alt="icon-warning">
+          </div>
+          <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl">
+            <p class="w-full text-center">
+              ¿Está seguro de reversar este movimiento?
+            </p>
+          </div>
+        `,
+        header: 'Confirmación',
+        accept: () => {
+          this.getDeleteCancellation();
+        }
     });
   }
 }

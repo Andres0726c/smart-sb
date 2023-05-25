@@ -31,6 +31,7 @@ import { ModalRenewalModule } from './modal-renewal/modal-renewal.module';
 import { PolicyDetailsModule } from './policy-details/policy-details.module';
 import { PolicyRenewalModule } from '../policy-renewal/policy-renewal.module';
 import { PolicyEndorsementModule } from './policy-endorsement/policy-endorsement.module';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 const routes: Routes = [
   {
@@ -76,7 +77,8 @@ const routes: Routes = [
     ModalRenewalModule,
     PolicyDetailsModule,
     PolicyRenewalModule,
-    PolicyEndorsementModule
+    PolicyEndorsementModule,
+    ConfirmDialogModule
   ],
   exports: [ConsultPolicyComponent],
 })
