@@ -108,6 +108,12 @@ export class ConsultPolicyComponent implements OnDestroy {
         },
       },
       {
+        label: 'Anular cancelación', icon: 'pi pi-fw pi-file-excel',
+        command: (event: any, row: any) => {
+          this.getDeleteCancellation();
+        }
+      },
+      {
         label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open',
         command: (event: any, row: any) => {
           this.formDate.reset();
@@ -149,6 +155,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     if (this.moduleAcess){
     this.items.find((x: any) => x.label === 'Modificar').visible = this.getModule('Modificar')
     this.items.find((x: any) => x.label === 'Cancelar').visible = this.getModule('Cancelar')
+    this.items.find((x: any) => x.label === 'Anular cancelación').visible = this.getModule('Anular cancelación')
     this.items.find((x: any) => x.label === 'Renovar').visible = this.getModule('Renovar')
     this.items.find((x: any) => x.label === 'Rehabilitar').visible = this.getModule('Rehabilitar')
      }
@@ -163,41 +170,30 @@ export class ConsultPolicyComponent implements OnDestroy {
       case 'Activa':
        this.disabledOption('Modificar', false)
        this.disabledOption('Cancelar', false)
+       this.disabledOption('Anular cancelación', true)
        this.disabledOption('Rehabilitar', true)
        this.disabledOption('Renovar', false)
        this.disabledOption('Ver detalle', false)
-        //this.items[0].disabled = false;
-        //this.items[1].disabled = false;
-        //this.items[2].disabled = true;
-        //this.items[3].disabled = true; //Se deshabilita por PaP
-        //this.items[4].disabled = false;
         break;
       case 'Rechazada':
       case 'Provisoria':
         this.disabledOption('Modificar', true)
         this.disabledOption('Cancelar', true)
+        this.disabledOption('Anular cancelación', true)
         this.disabledOption('Rehabilitar', true)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', true)
-        /*this.items[0].disabled = true;
-        this.items[1].disabled = true;
-        this.items[2].disabled = true;
-        this.items[3].disabled = false;
-        this.items[4].disabled = true;*/
         break;
       case 'Cancelada':
         this.disabledOption('Modificar', true)
         this.disabledOption('Cancelar', true)
+        this.disabledOption('Anular cancelación', true)
         this.disabledOption('Rehabilitar', false)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', false)
-        /*this.items[0].disabled = true;
-        this.items[1].disabled = true;
-        this.items[2].disabled = false;
-        this.items[3].disabled = true;
-        this.items[4].disabled = false;*/
         break;
     }
+    this.items = this.items.slice(); //refresh menu content
   }
 
 
@@ -290,6 +286,39 @@ export class ConsultPolicyComponent implements OnDestroy {
     })
   }
 
+
+  getPolicy() {
+    this.loading = true;
+    this.productService.findPolicyDataById(this.selectedPolicy.policyNumber, 0).subscribe((res: any) => {
+      if (res.dataHeader.code && res.dataHeader.code == 200) {
+        const policy = res.body;
+        if (new Date(policy.plcy.plcyDtGrp.datos_basicos['FEC_FIN_VIG_POL']) > new Date(this.selectedPolicy.expirationDate)) {
+          this.showSuccess('error', 'Proceso pendiente', 'La póliza tiene un endoso pendiente');
+        } else {
+          this.showModal(PolicyRenewalComponent, 'Renovación', { policyBasic: this.selectedPolicy, policyData: policy }, 'Renovar', '96%', '100%', '100%');
+        }
+      } else {
+        this.showSuccess('error', 'Error interno', 'Por favor intente nuevamente');
+      }
+      this.loading = false;
+    });
+  }
+
+  getDeleteCancellation() {
+    this.loading = true;
+    const dataDeletion = {
+      smartCorePolicyNumber: this.selectedPolicy.policyNumber
+    }
+    this.productService
+    .saveDeleteCancellation(dataDeletion)
+    .subscribe((res) => {
+      if (res.body?.expirationDate) {
+        this.loading = false
+      }
+    });
+  }
+
+
   getPolicyClaimStatus() {
     this.loading = true;
     this.productService.modificationPolicyClaimStatus(this.selectedPolicy.policyNumber).subscribe((res: any) => {
@@ -370,6 +399,16 @@ export class ConsultPolicyComponent implements OnDestroy {
     .getApiData('city/findByState', '', daneCode)
     .subscribe((res) => {
       this.setData(res, 'city');
+    });
+  }
+
+  getFutureCancelationStatus(){
+    this.productService
+    .getApiData('policy/futureCancellationStatus?smartCorePolicyNumber=' + this.selectedPolicy.policyNumber, '', '')
+    .subscribe((res) => {
+      if (res.body?.expirationDate) {
+        this.disabledOption('Anular cancelación', false)
+      }
     });
   }
 }
