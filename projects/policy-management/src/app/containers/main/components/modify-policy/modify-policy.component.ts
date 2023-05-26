@@ -139,7 +139,6 @@ export class ModifyPolicyComponent {
     let flag:any=true;
     for (let data of policyData) {
       for (let policy of policyDataControls.value[i].fields) {
-        //if (policy.businessCode == data.name) {
         if (policy.dtCd == data.name) {
           flag = this.validateGui(policy.dt.dtTyp.guiCmpnntItm, policy, data);
           if (!flag) { return flag; }
