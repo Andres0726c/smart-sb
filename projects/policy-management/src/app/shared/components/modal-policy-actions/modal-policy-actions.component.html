@@ -76,7 +76,7 @@
                 </span>
             </div>
 
-            <div *ngIf="config.data.process === 'Cancelación'" class="flex items-center mt-4">
+            <div *ngIf="config.data.process === 'Cancelación' && isCancellable === true" class="flex items-center mt-4">
                 <p-checkbox formControlName="checked" [binary]="true" inputId="binary" value="checked" (onChange)="verifyCheck()"></p-checkbox>
                 <label class="ml-1">Desde el inicio</label>
             </div>
