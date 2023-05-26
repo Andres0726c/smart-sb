@@ -35,7 +35,7 @@ describe('ReactiveGroupFieldsComponent', () => {
       urlBs: "https://jpl0rkfluj.execute-api.us-east-1.amazonaws.com/stage"
 
     }],
-    validateRule: [{
+    vldtRl: [{
       argmntLst: [
         { name: "date", value: "FECHA_EMISION" }],
       cdBusinessCode: "RVL_CIU_RGO",

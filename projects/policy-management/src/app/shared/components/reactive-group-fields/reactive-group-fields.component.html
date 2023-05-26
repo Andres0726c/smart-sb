@@ -32,7 +32,7 @@
     </div>
 </ng-template>
 
-<div [formGroup]="group">
+<div [formGroup]="group" *ngIf="group.get('fields')?.value.length > 0">
     <p-accordion>
         <p-accordionTab [selected]="true">
             <ng-template pTemplate="header">

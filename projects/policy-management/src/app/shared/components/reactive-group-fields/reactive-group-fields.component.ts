@@ -40,18 +40,18 @@ export class ReactiveGroupFieldsComponent {
  async executeRule(field:any,groupName:any,show:boolean) {
     
 
-     let valueAfter =this.level==='risk'?this.policy.plcy.rsk['1']?.rskDtGrp[groupName?.value.code][field.value.businessCode]
-    :this.policy.plcy?.plcyDtGrp[groupName.value?.code][field.value?.businessCode];
+     let valueAfter =this.level==='risk'?this.policy.plcy.rsk['1']?.rskDtGrp[groupName?.value.code][field.value.dtCd]
+    :this.policy.plcy?.plcyDtGrp[groupName.value?.code][field.value?.dtCd];
 
    let valueCurrent =!this.isObject(field.value.value)?field.value.value:field.value.value.id;
 
     valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id
 
-    console.log(groupName,"numero: ",field.value?.validateRule.length)
+   /*console.log(groupName,"numero: ",field.value?.vldtRl.length)
     console.log(this.policy.plcy.rsk);
      console.log(valueCurrent,"actual");
      console.log(valueAfter,"despues");
-     console.log(field.value,"field");
+     console.log(field.value,"field");*/
 
     if (valueCurrent !== valueAfter || show) {
 
@@ -65,14 +65,14 @@ export class ReactiveGroupFieldsComponent {
 
       
       if(field.value?.initializeRule && field.value?.initializeRule?.length !== 0 && valueCurrent !==''){
-        console.log("entra initial");
+        //console.log("entra initial");
           this.getRule(field,"inicial",show);
          
       }
-      if(field.value?.validateRule.length !== 0){
+      if(field.value?.vldtRl.length !== 0){
 
       
-        console.log("entra validation");
+        //console.log("entra validation");
 
           this.getRule(field,"validacion",show);
       }
@@ -89,6 +89,14 @@ export class ReactiveGroupFieldsComponent {
     field.addControl("rule", this.fb.control(false));
   }
 
+  getRuleMappedArgs(rule: any) {
+    let mappedArgs: any = [];
+    for (let key of Object.keys(rule.argmntLst)) {
+      mappedArgs.push({ name: key, value: rule.argmntLst[key] });
+    }
+    rule.argmntLst = mappedArgs;
+    return rule;
+  }
 
   getRule(field:any,rule:string,show:boolean){
 
@@ -98,7 +106,7 @@ export class ReactiveGroupFieldsComponent {
      
         let obj = {
           policyIssueRequestDTO:this.policy,
-          rule:rule==="validacion"?field.value?.validateRule[0]:field.value?.initializeRule[0],
+          rule:rule==="validacion"?this.getRuleMappedArgs(field.value?.vldtRl[0]):field.value?.initializeRule[0],
           ruleIssue:this.level==='risk'?this.policy.plcy.rsk['1'].rskDtGrp:this.policy.plcy.plcyDtGrp,
           keysContextVariables:levelField,
           required:field.value?.required
