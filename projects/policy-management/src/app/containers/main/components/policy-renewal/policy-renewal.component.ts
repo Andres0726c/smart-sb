@@ -198,7 +198,7 @@ export class PolicyRenewalComponent implements OnInit {
         this.formPolicy.setControl('riskData', this.fillRiskData(this.product.nmDefinition?.prdct.issPrcss.rskTyp));
         this.renewalProcess = this.product.nmDefinition?.prdct.rnwlPrcss;
         /* Filtramos las causas con respecto a la parametrización del producto */
-        this.causes = this.causes.filter((cause: any) => this.renewalProcess.rnwlCsCd.every((csCd: string) => csCd === cause.businessCode));
+        this.causes = this.renewalProcess?.rnwlCsCd.length > 0 ? this.causes.filter((cause: any) => this.renewalProcess.rnwlCsCd.every((csCd: string) => csCd === cause.businessCode)) : [];
         /* Fin del filtro de causas */
         this.isLoading = false;
       }
@@ -420,12 +420,13 @@ export class PolicyRenewalComponent implements OnInit {
       idChangeActivityType: 15, // tipo para renovación en línea
       observation: this.formPolicy.get('observation')?.value
     };
-
+    
     this.modalAPService.savePolicyRenewal(processData, this.policy)
       .subscribe((resp: any) => {
         if(resp.dataHeader.code != 500){
           //this.ref.close(true)
           this.showSuccess('success', 'Renovación exitosa', 'La póliza ha sido renovada');
+          setTimeout(() => { this.router.navigate([`/polizas/consulta`]).then().catch(); }, 2000);
         } else  {
           this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
         }

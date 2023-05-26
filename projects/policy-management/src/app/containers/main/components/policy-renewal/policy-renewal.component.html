@@ -74,11 +74,10 @@
         <div class="flex justify-center mt-5 gap-x-3">
             <div>
                 <p-button data-qa-id="sc-rsmf-btn-cancel-renewal"
-                    [label]="'Cancelar'" (click)="null" styleClass="p-button-danger"></p-button>
+                    [label]="'Cancelar'" (click)="router.navigate(['/polizas/consulta'])" styleClass="p-button-danger"></p-button>
             </div>
             <div>
-                <p-button data-qa-id="sc-rsmf-btn-policy-renewal"
-                    [label]="'Renovar'" (click)="confirmSave()" [disabled]="!formPolicy.valid"></p-button>
+                <button pButton data-qa-id="sc-rsmf-btn-policy-renewal" [label]="'Renovar'" (click)="confirmSave()" [disabled]="!formPolicy.valid"></button>
             </div>
         </div>
     </form>

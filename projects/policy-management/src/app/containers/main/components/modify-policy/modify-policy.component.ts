@@ -250,15 +250,12 @@ export class ModifyPolicyComponent {
 
         /* datos a previsualizar */
         
-        //this.formPolicy.setControl('policyDataPreview',  await this.fillGroupData(this.convertGroupsArray(this.product.nmDefinition?.prdct.prvwDt.plcyDtGrp), this.policyDataPreview));
         this.formPolicy.setControl('policyDataPreview',  await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
-        //this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.convertGroupsArray(this.product.nmDefinition?.prdct.prvwDt.rskTyp[0].rskTypDtGrp), false))
         /* fin datos a previsualizar */
         this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false, false));
 
         this.formPolicy.setControl('policyData', await this.fillGroupData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.plcyDtGrp, this.policyData, true));
-        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.rskTyp, true, true));//this.product.nmContent?.riskTypes
-        //this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
+        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.rskTyp, true, true));
 
 
         this.isLoading = false;
@@ -266,35 +263,6 @@ export class ModifyPolicyComponent {
       }
     });
   }
-
-  /*convertGroupsArray(groupsArray: any) {
-    let arrayGroupsPreview: any = [];
-    for (let group of groupsArray) {
-      const groupData = {
-        dtGrpCd: group.dtGrpCd,
-        dtGrpNm: group.dtGrpNm,
-        fld: this.convertFieldsArray(this.product.nmDefinition?.prdct.issPrcss.plcyDtGrp, group.fldCd)
-      }
-      arrayGroupsPreview.push(groupData);
-    }
-    return arrayGroupsPreview;
-  }
-
-  convertFieldsArray(policyData: any, fields: any) {
-    console.log('policyData', policyData);
-    console.log('fields', fields);
-    let arrayFields: any = [];
-    for (let field of fields) {
-      for (let group of policyData) {
-        const obj = group.fld.find((x: any) => x.dtCd === field);
-        if (obj) {
-          arrayFields.push(obj);
-          break;
-        }
-      }
-    }
-    return arrayFields;
-  }*/
 
   async fillRiskData(riskTypes: any, flag: boolean, canonical: boolean) {
     let risksArrayData: any = this.fb.array([]);
@@ -329,7 +297,6 @@ export class ModifyPolicyComponent {
   }
 
   async fillGroupData(groupsArray: any, arrayData: any, canonical: boolean) {
-    console.log('groupsArray',groupsArray)
     let formArrayData: any = this.fb.array([]);
     let groupFG: any;
     let groupFields: any;
@@ -377,7 +344,6 @@ export class ModifyPolicyComponent {
 
       /* buscamos la dependencia de datatype y la insertamos en el campo */
       field.dt.dtTyp = this.productService.findDependencyByKeyCode(this.productDeps, 'dtTyp', field.dt.dtTypCd);
-      console.log('field', field);
       /* */
 
       /* vinculamos lista de dominio al campo Tipo de identificación del titular del débito */
@@ -542,8 +508,6 @@ export class ModifyPolicyComponent {
   validData(){
 
     for (let key of Object.keys(this.policy.plcy.plcyDtGrp)) {
-        
-        console.log(key,"keyPolicy");
         for (let value  of Object.keys(this.policy.plcy.plcyDtGrp[key])){
             if (this.policy.plcy.plcyDtGrp[key][value] === null) {
               this.policy.plcy.plcyDtGrp[key][value] = this.policyAux.plcy.plcyDtGrp[key][value];
@@ -557,8 +521,6 @@ export class ModifyPolicyComponent {
   validDataRisk(){
 
     for (let key of Object.keys(this.policy.plcy.rsk['1'].rskDtGrp)) {
-        
-        console.log(key,"keyRisk");
         for (let value  of Object.keys(this.policy.plcy.rsk['1'].rskDtGrp[key])){
             if (this.policy.plcy.rsk['1'].rskDtGrp[key][value] === null) {
               this.policy.plcy.rsk['1'].rskDtGrp[key][value] = this.policyAux.plcy.rsk['1'].rskDtGrp[key][value];
@@ -579,8 +541,6 @@ export class ModifyPolicyComponent {
     this.policy.plcy.plcyDtGrp[this.Business] = this.policyAux.plcy.plcyDtGrp[this.Business];
     this.policy.plcy.rsk['1'].rskDtGrp[this.Business] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.Business];
     this.policy.observation = this.formPolicy.get('observation')?.value;
-
-    console.log(this.policy,"policy");
 
     this.productService.saveModify(this.policy).subscribe({
       next: (resp: any) => {
