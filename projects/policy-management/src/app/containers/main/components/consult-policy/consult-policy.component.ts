@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { Menu } from 'primeng/menu';
 import { CognitoService } from 'commons-lib';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-consult-policy',
@@ -54,6 +55,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   totalRecords: number = 0;
   first: number = 0;
   es: any;
+  selectedPolicyCancellationDate!: Date;
 
   premiumData: any = {};
 
@@ -294,7 +296,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     .saveDeleteCancellation(dataDeletion)
     .subscribe((res) => {
       this.loading = false
-      if (res.body?.expirationDate) {
+      if (res.body?.completeDate) {
         this.showSuccess('success', 'Proceso exitoso', 'El movimiento ha sido reversado correctamente');
       } else {
         this.showSuccess('error', 'Error al actualizar', 'Error inesperado al reversar el movimiento');
@@ -390,8 +392,9 @@ export class ConsultPolicyComponent implements OnDestroy {
     this.productService
     .getApiData('policy/futureCancellationStatus?smartCorePolicyNumber=' + this.selectedPolicy.policyNumber, '', '')
     .subscribe((res) => {
-      if (res.body?.expirationDate) {
+      if (res.body?.completeDate) {
         this.disabledOption('Reversar movimiento', false)
+        this.selectedPolicyCancellationDate = new Date(res.body.completeDate);
         this.items = this.items.slice(); //refresh menu content
       }
     });
@@ -405,6 +408,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   }
 
   confirmDeleteCancellation() {
+    var datePipe = new DatePipe('es-US', null);
     this.confirmationService.confirm({
         message: `
           <div class="flex justify-center pt-5 pb-3">
@@ -412,7 +416,7 @@ export class ConsultPolicyComponent implements OnDestroy {
           </div>
           <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl">
             <p class="w-full text-center">
-              ¿Está seguro de reversar este movimiento?
+              ¿Está seguro de reversar el movimiento con fecha ${datePipe.transform(this.selectedPolicyCancellationDate, 'd MMM y, HH:mm:ss')}?
             </p>
           </div>
         `,
