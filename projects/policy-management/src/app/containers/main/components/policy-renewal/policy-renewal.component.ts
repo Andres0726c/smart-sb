@@ -411,6 +411,13 @@ export class PolicyRenewalComponent implements OnInit {
   }
 
   /**
+   * Method for delay redirection after success
+   */
+  delayPromise(ms: any) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  /**
    * Method for save renewal process
    */
   savePolicyRenewal() {
@@ -426,7 +433,11 @@ export class PolicyRenewalComponent implements OnInit {
         if(resp.dataHeader.code != 500){
           //this.ref.close(true)
           this.showSuccess('success', 'Renovación exitosa', 'La póliza ha sido renovada');
-          setTimeout(async () => { await this.router.navigate([`/polizas/consulta`]).then(()=>{}).catch(error=>{console.log(error)}); }, 2000);
+          this.delayPromise(3000).then(() => {
+            this.router.navigate(['/polizas/consulta']);
+          }).catch((error) => {
+            console.error('Ha ocurrido un error con la redirección.')
+          });
         } else  {
           this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
         }
