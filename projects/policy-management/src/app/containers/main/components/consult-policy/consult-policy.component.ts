@@ -110,12 +110,6 @@ export class ConsultPolicyComponent implements OnDestroy {
         },
       },
       {
-        label: 'Reversar movimiento', icon: 'pi pi-fw pi-file-excel',
-        command: (event: any, row: any) => {
-          this.confirmDeleteCancellation();
-        }
-      },
-      {
         label: 'Rehabilitar', icon: 'pi pi-fw pi-lock-open',
         command: (event: any, row: any) => {
           this.formDate.reset();
@@ -128,6 +122,12 @@ export class ConsultPolicyComponent implements OnDestroy {
         label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
           this.router.navigate([`/polizas/renovar/${this.selectedPolicy?.policyNumber}`]);
+        }
+      },
+      {
+        label: 'Reversar movimiento', icon: 'pi pi-fw pi-file-excel',
+        command: (event: any, row: any) => {
+          this.confirmDeleteCancellation();
         }
       },
       {
