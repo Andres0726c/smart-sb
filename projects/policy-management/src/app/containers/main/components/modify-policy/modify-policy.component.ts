@@ -43,13 +43,8 @@ export class ModifyPolicyComponent {
   policyId?: number;
   dataPolicy?: any = [];
   ListForm: any = new FormArray([]);
-  product: Product = {
-    id: 0,
-    nmName: '',
-    dsDescription: '',
-    nmHashCode: 0,
-    nmContent: undefined,
-  };
+  product: any;
+  productDeps: any = [];
   policyIds = Number(this.activatedroute.snapshot.paramMap.get('id'));
   list: any[] = [];
   listAux: any = [];
@@ -144,8 +139,8 @@ export class ModifyPolicyComponent {
     let flag:any=true;
     for (let data of policyData) {
       for (let policy of policyDataControls.value[i].fields) {
-        if (policy.businessCode == data.name) {
-          flag = this.validateGui(policy.dataType.guiComponent, policy, data);
+        if (policy.dtCd == data.name) {
+          flag = this.validateGui(policy.dt.dtTyp.guiCmpnntItm, policy, data);
           if (!flag) { return flag; }
         }
       }
@@ -156,8 +151,8 @@ export class ModifyPolicyComponent {
     let flag:any=true;
     for (let riskData of riskData1) {
       for (let risk of riskTypesControls.value[j].rskTypDtGrp[i].fields) {
-        if (risk.businessCode == riskData.name) {
-          flag = this.validateGui(risk.dataType.guiComponent, risk, riskData)
+        if (risk.dtCd == riskData.name) {
+          flag = this.validateGui(risk.dt.dtTyp.guiCmpnntItm, risk, riskData)
           if (!flag) { return flag; }
         }
       }
@@ -217,9 +212,9 @@ export class ModifyPolicyComponent {
     this.productService.findPolicyDataById(this.policyData.policyNumber, 17).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.policy = res.body;
-        this.policyNumberText = " - " + this.policy.plcy.plcyNmbr
+        this.policyNumberText = this.policy.plcy.plcyNmbr
         if (this.policy.extrnlTrnsctnPlcy.plcyNmbr) {
-          this.externalPolicyNumberText = " (" + this.policy.extrnlTrnsctnPlcy.plcyNmbr + ")"
+          this.externalPolicyNumberText = this.policy.extrnlTrnsctnPlcy.plcyNmbr;
         }
         this.policyDataPreview = this.mapData(this.policy?.plcy.plcyDtGrp);
         this.policyData = this.mapData(this.policy?.plcy.plcyDtGrp);
@@ -250,15 +245,16 @@ export class ModifyPolicyComponent {
     this.productService.getProductByCode(code).subscribe( async(res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
+        this.productDeps = this.product.nmDefinition.prdctDpndncy;
 
+        /* datos a previsualizar */
+        
+        this.formPolicy.setControl('policyDataPreview',  await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
+        /* fin datos a previsualizar */
+        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false, false));
 
-        this.formPolicy.setControl('policyDataPreview',  await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview));
-
-        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false));
-
-        this.formPolicy.setControl('policyData',
-        await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.plcyDtGrp, this.policyData));
-        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].mdfcblDt.rskTyp, true));//this.product.nmContent?.riskTypes
+        this.formPolicy.setControl('policyData', await this.fillGroupData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.plcyDtGrp, this.policyData, true));
+        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.rskTyp, true, true));
 
 
         this.isLoading = false;
@@ -267,18 +263,17 @@ export class ModifyPolicyComponent {
     });
   }
 
-  async fillRiskData(riskTypes: any, flag: boolean) {
+  async fillRiskData(riskTypes: any, flag: boolean, canonical: boolean) {
     let risksArrayData: any = this.fb.array([]);
 
-
-    if (!flag) {
+    if (!canonical) {
 
       let groupRisk = this.fb.group({
         id: riskTypes.code,
         name: riskTypes.name,
         description: riskTypes.description,
         code: riskTypes.code,
-        rskTypDtGrp: await this.fillGroupData(riskTypes.rskTypDtGrp, this.riskDataPreview)
+        rskTypDtGrp: await this.fillGroupData(riskTypes.rskTypDtGrp, this.riskDataPreview, canonical)
       });
 
       (<FormArray>risksArrayData).push(groupRisk);
@@ -287,11 +282,11 @@ export class ModifyPolicyComponent {
 
       for (let risk of riskTypes) {
         let groupRisk = this.fb.group({
-          id: risk.code,
-          name: risk.name,
-          description: risk.description,
-          code: risk.code,
-          rskTypDtGrp: await this.fillGroupData(risk.rskTypDtGrp, this.riskData)
+          id: 'Mascota',
+          name: 'Mascota',
+          description: 'Prueba',
+          code: 'Mascota',
+          rskTypDtGrp: await this.fillGroupData(risk.rskTypDtGrp, this.riskData, canonical)
         });
 
         (<FormArray>risksArrayData).push(groupRisk);
@@ -300,22 +295,35 @@ export class ModifyPolicyComponent {
     return risksArrayData;
   }
 
-  async fillGroupData(groupsArray: any, arrayData: any) {
+  async fillGroupData(groupsArray: any, arrayData: any, canonical: boolean) {
     let formArrayData: any = this.fb.array([]);
+    let groupFG: any;
+    let groupFields: any;
+    let codeKey = 'businessCode';
     for (let group of groupsArray) {
-      let groupFG = this.fb.group({
-        id: group.code,
-        code: group.code,
-        name: group.name,
-        fields: this.fb.array([])
-      });
+      if (canonical) {
+        groupFG = this.fb.group({
+          code: group.dtGrpCd,
+          name: group.dtGrpNm,
+          fields: this.fb.array([])
+        });
+        groupFields = group.fld;
+        codeKey = 'dtCd'
+      } else {
+        groupFG = this.fb.group({
+          code: group.code,
+          name: group.name,
+          fields: this.fb.array([])
+        });
+        groupFields = group.fields;
+      }
 
-      for (let field of group.fields) {
+      for (let field of groupFields) {
         let valueObj: any;
-        valueObj = arrayData.find((x: any) => x.name === field.code.businessCode);
+        valueObj = arrayData.find((x: any) => x.name === field[codeKey]);
 
         if (valueObj) {
-          (<FormArray>groupFG.get('fields')).push(this.addValue(field, valueObj));
+          (<FormArray>groupFG.get('fields')).push(this.addValue(field, valueObj, canonical));
         }
       }
       (<FormArray>formArrayData).push(groupFG);
@@ -323,25 +331,58 @@ export class ModifyPolicyComponent {
 
     return formArrayData;
   }
-  addValue(field:any,valueObj:any ){
+  addValue(field:any, valueObj:any, canonical: boolean){
 
     let fieldFG = this.fb.group({});
 
+    if (canonical) {
+      /* buscamos la dependencia del campo */
+      field.dt = this.productService.findDependencyByKeyCode(this.productDeps, 'dt', field.dtCd);
+      
+      /* */
 
-    Object.keys(field).forEach(key => {
-      fieldFG.addControl(key, this.fb.control(field[key]));
+      /* buscamos la dependencia de datatype y la insertamos en el campo */
+      field.dt.dtTyp = this.productService.findDependencyByKeyCode(this.productDeps, 'dtTyp', field.dt.dtTypCd);
+      /* */
 
-    });
+      /* vinculamos lista de dominio al campo Tipo de identificación del titular del débito */
+      if (field.dtCd === 'TPO_ID_TDB') {
+        field.dt.dmnLstCd = 'LDM_TPI'
+      }
+      /* */
 
-    fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
+      /* buscamos la dependencia de domainList y la insertamos en el campo */
+        field.dt.dmnLst = this.productService.findDependencyByKeyCode(this.productDeps, 'dmnLst', field.dt.dmnLstCd);
+      /* */
 
-    if (field.dataType.guiComponent === 'List box') {
-      let options: any = [], domainList = field.domainList.valueList;
-      field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
-      fieldFG.addControl('options', this.fb.control(options));
+      Object.keys(field).forEach(key => {
+        fieldFG.addControl(key, this.fb.control(field[key]));
+      });
+
+      fieldFG.addControl('value', this.fb.control(field.dt.dtTyp.guiCmpnntItm === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
+
+      if (field.dt.dtTyp.guiCmpnntItm === 'List box') {
+        let options: any = [], domainList = field.dt.dmnLst?.vlLst;
+        field.dt.dmnLst ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
+        fieldFG.addControl('options', this.fb.control(options));
+      }
+    } else {
+      Object.keys(field).forEach(key => {
+        fieldFG.addControl(key, this.fb.control(field[key]));
+      });
+
+      fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
+
+      if (field.dataType.guiComponent === 'List box') {
+        let options: any = [], domainList = field.domainList.valueList;
+        field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
+        fieldFG.addControl('options', this.fb.control(options));
+      }
     }
+    
     return fieldFG;
   }
+
   showDomainList(domainList: any[], valueObj: any) {
     let options = [], listStorage: any;
     if (domainList[0].url) {
@@ -404,7 +445,7 @@ export class ModifyPolicyComponent {
     for (let group of dataControlsValue) {
 
 
-      const valueField = group.fields.find((x: any) => x.code.businessCode === businessCode);
+      const valueField = group.fields.find((x: any) => x.dtCd === businessCode);
 
       if (valueField) {
         value = !this.isObject(valueField.value) ? valueField.value : valueField.value.id;
@@ -466,8 +507,6 @@ export class ModifyPolicyComponent {
   validData(){
 
     for (let key of Object.keys(this.policy.plcy.plcyDtGrp)) {
-        
-        console.log(key,"keyPolicy");
         for (let value  of Object.keys(this.policy.plcy.plcyDtGrp[key])){
             if (this.policy.plcy.plcyDtGrp[key][value] === null) {
               this.policy.plcy.plcyDtGrp[key][value] = this.policyAux.plcy.plcyDtGrp[key][value];
@@ -481,8 +520,6 @@ export class ModifyPolicyComponent {
   validDataRisk(){
 
     for (let key of Object.keys(this.policy.plcy.rsk['1'].rskDtGrp)) {
-        
-        console.log(key,"keyRisk");
         for (let value  of Object.keys(this.policy.plcy.rsk['1'].rskDtGrp[key])){
             if (this.policy.plcy.rsk['1'].rskDtGrp[key][value] === null) {
               this.policy.plcy.rsk['1'].rskDtGrp[key][value] = this.policyAux.plcy.rsk['1'].rskDtGrp[key][value];
@@ -503,8 +540,6 @@ export class ModifyPolicyComponent {
     this.policy.plcy.plcyDtGrp[this.Business] = this.policyAux.plcy.plcyDtGrp[this.Business];
     this.policy.plcy.rsk['1'].rskDtGrp[this.Business] =  this.policyAux.plcy.rsk['1'].rskDtGrp[this.Business];
     this.policy.observation = this.formPolicy.get('observation')?.value;
-
-    console.log(this.policy,"policy");
 
     this.productService.saveModify(this.policy).subscribe({
       next: (resp: any) => {

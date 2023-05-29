@@ -1,3 +1,35 @@
+@media (max-width: 640px) 
+{ .form section{
+    flex-direction: column !important;
+    }
+}
+
+.pi {
+    font-size: 18px;
+}
+
+.spaces {
+    display: flex;
+    align-items: flex-start;
+}
+.alert-description {
+    font-size: 14px;
+    line-height: 120%;
+    alignment: Left;
+    vertical-align: Top;
+    & h5 {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: var(--greyscale-black);
+    }
+    & p {
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--greyscale-black);
+    }
+}
+
 .container-alert {
     background: #f7d4d7;
     border-radius: 5px;
@@ -9,6 +41,16 @@
 
 .p-component * {
     padding: 8px (left margin), 16px;
+}
+
+.line-border {
+    border: 3px solid var(--success-base);
+
+    margin-left: 8px;
+    margin-right: 16px;
+    border-radius: 5px;
+    height: 40px;
+    z-index: 9999;
 }
 
 :host ::ng-deep .p-toast .p-toast-message {
