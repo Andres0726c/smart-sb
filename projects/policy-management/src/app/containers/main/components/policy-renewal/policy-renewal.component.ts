@@ -426,7 +426,7 @@ export class PolicyRenewalComponent implements OnInit {
         if(resp.dataHeader.code != 500){
           //this.ref.close(true)
           this.showSuccess('success', 'Renovación exitosa', 'La póliza ha sido renovada');
-          setTimeout(async () => { await this.router.navigate([`/polizas/consulta`]).then().catch(); }, 2000);
+          setTimeout(async () => { await this.router.navigate([`/polizas/consulta`]).then(()=>{}).catch(error=>{console.log(error)}); }, 2000);
         } else  {
           this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
         }
