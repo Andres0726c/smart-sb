@@ -89,12 +89,11 @@ export class RiskTypesComponent implements OnInit {
   ];
   selectedRiskType: any = new FormGroup({});
   index: number = 0;
-
   constructor(
     public dialog: MatDialog,
     public productService: ProductService,
     private toastMessage: MatSnackBar,
-    public fb: FormBuilder
+    public fb: FormBuilder,
   ) {
     this.productService.riskTypes.controls.forEach((riskType: any) => {
       this.dataSource.data.push({
@@ -119,11 +118,7 @@ export class RiskTypesComponent implements OnInit {
     return this.productService.riskTypes.controls[this.index] as FormGroup;
   }
 
-  // get riskTypeControls(): FormArray {
-  //   return (<FormArray>(
-  //     this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
-  //   )) as FormArray;
-  // }
+
   
 
 
@@ -150,16 +145,19 @@ export class RiskTypesComponent implements OnInit {
       panelClass: 'custom-dialog-container',
     });
     dialogRef.afterClosed().subscribe((res) => {
-      if (this.productService.riskTypes.length == 0) {
-        this.addRiskType(res);
-        this.index = 0;
-        this.selectedRiskType = this.riskTypeGroup;
-      } else {
-        this.addRiskType(res);
-      }
+      this.validateRisk(res)
     });
   }
 
+  validateRisk(res:any){
+    if (this.productService.riskTypes.length == 0) {
+      this.addRiskType(res);
+      this.index = 0;
+      this.selectedRiskType = this.riskTypeGroup;
+    } else {
+      this.addRiskType(res);
+    }
+  }
   addRiskType = (riskTypes: ElementTableSearch[]): void => {
     if (riskTypes) {
       for (let riskType of riskTypes) {
@@ -230,28 +228,31 @@ export class RiskTypesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
-        const index = this.findIndexRiskType(node);
-        const id = this.productService.riskTypes.at(index).value.id;
-        this.productService.riskTypes.removeAt(index);
-        this.deleteRiskMdfctPrcss(node);
-        this.dataSource.data = this.dataSource.data.filter(
-          (item) => item.id != id
-        );
-        if (id == this.selectedRiskType.value.id || index == 0) {
-          this.index = 0;
-        }
-        this.selectedRiskType = this.riskTypeGroup
-        this.updateTree();
-        if (this.complementaryDataComponent) {
-          this.complementaryDataComponent?.reset();
-        }
-        if (this.commercialPlanComponent) {
-          this.commercialPlanComponent?.reset();
-        }
+        this.removedRisk(node);
       }
     });
   };
 
+  removedRisk(node: ExampleFlatNode){
+    const index = this.findIndexRiskType(node);
+    const id = this.productService.riskTypes.at(index).value.id;
+    this.productService.riskTypes.removeAt(index);
+    this.deleteRiskMdfctPrcss(node);
+    this.dataSource.data = this.dataSource.data.filter(
+      (item) => item.id != id
+    );
+    if (id == this.selectedRiskType.value.id || index == 0) {
+      this.index = 0;
+    }
+    this.selectedRiskType = this.riskTypeGroup
+    this.updateTree();
+    if (this.complementaryDataComponent) {
+      this.complementaryDataComponent?.reset();
+    }
+    if (this.commercialPlanComponent) {
+      this.commercialPlanComponent?.reset();
+    }
+  }
   findIndexRiskType(node: ExampleFlatNode): number {
     return (
       this.dataSource.data.findIndex(
@@ -277,19 +278,32 @@ export class RiskTypesComponent implements OnInit {
 
   quantityItems = (node: ExampleFlatNode): number => {
     const startIndex = this.treeControl.dataNodes.indexOf(node);
+    console.log(startIndex);
     const subItemsRiskType: SubItemsRiskType = this.subItemsRiskTypes.filter(item => item.name == this.flatNodeMap.get(node)?.name)[0]
+    console.log(subItemsRiskType);
+
+    console.log(" this.treeControl.dataNodes", this.treeControl.dataNodes[0]);
     const currentNode = this.treeControl.dataNodes[startIndex-subItemsRiskType.distance];
+    console.log(currentNode);
+
     const index = this.findIndexRiskType(currentNode);
-    if(node.name==="Datos del riesgo" && this.productService.riskTypes.controls[index].get(subItemsRiskType.formArray)?.value[0]){  
-      return this.productService.riskTypes.controls[index].get(subItemsRiskType.formArray)?.value[0].fields.length;
+    console.log(index);
+
+    let risk=this.getRiskType(index,subItemsRiskType);
+    console.log(this.productService.riskTypes.controls[index]);
+    if(node.name==="Datos del riesgo" && risk[0]){  
+      return risk[0].fields.length;
     }
      else if(node.name!=="Datos del riesgo"){
-      return this.productService.riskTypes.controls[index].get(subItemsRiskType.formArray)?.value.length;
+      return risk.length;
     }else{
       return 0;
     }
   };
 
+  getRiskType(index:number,subItemsRiskType:SubItemsRiskType){
+    return (this.productService.riskTypes.controls[index].get(subItemsRiskType.formArray)?.value);
+  }
   classToRiskTypeSelected(node: ExampleFlatNode): boolean {
     return this.flatNodeMap.get(node)?.id == this.selectedRiskType?.value.id;
   }

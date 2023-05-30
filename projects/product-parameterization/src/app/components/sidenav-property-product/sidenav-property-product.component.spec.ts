@@ -284,6 +284,111 @@ describe('SidenavPropertyProductComponent', () => {
       expect(component.clearData('renewal',menu)).toBeUndefined();
     })
   })
+  it('cancellation when enabled is not present',()=>{
+    component.formProcess = new FormGroup({
+      cancellation: new FormGroup({  }),
+      rehabilitation: new FormGroup({ enabled: new FormControl(true) }),
+      renewal: new FormGroup({ enabled: new FormControl(true) }),
+    });
+    let menu = {
+      name: 'Cancelación',
+      formControlName: 'cancellation',
+      showEnable: true,
+      show: false,
+      isExpanded: true,
+      nameClearData1:'cnclltnCsCd',
+      nameClearData2:'clcltnRl',
+      nameClearData3:'isCncllblIncptnDt'
+    };
+    expect(component.clearData('cancellation',menu)).toBeUndefined();
+  });
+
+
+  it('cancellation when name is not present',()=>{
+    component.formProcess = new FormGroup({
+      rehabilitation: new FormGroup({ enabled: new FormControl(true) }),
+      renewal: new FormGroup({ enabled: new FormControl(true) }),
+    });
+    let menu = {
+      name: 'Cancelación',
+      formControlName: 'cancellation',
+      showEnable: true,
+      show: false,
+      isExpanded: true,
+      nameClearData1:'cnclltnCsCd',
+      nameClearData2:'clcltnRl',
+      nameClearData3:'isCncllblIncptnDt'
+    };
+    expect(component.clearData('cancellation',menu)).toBeUndefined();
+  });
+
+  it('cancellation when name is present',()=>{
+    component.formProcess = new FormGroup({
+      cancellation: new FormGroup({ 
+        enabled: new FormControl(true),
+        cnclltnCsCd: new FormControl(),
+        clcltnRl:new FormControl(),
+        isCncllblIncptnDt: new FormControl(),
+       }),
+      rehabilitation: new FormGroup({ enabled: new FormControl(true) }),
+      renewal: new FormGroup({ enabled: new FormControl(true) }),
+    });
+    let menu = {
+      name: 'Cancelación',
+      formControlName: 'cancellation',
+      showEnable: true,
+      show: false,
+      isExpanded: true,
+      nameClearData1:'cnclltnCsCd',
+      nameClearData2:'clcltnRl',
+      nameClearData3:'isCncllblIncptnDt'
+    };
+    expect(component.clearData('cancellation',menu)).toBeUndefined();
+  });
+
+  it('renewal when is false when there are 3 dataClear',()=>{
+    component.formProcess = new FormGroup({
+      cancellation: new FormGroup({ enabled: new FormControl(true) }),
+      rehabilitation: new FormGroup({ enabled: new FormControl(true) }),
+      renewal: new FormGroup({ 
+        enabled: new FormControl(false),
+        rnwlCsCd: new FormControl(),
+        clcltnRl: new FormControl(),
+        isNwIssPlcy: new FormControl()
+      }),
+    });
+    let menu = {
+      name: 'Renovación',
+      formControlName: 'renewal',
+      showEnable: true,
+      show: false,
+      isExpanded: true,
+      nameClearData1:'rnwlCsCd',
+      nameClearData2:'clcltnRl',
+      nameClearData3:'isNwIssPlcy'
+    };
+    expect(component.clearData('renewal',menu)).toBeUndefined();
+  });
+
+  it('renewal when is false when name is not present',()=>{
+    component.formProcess = new FormGroup({
+      cancellation: new FormGroup({ enabled: new FormControl(true) }),
+      rehabilitation: new FormGroup({ enabled: new FormControl(true) }),
+    });
+    let menu = {
+      name: 'Renovación',
+      formControlName: 'renewal',
+      showEnable: true,
+      show: false,
+      isExpanded: true,
+      nameClearData1:'rnwlCsCd',
+      nameClearData2:'clcltnRl',
+      nameClearData3:'isNwIssPlcy'
+    };
+    expect(component.clearData('renewal',menu)).toBeUndefined();
+  });
+
+
 
   describe('changeCheck', () => {
     it('changeCheckEnableTrue', () => {

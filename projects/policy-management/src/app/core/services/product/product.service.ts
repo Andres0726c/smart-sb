@@ -97,7 +97,7 @@ export class ProductService {
   }
 
   saveModify( data: any): Observable<any>{
-    console.log(data,"data a viajar");
+
 
     return this.httpClient.post<any>(`${this.apiUrl}policy/saveModifyPolicy`, data, {headers: this.headers});
   }

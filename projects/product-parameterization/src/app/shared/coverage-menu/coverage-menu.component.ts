@@ -222,9 +222,7 @@ export class CoverageMenuComponent implements OnInit {
 
   viewCoverage = (node: ExampleFlatNode): void => {
     this.index = this.findIndexCoverage(node);
-    //if(node.name !== this.selectedCoverage.get('name')?.value){
       this.selectedCoverage = this.coverageGroup;
-    //}
     this.emitSelectedCoverage.emit(this.selectedCoverage)
 
   };

@@ -37,7 +37,7 @@ export class PreviewDataPolicyComponent implements OnInit {
   get policyPreviewControls(): FormArray {
   return (<FormArray>(
       this.productService.prvwDt?.get('plcyDtGrp')
-    )) as FormArray;
+    ));
   }
 
   clearGroup() {
@@ -206,14 +206,13 @@ getNameGroup(name: any) {
 }
 
 createGroupContext(){
-let nameGruop;
- return  nameGruop = {
+ return   ({
     id: 0,
     code: 'datos_contexto',
     name: 'Datos de contexto',
     fields: this.fb.array([], Validators.required),
     isEditing: false,
-  };
+  });
 }
 
 addDataGroup(nameGruop:any){
@@ -246,10 +245,6 @@ getGroupArrayById(id: any) {
 }
 
 addGroupArrayById(object:any,nameGruop:any){
-
-  const index = this.policyPreviewControls.value.findIndex(
-    (x: { id: any }) => x.id === nameGruop.id
-  );
 
 
   this.getGroupArrayById(nameGruop.id).push(

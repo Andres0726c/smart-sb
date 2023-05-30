@@ -214,16 +214,24 @@ export class ModificationTypesComponent implements OnInit {
 
   quantityItems = (node: ExampleFlatNode): number => {
     const startIndex = this.treeControl.dataNodes.indexOf(node);
+    console.log(this.flatNodeMap.get(node)?.name)
+    console.log(this.subItemsModificationTypes)
+  
     const subItemsModificationType: SubItemsModificationType = this.subItemsModificationTypes.filter(item => item.name == this.flatNodeMap.get(node)?.name)[0]
+    console.log(subItemsModificationType)
     const currentNode = this.treeControl.dataNodes[startIndex-subItemsModificationType.distance];
     const index = this.findIndexModificationType(currentNode);
-    if(node.name==="Datos a previsualizar" && this.productService.modificationTypes.controls[index].get(subItemsModificationType.formArray)?.value[0]){
-      return this.productService.modificationTypes.controls[index].get(subItemsModificationType.formArray)?.value[0].fields.length;
+    let modification= this.getModification(index,subItemsModificationType);
+    if(node.name==="Datos a previsualizar" && modification){
+      return modification.fields.length;
     } else{
       return 0;
     }
   };
 
+  getModification(index:number,subItemsModificationType:SubItemsModificationType){
+    return(this.productService.modificationTypes.controls[index].get(subItemsModificationType.formArray)?.value[0]);
+  }
   classToModificationTypeSelected(node: ExampleFlatNode): boolean {
     return this.flatNodeMap.get(node)?.id == this.selectedModificationType?.value.id;
   }

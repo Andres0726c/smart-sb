@@ -19,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from '../../services/product.service';
 import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
 import {
-  ComponentFixture,
+  
   fakeAsync,
   TestBed,
   tick,
@@ -94,27 +94,9 @@ const ProductServiceMock = {
   ]),
 };
 
-class ServiceMock {
-  getApiData(route: any) {
-    return {
-      body: [
-        {
-          id: 1,
-          name: 'name test return',
-          description: 'description test return',
-        },
-        {
-          id: 2,
-          name: 'name test return 2',
-          description: 'description test return 2',
-        },
-      ],
-    };
-  }
-}
 class toastMock {
   openFromComponent() {
-    /* TODO document why this method 'openFromComponent' is empty */
+    /*  document why this method 'openFromComponent' is empty */
   }
 }
 
@@ -716,6 +698,217 @@ describe('ComplementaryDataComponent', () => {
     expect(component.associateReference('test')).toBeUndefined();
     expect(component.associateReference(undefined!)).toBeUndefined();
   });
+  it('addGroup', () => {
+    let obj: ElementReturn = 
+      {
+        id: 1,
+        name: 'name',
+        description: 'ds',
+        details: 'detail',
+        shouldDelete: true,
+        cdRuleType: 'cd',
+        element: {
+          id: 1,
+          businessCode: 'business',
+          nmLabel: 'nmLabel',
+          label: 'label',
+          dsDescription: 'dsDescr',
+          dataType: {
+            code: 'code',
+            name: 'name',
+            description: 'ds',
+            bdFieldType: 'bdField',
+            guiComponent: 'guiC',
+            lenght: 1,
+            precision: 1,
+            scale: 1,
+          },
+          flIsMandatory: 'S',
+          domainList: {
+            code: 'code',
+            name: 'name',
+            description: 'desc',
+            valueList: '',
+          },
+        },
+      };
+
+    component.complementaryData= new FormArray([
+      new FormGroup({
+        id: new FormControl(1),
+        name: new FormControl('Datos básicos'),
+        code: new FormControl('datos_basicos'),
+        isEditing: new FormControl(false),
+        fields: new FormArray(
+          [
+            new FormGroup({
+              id: new FormControl(1),
+              name: new FormControl('Test'),
+              fieldGroup: new FormControl(1),
+              requiredEssential: new FormControl('S'),
+              required: new FormControl(true)
+            }),
+          ],
+          Validators.required
+        ),
+      }),
+    ]);
+    let res: any = new FormArray([]);
+    const spy=jest.spyOn(component, 'getGroupArrayById').mockReturnValue(res);
+    component.addGroup(obj,0, 1);
+    expect(spy).toBeCalled();
+  });
+
+  it('validateFieldGroup when flIsMandatory is "S"',()=>{
+    let obj: ElementReturn = 
+      {
+        id: 1,
+        name: 'name',
+        description: 'ds',
+        details: 'detail',
+        shouldDelete: true,
+        cdRuleType: 'cd',
+        element: {
+          id: 1,
+          businessCode: 'business',
+          nmLabel: 'nmLabel',
+          label: 'label',
+          dsDescription: 'dsDescr',
+          dataType: {
+            code: 'code',
+            name: 'name',
+            description: 'ds',
+            bdFieldType: 'bdField',
+            guiComponent: 'guiC',
+            lenght: 1,
+            precision: 1,
+            scale: 1,
+          },
+          flIsMandatory: 'S',
+          domainList: {
+            code: 'code',
+            name: 'name',
+            description: 'desc',
+            valueList: '',
+          },
+        },
+      };
+      component.complementaryData= new FormArray([
+        new FormGroup({
+          id: new FormControl(1),
+          name: new FormControl('Datos básicos'),
+          code: new FormControl('datos_basicos'),
+          isEditing: new FormControl(false),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(1),
+                name: new FormControl('Test'),
+                fieldGroup: new FormControl(1),
+                requiredEssential: new FormControl('S'),
+                required: new FormControl(true)
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ]);
+      let field=new FormGroup({
+        id: new FormControl(1),
+        name: new FormControl('Datos básicos'),
+        code: new FormControl('datos_basicos'),
+        isEditing: new FormControl(false),
+        fields: new FormArray(
+          [
+            new FormGroup({
+              id: new FormControl(1),
+              name: new FormControl('Test'),
+              fieldGroup: new FormControl(1),
+              requiredEssential: new FormControl('S'),
+              required: new FormControl(true)
+            }),
+          ],
+          Validators.required
+        ),
+      })
+    component.validateFieldGroup(field,obj)
+  })
+
+  it('validateFieldGroup when flIsMandatory is "N"',()=>{
+    let obj: ElementReturn = 
+      {
+        id: 1,
+        name: 'name',
+        description: 'ds',
+        details: 'detail',
+        shouldDelete: true,
+        cdRuleType: 'cd',
+        element: {
+          id: 1,
+          businessCode: 'business',
+          nmLabel: 'nmLabel',
+          label: 'label',
+          dsDescription: 'dsDescr',
+          dataType: {
+            code: 'code',
+            name: 'name',
+            description: 'ds',
+            bdFieldType: 'bdField',
+            guiComponent: 'guiC',
+            lenght: 1,
+            precision: 1,
+            scale: 1,
+          },
+          flIsMandatory: 'N',
+          domainList: {
+            code: 'code',
+            name: 'name',
+            description: 'desc',
+            valueList: '',
+          },
+        },
+      };
+      component.complementaryData= new FormArray([
+        new FormGroup({
+          id: new FormControl(1),
+          name: new FormControl('Datos básicos'),
+          code: new FormControl('datos_basicos'),
+          isEditing: new FormControl(false),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(1),
+                name: new FormControl('Test'),
+                fieldGroup: new FormControl(1),
+                requiredEssential: new FormControl('S'),
+                required: new FormControl(true)
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ]);
+      let field=new FormGroup({
+        id: new FormControl(1),
+        name: new FormControl('Datos básicos'),
+        code: new FormControl('datos_basicos'),
+        isEditing: new FormControl(false),
+        fields: new FormArray(
+          [
+            new FormGroup({
+              id: new FormControl(1),
+              name: new FormControl('Test'),
+              fieldGroup: new FormControl(1),
+              requiredEssential: new FormControl('S'),
+              required: new FormControl(true)
+            }),
+          ],
+          Validators.required
+        ),
+      })
+    component.validateFieldGroup(field,obj)
+  })
+
 
   it('showMessageError', () => {
     let res: any = new FormArray([]);
@@ -1174,18 +1367,49 @@ describe('ComplementaryDataComponent', () => {
   });
 
   it('startGroupEdit', fakeAsync(() => {
-    let group: any = new FormArray([]),
-      data = new FormGroup({
-        isEditing: new FormControl(false),
-        name: new FormControl('test'),
-      });
-    let flag = false;
+   
+    let group: any =new FormGroup({
+      isEditing: new FormControl(false),
+      name: new FormControl('test'),
+    });
+    component.formGroupTitle= new FormGroup({
+      groupTitle: new FormControl('test')
+    })
     setTimeout(() => {
       jest.spyOn(component, 'actionEvent').mockImplementation();
       expect(component.startGroupEdit(group)).toBeUndefined();
     }, 0);
     tick(50);
   }));
+
+  it('startGroupEdit when IsEditing is not present', fakeAsync(() => {
+    let group: any = new FormGroup({
+
+     });
+    component.formGroupTitle= new FormGroup({
+      groupTitle: new FormControl('test')
+    })
+    setTimeout(() => {
+      jest.spyOn(component, 'actionEvent').mockImplementation();
+      expect(component.startGroupEdit(group)).toBeUndefined();
+    }, 0);
+    tick(50);
+  }));
+  it('startGroupEdit when groupTitle is not present', fakeAsync(() => {
+    let group: any = new FormGroup({
+      isEditing: new FormControl(false),
+      name: new FormControl('test'),
+     });
+    component.formGroupTitle= new FormGroup({
+
+    })
+    setTimeout(() => {
+      jest.spyOn(component, 'actionEvent').mockImplementation();
+      expect(component.startGroupEdit(group)).toBeUndefined();
+    }, 0);
+    tick(50);
+  }));
+
 
   it('openDialogWizard', () => {
     expect(
@@ -1199,7 +1423,18 @@ describe('ComplementaryDataComponent', () => {
       )
     ).toBeDefined();
   });
+  it('getMdfctnPrcssPlcyDtGrp  when plcyDtGrp is not present ',()=>{
+    component.productService.mdfctnPrcss= new FormGroup({
+      mdfcblDt: new FormGroup({ })
+    })
+    expect(component.getMdfctnPrcssPlcyDtGrp()).toBeDefined();
+  })
 
+
+  it('getMdfctnPrcssPlcyDtGrp  when mdfcblDt is not present ',()=>{
+    component.productService.mdfctnPrcss= new FormGroup({ })
+    expect(component.getMdfctnPrcssPlcyDtGrp()).toBeUndefined();
+  })
   describe('isConfigured', () => {
     it('req when is zero', () => {
       const item = component.fb.group({
@@ -1216,6 +1451,7 @@ describe('ComplementaryDataComponent', () => {
     it('req when is not zero', () => {
       const item = component.fb.group({
         required: component.fb.control(true, Validators.required),
+        requiredEssential: component.fb.control(true, Validators.required),
         editable: component.fb.control(false, Validators.required),
         visible: component.fb.control(false, Validators.required),
         initializeRule: component.fb.array([
