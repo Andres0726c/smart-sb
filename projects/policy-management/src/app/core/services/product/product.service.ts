@@ -101,4 +101,8 @@ export class ProductService {
 
     return this.httpClient.post<any>(`${this.apiUrl}policy/saveModifyPolicy`, data, {headers: this.headers});
   }
+
+  findDependencyByKeyCode(deps: any, key: string, code: string) {
+    return deps[key].find((x: any) => x.cd === code);
+  }
 }

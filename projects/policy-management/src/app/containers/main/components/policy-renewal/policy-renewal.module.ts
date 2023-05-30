@@ -13,12 +13,24 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
+import { RouterModule, Routes } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
+import { ToastModule } from 'primeng/toast';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: PolicyRenewalComponent,
+  },
+];
 
 @NgModule({
   declarations: [
     PolicyRenewalComponent
   ],
   imports: [
+    RouterModule.forChild(routes),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -32,7 +44,12 @@ import { DialogModule } from 'primeng/dialog';
     InputTextareaModule,
     ButtonModule,
     ConfirmDialogModule,
-    DialogModule
+    DialogModule,
+    ToastModule
+  ],
+  providers: [
+    DialogService,
+    MessageService
   ]
 })
 export class PolicyRenewalModule { }

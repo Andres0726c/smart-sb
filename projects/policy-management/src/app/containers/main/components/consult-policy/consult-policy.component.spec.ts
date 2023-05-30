@@ -259,11 +259,7 @@ it('getModuleFalse',()=>{
     it('command Rehabilitar',()=>{
       expect(component.items[2].command()).toBeUndefined();
     });
-    it('command Renovar',()=>{
-      const spy = jest.spyOn(component, 'getPolicy').mockImplementation();
-      component.items[3].command();
-      expect(spy).toBeCalled();
-    })
+    
     it('command Ver detalle',()=>{
       const spy = jest.spyOn(component, 'showModalConsulDetails').mockImplementation();
       component.items[4].command();
@@ -312,18 +308,6 @@ it('getModuleFalse',()=>{
     const refOpenSpy = jest.spyOn(ref, 'open')
     component.showModal(ModalPolicyActionsComponent, 'Cancelacion/Rehabilitación', component.selectedPolicy, 'test')
     expect(refOpenSpy).toHaveBeenCalled();
-  });
-
-  it('getPolicy ok', () => {
-    component.selectedPolicy = { idPolicy: 1, policyNumber: 123 };
-    expect(component.getPolicy()).toBeUndefined();
-  });
-
-  it('getPolicy else', () => {
-    component.selectedPolicy = { idPolicy: 1, policyNumber: 123 };
-    const res = { dataHeader: { code: 500 } };
-    jest.spyOn(productService, 'findPolicyDataById').mockReturnValue(of (res));
-    expect(component.getPolicy()).toBeUndefined();
   });
 
   it('getPolicyClaimStatus ok', () => {

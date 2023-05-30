@@ -137,7 +137,7 @@ export class RenewalDataComponent implements OnInit {
         rlEngnCd: objRule.rule.rlEngnCd
       },
       sttsCd: 'ACT',
-      insrncLnCd: [this.productService.prdctDpndncy.get('insrncLn')?.value[0].cd]
+      insrncLnCd: [null]
     };
 
     let objRlArgs = this.mapRuleArgs(objRule.parameters);
@@ -232,7 +232,7 @@ export class RenewalDataComponent implements OnInit {
         aplctnPrcssItm: cause.aplicationProcess,
         aplctnSbprcssCd: cause.aplicationSubProcess,
         sttCd: cause.statusCode,
-        insrncLnCd: [this.productService.prdctDpndncy.get('insrncLn')?.value[0].cd]
+        insrncLnCd: [null]
       };
 
       this.productService.setProductDependency('cs', obj);

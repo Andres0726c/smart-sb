@@ -1,12 +1,19 @@
-<div>
-    <div *ngIf="isLoading || errorFlag" class="mt-5 text-center bg-white rounded-xl p-3">
+<div class="px-5">
+    <div class="flex items-center mb-3">
+        <span class="text-4xl font-bold ml-2"> Renovación </span>
+        <div class="flex ml-auto mr-2" *ngIf="!isLoading && !errorFlag">
+            <span class="text-primary font-bold text-2xl mr-2 mt-2">Nº póliza:</span><span class="text-2xl mt-2">{{ id }}</span>
+            <span class="text-primary font-bold text-2xl ml-10 mr-2 mt-2">Nº externo:</span><span class="text-2xl mt-2">{{ externalNumber }}</span>
+        </div>
+    </div>
+    <div *ngIf="isLoading || errorFlag" class="text-center bg-white rounded-xl p-3">
         <smartcore-loading-spinner *ngIf="isLoading" [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
         <div class="container-alert text-center" *ngIf="errorFlag">
             <em class="pi pi-info-circle mr-1"></em>
-            Ha ocurrido un error al cargar los datos, por favor intente nuevamente
+            {{ errorMsg }}
         </div>
     </div>
-    <form *ngIf="!isLoading && !errorFlag" [formGroup]="formPolicy" class="mt-5 bg-white rounded-xl p-3">
+    <form *ngIf="!isLoading && !errorFlag" [formGroup]="formPolicy" class="bg-white rounded-xl p-3">
         <div>
             <p-divider align="left" type="dashed" styleClass="my-2">
                 <div class="inline-flex align-items-center text-xl">
@@ -67,11 +74,10 @@
         <div class="flex justify-center mt-5 gap-x-3">
             <div>
                 <p-button data-qa-id="sc-rsmf-btn-cancel-renewal"
-                    [label]="'Cancelar'" (click)="ref.close()" styleClass="p-button-danger"></p-button>
+                    [label]="'Cancelar'" (click)="router.navigate(['/polizas/consulta'])" styleClass="p-button-danger"></p-button>
             </div>
             <div>
-                <p-button data-qa-id="sc-rsmf-btn-policy-renewal"
-                    [label]="'Renovar'" (click)="confirmSave()" [disabled]="!formPolicy.valid"></p-button>
+                <button pButton data-qa-id="sc-rsmf-btn-policy-renewal" [label]="'Renovar'" (click)="confirmSave()" [disabled]="!formPolicy.valid"></button>
             </div>
         </div>
     </form>
@@ -89,3 +95,20 @@
     </div>
 </p-dialog>
 
+<p-toast position="bottom-right">
+    <ng-template let-message pTemplate="message">
+        <div class="flex flex-column alert-description" style="flex: 1">
+            <span *ngIf="message.severity === 'success'" style="border: 3px solid var(--success-base);" class="line-border"></span>
+            <span *ngIf="message.severity === 'error'" style="border: 3px solid var(--danger-base);" class="line-border"></span>
+            <div class="flex flex-column text-center">
+                <em *ngIf="message.severity === 'success'" class="fas fa-check-circle"></em>
+                <em *ngIf="message.severity === 'error'" class="fas fa-times-circle"></em>
+            </div>
+            <div class="text-center" style="margin-left: 8px;">
+                <h5 class="spaces" *ngIf="message.severity === 'success'">{{message.summary}}</h5>
+                <h5 class="spaces" *ngIf="message.severity === 'error'">{{message.summary}}</h5>
+                <p>{{message.detail}}</p>
+            </div>
+        </div>
+    </ng-template>
+</p-toast>
