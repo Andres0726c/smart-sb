@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -7,33 +7,14 @@ import { ProductService } from 'projects/product-parameterization/src/app/servic
 import { MenuItem } from 'primeng/api';
 
 import { ModalSearchSmallComponent } from 'projects/product-parameterization/src/app/shared/modal-search-small/modal-search-small.component';
-import { filter } from 'rxjs';
+
 
 import {
   DataToast,
   STATES,
   ToastMessageComponent,
 } from 'projects/product-parameterization/src/app/shared/toast-message/toast-message.component';
-interface OptionsCommercialP {
-  name: string;
-  key: string;
-}
 
-interface BussinesPlans {
-  code: string;
-  coverages: any[];
-  description: string;
-  name: string;
-  servicePlans: any[];
-  athrzdOprtn: [];
-}
-interface Coverages {
-  description: string;
-  id: number;
-  name: string;
-  cvrgDtGrp: any;
-  athrzdOprtn: any;
-}
 @Component({
   selector: 'refactoring-smartcore-mf-modification-types',
   templateUrl: './modification-types.component.html',
@@ -76,13 +57,13 @@ export class ModificationTypesComponent implements OnInit {
   get complementaryDataControls(): FormArray {
     return (<FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('plcyDtGrp')
-    )) as FormArray;
+    ));
   }
 
   get riskTypeMdfctnPrcss(): FormArray {
     return (<FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
-    )) as FormArray;
+    ));
   }
 
   updateRiskTypes() {
@@ -321,9 +302,7 @@ export class ModificationTypesComponent implements OnInit {
   }
 
   addGroupArrayById(object: any, nameGruop: any) {
-    const index = this.complementaryDataControls.value.findIndex(
-      (x: { id: any }) => x.id === nameGruop.id
-    );
+ 
 
     this.getGroupArrayById(nameGruop.id).push(
       new FormGroup({

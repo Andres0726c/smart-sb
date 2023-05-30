@@ -4,9 +4,6 @@ import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dy
 import { MessageService } from 'primeng/api';
 import { ModalPolicyActionsService } from './services/modal-policy-actions.service';
 import { ConsultPolicyService } from '../../../containers/main/components/consult-policy/services/consult-policy.service';
-import { PolicyBrief } from '../../../core/interfaces/policy';
-import { ResponseDTO } from '../../../core/interfaces/commun/response';
-import { FilterPolicy } from '../../../containers/main/components/consult-policy/interfaces/consult-policy';
 import {ConfirmationService} from 'primeng/api';
 import { ProductService } from '../../../core/services/product/product.service';
 
@@ -190,11 +187,7 @@ export class ModalPolicyActionsComponent implements OnInit {
               this.messageError = true;
               this.showSuccess('error', 'Error al cancelar', resp.dataHeader.status);
           }
-        },
-        // (error) => {
-        //   this.messageError = true;
-        //   this.showSuccess('error', 'Error al cancelar', error.error.dataHeader.status);
-        // }
+        }
         );
       } else {
         this.messageError = true;
@@ -238,8 +231,6 @@ export class ModalPolicyActionsComponent implements OnInit {
 
     const [withoutTime] = date.toISOString().split('T');
     if (this.formProcess.get('processDate')?.value && date >= inceptionDate && date <= expirationDate) {
-      //this.getPremium(this.config.data.policy.idPolicy, withoutTime);
-      //this.getAmountToReturn(inceptionDate, expirationDate, withoutTime);
       this.getPremiumReturnValue(this.premiumData.premiumEndValue, withoutTime, expirationDate);
     } else {
       this.formProcess.get('immediate')?.setValue(0);

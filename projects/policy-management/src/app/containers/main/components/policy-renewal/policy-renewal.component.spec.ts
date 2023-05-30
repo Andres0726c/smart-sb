@@ -785,7 +785,6 @@ describe('PolicyRenewalComponent', () => {
     let dataControlsValue = [{id: 7,code: 7,name: 'abc',fields: [{ code: { businessCode: "abc" } }]}];
     let businessCode = "abc";
     const spy = component.getControlValue(dataControlsValue, businessCode);
-    console.log(spy); 
     //expect(spy).toBeUndefined();
   });
 });

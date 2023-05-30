@@ -1,30 +1,7 @@
 <div class="div-content-chips">
     <div class="container-chips">
 
-<!--      <section class="input">-->
-<!--        <span class="title">Tarifa</span>-->
-<!--          <mat-form-field class="example-chip-list"-->
-<!--                          appearance="outline"-->
-<!--                          (click)="openDialogCoverageRates()"-->
-<!--                          placeholder="Seleccione la tarifa"-->
-<!--                          data-qa-id="sc-rpmf-btn_rates"-->
-<!--          >-->
-<!--            <mat-chip-list #chipListRates aria-label="Seleccione la Tarifa" class="chip-list">-->
-<!--              <mat-chip *ngFor="let cr of coverageRatesControls?.value" (removed)="remove(cr)" class="chip">-->
-<!--                {{cr.name}}-->
-<!--                <button matChipRemove data-qa-id="sc-rpmf-btn_delete_coverages_rates">-->
-<!--                  <em class="fal fa-times-circle chip__icon"></em>-->
-<!--                </button>-->
-<!--              </mat-chip>-->
-<!--            </mat-chip-list>-->
-
-<!--            <span class="mat-chip-placeholder" *ngIf="coverageRatesControls?.value?.length === 0">Seleccionar</span>-->
-<!--            <em class="fas fa-caret-down custom-icon"></em>-->
-<!--          </mat-form-field>-->
-<!--      </section>-->
-
       <form [formGroup]="selectedField">
-<!--        <pre>{{ coverageRatesControls?.value | json }}</pre>-->
         <section class="input">
           <span class="title">Regla de tarifación</span>
           <mat-form-field class="example-chip-list"

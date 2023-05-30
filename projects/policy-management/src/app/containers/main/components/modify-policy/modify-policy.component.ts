@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ResponseDTO, ResponseErrorDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
+import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { ComplementaryData } from 'projects/policy-management/src/app/core/interfaces/product/complementaryData';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
-import { ModalResponseRulesComponent } from 'projects/policy-management/src/app/shared/components/modal-response-rules/modal-response-rules.component';
-import { lastValueFrom } from 'rxjs';
-import { resourceLimits } from 'worker_threads';
 import { Identification } from '../consult-policy/interfaces/identification';
 import { ConsultPolicyService } from '../consult-policy/services/consult-policy.service';
 
@@ -132,7 +129,7 @@ export class ModifyPolicyComponent {
       flag= this.activeButtonPol(policyData,policyDataControls,i);
       if (!flag) { return flag; }
     }
-    flag? flag = this.validateSaveButtonRisk(riskData, riskTypesControls) : flag = false;
+    if(flag) {flag = this.validateSaveButtonRisk(riskData, riskTypesControls)} else{ flag = !flag;}
     return flag;
   }
   activeButtonPol(policyData: any, policyDataControls: any, i:any){
@@ -347,8 +344,8 @@ export class ModifyPolicyComponent {
     fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
 
     if (field.dataType.guiComponent === 'List box') {
-      let options: any = [], domainList = field.domainList.valueList;
-      field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
+      let options = [{ id: valueObj.value, name: valueObj.value }], domainList = field.domainList.valueList;
+      if(field.domainList){ options = this.showDomainList(domainList, valueObj);}
       fieldFG.addControl('options', this.fb.control(options));
     }
 
@@ -383,8 +380,8 @@ export class ModifyPolicyComponent {
     fieldFG.addControl('value', this.fb.control(field.dt.dtTyp.guiCmpnntItm === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
 
     if (field.dt.dtTyp.guiCmpnntItm === 'List box') {
-      let options: any = [], domainList = field.dt.dmnLst?.vlLst;
-      field.dt.dmnLst ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
+      let options=[{ id: valueObj.value, name: valueObj.value }], domainList = field.dt.dmnLst?.vlLst;
+      if(field.dt.dmnLst ) {options = this.showDomainList(domainList, valueObj)};
       fieldFG.addControl('options', this.fb.control(options));
     }
 

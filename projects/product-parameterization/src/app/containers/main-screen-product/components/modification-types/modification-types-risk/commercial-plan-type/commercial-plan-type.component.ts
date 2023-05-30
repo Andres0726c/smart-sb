@@ -2,11 +2,7 @@ import {
   Component,
   OnInit,
   Input,
-  Output,
-  ChangeDetectionStrategy,
-  EventEmitter,
   OnChanges,
-  SimpleChanges,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,10 +16,6 @@ import {
 } from 'projects/product-parameterization/src/app/shared/toast-message/toast-message.component';
 import { ModalSearchSmallComponent } from 'projects/product-parameterization/src/app/shared/modal-search-small/modal-search-small.component';
 
-interface options {
-  id: number;
-  value: [];
-}
 
 interface Coverages {
   description: string;
@@ -84,7 +76,7 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   }
   ngOnInit(): void {
     
-    // TODO document why this method 'ngOnInit' is empty
+    //  document why this method 'ngOnInit' is empty
   }
 
   getAllFields() {
@@ -123,19 +115,19 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     return  (<FormArray>(
       this.policyDataControls.controls
         .find((x: { value: { name: string } }) => x.value.name === name)
-        ?.get('cmmrclPln') )) as FormArray;
+        ?.get('cmmrclPln') )) ;
   
   }
   getcoveragesPln(code: string) {
     return (<FormArray>this.getcmmrclPln(this.titleRisk)
       .controls.find((x: { value: { code: string } }) => x.value.code === code)
-      ?.get('cvrg')) as FormArray;
+      ?.get('cvrg'));
   }
 
   getAthrzdOprtnCoveragePln(id:number){
     return   (<FormArray>(this.getcoveragesPln(this.data)
     .controls.find((x: { value: { id: number } }) => x.value.id === id)
-    ?.get('athrzdOprtn') )) as FormArray;
+    ?.get('athrzdOprtn') ));
 }
   
   
@@ -144,13 +136,13 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
     
     return (<FormArray>this.getcmmrclPln(this.titleRisk)
       .controls.find((x: { value: { code: string } }) => x.value.code === code)
-      ?.get('srvcPln')) as FormArray;
+      ?.get('srvcPln'));
   }
 
   getAthrzdOprtnSrvcPln(id:number){
     return   (<FormArray>(this.getSrvcPln(this.data)
     .controls.find((x: { value: { id: number } }) => x.value.id === id)
-    ?.get('athrzdOprtn') )) as FormArray;
+    ?.get('athrzdOprtn') ));
 }
   
 
@@ -160,28 +152,28 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       this.productService.coverages.controls
         .find((x: { value: { id: number } }) => x.value.id === id)
         ?.get('complementaryData')
-    )) as FormArray;
+    ));
   }
   getcoverages(id: number) {
     return (<FormArray>(
       this.getcoveragesPln(this.data).controls.find(
         (x: { value: { id: number } }) => x.value.id === id
       )
-    )) as FormArray;
+    ));
   }
   getcover(id: number) {
     return (<FormArray>(
       this.getcoveragesPln(this.data).controls.find(
         (x: { value: { id: number } }) => x.value.id === id
       )?.get('cvrgDtGrp')
-    )) as FormArray;
+    ));
   }
 
 
   get policyDataControls(): FormArray {
     return (<FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
-    )) as FormArray;
+    ));
   }
 
 
@@ -236,7 +228,8 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
       
       this.getAthrzdOprtnCoveragePln(id).push(this.fb.control(eventA));
     }
-    this.getAthrzdOprtnCoveragePln(id).value.find((x:any)=>x==="MDF")?(flag=false):(flag=true);
+    if(this.getAthrzdOprtnCoveragePln(id).value.find((x:any)=>x==="MDF"))
+    {flag=!flag}
 
     if(flag){
       this.getcover(id).clear();
@@ -245,8 +238,9 @@ export class CommercialPlanTypeComponent implements OnInit, OnChanges {
   }
   }
   activeButton(data: any) {
-    let btn: boolean; 
-      data.athrzdOprtn.find((d:any)=>d=='MDF') ? (btn = false) : (btn = true);
+    let btn: boolean=true; 
+      if(data.athrzdOprtn.find((d:any)=>d=='MDF'))
+        {btn = !btn} 
     return btn;
   }
 

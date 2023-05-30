@@ -58,7 +58,7 @@ export class CoveragesComponent implements OnInit {
     this.dataSourcetable = new MatTableDataSource<any>((<FormArray>this.selectedCoverage.get('claimReservation')).controls);
     if (this.complementaryDataComponent) { this.complementaryDataComponent.reset() }
     if (this.payRollDataComponent) { this.payRollDataComponent.reset() }
-    //this.dataSourcetable.paginator = this.paginatorClaim;
+
   }
 
   get coverageGroup(): FormGroup {

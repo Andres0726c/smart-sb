@@ -7,6 +7,8 @@ import { DialogService, DynamicDialogConfig, DynamicDialogModule, DynamicDialogR
 import { of } from 'rxjs';
 import { ProductService } from '../../services/product.service';
 import { RulesWizardComponent } from './rules-wizard.component';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Table } from 'primeng/table';
 
 class DialogMock {
   open() {
@@ -39,7 +41,8 @@ describe('RulesWizardComponent', () => {
           provide: MatDialog,
           useValue: new DialogMock()
         }
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
 
@@ -140,4 +143,99 @@ describe('RulesWizardComponent', () => {
   it('paramsControls', () => {
     expect(component.paramsControls).toBeDefined();
   });
+  it('setData',()=>{
+
+    component.setData({dataHeader:{totalRecords:{}}});
+  });
+
+
+
+  it('loadModalData error',()=>{
+    jest.spyOn(component, 'loadModalData').mockImplementation(() => {
+      throw new Error('Simulated error');
+    });
+    expect(() => component.loadModalData()).toBeDefined();
+  })
+  it('setItem item 0',()=>{
+    component.items[0].command();
+    component.setItem();
+  })
+  it('',()=>{
+    const event:Event = {
+      target: document.createElement('input') as HTMLInputElement,
+      bubbles: false,
+      cancelBubble: false,
+      cancelable: false,
+      composed: false,
+      currentTarget: null,
+      defaultPrevented: false,
+      eventPhase: 0,
+      isTrusted: false,
+      returnValue: false,
+      srcElement: null,
+      timeStamp: 0,
+      type: '',
+      composedPath: function (): EventTarget[] {
+        throw new Error('Function not implemented.');
+      },
+      initEvent: function (type: string, bubbles?: boolean | undefined, cancelable?: boolean | undefined): void {
+        throw new Error('Function not implemented.');
+      },
+      preventDefault: function (): void {
+        throw new Error('Function not implemented.');
+      },
+      stopImmediatePropagation: function (): void {
+        throw new Error('Function not implemented.');
+      },
+      stopPropagation: function (): void {
+        throw new Error('Function not implemented.');
+      },
+      NONE: 0,
+      CAPTURING_PHASE: 1,
+      AT_TARGET: 2,
+      BUBBLING_PHASE: 3
+    };
+    const tableMock: Partial<Table> = {
+      filterGlobal: jest.fn(),
+    };
+    
+    component.modalSearchTable = tableMock as Table;
+
+    component.modalSearchTable.filterGlobal('test','');
+    event.target?.addEventListener('Test value',null);
+    component.applyFilterGlobal(event,'filterType');
+    
+    expect(tableMock.filterGlobal).toHaveBeenCalled();
+  });
+
+  it('setFieldValue',()=>{
+
+    component.setFieldValue('',['1']);
+  })
+
+  it('setFieldValue when is element',()=>{
+    component.setFieldValue('',['element'])
+  })
+  
+  it(' setFieldValue when is null',()=>{
+    component.setFieldValue(['null'],['null']);
+  })
+  it('setItem item 1',()=>{
+    component.items[1].command();
+    component.setItem();
+  });
+
+  it('insertDataToTable',()=>{
+
+    component.modal={};
+    component.arrayData=[{id:1}];
+    component.data={list:[{id:1, name:'test'}], code:'', columns:[{name:'',displayValue:[]}]};
+    component.insertDataToTable()
+  });
+
+  it('showedColumns',()=>{
+    component.data={list:[{id:1, name:'test'}], code:'', columns:[{name:'',displayValue:[], header:'test'}]};
+    component.showedColumns();
+  })
+
 });

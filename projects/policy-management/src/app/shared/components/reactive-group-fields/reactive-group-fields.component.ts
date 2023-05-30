@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { ElementTableSearch } from 'projects/product-parameterization/src/app/core/model/ElementTableSearch.model';
 import { ProductService } from '../../../core/services/product/product.service';
 import { ModalResponseRulesComponent } from '../modal-response-rules/modal-response-rules.component';
 
@@ -30,7 +29,7 @@ export class ReactiveGroupFieldsComponent {
   ) {}
 
   ngOnInit() {
-   // TODO document why this method 'ngOnInit' is empty
+   //  document why this method 'ngOnInit' is empty
   }
 
   getFieldsControls(group: any) {
@@ -47,12 +46,6 @@ export class ReactiveGroupFieldsComponent {
 
     valueAfter = !this.isObject(valueAfter)?valueAfter:valueAfter.id
 
-   /*console.log(groupName,"numero: ",field.value?.vldtRl.length)
-    console.log(this.policy.plcy.rsk);
-     console.log(valueCurrent,"actual");
-     console.log(valueAfter,"despues");
-     console.log(field.value,"field");*/
-
     if (valueCurrent !== valueAfter || show) {
 
       this.updatePolicy.emit(false);
@@ -61,18 +54,15 @@ export class ReactiveGroupFieldsComponent {
 
       this.addControls(field);
 
-      //field.addControl("rule", this.fb.control(false));
 
       
       if(field.value?.initializeRule && field.value?.initializeRule?.length !== 0 && valueCurrent !==''){
-        //console.log("entra initial");
           this.getRule(field,"inicial",show);
          
       }
       if(field.value?.vldtRl.length !== 0){
 
       
-        //console.log("entra validation");
 
           this.getRule(field,"validacion",show);
       }
@@ -114,7 +104,6 @@ export class ReactiveGroupFieldsComponent {
 
         this.productService.executeRule(obj).subscribe((res: any) => {
 
-          console.log(res,"res");
 
           if(res?.dataHeader?.errorList[0]?.errorDescription){
             
