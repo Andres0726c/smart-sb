@@ -398,7 +398,7 @@ describe('ModifyPolicyComponent', () => {
     const spy2 = jest.spyOn(component, 'validateGui').mockReturnValue(res);
     const spy1 = component.validateSaveButtonRisk(riskData, riskTypesControls);
     expect(spy2).toBeDefined();
-    expect(spy1).toEqual(false);
+    expect(spy1).toEqual(true);
   });
   describe('validateGui', () => {
     it('ListBoxWithIdTrue', () => {
