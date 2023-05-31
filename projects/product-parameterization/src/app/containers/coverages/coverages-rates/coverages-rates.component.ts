@@ -194,7 +194,7 @@ Funcion para agregar chip en el input de opciones múltiples pero de única sele
         this.selectedField.removeAt(0);
         this.selectedField.push(this.fb.control(object));
       }
-      this.chipListRates.errorState = false;
+      this.removeChipList();
       data.msg ='La tarifa fue asociada correctamente.'
 
       this.toastMessage.openFromComponent(ToastMessageComponent, {
@@ -202,6 +202,9 @@ Funcion para agregar chip en el input de opciones múltiples pero de única sele
       });
     }
   };
+  removeChipList(){
+    this.chipListRates.errorState = false;
+  }
 
 /**
  *
@@ -220,7 +223,7 @@ Funcion para agregar chip en el input de opciones múltiples pero de única sele
       if(res) {
         let index = -1;
 
-        index = this.coverageRatesControls.controls[0].value['calculationRule'].indexOf(value);
+        index = this.getIndex(value);
 
         if (index >= 0) {
           (<FormArray>this.coverageRatesControls.controls[0]?.get('calculationRule')).removeAt(0);
@@ -229,6 +232,9 @@ Funcion para agregar chip en el input de opciones múltiples pero de única sele
     })
   };
 
+  getIndex(value:any){
+   return (this.coverageRatesControls.controls[0].value['calculationRule'].indexOf(value));
+  }
   reset(){
     this.coverageRates = new FormArray([]);
   }
