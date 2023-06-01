@@ -171,8 +171,9 @@ export class SidenavPropertyProductComponent implements OnInit {
        this.setterValuesMenu(menu,res)
     });
 
-    dialogRef.beforeClosed().subscribe(async (res) => {
-      if (await res) await this.navigateGeneralParams().then(result => {}).catch(error => {});
+    dialogRef.beforeClosed().subscribe( (res) => {
+      if (res)  
+      this.navigateGeneralParams().then(result => {}).catch(error => {});
     });
   }
   setterValuesMenu(menu:any,res:any)
@@ -186,9 +187,11 @@ export class SidenavPropertyProductComponent implements OnInit {
   }
 
   async navigateGeneralParams() {
+    await new Promise((resolve) => setTimeout(resolve, 50));   
     await this.router.navigate([
       '/productos/parametrizador/parametros-generales',
-    ]).then(result => {}).catch(error => {});  }
+    ]).then(result => {}).catch(error => {});;
+  }
   setValues(menu: any, value: boolean) {
     this.formProcess.get(menu.formControlName)?.get('enabled')?.setValue(value);
 
