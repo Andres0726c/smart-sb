@@ -296,7 +296,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     .saveDeleteCancellation(dataDeletion)
     .subscribe((res) => {
       this.loading = false
-      if (res.body?.expirationDate) {
+      if (res.body?.completeDate) {
         this.showSuccess('success', 'Proceso exitoso', 'El movimiento ha sido reversado correctamente');
       } else {
         this.showSuccess('error', 'Error al actualizar', 'Error inesperado al reversar el movimiento');
@@ -392,9 +392,9 @@ export class ConsultPolicyComponent implements OnDestroy {
     this.productService
     .getApiData('policy/futureCancellationStatus?smartCorePolicyNumber=' + this.selectedPolicy.policyNumber, '', '')
     .subscribe((res) => {
-      if (res.body?.expirationDate) {
+      if (res.body?.completeDate) {
         this.disabledOption('Reversar movimiento', false)
-        this.selectedPolicyCancellationDate = new Date(res.body.expirationDate);
+        this.selectedPolicyCancellationDate = new Date(res.body.completeDate);
         this.items = this.items.slice(); //refresh menu content
       }
     });
