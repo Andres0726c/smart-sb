@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';

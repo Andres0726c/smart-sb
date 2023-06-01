@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AnyMxRecord } from 'dns';
-import { ResponseDTO, ResponseErrorDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 
@@ -19,7 +17,7 @@ export class ModifyDataComponent implements OnInit {
     nmContent: undefined,
   };
   
-  @Input() modifyData!: FormGroup; //= new FormArray([], [Validators.required]);
+  @Input() modifyData!: FormGroup;
   @Input() dataType = '';
   @Input() Data:any;
 
@@ -33,15 +31,10 @@ export class ModifyDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
-    //this.initializeData();
-   
-    
+    //empty
   }
 
-  get policyData(): FormArray {
-    return this.modifyData.get('policyData') as FormArray
-  }
+
 
   get dataTypeControls(): FormArray {
     if (this.dataType === 'policyData'){
@@ -56,10 +49,6 @@ export class ModifyDataComponent implements OnInit {
       let p:any = new FormArray([])
       return p as FormArray
     }
-  }
-
-  get test():FormArray {
-    return this.Data as FormArray;
   }
 
   getFieldsControls(group: any) {

@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { MenuItem } from 'primeng/api';
+import { Component, Input} from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 
 @Component({
@@ -10,66 +9,20 @@ import { ProductService } from 'projects/policy-management/src/app/core/services
 })
 export class ModifyTabsDataComponent  {
 
-  @Input() modifyData!: FormGroup; //= new FormArray([], [Validators.required]);
+  @Input() modifyData!: FormGroup; 
   @Input() riskData: any;
   @Input() policyData: any;
   @Input() formData!: FormGroup;
   
-  // Fields: any;
 
-  //   items!: any;
-  //   scrollableItems!: MenuItem[];
-  //   activeItem!: MenuItem;
-  //   activeItem2!: MenuItem;
-  //   risk:any=new FormArray([]);
-  //   riskForm!:FormGroup;
-  //   dataRisk:any=[];
 
 
   constructor(
-    //public fb: FormBuilder,
-   // public productService: ProductService,
+    public productService: ProductService,
   ) { 
-    // this.riskForm=this.fb.group({
-    //   fields:this.fb.array([])
-    // });
+
   }
 
   
-    // ngOnInit() {
-    //    // this.scrollableItems = Array.from({ length: 50 }, (_, i) => ({label: `Tab ${i + 1}`}));
-
-    // }
-
-  
-  // ngOnChanges(): void {
-  //  // this.getPolicy(this.riskData.idPolicy);
-  // // this.riskTypes();
-  // }
-
-  // ngOnAfterViewInit(): void {
-  //  // this.getPolicy(this.riskData.idPolicy);
-  //   //this.riskTypes();
-  // }
-
-  // get riskControls(): FormArray {
-  //   return  this.riskForm?.get('fields') as FormArray;
-  // }
-
-  // get riskDataControls(): FormArray {
-  //   return this.modifyData.get('riskData') as FormArray
-  // }
-
-
-  // getRiskComplementaryData(risk:any){
-  //   return risk.get('complementaryData') as FormArray
-  // }
-
-
-  /**
-   *
-   * Función para mapear la información en nuevo objeto con los elementos necesarios para enviar al componente html
-   */
-  
-    
+      
 }

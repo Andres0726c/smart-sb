@@ -42,7 +42,6 @@ export class HeaderComponent implements OnInit {
       await this.cognitoService.signOut().then().catch();
       await this.router.navigate(['login']).then().catch();
     });
-    // console.log("");
   }
 
   /** 

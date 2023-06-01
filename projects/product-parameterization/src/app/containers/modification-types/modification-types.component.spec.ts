@@ -160,11 +160,31 @@ describe('VisibleNonModifiableFieldsComponent', () => {
     let node = { expandable: false, name: 'test name', level: 1 };
     expect(component.viewModificationType(node)).toBeUndefined();
   });
+  it('quantityItem swhen node.name is not "Datos a previsualizar" ',()=>{
+    let node = {expandable: false, name: 'test name', level: 1};
 
-  // it('quantityItems', () => {
-  //   let node = { expandable: false, name: 'test', level: 1 };
-  //   let subItemsModificationType = [{ name: 'test', formArray:'test', distance: 1}]
-  //   component.subItemsModificationTypes = subItemsModificationType;
-  //   expect(component.quantityItems(node)).toBeTruthy();
-  // });
+    component.treeControl.dataNodes=[{expandable: false, name: 'test name', level: 1}]
+    component.subItemsModificationTypes=[{  name: "test name", formArray: "name", distance: -1}]
+    component.flatNodeMap.set(node,node);
+    jest.spyOn(component,'getModification').mockImplementation();
+     component.quantityItems(node);
+  });
+
+  it('quantityItem swhen node.name is "Datos a previsualizar" ',()=>{
+    let node = {expandable: false, name: 'Datos a previsualizar', level: 1};
+
+    component.treeControl.dataNodes=[{expandable: false, name: 'Datos a previsualizar', level: 1}]
+    component.subItemsModificationTypes=[{  name: "Datos a previsualizar", formArray: "name", distance: -1}]
+    component.flatNodeMap.set(node,node);
+    let res = {fields:[{id:1}]}
+    jest.spyOn(component,'getModification').mockReturnValue(res);
+     component.quantityItems(node);
+  });
+
+  it('getModification',()=>{
+    component.getModification(0,{  name: "Datos a previsualizar", formArray: "name", distance: -1})
+  })
+
+  
+
 });

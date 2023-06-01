@@ -12,6 +12,7 @@ import { of } from 'rxjs';
 import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
 import { ProductService } from '../../services/product.service';
 import { ClaimLiquidationConceptComponent } from './claim-liquidation-concept.component';
+import { MatTreeFlatDataSource } from '@angular/material/tree';
 
 class dialogMock {
   open() {
@@ -109,42 +110,47 @@ describe('ClaimLiquidationConceptComponent', () => {
     expect(component).toBeDefined();
   });
 
-  /*it('viewLiquidationConcept  Ok', () => {
+  it('viewLiquidationConcept ',()=>{
+    let node={name:'test1',level:1,expandable:true};
+    component.flatNodeMap.set(node,node);
+    component.selectedLiquidationConcept= new FormGroup({
+      name: new FormControl('test'),
+      claimLiquidation: new FormControl('')
+    });
+    jest.spyOn(component,'findIndexNode').mockReturnValue(0)
+    component.productService.conceptReservation=null;
+    component.viewLiquidationConcept(node); 
+  });
 
-    component.productService.conceptReservation =new FormArray([
-      new FormGroup({
-        id: new FormControl(1),
-        name: new FormControl('test1'),
-        claimLiquidation: new FormArray([])
-      }),
-      new FormGroup({
-        id: new FormControl(2),
-        name: new FormControl('test2'),
-        claimLiquidation: new FormArray([])
-      })
-    ])
-
+  it('findIndexNode',()=>{
     component.dataSource.data = [
-      {
-        children: [
-          {
-            id: 1,
-            name: 'Muerte accidental',
-          },
-        ],
-        name: 'Concepto de reserva',
-      },
-    ];
-    let node = { expandable: false, name: 'Muerte accidental', level: 1 };
-
-    expect(component.viewLiquidationConcept(node)).toBeUndefined();
-  });*/
-
+      { name: 'test', children: [ { id:1, name:""  }] }]
+      let node={id:1,name:'test'}
+      component.flatNodeMap.set(node,node)
+    component.findIndexNode({expandable:true,name:'test',level:1});
+  }); 
+  it('updateTree ',()=>{
+    component.productService.conceptReservation=null;
+    component.updateTree();
+  })
+  it('addItemLiquidationConcept',()=>{
+    component.selectedLiquidationConcept= new FormGroup({
+      name: new FormControl('test'),
+      claimLiquidation:new FormArray([])
+    });
+    component.addItemLiquidationConcept([{id:2,name:'test',description:'test'}]);
+  })
   it('openToAdd  Ok', () => {
     expect(component.openToAdd()).toBeUndefined();
   });
 
   it('removeItems  Ok', () => {
+    component.selectedLiquidationConcept= new FormGroup({
+      name: new FormControl('test'),
+      claimLiquidation: new FormArray([ new FormGroup({
+        id: new FormControl(1)
+      })])
+    });
     expect(component.removeItems()).toBeUndefined();
   });
 
@@ -162,6 +168,7 @@ describe('ClaimLiquidationConceptComponent', () => {
   });
 
   it('deselectRows  Ok', () => {
+
     expect(component.deselectRows()).toBeUndefined();
   });
 
@@ -199,6 +206,22 @@ describe('ClaimLiquidationConceptComponent', () => {
     expect(component.isAllDisplayedSelected()).toBeDefined();
   });
 
+  it('deselectRows',()=>{
+    let obj = {
+      id: 1,
+      name: 'name',
+      description: '2',
+    };
+    component.dataSourceTable = new MatTableDataSource<any>([
+      obj,
+      {
+        id: 2,
+        name: 'abc',
+        description: 'abc',
+      },
+    ]);
+    component.deselectRows();
+  })
   it('updateConceptReservations', () => {
     expect(component.updateConceptReservations()).toBeUndefined();
   });

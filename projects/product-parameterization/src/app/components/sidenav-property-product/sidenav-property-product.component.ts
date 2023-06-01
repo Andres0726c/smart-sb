@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild, DoCheck } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router,ActivatedRoute } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { ModalConfirmDeleteComponent } from '../../shared/modal-confirm-delete/modal-confirm-delete.component';
-import { AnyARecord } from 'dns';
 @Component({
   selector: 'app-sidenav-property-product',
   templateUrl: './sidenav-property-product.component.html',
@@ -96,6 +94,9 @@ export class SidenavPropertyProductComponent implements OnInit {
       showEnable: true,
       show: false,
       isExpanded: true,
+      nameClearData1:'cnclltnCsCd',
+      nameClearData2:'clcltnRl',
+      nameClearData3:'isCncllblIncptnDt',
       submenus: [
         { name: 'Datos de cancelación', routerLink: 'datos-cancelacion' },
       ],
@@ -106,6 +107,9 @@ export class SidenavPropertyProductComponent implements OnInit {
       showEnable: true,
       show: false,
       isExpanded: true,
+      nameClearData1:'rnsttmntCsCd',
+      nameClearData2:'clcltnRl',
+      nameClearData3:'isNwIssPlcy',
       submenus: [
         { name: 'Datos de rehabilitación', routerLink: 'datos-rehabilitacion' },
       ],
@@ -116,6 +120,9 @@ export class SidenavPropertyProductComponent implements OnInit {
       showEnable: true,
       show: false,
       isExpanded: true,
+      nameClearData1:'rnwlCsCd',
+      nameClearData2:'clcltnRl',
+      nameClearData3:'isNwIssPlcy',
       submenus: [
         { name: 'Datos de renovación', routerLink: 'datos-renovacion' },
       ],
@@ -136,20 +143,23 @@ export class SidenavPropertyProductComponent implements OnInit {
 
   changeCheck(menu: any, moduleType: any) {
     if (menu.formControlName) {
-      if (this.formProcess.get(menu.formControlName)?.value.enabled) {
-        if (moduleType === 'modification') {
-          this.showMessage(menu);
-        }else{
-        menu.show = false;
-        }
-      } else {
-        menu.show = true;
-      }
+      this.validateFormControlName(menu,moduleType)
     } else {
       menu.show = false;
     }
   }
 
+  validateFormControlName(menu:any,moduleType:any){
+    if (this.formProcess.get(menu.formControlName)?.value.enabled) {
+      if (moduleType === 'modification') {
+        this.showMessage(menu);
+      }else{
+      menu.show = false;
+      }
+    } else {
+      menu.show = true;
+    }
+  }
   showMessage(menu: any) {
     const dialogRef = this.dialog.open(ModalConfirmDeleteComponent, {
       data: {
@@ -158,23 +168,29 @@ export class SidenavPropertyProductComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        this.setValues(menu, false);
-        this.deleteCascade();
-      } else {
-        this.setValues(menu, true);
-      }
+       this.setterValuesMenu(menu,res)
     });
 
-    dialogRef.beforeClosed().subscribe(async (res) => {
-      if (res) await this.navigateGeneralParams().then(result => {}).catch(error => {});
+    dialogRef.beforeClosed().subscribe( (res) => {
+      if (res)  
+      this.navigateGeneralParams().then(result => {}).catch(error => {});
     });
+  }
+  setterValuesMenu(menu:any,res:any)
+  {
+    if (res) {
+      this.setValues(menu, false);
+      this.deleteCascade();
+    } else {
+      this.setValues(menu, true);
+    }
   }
 
   async navigateGeneralParams() {
+    await new Promise((resolve) => setTimeout(resolve, 50));   
     await this.router.navigate([
       '/productos/parametrizador/parametros-generales',
-    ]);
+    ]).then(result => {}).catch(error => {});;
   }
   setValues(menu: any, value: boolean) {
     this.formProcess.get(menu.formControlName)?.get('enabled')?.setValue(value);
@@ -277,48 +293,27 @@ export class SidenavPropertyProductComponent implements OnInit {
       menu.show = !menu.show;
     }
   }
-  clearData(menu: any) {
-    if (menu === 'cancellation') {
-      if (!this.formProcess?.get(menu)?.value.enabled === false) {
-        this.formProcess?.get(menu)?.get('cnclltnCsCd')?.setValue([]);
-        this.formProcess?.get(menu)?.get('clcltnRl')?.setValue([]);
-        this.formProcess?.get(menu)?.get('isCncllblIncptnDt')?.setValue(false);
+  clearData(name: any,menu:any) {
 
-        this.formProcess?.get(menu)?.get('cnclltnCsCd')?.disable();
-        this.formProcess?.get(menu)?.get('isCncllblIncptnDt')?.disable();
-      } else {
-        this.formProcess?.get(menu)?.get('cnclltnCsCd')?.enable();
-        this.formProcess?.get(menu)?.get('isCncllblIncptnDt')?.enable();
-      }
+    if (!this.formProcess?.get(name)?.value.enabled === false) {
+
+      this.formProcess?.get(name)?.get(menu.nameClearData1)?.setValue([]);
+      this.formProcess?.get(name)?.get(menu.nameClearData2)?.setValue([]);
+      this.formProcess?.get(name)?.get(menu.nameClearData3)?.setValue(false);
+
+      this.formProcess?.get(name)?.get(menu.nameClearData1)?.disable();
+      this.formProcess?.get(name)?.get(menu.nameClearData3)?.disable();
+      if (name === 'renewal')
+      this.formProcess?.get(name)?.get(menu.nameClearData2)?.disable();
+
+    } 
+    else {
+      this.formProcess?.get(name)?.get(menu.nameClearData1)?.enable();
+      this.formProcess?.get(name)?.get(menu.nameClearData3)?.enable();
+      if (name === 'renewal')
+      this.formProcess?.get(name)?.get(menu.nameClearData2)?.enable();
     }
-    if (menu === 'rehabilitation') {
-      if (!this.formProcess.get(menu)?.value.enabled === false) {
-        this.formProcess?.get(menu)?.get('rnsttmntCsCd')?.setValue([]);
-        this.formProcess?.get(menu)?.get('clcltnRl')?.setValue([]);
-        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.setValue(false);
+  console.log("this.formProcess: ",this.formProcess)
 
-        this.formProcess?.get(menu)?.get('rnsttmntCsCd')?.disable();
-        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.disable();
-      } else {
-        this.formProcess?.get(menu)?.get('rnsttmntCsCd')?.enable();
-        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.enable();
-      }
-    }
-
-    if (menu === 'renewal') {
-      if (!this.formProcess.get(menu)?.value.enabled === false) {
-        this.formProcess?.get(menu)?.get('rnwlCsCd')?.setValue([]);
-        this.formProcess?.get(menu)?.get('clcltnRl')?.setValue([]);
-        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.setValue(false);
-
-        this.formProcess?.get(menu)?.get('rnwlCsCd')?.disable();
-        this.formProcess?.get(menu)?.get('clcltnRl')?.disable();
-        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.disable();
-      } else {
-        this.formProcess?.get(menu)?.get('rnwlCsCd')?.enable();
-        this.formProcess?.get(menu)?.get('clcltnRl')?.enable();
-        this.formProcess?.get(menu)?.get('isNwIssPlcy')?.enable();
-      }
-    }
   }
 }

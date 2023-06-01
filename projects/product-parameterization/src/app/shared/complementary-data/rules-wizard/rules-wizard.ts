@@ -10,7 +10,6 @@ import { ElementTableSearch } from '../../../core/model/ElementTableSearch.model
 import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
-import { O } from '@angular/cdk/keycodes';
 
 
 export interface SearchParameters {

@@ -1,18 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick
+ } from '@angular/core/testing';
 
 import { CancellationDataComponent } from './cancellation-data.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, inject, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
-  Validators,
+  
 } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { Observable, of } from 'rxjs';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { endWith, Observable, of } from 'rxjs';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MessageService } from 'primeng/api';
 import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
@@ -27,6 +31,7 @@ class dialogMock {
           {
             id: 1,
             name: 'name test return',
+            code:'test',
             description: 'description test return',
           },
         ]),
@@ -37,6 +42,10 @@ class dialogMock {
 describe('CancellationDataComponent', () => {
   let component: CancellationDataComponent;
   let fixture: ComponentFixture<CancellationDataComponent>;
+  let productService:ProductService;
+  let dialogService:DialogService;
+  let matDialog:MatDialog;
+
   const errorResponseSpy = jest.fn().mockImplementation(() => {
     return new Observable(() => {
       throw new Error("error");
@@ -57,6 +66,7 @@ describe('CancellationDataComponent', () => {
           provide: MatDialog,
           useValue: new dialogMock(),
         },
+
         {
           provide: FormArray,
           useValue: {},
@@ -71,8 +81,16 @@ describe('CancellationDataComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(CancellationDataComponent);
+    productService= TestBed.inject(ProductService);
+    dialogService = TestBed.inject(DialogService);
+    matDialog = TestBed.inject(MatDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
   });
 
   it('should create', () => {
@@ -83,6 +101,19 @@ describe('CancellationDataComponent', () => {
     expect(component.ngOnInit()).toBeDefined();
   });
 
+it('findRmsDpndncy',()=>{
+  component.rmsDpndncy=[{id:'23',insrncLn:'23'}]
+  component.findRmsDpndncy();
+});
+
+it('openRuleWizard',()=>{
+  jest.spyOn(component,'getRulesDp').mockImplementation();
+
+
+   let spy= jest.spyOn(dialogService,'open');
+  
+  component.openRuleWizard('test','test');
+})
   it('addRule', () => {
     (<FormArray>component.productService.prdctDpndncy.get('insrncLn')).push(new FormControl({id: 1, cd: 'test'}));
     const objRule: any = {
@@ -104,7 +135,8 @@ describe('CancellationDataComponent', () => {
         { name: 'test2', value: 'test2' }
       ]
     };
-    component.rulePrevValue = {rlCd: 'test'};
+    component.rulePrevValue = [{rlCd: 'test'}];
+    jest.spyOn(productService,'deleteDependencyRef').mockImplementation()
     component.productService.references.push(new FormControl({
       prdctDpndncyRef: 'rl',
       cd: 'test',
@@ -154,6 +186,22 @@ describe('CancellationDataComponent', () => {
     expect(component.loadContextData()).toBeDefined();
   });
 
+
+
+  it('getCauses when initialParameter have insuranceLine',()=>{
+    component.productService.initialParameters= new FormGroup({
+      insuranceLine: new FormControl('23') 
+    })
+
+    component.getCauses();
+  })
+  it('getCauses when insuranceLine is null',()=>{
+    component.productService.initialParameters= new FormGroup({
+      insuranceLine: new FormControl(null) 
+    })
+
+    component.getCauses();
+  })
   it('load causes error', () => {
     jest.spyOn(component.productService, 'getApiData').mockImplementation(errorResponseSpy);
     expect(component.getCauses()).toBeDefined();

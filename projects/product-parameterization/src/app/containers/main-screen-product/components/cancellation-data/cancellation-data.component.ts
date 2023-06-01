@@ -3,7 +3,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ElementTableSearch } from 'projects/product-parameterization/src/app/core/model/ElementTableSearch.model';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 import { RulesWizardComponent } from 'projects/product-parameterization/src/app/shared/rules-wizard/rules-wizard.component';
-import { lastValueFrom, filter } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'refactoring-smartcore-mf-cancellation-data',
@@ -28,14 +28,17 @@ export class CancellationDataComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.findRmsDpndncy();
+    await this.loadContextData().then();
+    await this.getCauses().then();
+  }
+  findRmsDpndncy(){
     this.rmsDpndncy = this.productService.prdctDpndncy?.get('insrncLn')?.value;
     this.rm = this.rmsDpndncy?.find(
       (element: any) =>
         element.id ===
         this.productService.initialParameters?.get('insuranceLine')?.value
     );
-    await this.loadContextData().then();
-    await this.getCauses().then();
   }
 
   async loadContextData() {

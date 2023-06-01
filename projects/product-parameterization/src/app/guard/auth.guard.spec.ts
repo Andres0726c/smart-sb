@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
@@ -9,6 +9,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { CognitoService } from 'commons-lib';
 import { AuthGuardParameterizer } from './auth.guard';
+import { Router } from '@angular/router';
 
 const localStorageMock = (function() {
   let store: any = {};
@@ -52,6 +53,7 @@ class toastMock {
 describe('AuthGuard', () => {
   let guard: AuthGuardParameterizer;
   let service: CognitoService;
+  let router: Router;
   beforeEach(() => {
     service = CognitoService.prototype;
     TestBed.configureTestingModule({
@@ -76,6 +78,9 @@ describe('AuthGuard', () => {
         }
       ],
     });
+    
+    router = TestBed.inject(Router);
+    router.initialNavigation();
     guard = TestBed.inject(AuthGuardParameterizer);
   });
 
@@ -203,10 +208,13 @@ describe('AuthGuard', () => {
 
   });
 
-  it('checkAccess redirect', async () => {
+  it('checkAccess when is diferent of cumulos', async () => {
     const routerStateSnapshotStub: RouterStateSnapshot = <any>{
-      url: '/parametrizador-producto/cumulos',
+      url: '/autorizacion',
     };
+
+    jest.spyOn(router,'url','get').mockReturnValue('/productos/parametrizador/cumulos')
+
 
     const value = {
       signInUserSession: {
@@ -222,11 +230,16 @@ describe('AuthGuard', () => {
       },
       username: '',
     }
-    guard.productService.accumulation.get('accumulationType')?.setValue(1);
+    guard.productService.accumulation= new FormGroup({
+      accumulationType: new FormControl(1),
+      accumulationCoverages: new FormArray([])
+    });
     localStorageMock.setItem('CognitoSessionExp', 999999999999999);
 
     expect(guard.checkAccess(value,routerStateSnapshotStub)).toBeDefined();
 
   });
 
+
+  
 });

@@ -59,9 +59,6 @@
             <button mat-raised-button (click)="exportProduct()" [disabled]="service.enableSaveButton()" *ngIf="!service.saving" data-qa-id="sc-rpmf-btn-exportproduct">
                 <em class="fas fa-file-export primary-icon"></em>
             </button>
-            <!-- TO-DO implementación ctrl+z -->
-            <!-- <button mat-raised-button disabled><em class="fas fa-undo color-icon"></em></button>
-            <button mat-raised-button disabled><em class="fas fa-redo color-icon"></em></button> -->
             <button mat-raised-button *ngIf="false"><em class="fas fa-search color-icon"></em></button>
             <button mat-raised-button *ngIf="false"><em class="fas fa-bell color-icon"></em></button>
             <button mat-raised-button *ngIf="false"><em class="fas fa-cog color-icon"></em></button>
@@ -83,7 +80,6 @@
         </div>
         
         <div class="main-header__nav-user-info margin-item" *ngIf="!closing">
-            <!-- <img class="avatar-img" src="../../../assets/img/img_avatar.png" alt="avatar"> -->
             <em class="fas fa-user-cog fa-3x avatar-img"></em>
             <div class="nav-user-info__text-user-info">
                 <span><strong> {{ userName }} </strong></span><br/>
