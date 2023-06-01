@@ -7,8 +7,6 @@ import { SearchModal, search, tableColumns } from '../../core/model/SearchModal.
 import { InitialParametersService } from '../../../app/containers/initial-parameters/services/initial-parameters.service';
 import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
 import { lastValueFrom } from 'rxjs';
-import { Sort } from '@angular/material/sort';
-import { I } from '@angular/cdk/keycodes';
 import { ProductService } from '../../services/product.service';
 
 export interface SearchParameters {

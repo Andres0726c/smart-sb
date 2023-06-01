@@ -65,18 +65,26 @@ export class CoveragesComponent implements OnInit {
     return this.productService.coverages?.controls[this.index] as FormGroup;
   }
 
-  openToAdd(): void {
 
-    const columns = [
+  initializateColumn(){
+    return([
       { name: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname']  },
       { name: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription'] },
       { name: 'element', displayValue: ['element'] },
-    ];
+    ]);
+  }
 
-    let parameter =
-      this.productService.initialParameters?.get('insuranceLine')?.value !== null
-        ? this.productService.initialParameters?.get('insuranceLine')?.value + ''
-        : '0';
+  validateInitialParameter(){
+    return(   this.productService.initialParameters?.get('insuranceLine')?.value !== null
+    ? this.productService.initialParameters?.get('insuranceLine')?.value + ''
+    : '0');
+  }
+  openToAdd(): void {
+
+    const columns = this.initializateColumn();
+
+    let parameter = this.validateInitialParameter();
+   
     const dialogRef = this.dialog.open(ModalSearchSmallComponent, {
       data: {
         code: 'coverageDataControls',
@@ -101,35 +109,7 @@ export class CoveragesComponent implements OnInit {
     if (coverages) {
       for (let coverage of coverages) {
         this.productService.coverages.push(
-          this.fb.group({
-            id: this.fb.control(coverage.id, Validators.required),
-            name: this.fb.control(coverage.name, Validators.required),
-            description: this.fb.control(
-              coverage.description,
-              Validators.required
-            ),
-            waitingTime: this.fb.group({
-              waitingTime: this.fb.control(false),
-              quantity: this.fb.control({value:0, disabled: true,},[Validators.required]),
-              period: this.fb.control({value:'', disabled: true},[Validators.required])
-            }),
-            events: this.fb.group({
-              events: this.fb.control(false),
-              quantityEvents: this.fb.control({value:0, disabled: true},[Validators.required, Validators.min(1), Validators.max(999)]),
-              periodEvents: this.fb.control({value:'', disabled: true},[Validators.required])
-            }),
-            clauses: this.fb.array([], Validators.required),
-            businessRules: this.fb.group({
-              selectionRule: this.fb.array([]),
-              initializeRule: this.fb.array([]),
-              validateRule: this.fb.array([]),
-            }),
-            complementaryData: this.fb.array([], Validators.required),
-            deductibles: this.fb.array([], Validators.required),
-            rates: this.fb.array([], Validators.required),
-            payRollData: this.fb.array([], Validators.required),
-            claimReservation: this.fb.array([]),
-          })
+          this.fb.group(this.addNewGroup(coverage))
         );
       }
       let dataToast: DataToast = {
@@ -142,5 +122,39 @@ export class CoveragesComponent implements OnInit {
       });
     }
   };
+
+  addNewGroup(coverage:any){
+    let quantity={value:0, disabled: true}, period={value:'', disabled: true};
+    return({
+      id: this.fb.control(coverage.id, Validators.required),
+      name: this.fb.control(coverage.name, Validators.required),
+      description: this.fb.control(
+        coverage.description,
+        Validators.required
+      ),
+      waitingTime: this.fb.group({
+        waitingTime: this.fb.control(false),
+        quantity: this.fb.control(quantity,[Validators.required]),
+        period: this.fb.control(period,[Validators.required])
+      }),
+      events: this.fb.group({
+        events: this.fb.control(false),
+        quantityEvents: this.fb.control(quantity,[Validators.required, Validators.min(1), Validators.max(999)]),
+        periodEvents: this.fb.control(period,[Validators.required])
+      }),
+      clauses: this.fb.array([], Validators.required),
+      businessRules: this.fb.group({
+        selectionRule: this.fb.array([]),
+        initializeRule: this.fb.array([]),
+        validateRule: this.fb.array([]),
+      }),
+      complementaryData: this.fb.array([], Validators.required),
+      deductibles: this.fb.array([], Validators.required),
+      rates: this.fb.array([], Validators.required),
+      payRollData: this.fb.array([], Validators.required),
+      claimReservation: this.fb.array([]),
+    })
+  }
+
 
 }
