@@ -29,6 +29,7 @@ import { ToastModule } from 'primeng/toast';
 import { ModalPolicyActionsModule } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.module';
 import { PolicyDetailsModule } from './policy-details/policy-details.module';
 import { PolicyEndorsementModule } from './policy-endorsement/policy-endorsement.module';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 const routes: Routes = [
   {
@@ -64,7 +65,6 @@ const routes: Routes = [
     OverlayPanelModule,
     MenuModule,
     DialogModule,
-    FormsModule,
     PaginatorModule,
     InputTextareaModule,
     MessagesModule,
@@ -72,7 +72,8 @@ const routes: Routes = [
     ToastModule,
     ModalPolicyActionsModule,
     PolicyDetailsModule,
-    PolicyEndorsementModule
+    PolicyEndorsementModule,
+    ConfirmDialogModule
   ],
   exports: [ConsultPolicyComponent],
 })
