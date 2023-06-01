@@ -437,7 +437,11 @@ export class PolicyRenewalComponent implements OnInit {
             this.showSuccess('success', 'Renovación exitosa', 'La póliza ha sido renovada');
             this.delayAndNavigate().then(() => {}).catch((error) => { console.error(error); });
           } else  {
-            this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
+            if (resp.dataHeader.errorList[0]?.errorDescription) {
+              this.showSuccess('error', 'Error al renovar', resp.dataHeader.errorList[0].errorDescription);
+            } else {
+              this.showSuccess('error', 'Error al renovar', resp.dataHeader.status);
+            }
           }
           this.isSaving = false;
         },
