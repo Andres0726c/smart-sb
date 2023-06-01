@@ -101,6 +101,10 @@ export class ProductService {
 
     return this.httpClient.post<any>(`${this.apiUrl}policy/saveModifyPolicy`, data, {headers: this.headers});
   }
+  
+  saveDeleteCancellation( data: any): Observable<any>{
+    return this.httpClient.post<any>(`${this.apiUrl}policy/deleteFutureCancellation`, data, {headers: this.headers});
+  }
 
   saveDeleteCancellation( data: any): Observable<any>{
     return this.httpClient.post<any>(`${this.apiUrl}policy/deleteFutureCancellation`, data, {headers: this.headers});

@@ -365,6 +365,7 @@ if (applicationProcess === 'Rehabilitación') {
     jest.spyOn(modalAPService, 'getCauses').mockReturnValue(of(causesData));
     component.getCauses(applicationProcess);
     tick();
+
     expect(component.causes).toEqual(causesData?.body);
   }));
 

@@ -84,6 +84,7 @@ export class ModalPolicyActionsComponent implements OnInit {
   getCauses(applicationProcess: string){
     this.modalAPService.getCauses(applicationProcess)
     .subscribe( causes => {
+
       if(applicationProcess == "Cancelación"){
         this.causes = causes?.body?.filter((item: { businessCode: string; }) =>
           this.cancellationCsCd?.includes(item.businessCode)
