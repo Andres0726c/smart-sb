@@ -188,7 +188,7 @@ export class SidenavPropertyProductComponent implements OnInit {
   async navigateGeneralParams() {
     await this.router.navigate([
       '/productos/parametrizador/parametros-generales',
-    ]);
+    ]).then(result => {}).catch(error => {});;
   }
   setValues(menu: any, value: boolean) {
     this.formProcess.get(menu.formControlName)?.get('enabled')?.setValue(value);

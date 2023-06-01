@@ -302,77 +302,50 @@ export class ModificationTypesComponent implements OnInit {
   }
 
   addGroupArrayById(object: any, nameGruop: any) {
- 
 
     this.getGroupArrayById(nameGruop.id).push(
-      new FormGroup({
-        id: this.fb.control(object.id, [Validators.required]),
-        name: this.fb.control(object.name, [Validators.required]),
-        label: this.fb.control(
-          object.element.nmLabel
-            ? object.element.nmLabel
-            : object.element.label,
-          [Validators.required]
-        ),
-        dataType: this.fb.control(object.element.dataType),
-        initializeRule: this.fb.array([], []),
-        validateRule: this.fb.array([], []),
-        dependency: this.fb.control(null, []),
-        requiredEssential: this.fb.control(
-          object.element.flIsMandatory === 'S' ? true : false,
-          [Validators.required]
-        ),
-        required: this.fb.control(
-          object.element.flIsMandatory === 'S' ? true : false,
-          [Validators.required]
-        ),
-        editable: this.fb.control(true, [Validators.required]),
-        visible: this.fb.control(true, [Validators.required]),
-        fieldGroup: this.fb.control(nameGruop.id, []),
-        shouldDelete: this.fb.control(object.shouldDelete, [
-          Validators.required,
-        ]),
-        businessCode: this.fb.control(object.element.businessCode),
-        domainList: this.fb.control(object.element.domainList),
-      })
+      new FormGroup(this.addNewGroup(object,nameGruop))
     );
   }
+
+  addNewGroup(object:any, nameGroup:any){
+    const flIsMandatory:boolean= object.element.flIsMandatory === 'S' ? true : false;
+    const nmLabel=  object.element.nmLabel? object.element.nmLabel: object.element.label;
+    return({
+      id: this.fb.control(object.id, [Validators.required]),
+      name: this.fb.control(object.name, [Validators.required]),
+      label: this.fb.control(nmLabel,
+        [Validators.required]
+      ),
+      dataType: this.fb.control(object.element.dataType),
+      initializeRule: this.fb.array([], []),
+      validateRule: this.fb.array([], []),
+      dependency: this.fb.control(null, []),
+      requiredEssential: this.fb.control(flIsMandatory,
+        [Validators.required]
+      ),
+      required: this.fb.control(flIsMandatory,
+        [Validators.required]
+      ),
+      editable: this.fb.control(true, [Validators.required]),
+      visible: this.fb.control(true, [Validators.required]),
+      fieldGroup: this.fb.control(nameGroup.id, []),
+      shouldDelete: this.fb.control(object.shouldDelete, [
+        Validators.required,
+      ]),
+      businessCode: this.fb.control(object.element.businessCode),
+      domainList: this.fb.control(object.element.domainList),
+    })
+  }
+
+
 
   addGroupArrayByIdRisk(object: any, nameGruop: any) {
     const index = this.getRiskArraydById(this.titleRisk).value.findIndex(
       (x: { id: any }) => x.id === nameGruop.id
     );
     this.getGroupArrayByIdModify(index + 1).push(
-      new FormGroup({
-        id: this.fb.control(object.id, [Validators.required]),
-        name: this.fb.control(object.name, [Validators.required]),
-        label: this.fb.control(
-          object.element.nmLabel
-            ? object.element.nmLabel
-            : object.element.label,
-          [Validators.required]
-        ),
-        dataType: this.fb.control(object.element.dataType),
-        initializeRule: this.fb.array([], []),
-        validateRule: this.fb.array([], []),
-        dependency: this.fb.control(null, []),
-        requiredEssential: this.fb.control(
-          object.element.flIsMandatory === 'S' ? true : false,
-          [Validators.required]
-        ),
-        required: this.fb.control(
-          object.element.flIsMandatory === 'S' ? true : false,
-          [Validators.required]
-        ),
-        editable: this.fb.control(true, [Validators.required]),
-        visible: this.fb.control(true, [Validators.required]),
-        fieldGroup: this.fb.control(nameGruop.id, []),
-        shouldDelete: this.fb.control(object.shouldDelete, [
-          Validators.required,
-        ]),
-        businessCode: this.fb.control(object.element.businessCode),
-        domainList: this.fb.control(object.element.domainList),
-      })
+      new FormGroup(this.addNewGroup(object,nameGruop))
     );
   }
 
