@@ -7,22 +7,22 @@ import { ConsultPolicyService } from './services/consult-policy.service';
 import { FilterPolicy } from './interfaces/consult-policy';
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api/lazyloadevent';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ModalPolicyActionsComponent } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/modal-policy-actions.component';
 import { PolicyDetailsComponent } from './policy-details/policy-details.component';
 import { Router } from '@angular/router';
-import { PolicyRenewalComponent } from '../policy-renewal/policy-renewal.component';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { Menu } from 'primeng/menu';
 import { CognitoService } from 'commons-lib';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-consult-policy',
   templateUrl: './consult-policy.component.html',
   styleUrls: ['./consult-policy.component.scss'],
-  providers: [MessageService, DialogService],
+  providers: [MessageService, DialogService, ConfirmationService],
 })
 export class ConsultPolicyComponent implements OnDestroy {
   @ViewChild('menu') menu!: Menu;
@@ -55,6 +55,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   totalRecords: number = 0;
   first: number = 0;
   es: any;
+  selectedPolicyCancellationDate!: Date;
 
   premiumData: any = {};
 
@@ -63,6 +64,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   moduleAcess:any;
 
   constructor(
+    private confirmationService: ConfirmationService,
     public consultPolicyService: ConsultPolicyService,
     public productService: ProductService,
     public fb: FormBuilder,
@@ -123,6 +125,12 @@ export class ConsultPolicyComponent implements OnDestroy {
         }
       },
       {
+        label: 'Reversar movimiento', icon: 'pi pi-fw pi-file-excel',
+        command: (event: any, row: any) => {
+          this.confirmDeleteCancellation();
+        }
+      },
+      {
         label: 'Ver detalle', icon: 'pi pi-fw pi-eye',
         command: () => {
           this.showModalConsulDetails();
@@ -149,6 +157,7 @@ export class ConsultPolicyComponent implements OnDestroy {
     if (this.moduleAcess){
     this.items.find((x: any) => x.label === 'Modificar').visible = this.getModule('Modificar')
     this.items.find((x: any) => x.label === 'Cancelar').visible = this.getModule('Cancelar')
+    this.items.find((x: any) => x.label === 'Reversar movimiento').visible = this.getModule('Reversar movimiento')
     this.items.find((x: any) => x.label === 'Renovar').visible = this.getModule('Renovar')
     this.items.find((x: any) => x.label === 'Rehabilitar').visible = this.getModule('Rehabilitar')
      }
@@ -163,44 +172,32 @@ export class ConsultPolicyComponent implements OnDestroy {
       case 'Activa':
        this.disabledOption('Modificar', false)
        this.disabledOption('Cancelar', false)
+       this.disabledOption('Reversar movimiento', true)
        this.disabledOption('Rehabilitar', true)
        this.disabledOption('Renovar', false)
        this.disabledOption('Ver detalle', false)
-        //this.items[0].disabled = false;
-        //this.items[1].disabled = false;
-        //this.items[2].disabled = true;
-        //this.items[3].disabled = true; //Se deshabilita por PaP
-        //this.items[4].disabled = false;
         break;
       case 'Rechazada':
       case 'Provisoria':
         this.disabledOption('Modificar', true)
         this.disabledOption('Cancelar', true)
+        this.disabledOption('Reversar movimiento', true)
         this.disabledOption('Rehabilitar', true)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', true)
-        /*this.items[0].disabled = true;
-        this.items[1].disabled = true;
-        this.items[2].disabled = true;
-        this.items[3].disabled = false;
-        this.items[4].disabled = true;*/
         break;
       case 'Cancelada':
         this.disabledOption('Modificar', true)
         this.disabledOption('Cancelar', true)
+        this.disabledOption('Reversar movimiento', true)
         this.disabledOption('Rehabilitar', false)
         this.disabledOption('Renovar', true)
         this.disabledOption('Ver detalle', false)
-        /*this.items[0].disabled = true;
-        this.items[1].disabled = true;
-        this.items[2].disabled = false;
-        this.items[3].disabled = true;
-        this.items[4].disabled = false;*/
         break;
     }
   }
 
-  
+
 
   showModal(component: any, process: string, policy: any, buttonAction: any, width?: string, height?: string, mxHeight?: string) {
     const ref = this.dialogService.open(component, {
@@ -290,6 +287,24 @@ export class ConsultPolicyComponent implements OnDestroy {
     })
   }
 
+  getDeleteCancellation() {
+    this.loading = true;
+    const dataDeletion = {
+      smartCorePolicyNumber: this.selectedPolicy.policyNumber
+    }
+    this.productService
+    .saveDeleteCancellation(dataDeletion)
+    .subscribe((res) => {
+      this.loading = false
+      if (res.body?.expirationDate) {
+        this.showSuccess('success', 'Proceso exitoso', 'El movimiento ha sido reversado correctamente');
+      } else {
+        this.showSuccess('error', 'Error al actualizar', 'Error inesperado al reversar el movimiento');
+      }
+    });
+  }
+
+
   getPolicyClaimStatus() {
     this.loading = true;
     this.productService.modificationPolicyClaimStatus(this.selectedPolicy.policyNumber).subscribe((res: any) => {
@@ -323,7 +338,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   getDaneCode(id: number){
     this.consultPolicyService.getPolicyById(id).subscribe((res) => {
       if (res.body) {
-        
+
         let daneCodeD = res.body.propertiesPolicyData.gd002_datosdeldebito.DEPAR_COL;
         let daneCodeC = res.body.propertiesPolicyData.gd002_datosdeldebito.CIU_TDB;
         if(daneCodeD){
@@ -333,8 +348,8 @@ export class ConsultPolicyComponent implements OnDestroy {
           return this.getCity(daneCodeAux)
         } else if((daneCodeD === '' || undefined) && (daneCodeC === '' || undefined)){
           return this.getCity('0')
-        } 
-        
+        }
+
       }
   })
 }
@@ -365,11 +380,50 @@ export class ConsultPolicyComponent implements OnDestroy {
   }
 
   getCity(daneCode: any){
-    
+
     this.productService
     .getApiData('city/findByState', '', daneCode)
     .subscribe((res) => {
       this.setData(res, 'city');
+    });
+  }
+
+  getFutureCancelationStatus(){
+    this.productService
+    .getApiData('policy/futureCancellationStatus?smartCorePolicyNumber=' + this.selectedPolicy.policyNumber, '', '')
+    .subscribe((res) => {
+      if (res.body?.expirationDate) {
+        this.disabledOption('Reversar movimiento', false)
+        this.selectedPolicyCancellationDate = new Date(res.body.expirationDate);
+        this.items = this.items.slice(); //refresh menu content
+      }
+    });
+  }
+
+  clickDetails(rowData: { policyStatus: string; }) {
+    this.selectedPolicy = rowData; 
+    this.disabledItem(rowData.policyStatus);
+    this.visibleItem(); 
+    this.getFutureCancelationStatus()
+  }
+
+  confirmDeleteCancellation() {
+    var datePipe = new DatePipe('es-US', null);
+    this.confirmationService.confirm({
+        message: `
+          <div class="flex justify-center pt-5 pb-3">
+              <img src="smartcore-commons/assets/styles/material-theme/icons/picto-alert.svg" alt="icon-warning">
+          </div>
+          <div class="flex flex-col justify-center items-center mt-5 mb-3 text-2xl">
+            <p class="w-full text-center">
+              ¿Está seguro de reversar el movimiento con fecha ${datePipe.transform(this.selectedPolicyCancellationDate, 'd MMM y, HH:mm:ss')}?
+            </p>
+          </div>
+        `,
+        header: 'Confirmación',
+        accept: () => {
+          this.getDeleteCancellation();
+        }
     });
   }
 }

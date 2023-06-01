@@ -66,36 +66,4 @@ export class ModifyDataComponent implements OnInit {
     return group.get('fields') as FormArray;
   }
 
- 
-
-  // initializeData() {
-    
-  //   this.productService.getProductById(this.modifyData).subscribe({
-  //     next: (res: ResponseDTO<Product>) => {
-  //       if (res.dataHeader.code && res.dataHeader.code == 200) {
-  //         this.product = res.body;
-  //         console.log(this.product);
-  //         this.Params();
-  //       } else {
-  //         this.product = {
-  //           id: 0,
-  //           nmName: '',
-  //           dsDescription: '',
-  //           nmHashCode: 0,
-  //           nmContent: undefined,
-  //         };
-  //         console.log('else');
-  //       }
-  //       error: (error: ResponseErrorDTO) => {
-  //         console.error('error', error);
-  //       };
-  //     },
-  //   });
-  // }
-
-  // Params(){
-  //  this.Fields = this.product.nmContent?.policyData[0];
-  //   console.log(this.Fields);
-  // }
-
 }
