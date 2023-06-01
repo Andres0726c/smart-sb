@@ -88,13 +88,13 @@ export class ComplementaryDataComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.loadData();
-    this.loadContextData();
+    this.loadData().then(result => {}).catch(error => {});
+    this.loadContextData().then(result => {}).catch(error => {});
   }
 
   ngOnChanges() {
-    this.loadData();
-    this.loadContextData();
+    this.loadData().then(result => {}).catch(error => {});
+    this.loadContextData().then(result => {}).catch(error => {});
   }
 
   shootAction() {
@@ -428,27 +428,24 @@ export class ComplementaryDataComponent implements OnInit {
   };
   addGroup(object:ElementReturn, index:number,group: number){
 
+    const flIsMandatory:boolean= object.element.flIsMandatory === 'S' ? true : false;
+    const nmLabel=  object.element.nmLabel? object.element.nmLabel: object.element.label;
+
     if (index === -1) {
       this.getGroupArrayById(group).push(
         new FormGroup({
           id: this.fb.control(object.id, [Validators.required]),
           name: this.fb.control(object.name, [Validators.required]),
-          label: this.fb.control(
-            object.element.nmLabel
-              ? object.element.nmLabel
-              : object.element.label,
-            [Validators.required]
-          ),
+          label: this.fb.control(  nmLabel,  [Validators.required]),
           dataType: this.fb.control(object.element.dataType),
           initializeRule: this.fb.array([], []),
           validateRule: this.fb.array([], []),
           dependency: this.fb.control(null, []),
           requiredEssential: this.fb.control(
-            object.element.flIsMandatory === 'S' ? true : false,
+            flIsMandatory,
             [Validators.required]
           ),
-          required: this.fb.control(
-            object.element.flIsMandatory === 'S' ? true : false,
+          required: this.fb.control(flIsMandatory,
             [Validators.required]
           ),
           editable: this.fb.control(true, [Validators.required]),
@@ -466,6 +463,7 @@ export class ComplementaryDataComponent implements OnInit {
       this.validateFieldGroup(field,object);
     }
   }
+
 
   validateFieldGroup(field:any, object:ElementReturn){
     if (field && !(<FormGroup>field).contains('fieldGroup')) {
@@ -787,61 +785,8 @@ getMdfcblDtPlcyDtGrp(group:any){
    * Abre el modal de carga de datos de reglas de inicializaci\u00f3n.
    */
   openModalInitializeRule() {
-    const columns = [
-      {
-        name: 'name',
-        header: 'Nombre',
-        displayValue: ['nmName'],
-        dbColumnName: ['nmname'],
-      },
-      {
-        name: 'description',
-        header: 'Descripción',
-        displayValue: ['dsDescription'],
-        dbColumnName: ['dsdescription'],
-      },
-      {
-        name: 'cdRuleType',
-        displayValue: ['cdRuleType'],
-        dbColumnName: ['cdRuleType'],
-      },
-      { name: 'endPoint', displayValue: ['endPoint'] },
-      { name: 'nmParameterList', displayValue: ['nmParameterList'] },
-      { name: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { name: 'rlEngnCd', displayValue: ['rlEngnCd'] },
-    ];
-
-    this.openDialogWizard(
-      'ruleInitializeControls',
-      this.selectedField.get('initializeRule')?.value,
-      columns,
-      false,
-      this.complementaryData,
-      this.contextData
-    ).subscribe((response: any) => {
-      if (response) {
-        let element: any = {
-          id: response.RulesForm.rule.id,
-          name: response.RulesForm.rule.name,
-          cdBusinessCode: response.RulesForm.rule.cdBusinessCode,
-          description: response.RulesForm.rule.description,
-          cdRuleType: response.RulesForm.rule.cdRuleType,
-          endPoint: response.RulesForm.rule.endPoint,
-          rlEngnCd: response.RulesForm.rule.rlEngnCd,
-          argmntLst: response.RulesForm.parameters,
-        };
-        (<FormArray>this.selectedField?.get('initializeRule')).removeAt(0);
-        (<FormArray>this.selectedField?.get('initializeRule')).push(
-          this.fb.control(element)
-        );
-        this.toastMessage.openFromComponent(ToastMessageComponent, {
-          data: this.getSuccessStatus(
-            'Asociaci\u00f3n exitosa',
-            'La regla de inicializaci\u00f3n fue asociada correctamente.'
-          ),
-        });
-      }
-    });
+    const columns = this.initializateColumn();
+    this.openModalWizard(columns,'ruleInitializeControls','initializeRule','inicialización');
   }
 
   /**
@@ -855,63 +800,71 @@ getMdfcblDtPlcyDtGrp(group:any){
    * Abre el modal de carga de datos de reglas de inicializaci\u00f3n.
    */
   openModalValidateRule() {
-    const columns = [
-      {
-        name: 'name',
-        header: 'Nombre',
-        displayValue: ['nmName'],
-        dbColumnName: ['nmname'],
-      },
-      {
-        name: 'description',
-        header: 'Descripción',
-        displayValue: ['dsDescription'],
-        dbColumnName: ['dsdescription'],
-      },
-      {
-        name: 'cdRuleType',
-        displayValue: ['cdRuleType'],
-        dbColumnName: ['cdRuleType'],
-      },
-      { name: 'endPoint', displayValue: ['endPoint'] },
-      { name: 'nmParameterList', displayValue: ['nmParameterList'] },
-      { name: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { name: 'rlEngnCd', displayValue: ['rlEngnCd'] },
-    ];
-
-    this.openDialogWizard(
-      'ruleValidationControls',
-      this.selectedField.get('validateRule')?.value,
-      columns,
-      false,
-      this.complementaryData,
-      this.contextData
-    ).subscribe((response: any) => {
-      if (response) {
-        let element: any = {
-          id: response.RulesForm.rule.id,
-          name: response.RulesForm.rule.name,
-          cdBusinessCode: response.RulesForm.rule.cdBusinessCode,
-          description: response.RulesForm.rule.description,
-          cdRuleType: response.RulesForm.rule.cdRuleType,
-          endPoint: response.RulesForm.rule.endPoint,
-          rlEngnCd: response.RulesForm.rule.rlEngnCd,
-          argmntLst: response.RulesForm.parameters,
-        };
-        (<FormArray>this.selectedField?.get('validateRule')).removeAt(0);
-        (<FormArray>this.selectedField?.get('validateRule')).push(
-          this.fb.control(element)
-        );
-
-        this.toastMessage.openFromComponent(ToastMessageComponent, {
-          data: this.getSuccessStatus(
-            'Asociaci\u00f3n exitosa',
-            'La regla de validación fue asociada correctamente.'
-          ),
-        });
-      }
-    });
+    const columns = this.initializateColumn() ;
+    this.openModalWizard(columns,'ruleValidationControls','validateRule','validación');
   }
+
+  initializateColumn(){
+    return(
+      [
+        {
+          name: 'name',
+          header: 'Nombre',
+          displayValue: ['nmName'],
+          dbColumnName: ['nmname'],
+        },
+        {
+          name: 'description',
+          header: 'Descripción',
+          displayValue: ['dsDescription'],
+          dbColumnName: ['dsdescription'],
+        },
+        {
+          name: 'cdRuleType',
+          displayValue: ['cdRuleType'],
+          dbColumnName: ['cdRuleType'],
+        },
+        { name: 'endPoint', displayValue: ['endPoint'] },
+        { name: 'nmParameterList', displayValue: ['nmParameterList'] },
+        { name: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
+        { name: 'rlEngnCd', displayValue: ['rlEngnCd'] },
+      ]
+    );
+  }
+openModalWizard(columns:any,typeRule:string,rule:string,messageRule:string){
+  this.openDialogWizard(
+    typeRule,
+    this.selectedField.get(rule)?.value,
+    columns,
+    false,
+    this.complementaryData,
+    this.contextData
+  ).subscribe((response: any) => {
+    if (response) {
+      let element: any = {
+        id: response.RulesForm.rule.id,
+        name: response.RulesForm.rule.name,
+        cdBusinessCode: response.RulesForm.rule.cdBusinessCode,
+        description: response.RulesForm.rule.description,
+        cdRuleType: response.RulesForm.rule.cdRuleType,
+        endPoint: response.RulesForm.rule.endPoint,
+        rlEngnCd: response.RulesForm.rule.rlEngnCd,
+        argmntLst: response.RulesForm.parameters,
+      };
+      (<FormArray>this.selectedField?.get(rule)).removeAt(0);
+      (<FormArray>this.selectedField?.get(rule)).push(
+        this.fb.control(element)
+      );
+
+      this.toastMessage.openFromComponent(ToastMessageComponent, {
+        data: this.getSuccessStatus(
+          'Asociaci\u00f3n exitosa',
+          `La regla de ${messageRule} fue asociada correctamente.`
+        ),
+      });
+    }
+  });
+}
 
   /**
    * remueve la regla de validación previamente seleccionada
