@@ -889,8 +889,8 @@ openModalWizard(columns:any,typeRule:string,rule:string,messageRule:string){
   reset() {
     this.complementaryData = new FormArray([], [Validators.required]);
     this.selectedField = new FormGroup({});
-    this.loadData();
-    this.loadContextData();
+    this.loadData().then(result => {}).catch(error => {});
+    this.loadContextData().then(result => {}).catch(error => {});
   }
 
   getFieldsFormArray(form: any) {
