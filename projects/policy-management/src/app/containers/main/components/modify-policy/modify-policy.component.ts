@@ -251,20 +251,6 @@ export class ModifyPolicyComponent {
 
   }
 
-  async setFormsControls() {
-
-    this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
-
-    this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false, false));
-
-    this.formPolicy.setControl('policyData', await this.fillGroupData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.plcyDtGrp, this.policyData, true));
-
-    this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.rskTyp, true, true));
-
-    this.isLoading = false;
-
-  }
-
   getProduct(code: string) {
     this.productService.getProductByCode(code).subscribe( (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
