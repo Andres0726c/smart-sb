@@ -408,7 +408,7 @@ export class ConsultPolicyComponent implements OnDestroy {
   }
 
   confirmDeleteCancellation() {
-    var datePipe = new DatePipe('es-US', null);
+    let datePipe = new DatePipe('es-US', null);
     this.confirmationService.confirm({
         message: `
           <div class="flex justify-center pt-5 pb-3">
