@@ -12,7 +12,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ModalSearchComponent } from '../modal-search/modal-search.component';
 import { ProductService } from '../../services/product.service';
 import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   DataToast,
   ToastMessageComponent,
@@ -20,10 +20,6 @@ import {
 } from '../../shared/toast-message/toast-message.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Coverage } from './coverage.model';
-import {
-  ModalConfirmDeleteComponent,
-  ConfirmationDialogData,
-} from 'commons-lib';
 import { ModalDeleteComponent } from 'libs/commons-lib/src/lib/components/modal-delete/modal-delete.component';
 
 @Component({
@@ -42,7 +38,6 @@ export class CoverageTreeComponent implements OnInit {
   selectedCoverage: FormGroup = new FormGroup({});
   @Output() emitSelectedCoverage: EventEmitter<FormGroup> =
     new EventEmitter<FormGroup>();
-  @ViewChild('confirmDelete') confirmDelete!: ModalConfirmDeleteComponent;
 
   selectedFile!: TreeNode;
 

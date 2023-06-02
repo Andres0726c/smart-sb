@@ -1,9 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
-import {
-  ConfirmationDialogData,
-  ModalConfirmDeleteComponent,
-} from 'commons-lib';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Table } from 'primeng/table';
 import { lastValueFrom } from 'rxjs';
