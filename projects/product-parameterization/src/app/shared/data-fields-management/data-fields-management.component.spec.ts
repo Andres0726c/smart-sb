@@ -297,7 +297,7 @@ describe('DataFieldsManagementComponent', () => {
   });
 
   it('isAvailableName', () => {
-    component.complementaryData = new FormArray(
+    component.groups = new FormArray(
       [
         new FormGroup({
           id: new FormControl(1),
@@ -319,47 +319,6 @@ describe('DataFieldsManagementComponent', () => {
     expect(component.isAvailableName('test1')).toBeTruthy();
   });
 
-  it('errorMessageName', () => {
-    component.complementaryData = new FormArray(
-      [
-        new FormGroup({
-          id: new FormControl(1),
-          name: new FormControl('test'),
-          fields: new FormArray(
-            [
-              new FormGroup({
-                id: new FormControl(25),
-                name: new FormControl('test'),
-                dependency: new FormControl(24),
-              }),
-            ],
-            Validators.required
-          ),
-        }),
-      ],
-      Validators.required
-    );
-    expect('Ingrese el nombre del grupo').toBe('Ingrese el nombre del grupo');
-    component.formGroupTitle.get('groupTitle')?.setValue('#@');
-    expect('El nombre del grupo no recibe caracteres especiales').toBe(
-      'El nombre del grupo no recibe caracteres especiales'
-    );
-    component.formGroupTitle
-      .get('groupTitle')
-      ?.setValue(
-        'askjdnsajdnasjndkasjdnaksndksandkasjndkjasndksajndkjndkjnsajkdnsajdnjk1nkdjn2jkn21jn121kj2nk1jn21kjn121jn12k1n12kj2nkjn21kjn1kjn21j2n12j2n1k1nj21jk1n2jn12kjn12k1nj21kj2n1kj1n21kj2n1kjn12kj2n1kjn1kjn21kjn1k1n21jk2n21'
-      );
-    expect('La longitud máxima es de 200 caracteres').toBe(
-      'La longitud máxima es de 200 caracteres'
-    );
-    component.formGroupTitle.get('groupTitle')?.setValue('test');
-    expect('Ya existe un grupo con el nombre ingresado').toBe(
-      'Ya existe un grupo con el nombre ingresado'
-    );
-    component.formGroupTitle.get('groupTitle')?.setValue('test1');
-    expect('').toBe('');
-  });
-
   it('removeGroup', () => {
     const group = new FormGroup({
       id: new FormControl(1),
@@ -371,7 +330,7 @@ describe('DataFieldsManagementComponent', () => {
   });
 
   it('finishGroupEdit', () => {
-    component.complementaryData = new FormArray(
+    component.groups = new FormArray(
       [
         new FormGroup({
           id: new FormControl(1),
@@ -434,7 +393,7 @@ describe('DataFieldsManagementComponent', () => {
   });
 
   it('associateGroup', () => {
-    component.complementaryData = new FormArray(
+    component.groups = new FormArray(
       [
         new FormGroup({
           id: new FormControl(1),
@@ -506,7 +465,7 @@ describe('DataFieldsManagementComponent', () => {
   });
 
   it('addNewGroup', () => {
-    component.complementaryData = new FormArray(
+    component.groups = new FormArray(
       [
         new FormGroup({
           id: new FormControl(1),
@@ -660,6 +619,29 @@ describe('DataFieldsManagementComponent', () => {
     expect(component.associateGroup(1)).toBeUndefined();
   });
 
+  it('errorMessageName', () => {
+    component.groups = new FormArray([
+      new FormGroup({
+        id: new FormControl(1),
+        name: new FormControl('test'),
+        fields: new FormArray([
+          new FormGroup({
+            id: new FormControl(25),
+            name: new FormControl('test'),
+            dependency: new FormControl(24)
+          })
+        ], Validators.required)
+      })
+    ], Validators.required);
+    expect(component.errorMessageName).toBe('Ingrese el nombre del grupo');
+    component.formGroupTitle.get('groupTitle')?.setValue('#@');
+    expect(component.errorMessageName).toBe('El nombre del grupo no recibe caracteres especiales');
+    component.formGroupTitle.get('groupTitle')?.setValue('askjdnsajdnasjndkasjdnaksndksandkasjndkjasndksajndkjndkjnsajkdnsajdnjk1nkdjn2jkn21jn121kj2nk1jn21kjn121jn12k1n12kj2nkjn21kjn1kjn21j2n12j2n1k1nj21jk1n2jn12kjn12k1nj21kj2n1kj1n21kj2n1kjn12kj2n1kjn1kjn21kjn1k1n21jk2n21');
+    expect(component.errorMessageName).toBe('La longitud máxima es de 200 caracteres');
+    component.formGroupTitle.get('groupTitle')?.setValue('test');
+    expect(component.errorMessageName).toBe('Ya existe un grupo con el nombre ingresado');
+    component.formGroupTitle.get('groupTitle')?.setValue('test1');
+    expect(component.errorMessageName).toBe('');
   it('addRule', () => {
     component.selectedField = new FormGroup({
       id: component.fb.control(24, [Validators.required]),
