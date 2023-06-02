@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NoDataScreenComponent } from './no-data-screen.component';
-import { AngularMaterialModule } from '../../material.module';
-
-
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [NoDataScreenComponent],
   imports: [
     CommonModule,
-    AngularMaterialModule
+    ButtonModule
   ],
   exports: [
     NoDataScreenComponent

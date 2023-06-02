@@ -28,4 +28,7 @@ export * from './lib/components/header/header.component';
 export * from './lib/components/sidenav/sidenav.module';
 export * from './lib/components/sidenav/sidenav.component';
 
-export * from "./lib/components/loading-spinner/loading-spinner.component";
+export * from './lib/components/loading-spinner/loading-spinner.component';
+
+export * from './lib/components/modal-delete/modal-delete.module';
+export * from './lib/components/modal-delete/modal-delete.component';

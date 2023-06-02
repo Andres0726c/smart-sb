@@ -15,7 +15,7 @@ export const screenManagementRoutes: Route[] = [
             },
             {
                 path: 'datos-poliza',
-                loadChildren: () => import('../../../containers/policy-data/policy-data.module').then(m => m.PolicyDataModule)
+                loadChildren: () => import('../../main-screen-product/components/policy-data/policy-data.module').then(m => m.PolicyDataModule)
             },
             {
                 path: 'coberturas',

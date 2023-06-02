@@ -1,0 +1,209 @@
+<ng-template #inputText let-field="field">
+    <input data-qa-id="sc-rpmf-btn_select_input" type="text" pInputText disabled>
+</ng-template>
+
+<ng-template #calendar let-field="field">
+    <p-calendar data-qa-id="sc-rpmf-btn_select_calendar" [showIcon]="true" styleClass="w-full" dateFormat="yy-mm-ddT00:00:00-05:00" [disabled]="true"></p-calendar>
+</ng-template>
+
+<ng-template #dropDown let-field="field">
+    <p-dropdown data-qa-id="sc-rpmf-btn_select_list" [options]="defaultListOptions" optionLabel="name" styleClass="w-full" [disabled]="true"></p-dropdown>
+</ng-template>
+<app-no-data-screen 
+    [data]="groups" 
+    [emptyText]="emptyText" 
+    [emptySubText]="emptySubText"
+    [ShowButton]="!modifyData"
+    (action)="openDialogAddData()"
+>
+</app-no-data-screen>
+<div *ngIf="!isLoading && !flagError && (complementaryDataControls.length > 1 || (complementaryDataControls.length === 1 && getGroupArrayById(1).length > 0))" class="flex flex-col">
+    <div class="flex items-center w-full mb-5">
+        <div class="flex flex-col">
+            <span class="text-4xl font-bold ml-2"> Datos de póliza </span>
+            <span class="ml-2"> Especifique y defina los datos de la póliza </span>
+        </div>
+        <div class="ml-auto">
+            <p-button
+                data-qa-id="sc-rpmf-btn_open_dialog_complementary_data"
+                styleClass="w-[150px]"
+                icon="fal fa-plus-circle"
+                [label]="'Añadir datos'"
+                (click)="openDialogAddData()"
+            ></p-button>
+        </div>
+    </div>
+    <div class="flex">
+        <div class="flex-auto">
+            
+            <ng-container *ngFor="let group of complementaryDataControls?.controls">            
+                <p-accordion class="form" *ngIf=" modifyData ? true && getFieldsFormArray(group.get('fields')).controls.length !== 0:true">
+                    <p-accordionTab [selected]="getFieldsFormArray(group.get('fields')).controls.length > 0" headerStyle="{pointer-events: none;}" iconPos="end">
+                        <ng-template pTemplate="header">
+                            <span class="mr-2" *ngIf="!group.value.isEditing">{{ group.value.name }}</span>
+                            <span *ngIf="!modifyData && !group.value.isEditing">
+                                <p-menu #menu [model]="itemsMenu" [popup]="true" class="btn-group-options" appendTo="body">
+        
+                                </p-menu>
+                                <button pButton pRipple data-qa-id="sc-rpmf-btn-group-options"
+                                    type="button" icon="fal fa-ellipsis-h-alt" class="p-button-rounded ml-2 mt-1" (click)="$event.stopImmediatePropagation(); menu.toggle($event); selectedGroupItem=group; disabledItem(group)"></button>
+                            </span>
+                            <span *ngIf="group.value.isEditing" class="ml-4 mt-8">
+                                <form class="form-edit-title" [formGroup]="formGroupTitle">
+                                    <div class="grid grid-rows-2">
+                                        <input #groupNameInput pInputText
+                                            data-qa-id="sc-rpmf-input_productName"
+                                            appearance="outline"
+                                            (click)="$event.stopPropagation()"
+                                            autocomplete="off"
+                                            class="font-expansion-title input-title-field"
+                                            formControlName="groupTitle"
+                                            placeholder="Ingrese el nombre del grupo"
+                                            (keydown.space)="$event.stopImmediatePropagation()"
+                                            (keydown.enter)="$event.stopImmediatePropagation(); finishGroupEdit($event, group)" 
+                                            (blur)="finishGroupEdit($event, group)">
+                                            <small class="input-title-error-message p-error mt-4">{{ errorMessageName }}</small>
+                                    </div>
+                                </form>
+                            </span>
+                        </ng-template>
+                        <div class="container-elements" cdkDropListGroup>
+                            <div *ngFor="let field of getFieldsControls(group)?.controls; let i = index;" class="width-column">
+                                <div cdkDropList cdkDropListOrientation="horizontal"
+                                    [cdkDropListData]="{item: field, index: i}"
+                                    (cdkDropListDropped)="drop($event, getFieldsFormArray(group.get('fields')))"
+                                    [ngClass]="field.value.id === selectedField.value.id ? 'field-selected' : 'field'">
+                                    <div cdkDrag (click)="selectComplementaryData(field)">
+                                        <div *cdkDragPlaceholder></div>
+                                        <div class="flex flex-col m-3">
+                                            <div class="flex">
+                                                <label class="text-base">{{ field.value.label }}</label>
+                                                <em class="fas fa-check ml-2 mr-2" *ngIf="!modifyData && isConfigured(field)"></em>
+                                                <div class="ml-auto cursor-move" cdkDragHandle>
+                                                    <em class="fas fa-arrows"></em>
+                                                </div>
+                                            </div>
+                                            <ng-container
+                                                [ngTemplateOutlet]="$any({'Calendar': calendar, 'List box': dropDown, 'Text box': inputText})[field.value.dataType.guiComponent] ?? inputText"
+                                                [ngTemplateOutletContext]="{ field: field }"
+                                            ></ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p-accordionTab>
+                </p-accordion>
+            </ng-container>
+            <ng-container *ngIf="!modifyData">            
+                <p-accordion *ngIf="true">
+                    <p-accordionTab [selected]="false" class="disabled-panel">
+                        <ng-template pTemplate="header">
+                            <button pButton pRipple data-qa-id="sc-rpmf-btn-add-group"
+                            type="button" icon="fal fa-plus-circle" class="p-button-rounded mr-2 mt-1" (click)="$event.stopImmediatePropagation(); addNewGroup()"></button>
+                            <span>Añadir grupo</span>
+                        </ng-template>
+                    </p-accordionTab>
+                </p-accordion>
+            </ng-container>
+        </div>
+        <form [formGroup]="selectedField" class="flex-none w-[250px] rounded-sm bg-neutral-200 p-3" *ngIf="selectedField">
+            <div class="flex flex-col w-full items-center mb-5">
+                <span class="text-primary font-bold mb-5">
+                    Propiedades
+                </span>
+                <div class="p-3 bg-neutral-400 rounded-lg text-white w-fit text-base">
+                    {{ selectedField.value.label }}
+                </div>
+            </div>
+            <div class="flex flex-col w-full mb-5">
+                <label class="text-base">Regla de inicialización</label>
+                <!-- <div class="p-inputgroup">
+                    <button type="button" pButton pRipple icon="pi pi-check" styleClass="p-button-success"></button>    
+                    <input type="text" pInputText placeholder="Vote">   
+                    <button type="button" pButton pRipple icon="pi pi-times" styleClass="p-button-danger"></button>      
+                </div> -->
+                <div class="p-inputgroup">
+                    <p-chips
+                        formControlName="initializeRule"
+                        styleClass="w-full w-full-chips"
+                        inputStyleClass="w-full">
+                        <ng-template let-item pTemplate="item" class="w-full">
+                            <span class="w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ item.name }}</span>
+                        </ng-template>
+                    </p-chips>   
+                    <button type="button"
+                            pButton pRipple
+                            icon="fal fa-plus-circle"
+                            styleClass="p-button-warn"
+                            class="h-[37px]"
+                            (click)="openRuleWizard('ruleInitializeControls', 'initializeRule')"
+                            data-qa-id="sc-rpmf-btn_open_initialize_rule_modal"></button>      
+                </div>
+            </div>
+            <div class="flex flex-col w-full mb-5">
+                <label class="text-base">Regla de validación</label>
+                <div class="p-inputgroup">
+                    <p-chips
+                        formControlName="validateRule"
+                        styleClass="w-full w-full-chips"
+                        inputStyleClass="w-full"
+                        placeholder="Seleccione">
+                        <ng-template let-item pTemplate="item" class="w-full">
+                            <span class="w-full whitespace-nowrap overflow-hidden text-ellipsis">{{ item.name }}</span>
+                        </ng-template>
+                    </p-chips>   
+                    <button type="button"
+                            pButton pRipple
+                            icon="fal fa-plus-circle"
+                            styleClass="p-button-warn"
+                            class="h-[37px]"
+                            (click)="openRuleWizard('ruleValidationControls', 'validateRule')"
+                            data-qa-id="sc-rpmf-btn_open_validate_rule_modal"></button>      
+                </div>
+            </div>
+            <div class="flex flex-col w-full mb-5">
+                <label class="text-base">Depende de</label>
+                <p-dropdown data-qa-id="sc-rpmf-select_dependency" 
+                    formControlName="dependency" [options]="dependsArray" 
+                    optionLabel="name" optionValue="id" styleClass="w-full"
+                    placeholder="Seleccione" [showClear]="true" (onChange)="associateReference($event.value)">
+                </p-dropdown>
+            </div>
+            <div class="flex flex-col w-full mb-5 gap-y-3 pl-2">
+                <div class="flex items-center gap-x-3">
+                    <p-inputSwitch formControlName="required" data-qa-id="sc-rpmf-toggle_required"></p-inputSwitch><label class="text-base">Obligatorio</label>
+                </div>
+                <div class="flex items-center gap-x-3">
+                    <p-inputSwitch formControlName="editable" data-qa-id="sc-rpmf-toggle_editable"></p-inputSwitch><label class="text-base">Modificable</label>
+                </div>
+                <div class="flex items-center gap-x-3">
+                    <p-inputSwitch formControlName="visible" data-qa-id="sc-rpmf-toggle_visible"></p-inputSwitch><label class="text-base">Visible</label>
+                </div>
+            </div>
+            <div class="flex flex-col w-full mb-5">
+                <label class="text-base">Grupo</label>
+                <p-dropdown data-qa-id="sc-rpmf-select_group"
+                    formControlName="fieldGroup"
+                    (onChange)="associateGroup($event.value)"
+                    [options]="groups.value" optionLabel="name" optionValue="id" 
+                    styleClass="w-full" placeholder="Seleccione">
+                </p-dropdown>
+            </div>
+            <div class="flex flex-col w-full mt-8 mb-5" *ngIf="selectedField?.get('shouldDelete')?.value && getGroupArrayById(this.selectedField.get('fieldGroup')?.value).length > 1">
+                <button type="button" pButton class="p-button-danger" (click)="removeComplementaryData()" data-qa-id="sc-rpmf-btn_remove_complementary_data">
+                    <em class="far fa-minus-circle mr-2"></em>
+                    Eliminar dato
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div *ngIf="isLoading" class="text-center p-5">
+    <smartcore-loading-spinner *ngIf="isLoading" [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
+</div>
+
+<div *ngIf="flagError" class="rounded-lg p-5 bg-warn-100 text-warn border-l-2 border-l-warn border-r-2 border-r-warn text-center">
+    Ha ocurrido un error al obtener los datos necesarios
+</div>

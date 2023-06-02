@@ -1,0 +1,13 @@
+<div class="p-5">
+  <!-- <span class="text-4xl font-bold ml-2"> Datos de póliza </span>
+    <div class="mt-5 rounded-xl bg-white p-5"> -->
+  <rs-mf-data-fields-management
+    [applicationLevel]="'Póliza'"
+    [groups]="productService.policyData"
+    [addItemMsg]="'Los datos de la póliza fueron asociados correctamente.'"
+    [emptyText]="'Sin datos de la póliza'"
+    [emptySubText]="'No se han asociado datos de la póliza al producto'"
+    [removeItemMsg]="'¿Está seguro de querer desasociar el dato de la póliza seleccionado?'"
+  ></rs-mf-data-fields-management>
+  <!-- </div> -->
+</div>

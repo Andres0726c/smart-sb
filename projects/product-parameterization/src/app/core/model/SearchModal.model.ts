@@ -69,7 +69,7 @@ export interface SearchModal {
   code: string;
   title: string;
   subtitle: string;
-  columns?: tableColumns[];
+  columns?: any[];
   data?: ElementTableSearch[];
   service: string;
   multiSelect?: boolean;

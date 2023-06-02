@@ -65,6 +65,8 @@ export class ProductService {
 
 
   defaultArrays = [
+    'initializeRule',
+    'validateRule',
     'uses',
     'insrncLnCd',
     'clcltnRl',
