@@ -6,13 +6,17 @@ import { ProductService } from 'projects/product-parameterization/src/app/servic
   templateUrl: './policy-data.component.html',
   styleUrls: ['./policy-data.component.scss']
 })
-export class PolicyDataComponent implements OnInit {
+/**
+ * Component that handles the chield component data-fields-management
+ */
+export class PolicyDataComponent{
 
+  /**
+   * contructor empty
+   * @param productService 
+   */
   constructor(
     public productService: ProductService
   ) { }
-
-  ngOnInit(): void {
-  }
 
 }

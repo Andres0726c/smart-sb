@@ -4,6 +4,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ElementTableSearch } from 'projects/product-parameterization/src/app/core/model/ElementTableSearch.model';
 import { ProductService } from 'projects/product-parameterization/src/app/services/product.service';
 import { RulesWizardComponent } from 'projects/product-parameterization/src/app/shared/rules-wizard/rules-wizard.component';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'refactoring-smartcore-mf-business-rules',
@@ -21,12 +22,12 @@ export class BusinessRulesComponent implements OnInit {
   selectedSelection!: any;
   selectedInitialize!: any;
   selectedValidate!: any;
-  
+
   /**
    * construct method to initialize coverage Rules array
-   * @param productService 
-   * @param dialogService 
-   * @param fb 
+   * @param productService
+   * @param dialogService
+   * @param fb
    */
   constructor(
     public productService: ProductService,
@@ -55,31 +56,31 @@ export class BusinessRulesComponent implements OnInit {
   }
 
   /**
-   * method that requests and gets the context data and that are filtered by application level 
+   * method that requests and gets the context data and that are filtered by application level
    */
-  loadContextData() {
-    let applicationLevel = 'Cobertura';
-    this.productService.getApiData(`domainList/DATOS_CONTEXTO`).subscribe({
-      next: (res: any) => {
-        console.log('rdatos_contexto', res);
-        this.contextData = res.body.nmValueList;
-        //se filtra los datos de contexto dependiendo del nivel de aplicación
-        this.contextData = this.contextData.filter(
-          (data: any) =>
-            data.applctnLvl.includes(applicationLevel) ||
-            data.applctnLvl.includes('*')
-        );
-      },
-      error: (error) => {
-        this.flagError = true;
-        console.error('Ha ocurrido un error al obtener los datos necesarios');
-      },
-    });
+  async loadContextData() {
+    try {
+      let applicationLevel = 'Cobertura';
+      let res: any;
+      res = await lastValueFrom(
+        this.productService.getApiData(`domainList/DATOS_CONTEXTO`)
+      );
+      this.contextData = res.body.nmValueList;
+      //se filtra los datos de contexto dependiendo del nivel de aplicación
+      this.contextData = this.contextData.filter(
+        (data: any) =>
+          data.applctnLvl.includes(applicationLevel) ||
+          data.applctnLvl.includes('*')
+      );
+    } catch (error) {
+      this.flagError = true;
+      console.error('Ha ocurrido un error al obtener los datos necesarios');
+    }
   }
 
   /**
    * according to the rule code, a list of values is established to open the modal
-   * @param code 
+   * @param code
    */
   openDialogCoverageRules(code: string) {
     let sendData: ElementTableSearch[] = [];
@@ -155,7 +156,6 @@ export class BusinessRulesComponent implements OnInit {
    * @param objRule rule structure
    */
   addChip(code: string, objRule: any) {
-  
     let arr: any[] = [];
     let element: any = {
       id: objRule.rule.id,
@@ -180,13 +180,13 @@ export class BusinessRulesComponent implements OnInit {
       case 'ruleInitializeControls':
         this.selectedInitialize = objRule;
         this.coverageRules.controls['initializeRule']?.setValue(arr);
-        
+
         break;
 
       case 'ruleValidationControls':
         this.selectedValidate = objRule;
         this.coverageRules.controls['validateRule']?.setValue(arr);
-        
+
         break;
 
       default:
@@ -196,7 +196,7 @@ export class BusinessRulesComponent implements OnInit {
 
   /**
    * method that gets param list
-   * @returns 
+   * @returns
    */
   getParamValuesList() {
     let list: any = [];
@@ -225,7 +225,7 @@ export class BusinessRulesComponent implements OnInit {
 
   /**
    * method that gets all fields
-   * @returns 
+   * @returns
    */
   getAllFields() {
     let res: any[] = [];

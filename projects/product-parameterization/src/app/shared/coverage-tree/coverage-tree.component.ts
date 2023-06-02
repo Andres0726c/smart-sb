@@ -20,6 +20,10 @@ import {
 } from '../../shared/toast-message/toast-message.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Coverage } from './coverage.model';
+import {
+  ModalConfirmDeleteComponent,
+  ConfirmationDialogData,
+} from 'commons-lib';
 import { ModalDeleteComponent } from 'libs/commons-lib/src/lib/components/modal-delete/modal-delete.component';
 
 @Component({
@@ -38,6 +42,7 @@ export class CoverageTreeComponent implements OnInit {
   selectedCoverage: FormGroup = new FormGroup({});
   @Output() emitSelectedCoverage: EventEmitter<FormGroup> =
     new EventEmitter<FormGroup>();
+  @ViewChild('confirmDelete') confirmDelete!: ModalConfirmDeleteComponent;
 
   selectedFile!: TreeNode;
 
@@ -234,19 +239,25 @@ export class CoverageTreeComponent implements OnInit {
     });
 
     dialogRef.onClose.subscribe((res) => {
-      if (res) {
-        const index = this.findIndexCoverage(node);
-        const id = this.productService.coverages.at(index).value.id;
-        this.productService.coverages.removeAt(index);
-        this.updateTree();
-        if (id == this.selectedCoverage.value.id) {
-          this.index = 0;
-          this.selectedCoverage = this.coverageGroup;
-        }
-      }
+      this.removeConfirmation(res, node);
     });
   };
 
+  /**
+   * Remove when res is true
+   */
+  removeConfirmation(res: any, node: TreeNode<Coverage>) {
+    if (res) {
+      const index = this.findIndexCoverage(node);
+      const id = this.productService.coverages.at(index)!.value.id;
+      this.productService.coverages?.removeAt(index);
+      this.updateTree();
+      if (id == this.selectedCoverage.value.id) {
+        this.index = 0;
+        this.selectedCoverage = this.coverageGroup;
+      }
+    }
+  }
 
   /**
    * returns the coverage in the product according the id

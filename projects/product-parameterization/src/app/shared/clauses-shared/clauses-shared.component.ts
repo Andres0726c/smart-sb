@@ -1,5 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
+import {
+  ConfirmationDialogData,
+  ModalConfirmDeleteComponent,
+} from 'commons-lib';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Table } from 'primeng/table';
 import { lastValueFrom } from 'rxjs';
@@ -210,7 +214,8 @@ export class ClausesSharedComponent implements OnInit {
   getDataInsuranceLine = async () => {
 
     try {
-      let res: any = await lastValueFrom(
+      let res!: any;
+      res = await lastValueFrom(
         this.productService.getApiData(
           'insuranceLine/findByCompany',
           this.productService.companyId

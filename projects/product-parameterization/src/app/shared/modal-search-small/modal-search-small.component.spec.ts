@@ -422,8 +422,6 @@ describe('ModalSearchSmallComponent', () => {
 
     jest.spyOn(productService, 'getApiData').mockReturnValue( of(res) );
     component.modal.remotePaginator = true;
-    component.modal.sortField='nmname';
-    component.modal.sortDirectionField='asc'
 
     expect(component.loadData('0', 0, 0,'0','0')).toBeDefined();
 
@@ -485,5 +483,25 @@ describe('ModalSearchSmallComponent', () => {
     }
     expect(component.toggleSelection(true, obj)).toBeUndefined();
     expect(component.toggleSelection(false, obj)).toBeUndefined();
+  });
+
+  it('getDetailColumn', () => {
+    let element = {
+      id: 1,
+      name: 'test',
+      description: 'test',
+    };
+    let colName = 'test';
+    expect(component.getDetailColumn(element, colName)).toBeUndefined();
+
+    let element2 = {
+      element: {
+        test: {
+          test: 'test'
+        }
+      }
+    };
+    let colName2 = 'test.test';
+    expect(component.getDetailColumn(element2, colName2)).toEqual('test');
   });
 });

@@ -5,9 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { MatDialog } from '@angular/material/dialog';
-import { of, Observable } from 'rxjs';
+import { of} from 'rxjs';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
-import { Table } from 'primeng/table';
 
 describe('DeductiblesComponent', () => {
   let component: DeductiblesComponent;

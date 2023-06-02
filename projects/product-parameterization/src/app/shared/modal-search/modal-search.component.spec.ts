@@ -243,26 +243,31 @@ it('should create without multiselect', () => {
     expect(component.addElements()).toBeUndefined();
   });
 
-  /*it('applyFilterGlobal', () => {
-    let event = { target: { value: 'test' } } as any;
-
-    let obj = {
+  it('getDetailColumn', () => {
+    let element = {
       id: 1,
       name: 'test',
-      description: '2',
+      description: 'test',
     };
+    let colName = 'test';
+    expect(component.getDetailColumn(element, colName)).toBeUndefined();
 
-    component.modalSearchTable = new Table()
+    let element2 = {
+      element: {
+        test: {
+          test: 'test'
+        }
+      }
+    };
+    let colName2 = 'test.test';
+    expect(component.getDetailColumn(element2, colName2)).toEqual('test');
+  });
 
-    component.dataSource = [obj];
-
-    expect(component.applyFilterGlobal(event, 'contains')).toBeDefined();
-
-    /*event = { target: { value: '' } } as any;
-
-    component.applyFilter(event);
-
-    expect(component.dataSource.filter).toBeDefined();
-  });*/
-
+  it('loadRemoteData', () => {
+    let event = {
+      fisrt: 0,
+      rows: 1
+    }
+    expect(component.loadRemoteData(event)).toBeUndefined();
+  });
 });

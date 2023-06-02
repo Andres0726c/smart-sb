@@ -7,7 +7,7 @@ import { Table } from 'primeng/table';
 import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
 import { search, SearchModal } from '../../core/model/SearchModal.model';
 import { ProductService } from '../../services/product.service';
-import { SearchParameters } from '../modal-search-small/modal-search-small.component';
+import { SearchParameters } from '../modal-search/modal-search.component';
 
 @Component({
   selector: 'refactoring-smartcore-mf-rules-wizard',
@@ -23,7 +23,7 @@ export class RulesWizardComponent implements OnInit {
   sortColumn = '0'; //sort remoto
   sortDirection = '0';
 
-  modal!: any;
+  modal!: SearchModal;
   isLoading = false;
 
   selection = new SelectionModel<ElementTableSearch>(false, []);
@@ -38,7 +38,6 @@ export class RulesWizardComponent implements OnInit {
 
   dataSource: any[] = [];
   prevReqParams: any;
-  prevSearch: string = '0';
 
   items: MenuItem[];
   activeIndex = 0;
@@ -79,6 +78,80 @@ export class RulesWizardComponent implements OnInit {
    */
   ngOnInit() {
     this.loadModalData();
+    this.dataSourceModal.data.contextData =[
+      {
+          "code": "prdct",
+          "description": "Producto",
+          "applctnLvl": [
+              "*"
+          ]
+      },
+      {
+          "code": "vldtyPrd",
+          "description": "Período de vigencia",
+          "applctnLvl": [
+              "*"
+          ]
+      },
+      {
+          "code": "rsk",
+          "description": "Riesgo",
+          "applctnLvl": [
+              "Tipo de riesgo",
+              "Cobertura"
+          ]
+      },
+      {
+          "code": "rskTyp",
+          "description": "Tipo de riesgo",
+          "applctnLvl": [
+              "Tipo de riesgo",
+              "Cobertura"
+          ]
+      },
+      {
+          "code": "cmmrclPln",
+          "description": "Plan comercial",
+          "applctnLvl": [
+              "Cobertura"
+          ]
+      },
+      {
+          "code": "cvrg",
+          "description": "Cobertura",
+          "applctnLvl": [
+              "Cobertura"
+          ]
+      },
+      {
+          "code": "ddctblVl",
+          "description": "Deducible",
+          "applctnLvl": [
+              "Cobertura"
+          ]
+      },
+      {
+          "code": "prmmVl",
+          "description": "Prima de la cobertura",
+          "applctnLvl": [
+              "Cobertura"
+          ]
+      },
+      {
+          "code": "prmmTyp",
+          "description": "Tipo de prima de la cobertura",
+          "applctnLvl": [
+              "Cobertura"
+          ]
+      },
+      {
+          "code": "cntry",
+          "description": "País",
+          "applctnLvl": [
+              "*"
+          ]
+      }
+    ];
   }
 
   get paramsControls() {
@@ -138,6 +211,7 @@ export class RulesWizardComponent implements OnInit {
         this.modal.multiSelect,
         []
       );
+
     } catch (error) {
       this.flagServiceError = true;
     }
@@ -160,7 +234,7 @@ export class RulesWizardComponent implements OnInit {
   getApiData(requestParams: any, search: string) {
     this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false && res.body) {
-         this.setData(res).then(result => {}).catch(error => {});
+        this.setData(res);
         this.flagServiceError = false;
       } else {
         this.flagServiceError = true;
@@ -173,7 +247,7 @@ export class RulesWizardComponent implements OnInit {
    * Method that check the service information and set all the array in the table
    * @param res variable with the data
    */
-  async setData(res: any) {
+  setData(res: any) {
     // Luis, quedamos en este punto para revisar las funciones y la paginación
     if (Array.isArray(res.body)) {
       this.addToElementData(res.body);
@@ -189,7 +263,7 @@ export class RulesWizardComponent implements OnInit {
       }
     }
 
-    await this.insertDataToTable().then();
+    this.insertDataToTable();
   }
 
   /**
@@ -242,6 +316,7 @@ export class RulesWizardComponent implements OnInit {
     if (this.selectedElement) {
       this.arrayData.push(this.selectedElement);
     }
+    
     this.ref.close(arrData);
   }
 
@@ -249,6 +324,7 @@ export class RulesWizardComponent implements OnInit {
    * Method that insert the information in mat table datasource
    */
   async insertDataToTable() {
+    //this.arrayData.forEach( obj => this.renameKey( obj, 'name', 'field' ));
     if (this.modal.remotePaginator) {
       this.dataSource = [...this.arrayData];
     } else {
@@ -256,6 +332,8 @@ export class RulesWizardComponent implements OnInit {
         this.data.list.every((element) => element.id != item.id)
       );
     }
+
+    //console.log('data', this.dataSource)
   }
 
   applyFilterGlobal(event: Event, filterType: string) {
@@ -271,7 +349,13 @@ export class RulesWizardComponent implements OnInit {
     let requestParams: any = '';
     let search = '0';
     let selectedIds = '0';
-    const pageNumber = (event.first ?? 0) / (event.rows ?? 1);
+    let doReq = true;
+    const pageNumer = (event.first ?? 0) / (event.rows ?? 1);
+    const sortDirections: any = {
+      '0': '0',
+      '1': 'asc',
+      '-1': 'desc'
+    }
 
     if (this.data.list.length > 0) {
       for (let sel of this.data.list) {
@@ -285,37 +369,18 @@ export class RulesWizardComponent implements OnInit {
       search = '0';
     }
 
-    requestParams = this.defineParameters(event, pageNumber, selectedIds);
-    this.doReq(requestParams, search);
-
-  }
-
-  defineParameters(event: any, pageNumber: any, selectedIds: any) {
-    let requestParams: any = '';
-    const sortDirections: any = {
-      '0': '0',
-      '1': 'asc',
-      '-1': 'desc'
-    }
-
     if (this.data.parameter) {
-      requestParams = this.data.parameter + `/${pageNumber}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
+      requestParams = this.data.parameter + `/${pageNumer}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
     } else {
-      requestParams = `${pageNumber}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
+      requestParams = `${pageNumer}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
     }
 
-    return requestParams;
-  }
-
-  doReq(requestParams: any, search: any) {
-    let doReq = true;
-    if (this.prevReqParams === requestParams && this.prevSearch === search) {
+    if (this.prevReqParams === requestParams) {
       doReq = false;
     } else {
       this.prevReqParams = requestParams;
-      this.prevSearch = search;
     }
-    
+
     if (doReq) {
       this.isLoading = true;
       this.getApiData(requestParams, search);
@@ -325,16 +390,18 @@ export class RulesWizardComponent implements OnInit {
   onRowSelect(event: any) {
     this.parametersForm.get('rule')?.setValue(this.selectedElement);
     (<FormArray>this.parametersForm.get('parameters'))?.clear();
-    
+
     try {
       const ruleParams = JSON.parse(event.data.nmParameterList);
       for (let param of Object.keys(ruleParams)) {
+      
         const fgParameter = this.fb.group({
           name: this.fb.control(param),
           type: this.fb.control(ruleParams[param]),
           value: this.fb.control(null, [Validators.required]) 
         });
         (<FormArray>this.parametersForm.get('parameters')).push(fgParameter);
+        console.log('paramsForm', this.parametersForm.get('parameters'))
       }
     } catch (error) {
       console.error('Los parémetros de la regla no tienen la estructura correcta');

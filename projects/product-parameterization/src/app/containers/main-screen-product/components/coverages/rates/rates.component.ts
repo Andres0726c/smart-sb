@@ -54,7 +54,7 @@ export class RatesComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.selectedField = new FormGroup({
       calculationRule: new FormControl(
-        this.coverageRates.controls[0].get('calculationRule')!.value
+        this.coverageRates.controls[0]?.get('calculationRule')!.value
       ),
     });
     this.loadContextData();
@@ -157,8 +157,8 @@ export class RatesComponent implements OnInit, OnChanges {
     this.selectedField.get('calculationRule')?.setValue(arr);
     (<FormArray>(
       this.coverageRates.controls[0]?.get('calculationRule')
-    )).removeAt(0);
-    (<FormArray>this.coverageRates.controls[0]?.get('calculationRule')).push(
+    ))?.removeAt(0);
+    (<FormArray>this.coverageRates.controls[0]?.get('calculationRule'))?.push(
       this.fb.control(element)
     );
   }
@@ -207,6 +207,6 @@ export class RatesComponent implements OnInit, OnChanges {
    * method that removes rule of the product structure
    */
   removeRule() {
-    (<FormArray>this.coverageRates.controls[0]?.get('calculationRule')).removeAt(0);
+    (<FormArray>this.coverageRates.controls[0]?.get('calculationRule'))?.removeAt(0);
   }
 }
