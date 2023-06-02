@@ -64,6 +64,31 @@ const ProductServiceMock = {
       ),
     }),
   ]),
+  prvwDt: new FormGroup({
+    plcyCntxtGrp: new FormArray([]),
+    plcyDtGrp: new FormArray([
+      new FormGroup({
+        id: new FormControl(24),
+        name: new FormControl('Test'),
+      }),
+    ]),
+    rskTyp: new FormArray([]),
+    cvrg: new FormArray([]),
+  }),
+  mdfctnPrcss: new FormGroup({
+    enabled: new FormControl(false),
+    mdfcblDt: new FormGroup({
+      plcyDtGrp: new FormArray([
+        new FormGroup({
+          id: new FormControl(24),
+          name: new FormControl('Test'),
+        }),
+      ]),
+      rskTyp: new FormArray([]),
+      cls: new FormArray([]),
+    }),
+    mdfctnTchnclCntrl: new FormArray([]),
+  }),
 };
 class toastMock {
   openFromComponent() {
@@ -449,7 +474,6 @@ describe('DataFieldsManagementComponent', () => {
 
     jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
     expect(component.loadEssentialData()).toBeUndefined();
-
   });
 
   it('loadRequiredData OK', () => {
@@ -464,7 +488,6 @@ describe('DataFieldsManagementComponent', () => {
 
     jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
     expect(component.loadRequiredData()).toBeUndefined();
-
   });
 
   test('isConfigured', () => {
@@ -688,6 +711,130 @@ describe('DataFieldsManagementComponent', () => {
       },
     };
     component.getGroupArrayById(1).push(component.selectedField);
-    expect(component.addRule('ruleInitializeControls', objrule)).toBeUndefined();
+    expect(
+      component.addRule('ruleInitializeControls', objrule)
+    ).toBeUndefined();
+  });
+
+  it('removeGroup', () => {
+    component.selectedField = new FormGroup({
+      id: component.fb.control(24, [Validators.required]),
+      name: component.fb.control('NEGOCIO REFERIDO [S/N]', [
+        Validators.required,
+      ]),
+      label: component.fb.control('NEGOCIO REFERIDO [S/N]', [
+        Validators.required,
+      ]),
+      fieldGroup: new FormControl(1),
+      dataTypeGui: component.fb.control('input', [Validators.required]),
+      dataTypeName: component.fb.control('text', [Validators.required]),
+      initializeRule: component.fb.array([], []),
+      validateRule: component.fb.array([], []),
+      dependency: component.fb.control(25, []),
+      required: component.fb.control(false, [Validators.required]),
+      editable: component.fb.control(true, [Validators.required]),
+      visible: component.fb.control(true, [Validators.required]),
+    });
+    component.groups = new FormArray(
+      [
+        new FormGroup({
+          id: new FormControl(1),
+          name: new FormControl('test'),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(24),
+                name: new FormControl('test'),
+                fieldGroup: new FormControl(1),
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ],
+      Validators.required
+    );
+    let groups = new FormArray(
+      [
+        new FormGroup({
+          id: new FormControl(1),
+          name: new FormControl('test'),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(24),
+                name: new FormControl('test'),
+                fieldGroup: new FormControl(1),
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ],
+      Validators.required
+    );
+    component.getGroupArrayById(1).push(component.selectedField);
+    expect(component.removeGroup(groups)).toBeUndefined();
+  });
+
+  it('removeGroupCascade', () => {
+    component.selectedField = new FormGroup({
+      id: component.fb.control(24, [Validators.required]),
+      name: component.fb.control('NEGOCIO REFERIDO [S/N]', [
+        Validators.required,
+      ]),
+      label: component.fb.control('NEGOCIO REFERIDO [S/N]', [
+        Validators.required,
+      ]),
+      fieldGroup: new FormControl(1),
+      dataTypeGui: component.fb.control('input', [Validators.required]),
+      dataTypeName: component.fb.control('text', [Validators.required]),
+      initializeRule: component.fb.array([], []),
+      validateRule: component.fb.array([], []),
+      dependency: component.fb.control(25, []),
+      required: component.fb.control(false, [Validators.required]),
+      editable: component.fb.control(true, [Validators.required]),
+      visible: component.fb.control(true, [Validators.required]),
+    });
+    component.groups = new FormArray(
+      [
+        new FormGroup({
+          id: new FormControl(1),
+          name: new FormControl('test'),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(24),
+                name: new FormControl('test'),
+                fieldGroup: new FormControl(1),
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ],
+      Validators.required
+    );
+    let groups = new FormArray(
+      [
+        new FormGroup({
+          id: new FormControl(1),
+          name: new FormControl('test'),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(24),
+                name: new FormControl('test'),
+                fieldGroup: new FormControl(1),
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ],
+      Validators.required
+    );
+    component.getGroupArrayById(1).push(component.selectedField);
+    expect(component.removeGroupCascade(groups)).toBeUndefined();
   });
 });
