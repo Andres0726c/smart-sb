@@ -380,35 +380,6 @@ describe('DataFieldsManagementComponent', () => {
     ).toBeUndefined();
   });
 
-  // it('removeAssociatedReference Ok', () => {
-  //   component.complementaryData = new FormArray([
-  //     new FormGroup({
-  //       id: new FormControl(1),
-  //       name: new FormControl('test'),
-  //       fields: new FormArray([
-  //         new FormGroup({
-  //           id: new FormControl(25),
-  //           name: new FormControl('test'),
-  //           dependency: new FormControl(24)
-  //         })
-  //       ], Validators.required)
-  //     })
-  //   ], Validators.required);
-  //   expect(component.removeAssociatedReference()).toBeUndefined();
-  // });
-
-  // it('removeAssociatedReference  not empty', () => {
-  //   component.complementaryData = new FormArray([
-  //     new FormGroup({
-  //       id: new FormControl(1),
-  //       name: new FormControl('test'),
-  //       fields: new FormArray([], Validators.required)
-  //     })
-  //   ], Validators.required);
-  //   component.complementaryDataControls.push(component.selectedField);
-  //   expect(component.removeAssociatedReference()).toBeUndefined();
-  // });
-
   it('DeleteCascadeDateModify', () => {
     component.selectedField = component.fb.group({
       id: component.fb.control(1),
@@ -479,38 +450,7 @@ describe('DataFieldsManagementComponent', () => {
     jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
     expect(component.loadEssentialData()).toBeUndefined();
 
-    // jest.spyOn(productService, 'getApiData').mockImplementation(() => { throw new Error('error'); });
-    // expect(component.loadEssentialData()).toBeUndefined();
   });
-
-  // it('loadContextData OK', () => {
-  //   let res: any = {
-  //     body: [
-  //       {
-  //         code: "prdct",
-  //         description: 'Producto',
-  //       },
-  //     ]
-  //   };
-
-  //   jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
-  //   expect(component.loadContextData()).toBeUndefined();
-
-  //   res = {
-  //     body: [
-  //       {
-  //         code: "prdct",
-  //         description: 'Producto',
-  //       },
-  //     ]
-  //   };
-
-  //   jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
-  //   expect(component.loadContextData()).toBeUndefined();
-
-  //   jest.spyOn(productService, 'getApiData').mockImplementation(() => { throw new Error('error'); });
-  //   expect(component.loadContextData()).toBeUndefined();
-  // });
 
   it('loadRequiredData OK', () => {
     let res: any = {
@@ -525,8 +465,6 @@ describe('DataFieldsManagementComponent', () => {
     jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
     expect(component.loadRequiredData()).toBeUndefined();
 
-    // jest.spyOn(productService, 'getApiData').mockImplementation(() => { throw new Error('error'); });
-    // expect(component.loadRequiredData()).toBeUndefined();
   });
 
   test('isConfigured', () => {
@@ -697,5 +635,59 @@ describe('DataFieldsManagementComponent', () => {
 
     component.getGroupArrayById(1).push(component.selectedField);
     expect(component.associateGroup(1)).toBeUndefined();
+  });
+
+  it('addRule', () => {
+    component.selectedField = new FormGroup({
+      id: component.fb.control(24, [Validators.required]),
+      name: component.fb.control('NEGOCIO REFERIDO [S/N]', [
+        Validators.required,
+      ]),
+      label: component.fb.control('NEGOCIO REFERIDO [S/N]', [
+        Validators.required,
+      ]),
+      fieldGroup: new FormControl(1),
+      dataTypeGui: component.fb.control('input', [Validators.required]),
+      dataTypeName: component.fb.control('text', [Validators.required]),
+      initializeRule: component.fb.array([], []),
+      validateRule: component.fb.array([], []),
+      dependency: component.fb.control(25, []),
+      required: component.fb.control(false, [Validators.required]),
+      editable: component.fb.control(true, [Validators.required]),
+      visible: component.fb.control(true, [Validators.required]),
+    });
+    component.groups = new FormArray(
+      [
+        new FormGroup({
+          id: new FormControl(1),
+          name: new FormControl('test'),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(24),
+                name: new FormControl('test'),
+                fieldGroup: new FormControl(1),
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ],
+      Validators.required
+    );
+    let objrule = {
+      rule: {
+        id: 1,
+        name: 'test',
+        cdBusinessCode: 'test',
+        description: 'test',
+        cdRuleType: 'test',
+        endPoint: 'test',
+        rlEngnCd: 'test',
+        argmntLst: 'test',
+      },
+    };
+    component.getGroupArrayById(1).push(component.selectedField);
+    expect(component.addRule('ruleInitializeControls', objrule)).toBeUndefined();
   });
 });
