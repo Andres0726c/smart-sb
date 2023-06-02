@@ -1,0 +1,8 @@
+@import "../../../../../../assets/styles/config/variables";
+@import "../../../../../../assets/styles/config/mixins";
+@import "../../../../../../../../../libs/commons-lib/src/lib/assets/styles/material-theme/config/forms";
+
+::ng-deep .card-header .p-card-header{
+    background-color: $greenBG;
+    padding: 10px;
+}
