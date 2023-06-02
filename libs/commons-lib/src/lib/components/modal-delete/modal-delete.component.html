@@ -12,9 +12,9 @@
   </div>
   <div class="flex flex-col items-center gap-2 text-xl">
     <em class="w-16 picto-delete"></em>
-    <p class="text-center font-bold">{{ modal.message }}</p>
-    <span *ngIf="modal.subMessage" class="text-warn-500 text-center text-base">
-      {{ modal.subMessage }}
+    <p class="text-center font-bold">{{ modal?.message }}</p>
+    <span *ngIf="modal?.subMessage" class="text-warn-500 text-center text-base">
+      {{ modal?.subMessage }}
     </span>
     <div class="flex justify-center pt-4 gap-2">
       <button

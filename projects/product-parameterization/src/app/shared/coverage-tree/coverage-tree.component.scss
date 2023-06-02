@@ -1,0 +1,122 @@
+::ng-deep .tree-smartcore .p-treenode-children .p-treenode-content {
+  flex-direction: row-reverse !important;
+  justify-content: space-between !important;
+  padding: 0px !important;
+}
+
+::ng-deep .p-tree-toggler {
+  color: green !important;
+}
+
+::ng-deep .tree-smartcore .p-treenode-children .p-tree-toggler {
+  display: none !important;
+}
+
+// ::ng-deep .p-treenode-children {
+//   border-color: red !important;
+//   border-left: 2px !important;
+//   border-style: solid !important;
+// }
+
+::ng-deep .p-treenode-children .p-treenode {
+  border-color: green !important;
+}
+
+::ng-deep .p-tree-toggler {
+  //@extend .p-button-danger;
+}
+
+::ng-deep .tree-smartcore .p-treenode-children .p-treenode-label {
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 1;
+  }
+  width: 100%;
+}
+
+::ng-deep .tree-smartcore .p-button.p-button-icon-only {
+  padding: 0px !important;
+}
+
+::ng-deep .tree-smartcore .p-button.p-button-icon-only.p-button-rounded {
+  height: 2rem !important;
+}
+
+::ng-deep .p-treenode-children .pi-chevron-right:before {
+  content: "\e93d";
+}
+
+::ng-deep .p-treenode-children .pi-chevron-down:before {
+  content: "\e93d";
+}
+
+::ng-deep .p-tree .p-tree-container .p-treenode .p-treenode-label {
+  padding-left: 20px;
+}
+
+::ng-deep .p-tree .p-tree-container .p-treenode .p-treenode-content {
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+  padding: 20px 0px 20px 0px;
+}
+
+::ng-deep
+  .p-tree
+  .p-tree-container
+  .p-treenode
+  .p-treenode-content
+  .p-tree-toggler {
+  margin-right: 0rem;
+  width: 1rem;
+  height: 1rem;
+  border: 0 none;
+  background: transparent;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+::ng-deep .p-tree .p-treenode-children {
+  padding: 0 0 0 0;
+}
+
+::ng-deep .p-tree {
+  min-width: 230px;
+}
+
+.node-width {
+  width: 120px;
+}
+
+::ng-deep
+  .p-tree
+  .p-tree-container
+  .p-treenode
+  .p-treenode-content.p-highlight {
+  background: #d9ede4;
+  color: #005833;
+}
+
+::ng-deep .p-tree .p-tree-container .p-treenode .p-treenode-content:focus {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 0.15rem #d9ede4;
+}
+
+.count-coverages {
+  position: absolute;
+  top: 224px;
+  left: 161px;
+}
+
+::ng-deep .p-badge {
+  background: #d9ede4;
+  color: #016d38;
+}
+
+::ng-deep .p-badge-no-gutter {
+  padding: 0;
+  border-radius: 35%;
+  width: 35px;
+}

@@ -1,0 +1,79 @@
+<app-no-data-screen
+  [data]="formDeductibles"
+  [emptyText]="'Sin deducibles'"
+  [emptySubText]="'No se han asociado deducibles a la cobertura'"
+  (action)="openToAdd()"
+>
+</app-no-data-screen>
+<!--TABLE-->
+<div [hidden]="formDeductibles.length === 0">
+  <div><h1>Deducibles</h1></div>
+  <div class="flex justify-between items-center mb-4">
+    <div class="w-80">
+      <span class="p-input-icon-right flex flex-col">
+        <em class="fas fa-search"></em>
+        <input
+          pInputText
+          type="text"
+          (input)="applyFilter($event, 'contains')"
+          placeholder="Criterio de búsqueda"
+          data-qa-id="sc-rpmf-search-deductible"
+        />
+      </span>
+    </div>
+    <div class="flex gap-4">
+      <button
+        pButton
+        pRipple
+        type="button"
+        data-qa-id="sc-rpmf-btn_add_coverages_deductibles"
+        icon="pi pi-plus-circle"
+        label="Añadir"
+        (click)="openToAdd()"
+      ></button>
+      <button
+        *ngIf="selectedElement.length > 0"
+        pButton
+        pRipple
+        type="button"
+        class="p-button-outlined p-button-danger"
+        data-qa-id="sc-rpmf-btn_remove_coverages_deductibles"
+        icon="pi pi-trash"
+        label="Eliminar"
+        (click)="removeDeductible()"
+      ></button>
+    </div>
+  </div>
+  <p-table
+    #modalSearchTable
+    [value]="dataSource"
+    [columns]="columns"
+    [(selection)]="selectedElement"
+    [paginator]="true"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{first} - {last} de {totalRecords}"
+    [selectionPageOnly]="true"
+  >
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th *ngFor="let col of columns; let i = index">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        </td>
+        <td *ngFor="let col of columns; let i = index">
+          {{ getDetailColumn(rowData, col.field) }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

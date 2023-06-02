@@ -128,8 +128,6 @@ export class ModalSearchComponent implements OnInit {
         []
       );
 
-      //console.log('modalcfg', this.data);
-
       if(!this.modal.remotePaginator) {
         this.getData(
           '0',
@@ -301,7 +299,6 @@ export class ModalSearchComponent implements OnInit {
    * Method that insert the information in mat table datasource
    */
   async insertDataToTable() {
-    //this.arrayData.forEach( obj => this.renameKey( obj, 'name', 'field' ));
     if (this.modal.remotePaginator) {
       this.dataSource = [...this.arrayData];
       this.dataSourceBk = [...this.arrayDataBk];
@@ -314,8 +311,6 @@ export class ModalSearchComponent implements OnInit {
         this.data.list.every((element) => element.id != item.id)
       );
     }
-
-    //console.log('data', this.dataSource)
   }
 
   getDetailColumn(element: any, colName: string) {
@@ -337,107 +332,6 @@ export class ModalSearchComponent implements OnInit {
     }
   }
 
-  /**
-   * Metodo para ordenar los elementos de la tabla en los modales - TODO -> falta
-   * @param
-   * @returns
-   */
-  async sortData(sort: any) {
-    console.log('sort', sort);
-  }
-  
-
-  /*async loadData(
-    search: string,
-    page: number,
-    pageSize: number,
-    sortColumn: string,
-    sortDirection: string,
-    modificationType?: string
-  ) {
-    let res: any;
-    let selectedIds = '0';
-    this.isLoading = true;
-
-    if (this.data.list.length > 0) {
-      for (let sel of this.data.list) {
-        selectedIds += `,${sel.id}`;
-      }
-    }
-
-    if (!this.data.data) {
-      if (this.modal.remotePaginator) {
-        if (this.data.parameter) {
-          res = await lastValueFrom(
-            this.productService.getApiData(
-              this.modal.service,
-              this.data.parameter +
-                `/${search}/${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`
-            )
-          );
-        } else {
-          res = await lastValueFrom(
-            this.productService.getApiData(
-              this.modal.service,
-              `${search}/${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`
-            )
-          );
-        }
-      } else {
-        res = await lastValueFrom(
-          this.productService.getApiData(this.modal.service)
-        );
-      }
-    } else {
-      res = { body: this.data.data };
-    }
-
-    if (res.body) {
-      await this.setData(res);
-      this.flagServiceError = false;
-    }
-
-    console.log('datos', res);
-
-    this.isLoading = false;
-  }*/
-
-  
-
-  //funtion to search and filter table - TODO -> falta
-  /*async applyFilter(event: Event) {
-    console.log(event);
-    console.log(this.modal);
-  
-    const filterValue = (event.target as HTMLInputElement).value;
-    if (filterValue.trim().toLowerCase().length >= 3) {
-      if (this.modal.remotePaginator) {
-        this.reloadFirstRemotePage = true;
-        this.currentPage = 0;
-        this.getData(
-          filterValue,
-          this.currentPage,
-          this.pageSize,
-          this.sortColumn,
-          this.sortDirection
-        );
-      } else {
-        console.log('filter', filterValue);
-        
-        this.dataSource = this.dataSource.filter((res) => {
-          return res.name === filterValue.trim().toLowerCase() || res.description === filterValue.trim().toLowerCase();
-        });
-      }
-    }
-    
-    console.log('resultado', this.dataSource);
-    
-  }*/
-
-  //funcion para paginar - TODO -> falta
-  /*async pageChanged(event: any) {
-    console.log(event);
-  }*/
   showedColumns() {
     return this.data.columns?.filter((x: any) => x.header);
   }
@@ -479,19 +373,10 @@ export class ModalSearchComponent implements OnInit {
       this.prevSearch = search;
     }
 
-    /*setTimeout(() => {
-      this.customerService.getCustomers({lazyEvent: JSON.stringify(event)}).then(res => {
-          this.customers = res.customers;
-          this.totalRecords = res.totalRecords;
-          this.loading = false;
-      })
-    }, 1000);*/
     if (doReq) {
       this.isLoading = true;
       this.getApiData(requestParams, search);
     }
-    //this.totalSize = 
-    //console.log('lazy load', event)
   }
 
 }

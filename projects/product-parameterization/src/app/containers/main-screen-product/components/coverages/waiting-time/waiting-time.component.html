@@ -1,0 +1,130 @@
+<div class="mt-8">
+  <form [formGroup]="formWaitingTime">
+    <p-card styleClass="card-header">
+      <ng-template pTemplate="header">
+        <div class="flex flex-row gap-5">
+          <h5>Carencia</h5>
+          <p-checkbox
+            [binary]="true"
+            inputId="waitingTime"
+            formControlName="waitingTime"
+            (onChange)="isTouchedForm(formWaitingTime, $event.checked)"
+            data-qa-id="sc-rpmf-check_waiting-time"
+          ></p-checkbox>
+        </div>
+      </ng-template>
+      <div class="flex flex-row gap-5 mt-5 mb-5">
+        <div class="flex flex-col w-full">
+          <label for="quantity">Cantidad</label>
+          <p-inputNumber
+            styleClass="w-full"
+            inputId="quantity"
+            formControlName="quantity"
+            (keyup)="changeInputNumber(formWaitingTime, 'quantity')"
+            data-qa-id="sc-rpmf-input_waiting-time_quantity"
+          ></p-inputNumber>
+
+          <small
+            class="p-error block"
+            *ngIf="formWaitingTime.get('quantity')?.errors?.['required']"
+          >
+            Ingrese la cantidad del periodo de carencia.
+          </small>
+          <small
+            class="p-error block"
+            *ngIf="formWaitingTime.get('period')?.value === 'anio' && (formWaitingTime.get('quantity')?.errors?.['max']?.max === 1 || formWaitingTime.get('quantity')?.errors?.['min']?.min === 1)"
+            >El periodo de carencia debe ser igual a 1 año.</small
+          >
+          <small
+            class="p-error block"
+            *ngIf="formWaitingTime.get('period')?.value === 'mes' && (formWaitingTime.get('quantity')?.errors?.['max']?.max === 6 || formWaitingTime.get('quantity')?.errors?.['min']?.min === 1)"
+            >El periodo de carencia debe ser mayor a 0 y menor o igual a 6
+            meses.</small
+          >
+          <small
+            class="p-error block"
+            *ngIf="formWaitingTime.get('period')?.value === 'dia' && (formWaitingTime.get('quantity')?.errors?.['max']?.max === 180 || formWaitingTime.get('quantity')?.errors?.['min']?.min === 1)"
+            >El periodo de carencia debe ser mayor a 0 y menor o igual a 180
+            días.</small
+          >
+        </div>
+        <div class="flex flex-col w-full">
+          <label for="period">Periodo</label>
+          <p-dropdown
+            [options]="waitingTimePeriod"
+            optionValue="code"
+            optionLabel="description"
+            placeholder="Seleccionar"
+            formControlName="period"
+            (onChange)="setValidators(formWaitingTime, 'quantity')"
+            styleClass="w-full"
+            appendTo="body"
+            data-qa-id="sc-rpmf-select_waiting-time"
+          ></p-dropdown>
+          <small
+            *ngIf="formWaitingTime.value.period === ''"
+            class="p-error block"
+            >Seleccione el periodo de carencia.</small
+          >
+        </div>
+      </div>
+    </p-card>
+  </form>
+  <form [formGroup]="formEvents">
+    <p-card styleClass="card-header">
+      <ng-template pTemplate="header">
+        <div class="flex flex-row gap-5">
+          <h5>Evento</h5>
+          <p-checkbox
+            [binary]="true"
+            inputId="event"
+            formControlName="events"
+            (onChange)="isTouchedForm(formEvents, $event.checked)"
+            data-qa-id="sc-rpmf-check_waiting-time"
+          ></p-checkbox>
+        </div>
+      </ng-template>
+      <div class="flex flex-row gap-5 mt-5 mb-5">
+        <div class="flex flex-col w-full">
+          <label for="quantityEvent">Cantidad</label>
+          <p-inputNumber
+            styleClass="w-full"
+            inputId="quantityEvent"
+            formControlName="quantityEvents"
+            (keyup)="changeInputNumber(formEvents, 'quantityEvents')"
+            data-qa-id="sc-rpmf-input_waiting-time_quantity"
+          ></p-inputNumber>
+          <small
+            class="p-error block"
+            *ngIf="formEvents.get('quantityEvents')?.errors?.['required']"
+            >Ingrese la cantidad del periodo de eventos.</small
+          >
+          <small
+            class="p-error block"
+            *ngIf="formEvents.get('quantityEvents')?.errors?.['max']?.max === 999 || formEvents.get('quantityEvents')?.errors?.['min']?.min === 1"
+            >El periodo de eventos debe ser mayor a 0 y menor o igual a
+            999.</small
+          >
+        </div>
+        <div class="flex flex-col w-full">
+          <label for="periodEvent">Periodo</label>
+          <p-dropdown
+            [options]="eventsPeriod"
+            optionValue="code"
+            optionLabel="description"
+            placeholder="Seleccionar"
+            formControlName="periodEvents"
+            styleClass="w-full"
+            appendTo="body"
+            data-qa-id="sc-rpmf-select_waiting-time"
+          ></p-dropdown>
+          <small
+            *ngIf="formEvents.value.periodEvents === ''"
+            class="p-error block"
+            >Seleccione el periodo de los eventos.</small
+          >
+        </div>
+      </div>
+    </p-card>
+  </form>
+</div>

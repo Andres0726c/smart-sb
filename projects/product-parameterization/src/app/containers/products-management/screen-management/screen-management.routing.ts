@@ -19,7 +19,7 @@ export const screenManagementRoutes: Route[] = [
             },
             {
                 path: 'coberturas',
-                loadChildren: () => import('../../../containers/coverages/coverages.module').then(m => m.CoveragesModule)
+                loadChildren: () => import('../../main-screen-product/components/coverages/coverages.module').then(m => m.CoveragesModule)
             },
             {
                 path: 'planes-servicio',

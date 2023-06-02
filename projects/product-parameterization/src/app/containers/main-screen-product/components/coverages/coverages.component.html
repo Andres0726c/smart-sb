@@ -1,0 +1,82 @@
+<div class="p-5">
+  <app-no-data-screen
+    [data]="productService.coverages"
+    [layoutType]="'full'"
+    [emptyTitle]="'Coberturas'"
+    [emptySubTitle]="'Especifique y defina las coberturas'"
+    [emptyText]="'Sin coberturas'"
+    [emptySubText]="'No se han asociado coberturas al producto'"
+    (action)="openToAdd()"
+  >
+  </app-no-data-screen>
+  <div class="flex flex-row p-5" *ngIf="productService.coverages.length > 0">
+    <refactoring-smartcore-mf-coverage-tree
+      (emitSelectedCoverage)="changeCoverage($event)"
+    ></refactoring-smartcore-mf-coverage-tree>
+    <div class="rounded-xl bg-white grow ml-4 p-5">
+      <form>
+        <div>
+          <h3>{{ selectedCoverage?.value.name }}</h3>
+          <h6>{{ selectedCoverage?.value.description }}</h6>
+        </div>
+        <p-tabView>
+          <p-tabPanel header="Carencia y eventos" data-qa-id="sc-rpmf-tab-waiting-time-events">
+            <refactoring-smartcore-mf-waiting-time
+              [formWaitingTime]="selectedCoverage?.get('waitingTime')"
+              [formEvents]="selectedCoverage?.get('events')"
+            ></refactoring-smartcore-mf-waiting-time>
+          </p-tabPanel>
+          <p-tabPanel header="Cláusulas" data-qa-id="sc-rpmf-tab-clauses">
+            <refactoring-smartcore-mf-clauses-shared
+              [formClauses]="selectedCoverage?.get('clauses')"
+              [emptyText]="'Sin cláusulas'"
+              [emptySubText]="'No se han asociado cláusulas a la cobertura'"
+            ></refactoring-smartcore-mf-clauses-shared>
+          </p-tabPanel>
+          <p-tabPanel header="Reglas de negocio" data-qa-id="sc-rpmf-tab-rules">
+            <refactoring-smartcore-mf-business-rules
+              [coverageRules]="selectedCoverage?.get('businessRules')"
+            ></refactoring-smartcore-mf-business-rules>
+          </p-tabPanel>
+          <p-tabPanel header="Datos cobertura" data-qa-id="sc-rpmf-tab-data-coverages">
+            <rs-mf-data-fields-management
+              [applicationLevel]="'Cobertura'"
+              [groups]="selectedCoverage?.get('complementaryData')"
+              [addItemMsg]="
+                'Los datos complementarios fueron asociados correctamente.'
+              "
+              [emptyText]="'Sin datos de cobertura'"
+              [emptySubText]="'No se han asociado datos a la cobertura'"
+              [removeItemMsg]="'¿Está seguro de querer desasociar el dato complementario seleccionado?'"
+            ></rs-mf-data-fields-management>
+          </p-tabPanel>
+          <p-tabPanel header="Deducible" data-qa-id="sc-rpmf-tab-deductibles">
+            <refactoring-smartcore-mf-deductibles
+              [formDeductibles]="selectedCoverage?.get('deductibles')"
+            >
+            </refactoring-smartcore-mf-deductibles>
+          </p-tabPanel>
+          <p-tabPanel header="Tarifa" data-qa-id="sc-rpmf-tab-rates">
+            <refactoring-smartcore-mf-rates
+              [coverageRates]="selectedCoverage?.get('rates')"
+            ></refactoring-smartcore-mf-rates>
+          </p-tabPanel>
+          <p-tabPanel header="Datos de nómina" data-qa-id="sc-rpmf-tab-payRollData">
+            <rs-mf-data-fields-management
+              [applicationLevel]="'Nómina'"
+              [groups]="selectedCoverage?.get('payRollData')"
+              [addItemMsg]="
+                'Los datos complementarios fueron asociados correctamente.'
+              "
+              [emptyText]="'Sin datos de nómina'"
+              [emptySubText]="
+                'No se han asociado datos de nómina a la cobertura'
+              "
+              [removeItemMsg]="'¿Está seguro de querer desasociar el dato de nómina seleccionado?'"
+            ></rs-mf-data-fields-management>
+          </p-tabPanel>
+        </p-tabView>
+      </form>
+    </div>
+  </div>
+</div>

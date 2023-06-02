@@ -1,0 +1,38 @@
+<p-tree
+  [value]="coverageTree"
+  styleClass="tree-smartcore"
+  [(selection)]="selectedFile"
+  selectionMode="single"
+>
+  <ng-template pTemplate="header">
+    <div class="flex justify-between items-center">
+      <h5><span>Coberturas</span></h5>
+      <button
+        pButton
+        type="button"
+        label="Añadir"
+        icon="pi pi-plus-circle"
+        (click)="openToAdd()"
+        data-qa-id="sc-rpmf-btn_add_coveranges"
+      ></button>
+    </div>
+  </ng-template>
+  <ng-template let-node pTemplate="children" class="w-full h-full">
+    <span class="node-width" (click)="viewCoverage(node)">
+      {{ node.label }}
+    </span>
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-trash"
+      (click)="removeCoverage(node)"
+      class="p-button-rounded p-button-danger p-button-text"
+      data-qa-id="sc-rpmf-btn_remove_coveranges"
+    ></button>
+  </ng-template>
+</p-tree>
+<p-badge
+  class="count-coverages"
+  [value]="productService.coverages.length"
+></p-badge>

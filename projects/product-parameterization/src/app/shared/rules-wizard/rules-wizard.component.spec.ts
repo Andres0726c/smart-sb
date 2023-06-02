@@ -1,83 +1,120 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { LazyLoadEvent, MessageService } from 'primeng/api';
-import { DialogService, DynamicDialogConfig, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { of } from 'rxjs';
-import { ProductService } from '../../services/product.service';
-import { RulesWizardComponent } from './rules-wizard.component';
 
-class DialogMock {
-  open() {
-    return {
-      afterClosed: () => of({})
-    };
-  }
-}
+import { RulesWizardComponent } from './rules-wizard.component';
+import { of } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+import { ProductService } from '../../services/product.service';
+import { FormBuilder } from '@angular/forms';
+import {
+  DialogService,
+  DynamicDialogConfig,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
+import { MatDialog } from '@angular/material/dialog';
+import { execPath } from 'process';
+import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
 
 describe('RulesWizardComponent', () => {
   let component: RulesWizardComponent;
   let fixture: ComponentFixture<RulesWizardComponent>;
+  let productService: ProductService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ 
-        HttpClientTestingModule,
-        MatDialogModule,
-        DynamicDialogModule
-      ],
-      declarations: [ RulesWizardComponent ],
+  class dialogMock {
+    open() {
+      return {
+        afterClosed: () =>
+          of([
+            {
+              id: 1,
+              name: 'name test return',
+              description: 'description test return',
+            },
+          ]),
+      };
+    }
+  }
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientModule],
+      declarations: [RulesWizardComponent],
       providers: [
-        ProductService,
+        RulesWizardComponent,
         FormBuilder,
+        ProductService,
+        DialogService,
         DynamicDialogRef,
         DynamicDialogConfig,
-        DialogService,
-        MessageService,
         {
           provide: MatDialog,
-          useValue: new DialogMock()
-        }
-      ]
-    })
-    .compileComponents();
+          useValue: new dialogMock(),
+        },
+      ],
+    });
 
     fixture = TestBed.createComponent(RulesWizardComponent);
     component = fixture.componentInstance;
 
+    const res = {
+      dataHeader: {
+        code: 200,
+        hasErrors: false,
+      },
+      body: [
+        { id: 1, name: 'test 1' },
+        { id: 2, name: 'test 2' },
+      ],
+    };
+    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
+
+    component.data = {
+      code: 'typeCurrencyControls',
+      list: [],
+      columns: [
+        {
+          name: 'name',
+          header: 'Nombre',
+          displayValue: ['Columna name'],
+          dbColumnName: ['nmLabel'],
+        },
+        {
+          name: 'description',
+          header: 'Descripción',
+          displayValue: ['Columna description'],
+          dbColumnName: ['nmLabel'],
+        },
+      ],
+      title: 's',
+      subtitle: 'subtitle',
+      multiSelect: true,
+      parameter: '1',
+    };
+
     component.dataSourceModal = {
       data: {
-        contextData: [
-          {
-            code: "prdct",
-            description: "Producto",
-            applctnLvl: [
-                "*"
-            ]
-          }
-        ],
+        code: 'typeCurrencyControls',
+        list: [],
         columns: [
-          { field: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmname']  },
-          { field: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription']  },
-          { field: 'cdRuleType', displayValue: ['cdRuleType'], dbColumnName:['cdRuleType']  },
-          { field: 'endPoint', displayValue: ['endPoint'] },
-          { field: 'nmVersion', displayValue: ['nmVersion'] },
-          { field: 'nmParameterList', displayValue: ['nmParameterList'] },
-          { field: 'nmReturnList', displayValue: ['nmReturnList'] },
-          { field: 'applicationLevel', displayValue: ['applicationLevel'] },
-          { field: 'rlEngnCd', displayValue: ['rlEngnCd'] },
-          { field: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-          { field: 'urlBs', displayValue: ['urlBs'] },
-          { field: 'id', displayValue: ['id'] }
+          {
+            name: 'name',
+            header: 'Nombre',
+            displayValue: ['Columna name'],
+            dbColumnName: ['nmLabel'],
+          },
+          {
+            name: 'description',
+            header: 'Descripción',
+            displayValue: ['Columna description'],
+            dbColumnName: ['nmLabel'],
+          },
         ],
-        code: 'ruleCalculationControls',
-        list: [{id: 1, name: 'test'}],
-        title: 'test',
-        subtitle: 'test'
-      }
-    }
-
+        title: 's',
+        subtitle: 'subtitle',
+        multiSelect: true,
+        parameter: '1',
+        contextData: [],
+      },
+    };
     fixture.detectChanges();
   });
 
@@ -85,59 +122,88 @@ describe('RulesWizardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('getDetailColumn', () => {
-    expect(component.getDetailColumn({}, 'name')).toBeUndefined();
+  it('ngOnInit', () => {
+    component.ngOnInit();
+    expect(component).toBeDefined();
   });
 
-  it('getDetailColumn dot', () => {
-    expect(component.getDetailColumn({element: {name: {description: 'test'}}}, 'name.description')).toEqual('test');
+  it('getDetailColumn', () => {
+    let element = {
+      id: 1,
+      name: 'test',
+      description: 'test',
+    };
+    let colName = 'test';
+    expect(component.getDetailColumn(element, colName)).toBeUndefined();
+
+    let element2 = {
+      element: {
+        test: {
+          test: 'test',
+        },
+      },
+    };
+    let colName2 = 'test.test';
+    expect(component.getDetailColumn(element2, colName2)).toEqual('test');
   });
 
   it('loadRemoteData', () => {
-    const event: LazyLoadEvent = {};
-    const res = {
-      dataHeader: { code: 200, hasErrors: false },
-      body: [
-        { id: 1, name: 'test' }
-      ]
+    let event = {
+      fisrt: 0,
+      rows: 1,
     };
-    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
+
     expect(component.loadRemoteData(event)).toBeUndefined();
   });
 
-  it('loadRemoteData global filter', () => {
-    const event: LazyLoadEvent = {globalFilter: 'test'};
-    const res = {
-      dataHeader: { code: 200, hasErrors: false },
-      body: [
-        { id: 1, name: 'test' }
-      ]
-    };
-    jest.spyOn(component.productService, 'getApiData').mockReturnValue(of(res));
-    expect(component.loadRemoteData(event)).toBeUndefined();
+  it('insertDataToTable', () => {
+    expect(component.insertDataToTable()).toBeDefined();
   });
-  
+
   it('addElements', () => {
-    component.selectedElement = {id: 1, name: 'test'};
+    component.selectedElement = {
+      id: 1,
+      name: 'test',
+    };
     expect(component.addElements()).toBeUndefined();
   });
 
-  it('onRowSelect', () => {
-    const event: any = {data: {nmParameterList: "{\"period\": \"string\", \"startDate\": \"string\"}"}};
-    expect(component.onRowSelect(event)).toBeUndefined();
+  it('showedColumns', () => {
+    expect(component.showedColumns()).toBeDefined();
   });
 
-  it('onRowSelect catch', () => {
-    const event: any = {data: {nmParameterList: {}}};
-    expect(component.onRowSelect(event)).toBeUndefined();
-  });
+  it('setFieldValue', () => {
+    let valueArray = ['name'];
+    let obj = {
+      name: 'name',
+    };
+    expect(component.setFieldValue(obj, valueArray)).toBeDefined();
 
-  /*it('applyFilterGlobal', () => {
-    const event: any = {target: {value: 't'}};
-    expect(component.applyFilterGlobal(event, 'contains')).toBeUndefined();
-  });*/
+    valueArray = ['element'];
+
+    expect(component.setFieldValue(obj, valueArray)).toBeDefined();
+  });
 
   it('paramsControls', () => {
     expect(component.paramsControls).toBeDefined();
+  });
+
+  it('onRowSelect', () => {
+    let event = {
+      data: {
+        cdBusinessCode: 'RVL_CIU_RGO',
+        cdRuleType: 'Validación',
+        description: 'Validar ciudad',
+        endPoint: '/emisor/v1/city/locationValidate',
+        id: 16,
+        name: 'Validar ciudad',
+        nmParameterList: '{"isoCode": "string", "daneCode": "string"}',
+        urlBs: 'urlBs',
+      },
+      index: 'test',
+      type: 'radiobutton',
+    };
+
+    expect(component.onRowSelect(event)).toBeUndefined();
   });
 });

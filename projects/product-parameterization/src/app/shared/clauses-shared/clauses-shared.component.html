@@ -1,0 +1,145 @@
+<app-no-data-screen
+  [data]="formClauses"
+  [layoutType]="layoutType"
+  [emptyTitle]="title"
+  [emptySubTitle]="subtitle"
+  [emptyText]="emptyText"
+  [emptySubText]="emptySubText"
+  (action)="openToAdd()"
+>
+</app-no-data-screen>
+<!--TABLE-->
+<div [hidden]="formClauses.length === 0">
+  <p-card>
+    <div><h1>Cláusulas</h1></div>
+    <div class="flex justify-between items-center mb-4">
+      <div class="w-80">
+        <span class="p-input-icon-right flex flex-col">
+          <em class="fas fa-search"></em>
+          <input
+            pInputText
+            type="text"
+            (input)="applyFilter($event, 'contains')"
+            placeholder="Criterio de búsqueda"
+            data-qa-id="sc-rpmf-input_search_filter_clauses"
+          />
+        </span>
+      </div>
+      <div class="flex gap-4">
+        <button
+          pButton
+          pRipple
+          type="button"
+          data-qa-id="sc-rpmf-btn_open_modal_clauses"
+          icon="pi pi-plus-circle"
+          label="Añadir"
+          (click)="openToAdd()"
+        ></button>
+        <button
+          *ngIf="selectedElement.length > 0"
+          pButton
+          pRipple
+          type="button"
+          class="p-button-outlined p-button-danger"
+          data-qa-id="sc-rpmf-btn_delete_clauses"
+          icon="pi pi-trash"
+          label="Eliminar"
+          (click)="removeClause()"
+        ></button>
+      </div>
+    </div>
+    <p-table
+      #modalSearchTable
+      [value]="dataSource"
+      [columns]="columns"
+      [(selection)]="selectedElement"
+      [paginator]="true"
+      [rows]="5"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="{first} - {last} de {totalRecords}"
+      [selectionPageOnly]="true"
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th *ngFor="let col of columns; let i = index">
+            {{ col.header }}
+          </th>
+          <th>Ramo</th>
+          <th>Ver</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+          </td>
+          <td *ngFor="let col of columns; let i = index">
+            {{ getDetailColumn(rowData, col.field) }}
+          </td>
+          <td>{{ productService.ramo }}</td>
+          <td>
+            <button
+              pButton
+              pRipple
+              type="button"
+              icon="pi pi-eye"
+              class="p-button-rounded p-button-text"
+              data-qa-id="sc-rpmf-btn_open_modal_detail_clauses"
+              (click)="openDetail(rowData)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
+<p-dialog
+  [(visible)]="displayModalDetail"
+  [modal]="true"
+  [style]="{ width: '550px' }"
+  [draggable]="false"
+  [resizable]="false"
+  appendTo="body"
+  [showHeader]="false"
+>
+  <div class="w-full text-right mt-5">
+    <button
+      data-qa-id="sc-rpmf-btn-close"
+      pButton
+      pRipple
+      type="button"
+      icon="fas fa-times"
+      class="p-button-rounded p-button-text"
+      (click)="closeModalDetail()"
+    ></button>
+  </div>
+  <div class="flex flex-col text-center mb-5">
+    <span class="title">Detalle cláusula</span>
+    <span class="subtitle">Detalle específico de la cláusula</span>
+  </div>
+  <div class="gap-y-8">
+    <div>
+      <span>
+        <strong>{{ nameClause }}</strong>
+      </span>
+    </div>
+    <div>
+      <p-scrollPanel [style]="{ width: '100%', height: '200px' }">
+        <div [innerHTML]="detailClause"></div>
+      </p-scrollPanel>
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      type="button"
+      data-qa-id="sc-rpmf-btn-close"
+      label="Cerrar"
+      (click)="closeModalDetail()"
+    ></button>
+  </ng-template>
+</p-dialog>

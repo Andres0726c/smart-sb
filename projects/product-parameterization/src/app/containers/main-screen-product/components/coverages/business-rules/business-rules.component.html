@@ -1,0 +1,77 @@
+<div class="p-5">
+  <form [formGroup]="coverageRules">
+    <div><h1>Reglas</h1></div>
+    <div class="flex flex-col w-full mb-5">
+      <label class="text-base">Regla de selección</label>
+      <div class="p-inputgroup">
+        <p-chips
+          [formControlName]="'selectionRule'"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+        >
+          <ng-template let-item pTemplate="item" class="w-full">
+            <em class="far fa-location-circle mr-1"></em> {{ item.name }}
+          </ng-template>
+        </p-chips>
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="fal fa-plus-circle"
+          styleClass="p-button-warn"
+          class="h-[37px]"
+          (click)="openDialogCoverageRules('ruleSelectionControls')"
+          data-qa-id="sc-rpmf-btn_rules_selection"
+        ></button>
+      </div>
+    </div>
+    <div class="flex flex-col w-full mb-5">
+      <label class="text-base">Regla de inicialización</label>
+      <div class="p-inputgroup">
+        <p-chips
+          [formControlName]="'initializeRule'"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+        >
+          <ng-template let-item pTemplate="item" class="w-full">
+            <em class="far fa-location-circle mr-1"></em> {{ item.name }}
+          </ng-template>
+        </p-chips>
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="fal fa-plus-circle"
+          styleClass="p-button-warn"
+          class="h-[37px]"
+          (click)="openDialogCoverageRules('ruleInitializeControls')"
+          data-qa-id="sc-rpmf-btn_rules_initialization"
+        ></button>
+      </div>
+    </div>
+    <div class="flex flex-col w-full mb-5">
+      <label class="text-base">Regla de validación</label>
+      <div class="p-inputgroup">
+        <p-chips
+          [formControlName]="'validateRule'"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+        >
+          <ng-template let-item pTemplate="item" class="w-full">
+            <em class="far fa-location-circle mr-1"></em> {{ item.name }}
+          </ng-template>
+        </p-chips>
+        <button
+          type="button"
+          pButton
+          pRipple
+          icon="fal fa-plus-circle"
+          styleClass="p-button-warn"
+          class="h-[37px]"
+          (click)="openDialogCoverageRules('ruleValidationControls')"
+          data-qa-id="sc-rpmf-btn_rules_validate"
+        ></button>
+      </div>
+    </div>
+  </form>
+</div>
