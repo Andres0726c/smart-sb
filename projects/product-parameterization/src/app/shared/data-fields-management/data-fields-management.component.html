@@ -46,7 +46,7 @@
         
                                 </p-menu>
                                 <button pButton pRipple data-qa-id="sc-rpmf-btn-group-options"
-                                    type="button" icon="fal fa-ellipsis-h-alt" class="p-button-rounded ml-2 mt-1" (click)="$event.stopImmediatePropagation(); menu.toggle($event); selectedGroupItem=group; disabledItem(group)"></button>
+                                    type="button" icon="fal fa-ellipsis-h-alt" class="p-button-rounded p-button-secondary ml-2 mt-1" (click)="$event.stopImmediatePropagation(); menu.toggle($event); selectedGroupItem=group; disabledItem(group)"></button>
                             </span>
                             <span *ngIf="group.value.isEditing" class="ml-4 mt-8">
                                 <form class="form-edit-title" [formGroup]="formGroupTitle">

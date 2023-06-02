@@ -167,25 +167,25 @@ describe('DataFieldsManagementComponent', () => {
     expect(component).toBeDefined();
   });
 
-    it('should disable menu item if group code is "datos_basicos"', () => {
-    const group = { value: { code: 'datos_basicos' } };
+  it('disableMenu true', () => {
+  const group = { value: { code: 'datos_basicos' } };
 
-    component.itemsMenu = [
-      {
-        label: 'Opciones',
-        items: [
-          { label: 'Editar título del grupo', icon: 'pi pi-pencil', command: () => {} },
-          { label: 'Eliminar grupo', icon: 'pi pi-trash', command: () => {} }
-        ]
-      }
-    ];
+  component.itemsMenu = [
+    {
+      label: 'Opciones',
+      items: [
+        { label: 'Editar título del grupo', icon: 'pi pi-pencil', command: () => {} },
+        { label: 'Eliminar grupo', icon: 'pi pi-trash', command: () => {} }
+      ]
+    }
+  ];
 
-    component.disabledItem(group);
+  component.disabledItem(group);
 
-    expect(component.itemsMenu[0].items[1].disabled).toBe(true);
-  });
+  expect(component.itemsMenu[0].items[1].disabled).toBe(true);
+});
 
-  it('should enable menu item if group code is not "datos_basicos"', () => {
+  it('disableMenu false', () => {
     const group = { value: { code: 'other_code' } };
     component.itemsMenu = [
       {
@@ -387,5 +387,126 @@ describe('DataFieldsManagementComponent', () => {
       
       expect(component.associateGroup(1)).toBeUndefined();
     }
+  });
+
+  it('loadEssentialData OK', () => {
+    let res: any = {
+      body: [
+        {
+          id: 1,
+          name: 'name test return',
+          description: 'description test return',
+        },
+      ]
+    };
+
+    jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadEssentialData()).toBeUndefined();
+
+    res = {
+      body:
+      {
+        id: 1,
+        name: 'name test return',
+        description: 'description test return',
+      }
+    };
+
+    jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadEssentialData()).toBeUndefined();
+
+    // jest.spyOn(productService, 'getApiData').mockImplementation(() => { throw new Error('error'); });
+    // expect(component.loadEssentialData()).toBeUndefined();
+  });
+
+  it('loadContextData OK', () => {
+    let res: any = {
+      body: [
+        {
+          code: "prdct",
+          description: 'Producto',
+        },
+      ]
+    };
+
+    jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadContextData()).toBeUndefined();
+
+    res = {
+      body: [
+        {
+          code: "prdct",
+          description: 'Producto',
+        },
+      ]
+    };
+
+    jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadContextData()).toBeUndefined();
+
+    jest.spyOn(productService, 'getApiData').mockImplementation(() => { throw new Error('error'); });
+    expect(component.loadContextData()).toBeUndefined();
+  });
+
+  it('loadRequiredData OK', () => {
+    let res: any = {
+      body: [
+        {
+          code: "prdct",
+          description: 'Producto',
+        },
+      ]
+    };
+
+    jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadRequiredData()).toBeUndefined();
+
+    res = {
+      body: [
+        {
+          code: "prdct",
+          description: 'Producto',
+        },
+      ]
+    };
+
+    jest.spyOn(productService, 'getApiData').mockReturnValue(of(res));
+    expect(component.loadRequiredData()).toBeUndefined();
+
+    jest.spyOn(productService, 'getApiData').mockImplementation(() => { throw new Error('error'); });
+    expect(component.loadRequiredData()).toBeUndefined();
+  });
+
+  test('isConfigured', () => {
+    const item = {
+      value: {
+        required: true,
+        editable: true,
+        visible: true,
+        initializeRule: '',
+        validateRule: '',
+        dependency: null
+      }
+    };
+    const result = component.isConfigured(item);
+    expect(result).toBe(true);
+  });
+
+  it('addNewGroup', () => {
+    component.complementaryData = new FormArray([
+      new FormGroup({
+        id: new FormControl(1),
+        name: new FormControl('Nuevo grupo'),
+        isEditing: new FormControl(false),
+        fields: new FormArray([
+          new FormGroup({
+            id: new FormControl(25),
+            name: new FormControl('test'),
+            dependency: new FormControl(24)
+          })
+        ], Validators.required)
+      })
+    ], Validators.required);
+    expect(component.addNewGroup()).toBeUndefined();
   });
 });
