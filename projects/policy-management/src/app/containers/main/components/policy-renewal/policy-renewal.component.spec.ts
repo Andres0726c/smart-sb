@@ -3,12 +3,10 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { DialogService, DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
 import { ModalPolicyActionsService } from 'projects/policy-management/src/app/shared/components/modal-policy-actions/services/modal-policy-actions.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { PolicyRenewalComponent } from './policy-renewal.component';
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PolicyRenewalComponent', () => {
@@ -730,6 +728,60 @@ describe('PolicyRenewalComponent', () => {
   it('savePolicyRenewal else', () => {
     const res = { dataHeader: { code: 500 } };
     jest.spyOn(modalAPService, 'savePolicyRenewal').mockReturnValue(of (res));
+    expect(component.savePolicyRenewal()).toBeUndefined();
+  });
+
+  it('savePolicyRenewal else errorlist 1', () => {
+    const res = { dataHeader: { 
+      code: 500,
+      errorList: [
+        {
+          errorDescription: "12345"
+        }
+      ]
+    } };
+    jest.spyOn(modalAPService, 'savePolicyRenewal').mockReturnValue(of (res));
+    expect(component.savePolicyRenewal()).toBeUndefined();
+  });
+
+  it('savePolicyRenewal else errorlist empty', () => {
+    const res = { dataHeader: { 
+      code: 500,
+      errorList: [
+      ]
+    } };
+    jest.spyOn(modalAPService, 'savePolicyRenewal').mockReturnValue(of (res));
+    expect(component.savePolicyRenewal()).toBeUndefined();
+  });
+
+  it('savePolicyRenewal error errorlist empty', () => {
+    const res = {
+      error: { 
+        dataHeader: { 
+          code: 500,
+          errorList: [
+          ]
+        }
+      }
+    };
+    jest.spyOn(modalAPService, 'savePolicyRenewal').mockReturnValue(throwError(() => res));
+    expect(component.savePolicyRenewal()).toBeUndefined();
+  });
+
+  it('savePolicyRenewal error errorlist string', () => {
+    const res = {
+      error: { 
+        dataHeader: { 
+          code: 500,
+          errorList: [
+            {
+              errorDescription: "1234"
+            }
+          ]
+        }
+      }
+    };
+    jest.spyOn(modalAPService, 'savePolicyRenewal').mockReturnValue(throwError(() => res));
     expect(component.savePolicyRenewal()).toBeUndefined();
   });
 
