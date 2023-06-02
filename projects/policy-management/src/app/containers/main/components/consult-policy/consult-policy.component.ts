@@ -121,7 +121,7 @@ export class ConsultPolicyComponent implements OnDestroy {
       {
         label: 'Renovar', icon: 'pi pi-fw pi-refresh',
         command: (event: any, row: any) => {
-          this.router.navigate([`/polizas/renovar/${this.selectedPolicy?.policyNumber}`]);
+          this.router.navigate([`/polizas/renovar/${this.selectedPolicy?.policyNumber}`]).then(() => {}).catch((error) => { console.error(error)});
         }
       },
       {
@@ -312,7 +312,7 @@ export class ConsultPolicyComponent implements OnDestroy {
         this.router.navigate(
           [`/polizas/modificar/${this.selectedPolicy?.idProduct}`],
           { state: { policy: this.selectedPolicy } }
-        );
+        ).then(() => {}).catch((error) => { console.error(error)});
       } else {
         this.showSuccess('error', 'Error al modificar', res.dataHeader.status);
       }
