@@ -48,6 +48,15 @@
     padding: 8px (left margin), 16px;
 }
 
+.container-alert {
+    background: #f7d4d7;
+    border-radius: 5px;
+    color: #dc3545;
+    height: 40px;
+    text-align: left;
+    padding: 10px;
+}
+
 .line-border {
     border: 3px solid var(--success-base);
 
