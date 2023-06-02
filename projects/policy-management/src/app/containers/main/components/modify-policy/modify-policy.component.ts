@@ -238,24 +238,26 @@ export class ModifyPolicyComponent {
     return arrayData;
   }
 
+  async setFormsControls() {
+
+    this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
+
+    this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false, false));
+
+    this.formPolicy.setControl('policyData', await this.fillGroupData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.plcyDtGrp, this.policyData, true));
+
+    this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.rskTyp, true, true));
+
+    this.isLoading = false;
+
+  }
+
   getProduct(code: string) {
     this.productService.getProductByCode(code).subscribe( async(res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200) {
         this.product = res.body;
         this.productDeps = this.product.nmDefinition.prdctDpndncy;
-
-        /* datos a previsualizar */
-        
-        this.formPolicy.setControl('policyDataPreview',  await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
-        /* fin datos a previsualizar */
-        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false, false));
-
-        this.formPolicy.setControl('policyData', await this.fillGroupData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.plcyDtGrp, this.policyData, true));
-        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.rskTyp, true, true));
-
-
-        this.isLoading = false;
-
+        this.setFormsControls().then(() => {}).catch((error) => { console.error(error); });
       }
     });
   }
@@ -535,6 +537,11 @@ export class ModifyPolicyComponent {
    
   }
 
+  async delayAndNavigate() {   
+    await new Promise((resolve) => setTimeout(resolve, 2000));   
+    await this.router.navigate([`/polizas/consulta`]);
+  }
+
   savePolicyModify() {
     this.isSaving = true
 
@@ -550,7 +557,7 @@ export class ModifyPolicyComponent {
       next: (resp: any) => {
         if (resp.dataHeader.code != 500) {
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
-          setTimeout(async () => { this.router.navigate([`/polizas/consulta`]).then(() => {}).catch((error) => { console.error(error)}) }, 2000);
+          this.delayAndNavigate().then(() => {}).catch((error) => { console.error(error); });
         } else {
           this.showSuccess('error', 'Error al Modificar', resp.dataHeader.status);
         }
