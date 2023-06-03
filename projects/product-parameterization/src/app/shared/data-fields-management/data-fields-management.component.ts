@@ -80,7 +80,6 @@ export class DataFieldsManagementComponent implements OnInit {
   ngOnInit(): void {
     this.loadEssentialData();
     this.loadContextData();
-    console.log('init cd', this.complementaryDataControls?.controls[0]);
 
     this.itemsMenu = [
       {
@@ -185,7 +184,6 @@ export class DataFieldsManagementComponent implements OnInit {
       )
       .subscribe({
         next: (res: any) => {
-          console.log('res', res);
           if (res && res.body) {
             if (Array.isArray(res.body)) {
               this.essentialData = res.body;
@@ -195,7 +193,6 @@ export class DataFieldsManagementComponent implements OnInit {
           }
           this.setEssentialData(this.essentialData);
           this.updateEssentialDataProperties();
-          console.log('grupos', this.groups);
           this.isLoading = false;
         },
         error: (error) => {
@@ -212,7 +209,6 @@ export class DataFieldsManagementComponent implements OnInit {
   loadContextData() {
     this.productService.getApiData(`domainList/DATOS_CONTEXTO`).subscribe({
       next: (res: any) => {
-        console.log('rdatos_contexto', res);
         this.contextData = res.body.nmValueList;
         //se filtra los datos de contexto dependiendo del nivel de aplicación
         this.contextData = this.contextData.filter(
@@ -226,27 +222,6 @@ export class DataFieldsManagementComponent implements OnInit {
         console.error('Ha ocurrido un error al obtener los datos necesarios');
       },
     });
-  }
-
-  /**
-   * Function to load required data
-   */
-  loadRequiredData() {
-    this.productService
-      .getApiData(
-        `displayEssential/findByProcess/` +
-          this.productService.initialParameters?.get('insuranceLine')?.value +
-          `/0/0/0/0`
-      )
-      .subscribe({
-        next: (res) => {
-          console.log('res', res);
-        },
-        error: (error) => {
-          this.flagError = true;
-          console.error('Ha ocurrido un error al obtener los datos necesarios');
-        },
-      });
   }
 
   /**
@@ -535,7 +510,6 @@ export class DataFieldsManagementComponent implements OnInit {
     }
 
     list = list.sort((a: any, b: any) => (a.name < b.name ? -1 : 1));
-    console.log('valores: ', list);
 
     return list;
   }
@@ -584,7 +558,6 @@ export class DataFieldsManagementComponent implements OnInit {
     let res: ElementTableSearch[] = [];
 
     dialogRef.onClose.subscribe((res) => {
-      console.log('cerro', res);
       this.addItem(res, 1, true);
     });
   }
@@ -899,19 +872,7 @@ export class DataFieldsManagementComponent implements OnInit {
     });
 
     dialogRef.onClose.subscribe((res) => {
-      if (res) {
-        if (index >= 0) {
-          const groupBk = [
-            ...this.getGroupArrayById(group.get('id')?.value).controls,
-          ];
-          this.complementaryDataControls.removeAt(index);
-          for (let field of groupBk) {
-            field.get('fieldGroup')?.setValue(1);
-            this.getGroupArrayById(1).push(field);
-          }
-          this.removeGroupCascade(group);
-        }
-      }
+      
     });
   }
 
@@ -988,22 +949,29 @@ export class DataFieldsManagementComponent implements OnInit {
       width: '400px',
     });
     dialogRef.onClose.subscribe((res) => {
-      if (res) {
-        if (index >= 0) {
-          this.removeAssociatedReference();
-          this.getGroupArrayById(obj.fieldGroup).removeAt(index);
-          if (this.groups) {
-            this.DeleteCascadeDateModify(1);
-          }
-          this.selectedField = new FormGroup({});
-          if (this.getGroupArrayById(1).length > 0) {
-            this.selectComplementaryData(
-              <FormGroup>this.getGroupArrayById(1).controls[0]
-            );
-          }
+      this.removeConfirmation(res, index, obj);
+    });
+  }
+
+  /**
+   * Remove when res is true
+   */
+  removeConfirmation(res: any, index: any, obj: any) {
+    if (res) {
+      if (index >= 0) {
+        this.removeAssociatedReference();
+        this.getGroupArrayById(obj.fieldGroup).removeAt(index);
+        if (this.groups) {
+          this.DeleteCascadeDateModify(1);
+        }
+        this.selectedField = new FormGroup({});
+        if (this.getGroupArrayById(1).length > 0) {
+          this.selectComplementaryData(
+            <FormGroup>this.getGroupArrayById(1).controls[0]
+          );
         }
       }
-    });
+    }
   }
 
   /**
