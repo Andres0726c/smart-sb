@@ -63,10 +63,10 @@ export class ClausesSharedComponent implements OnInit {
   /**
    * method that initialize datasource that is used in table html
    */
-  ngOnInit() {
+  async ngOnInit() {
     this.dataSource = this.clausesControls.value;
     if (!this.productService.ramo) {
-      this.getDataInsuranceLine();
+      await this.getDataInsuranceLine().then();
     }
   }
 

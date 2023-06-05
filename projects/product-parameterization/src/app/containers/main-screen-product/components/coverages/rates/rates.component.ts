@@ -51,13 +51,13 @@ export class RatesComponent implements OnInit, OnChanges {
   /**
    * method to give a structure to the "selectedField" array that is used for the view in html
    */
-  ngOnInit(): void {
+  async ngOnInit() {
     this.selectedField = new FormGroup({
       calculationRule: new FormControl(
         this.coverageRates.controls[0]?.get('calculationRule')!.value
       ),
     });
-    this.loadContextData();
+    await this.loadContextData().then();
   }
 
   /**

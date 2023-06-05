@@ -37,10 +37,10 @@
       >
         <ng-template pTemplate="header" let-columns>
           <tr>
-            <th style="width: 3rem">
+            <th scope="col" style="width: 3rem">
               <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
             </th>
-            <th pSortableColumn="{{modal.remotePaginator ? col.dbColumnName : col.field}}" *ngFor="let col of columns; let i = index">
+            <th scope="col" pSortableColumn="{{modal.remotePaginator ? col.dbColumnName : col.field}}" *ngFor="let col of columns; let i = index">
               {{ col.header }}
               <p-sortIcon field="{{modal.remotePaginator ? col.dbColumnName : col.field}}"></p-sortIcon>
             </th>

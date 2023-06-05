@@ -61,14 +61,14 @@
     >
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th style="width: 3rem">
+          <th scope="col" style="width: 3rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th *ngFor="let col of columns; let i = index">
+          <th scope="col" *ngFor="let col of columns; let i = index">
             {{ col.header }}
           </th>
-          <th>Ramo</th>
-          <th>Ver</th>
+          <th scope="col">Ramo</th>
+          <th scope="col">Ver</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-columns="columns">

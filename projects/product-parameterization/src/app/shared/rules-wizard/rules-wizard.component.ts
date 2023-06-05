@@ -252,7 +252,7 @@ export class RulesWizardComponent implements OnInit {
    * Method that check the service information and set all the array in the table
    * @param res variable with the data
    */
-  setData(res: any) {
+  async setData(res: any) {
     if (Array.isArray(res.body)) {
       this.addToElementData(res.body);
     } else {
@@ -267,7 +267,7 @@ export class RulesWizardComponent implements OnInit {
       }
     }
 
-    this.insertDataToTable();
+    await this.insertDataToTable().then();
   }
 
   /**

@@ -44,8 +44,8 @@ export class BusinessRulesComponent implements OnInit {
   /**
    * method to call the request load context data
    */
-  ngOnInit(): void {
-    this.loadContextData();
+  async ngOnInit() {
+    await this.loadContextData().then();
   }
 
   /**

@@ -996,7 +996,7 @@ export class DataFieldsManagementComponent implements OnInit {
     ) {
       for (const obj of this.productService.modificationTypes?.value[
         x
-      ].visibleNonModificableData[0]?.fields.filter(
+      ].visibleNonModificableData[0]?.fields?.filter(
         (x: { id: number }) => x.id === this.selectedField.value.id
       )) {
         let index =
