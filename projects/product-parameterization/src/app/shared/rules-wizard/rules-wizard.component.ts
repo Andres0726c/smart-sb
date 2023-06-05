@@ -236,10 +236,10 @@ export class RulesWizardComponent implements OnInit {
     return this.data.columns.filter((x: any) => x.header);
   }
 
-  async getApiData(requestParams: any, search: string) {
-    await this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
+  getApiData(requestParams: any, search: string) {
+    this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false && res.body) {
-        this.setData(res).then();
+        this.setData(res);
         this.flagServiceError = false;
       } else {
         this.flagServiceError = true;
@@ -252,7 +252,7 @@ export class RulesWizardComponent implements OnInit {
    * Method that check the service information and set all the array in the table
    * @param res variable with the data
    */
-  async setData(res: any) {
+  setData(res: any) {
     if (Array.isArray(res.body)) {
       this.addToElementData(res.body);
     } else {
@@ -267,7 +267,7 @@ export class RulesWizardComponent implements OnInit {
       }
     }
 
-    await this.insertDataToTable().then();
+    this.insertDataToTable();
   }
 
   /**
@@ -327,7 +327,7 @@ export class RulesWizardComponent implements OnInit {
   /**
    * Method that insert the information in mat table datasource
    */
-  async insertDataToTable() {
+  insertDataToTable() {
     //this.arrayData.forEach( obj => this.renameKey( obj, 'name', 'field' ));
     if (this.modal.remotePaginator) {
       this.dataSource = [...this.arrayData];
@@ -349,7 +349,7 @@ export class RulesWizardComponent implements OnInit {
     }
   }
 
-  async loadRemoteData(event: LazyLoadEvent) {
+  loadRemoteData(event: LazyLoadEvent) {
     let requestParams: any = '';
     let search ;
     let selectedIds = '0';
@@ -387,7 +387,7 @@ export class RulesWizardComponent implements OnInit {
 
     if (doReq) {
       this.isLoading = true;
-      await this.getApiData(requestParams, search).then();
+      this.getApiData(requestParams, search);
     }
   }
 

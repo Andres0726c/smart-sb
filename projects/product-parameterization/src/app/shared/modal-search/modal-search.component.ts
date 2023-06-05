@@ -77,7 +77,7 @@ export class ModalSearchComponent implements OnInit {
   /**
    * Función que permite cargar la configuración para el tipo de elemento que se va a mostrar en la modal
    */
-  async loadModalData() {
+  loadModalData() {
     try {
       this.data = this.dataSourceModal.data;
       this.modal = search.filter(
@@ -129,13 +129,13 @@ export class ModalSearchComponent implements OnInit {
       );
 
       if(!this.modal.remotePaginator) {
-       await this.getData(
+        this.getData(
           '0',
           this.currentPage,
           this.pageSize,
           this.sortColumn,
           this.sortDirection
-        ).then();
+        );
       }
     } catch (error) {
       this.flagServiceError = true;
@@ -151,7 +151,7 @@ export class ModalSearchComponent implements OnInit {
    * @param sortDirection Dirección del ordenamiento (Ascendente/Descendente)
    * @param modificationType Tipo de modificación
    */
-  async getData(
+  getData(
     search: string,
     page: number,
     pageSize: number,
@@ -179,21 +179,21 @@ export class ModalSearchComponent implements OnInit {
           requestParams = `${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`;
         }
       }
-      await this.getApiData(requestParams, search).then();
+      this.getApiData(requestParams, search);
     } else {
       // Se cargan datos locales presentes en el service transversal
       res = { body: this.data.data };
       this.isLoading = false;
-      await this.setData(res).then();
+      this.setData(res);
       this.flagServiceError = false;
     }
     
   }
 
-  async getApiData(requestParams: any, search: string) {
-    await this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
+  getApiData(requestParams: any, search: string) {
+    this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false && res.body) {
-        this.setData(res).then();
+        this.setData(res);
         this.flagServiceError = false;
       } else {
         this.flagServiceError = true;
@@ -206,7 +206,7 @@ export class ModalSearchComponent implements OnInit {
    * Method that check the service information and set all the array in the table
    * @param res variable with the data
    */
-  async setData(res: any) {
+  setData(res: any) {
     // Luis, quedamos en este punto para revisar las funciones y la paginación
     if (Array.isArray(res.body)) {
       this.addToElementData(res.body);
@@ -222,7 +222,7 @@ export class ModalSearchComponent implements OnInit {
       }
     }
 
-    await this.insertDataToTable().then();
+    this.insertDataToTable();
   }
 
   /**
@@ -298,7 +298,7 @@ export class ModalSearchComponent implements OnInit {
   /**
    * Method that insert the information in mat table datasource
    */
-  async insertDataToTable() {
+  insertDataToTable() {
     if (this.modal.remotePaginator) {
       this.dataSource = [...this.arrayData];
       this.dataSourceBk = [...this.arrayDataBk];
@@ -336,7 +336,7 @@ export class ModalSearchComponent implements OnInit {
     return this.data.columns?.filter((x: any) => x.header);
   }
 
-  async loadRemoteData(event: LazyLoadEvent) {
+  loadRemoteData(event: LazyLoadEvent) {
     let requestParams: any = '';
     let search = '0';
     let selectedIds = '0';
@@ -375,7 +375,7 @@ export class ModalSearchComponent implements OnInit {
 
     if (doReq) {
       this.isLoading = true;
-      await this.getApiData(requestParams, search).then;
+      this.getApiData(requestParams, search);
     }
   }
 
