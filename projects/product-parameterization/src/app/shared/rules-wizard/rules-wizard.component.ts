@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LazyLoadEvent, MenuItem } from 'primeng/api';
+import { LazyLoadEvent} from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Table } from 'primeng/table';
 import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
@@ -40,7 +40,7 @@ export class RulesWizardComponent implements OnInit {
   prevReqParams: any;
   prevSearch: string = '0';
 
-  items: MenuItem[];
+  items: any[]=[];
   activeIndex = 0;
 
   parametersForm: FormGroup;
@@ -56,21 +56,26 @@ export class RulesWizardComponent implements OnInit {
       parameters: this.fb.array([])
     })
 
+    this.setItem();
+   
+
+  }
+
+  setItem(){
     this.items = [
       {
         label: 'Selección de regla',
-        command: (event: any) => {
+        command: () => {
             this.activeIndex = 0;
         }
       },
       {
         label: 'Parámetros de entrada',
-        command: (event: any) => {
+        command: () => {
             this.activeIndex = 1;
         }
       }
     ];
-
   }
 
   /**
@@ -154,7 +159,7 @@ export class RulesWizardComponent implements OnInit {
   }
 
   showedColumns() {
-    return this.data.columns?.filter((x: any) => x.header);
+    return this.data.columns.filter((x: any) => x.header);
   }
 
   getApiData(requestParams: any, search: string) {
@@ -269,7 +274,7 @@ export class RulesWizardComponent implements OnInit {
 
   loadRemoteData(event: LazyLoadEvent) {
     let requestParams: any = '';
-    let search = '0';
+    let search ;
     let selectedIds = '0';
     const pageNumber = (event.first ?? 0) / (event.rows ?? 1);
 
@@ -281,8 +286,8 @@ export class RulesWizardComponent implements OnInit {
 
     if(event.globalFilter && event.globalFilter.length >= 3) {
       search = event.globalFilter
-    } else {
-      search = '0';
+    }else{
+      search='0';
     }
 
     requestParams = this.defineParameters(event, pageNumber, selectedIds);

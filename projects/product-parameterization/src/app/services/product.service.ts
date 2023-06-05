@@ -90,7 +90,7 @@ export class ProductService {
 
   dataValidators = [
     /* Initial parameters */
-    { field: 'commercialName', validators: [Validators.required, Validators.maxLength(200), Validators.minLength(4), Validators.pattern('^[a-zA-ZñÑáéíóúÁÉÍÓÚ \s]+$')] },
+    { field: 'commercialName', validators: [Validators.required, Validators.maxLength(200), Validators.minLength(4), Validators.pattern('^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$')] },
     { field: 'businessCode',validators: [Validators.required, Validators.maxLength(30), Validators.minLength(4), Validators.pattern('^([a-zA-Z0-9_])*([a-zA-Z0-9s][a-zA-Z0-9_]*)+$')]},
     { field: 'company', validators: [Validators.required] },
     { field: 'insuranceLine', validators: [Validators.required] },
@@ -158,7 +158,7 @@ export class ProductService {
     this.saving = false;
     this.initialParameters = this.fb.group({
       productName: this.fb.control({ value: '', disabled: true }, []),
-      commercialName: this.fb.control({ value: '', disabled: true }, [Validators.required, Validators.maxLength(200), Validators.minLength(4), Validators.pattern('^[a-zA-ZñÑáéíóúÁÉÍÓÚ \s]+$')]),
+      commercialName: this.fb.control({ value: '', disabled: true }, [Validators.required, Validators.maxLength(200), Validators.minLength(4), Validators.pattern('^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]+$')]),
       businessCode: this.fb.control({ value: '', disabled: true }, [Validators.required, Validators.maxLength(30), Validators.minLength(4), Validators.pattern('^([a-zA-Z0-9_])*([a-zA-Z0-9s][a-zA-Z0-9_]*)+$')]),
       company: this.fb.control({ value: '', disabled: true }, [
         Validators.required,
@@ -316,12 +316,11 @@ export class ProductService {
 
     let contentType:any = this.headers.get('Content-Type');
     let xApiKey:any = this.headers.get('x-api-key');
-    let header = new HttpHeaders();
+    let header;
     if (search === '0') {
       header = new HttpHeaders({
         'Content-Type': contentType,
         'x-api-key': xApiKey
-        //'search': search
       })
     }else{
       header = new HttpHeaders({
@@ -411,22 +410,23 @@ export class ProductService {
       let jsonString: string = response.body.Product.productJson;
       let parseString: string = jsonString.replace(/=/g, ':');
       this.productBk = JSON.parse(parseString);
-
-      if (showAlerts) {
-        if (this.isSomeRelationEmpty(this.productBk)) {
-          this.showErrorMessage('No se podrá exportar', 'Tener en cuenta que se creó una<br>relación causa-concepto de reserva sin datos');
-        }
-
-        if (!this.isSomeRelationEmpty(this.productBk) && this.isSomeRelationIncomplete(this.productBk)) {
-          this.showErrorMessage('No se podrá exportar', 'La relación causa-concepto de reserva está incompleta');
-        }
-      }
-
+      this.saveProductJSON(showAlerts);
       this.saving = false;
-
     });
   }
 
+  saveProductJSON(showAlerts:boolean){
+    if (showAlerts) {
+      if (this.isSomeRelationEmpty(this.productBk)) {
+        this.showErrorMessage('No se podrá exportar', 'Tener en cuenta que se creó una<br>relación causa-concepto de reserva sin datos');
+      }
+
+      if (!this.isSomeRelationEmpty(this.productBk) && this.isSomeRelationIncomplete(this.productBk)) {
+        this.showErrorMessage('No se podrá exportar', 'La relación causa-concepto de reserva está incompleta');
+      }
+    }
+
+  }
   /**
    * Function to verify empty status of cause-reservationConcept relations
    * @param product product configuration
@@ -464,77 +464,14 @@ export class ProductService {
    * @param response Json string with product info
    */
   public getProduct(response: string): any {
-    //this.httpClient.get<AppHttpResponse<any>>(`${this.apiUrl}product/findById/${productName}`, { headers: this.headers }).subscribe((response) => {
-      //let product = JSON.parse(response.body.Product.productJson.replace(/=/g, ':'));
+
+
       this._isCreateProduct=false;
       let product = JSON.parse(response);
       this.productBk = {...product};
-      this.initialParameters = product.initialParameters ? this.setFields('initialParameters', product.initialParameters) : new FormGroup({});
-      this.policyData = product.policyData ? this.setFields('policyData', product.policyData) : new FormArray<any>([]);
-      this.coverages = product.coverages ? this.setFields('coverages', product.coverages) : new FormArray<any>([]);
-      this.servicePlans = product.servicePlans ? this.setFields('servicePlans', product.servicePlans) : new FormArray<any>([]);
-      this.riskTypes = product.riskTypes ? this.setFields('riskTypes', product.riskTypes) : new FormArray<any>([]);
-      this.taxesCategories = product.taxesCategories ? this.setFields('taxesCategories', product.taxesCategories) : new FormArray<any>([]);
-      this.technicalControls = product.technicalControls ? this.setFields('technicalControls', product.technicalControls) : new FormArray<any>([]);
-      this.modificationTechnicalControls = product.modificationTechnicalControls ? this.setFields('modmodificationTechnicalControls', product.modificationTechnicalControls) : new FormArray<any>([]);
-      this.clauses = product.clauses ? this.setFields('clauses', product.clauses) : new FormArray<any>([]);
-      this.accumulation = product.accumulation ? this.setFields('accumulation', product.accumulation) : new FormGroup({});
-      this.conceptReservation = product.conceptReservation ? this.setFields('conceptReservation', product.conceptReservation) : new FormArray<any>([]);
-      this.claimData = product.claimData ? (this.setFields('claimData', product.claimData)) : new FormArray<any>([]);
-      this.claimTechnicalControls = product.claimTechnicalControls ? (this.setFields('claimTechnicalControls', product.claimTechnicalControls)) : new FormArray<any>([]);
-      this.modificationTypes = product.modificationTypes ? (this.setFields('modificationTypes', product.modificationTypes)) : new FormArray<any>([]);
-     // this.mdfctnPrcss = product.mdfctnPrcss ? (this.setFields('mdfctnPrcss', product.mdfctnPrcss)) :new FormGroup({});
-     
-      this.mdfctnPrcss = product.mdfctnPrcss ? this.setFields('mdfctnPrcss', product.mdfctnPrcss) : new FormGroup({
-         enabled: new FormControl(false),
-       });
-      this.cnclltnPrcss = product.cnclltnPrcss ? this.setFields('cnclltnPrcss', product.cnclltnPrcss) : new FormGroup({
-        enabled: new FormControl(false),
-        cnclltnCsCd: new FormControl([]),
-        clcltnRl: new FormControl([]),
-        isCncllblIncptnDt: new FormControl(false)
-      });
-      this.rnsttmntPrcss = product.rnsttmntPrcss ? this.setFields('rnsttmntPrcss', product.rnsttmntPrcss) : new FormGroup({
-        enabled: new FormControl(false),
-        rnsttmntCsCd: new FormControl([]),
-        clcltnRl: new FormControl([]),
-        isNwIssPlcy: new FormControl(false)
-      });
-      this.rnwlPrcss = product.rnwlPrcss ? this.setFields('renewal', product.rnwlPrcss) : new FormGroup({
-        enabled: new FormControl(false),
-        rnwlCsCd: new FormControl([]),
-        clcltnRl: new FormControl([]),
-        isNwIssPlcy: new FormControl(false),
-        rnwlTchnclCntrl: new FormArray([])
-      });
-
-      if (!this.rnwlPrcss.contains('rnwlTchnclCntrl')) {
-        this.rnwlPrcss.addControl('rnwlTchnclCntrl', this.fb.array([]));
-      }
-
-      this.prdctDpndncy = product.prdctDpndncy ? this.setFields('prdctDpndncy', product.prdctDpndncy) : new FormGroup({
-        insrncLn: new FormArray([]),
-        cs: new FormArray([]),
-        rl: new FormArray([])
-      });
-      if (!this.rnsttmntPrcss.contains('rnsttmntCsCd')) {
-        this.rnsttmntPrcss.addControl('rnsttmntCsCd', this.fb.control([]));
-      }
-      if (!this.rnsttmntPrcss.contains('clcltnRl')) {
-        this.rnsttmntPrcss.addControl('clcltnRl', this.fb.control([]));
-      }
-      if (!this.rnsttmntPrcss.contains('isNwIssPlcy')) {
-        this.rnsttmntPrcss.addControl('isNwIssPlcy', this.fb.control([]));
-      }
-      this.prvwDt = product.prvwDt ? this.setFields('prvwDt', product.prvwDt) : new FormGroup({
-        plcyCntxtGrp:new FormArray([]),
-        plcyDtGrp:new FormArray([]),
-        rskTyp:new FormArray([]),
-        cvrg:new FormArray([]),
-      });
-
+      this.getProductOld(product);
+      this.getProductCanonical(product);
       this.references = product.references ?  this.setFields('references', product.references) : this.fb.array([]);
-      
       this.initialParameters.get('productName')?.disable();
       this.initialParameters.get('company')?.disable();
 
@@ -548,82 +485,17 @@ export class ProductService {
       if (this.policyData.length > 0 && !(<FormGroup>this.policyData.controls[0]).contains('code')){
         (<FormGroup>this.policyData.controls[0]).addControl('code', this.fb.control('datos_basicos'));
       }
-      if (this.coverages.length > 0) {
-        for (const coverage of this.coverages.controls) {
-          let complementaryData: any = (<FormArray>coverage.get('complementaryData'));
-          let payRollData: any = (<FormArray>coverage.get('payRollData'));
-
-          if (complementaryData.length > 0 && !(<FormGroup>complementaryData.controls[0]).contains('code')){
-            (<FormGroup>complementaryData.controls[0]).addControl('code', this.fb.control('datos_basicos'));
-          }
-          if (payRollData.length > 0 && !(<FormGroup>payRollData.controls[0]).contains('code')){
-            (<FormGroup>payRollData.controls[0]).addControl('code', this.fb.control('datos_basicos'));
-          }
-          if (!(<FormGroup>coverage).contains('waitingTime')){
-            (<FormGroup>coverage).addControl('waitingTime',this.fb.group({
-              waitingTime: this.fb.control(false),
-              quantity: this.fb.control(1,[Validators.required]),
-              period: this.fb.control('',[Validators.required])
-            }));
-          }
-          if (!(<FormGroup>coverage).contains('events')){
-            (<FormGroup>coverage).addControl('events',this.fb.group({
-              events: this.fb.control(false),
-              quantityEvents: this.fb.control(1,[Validators.required, Validators.min(1), Validators.max(999)]),
-              periodEvents: this.fb.control('',[Validators.required])
-            }));
-          }
-        }
-      }
-      if (this.riskTypes.length > 0) {
-        for (const riskType of this.riskTypes.controls) {
-          let riskTypes: any = (<FormArray>riskType.get('complementaryData'));
-          if (riskTypes.length > 0 && !(<FormGroup>riskTypes.controls[0]).contains('code')){
-            (<FormGroup>riskTypes.controls[0]).addControl('code', this.fb.control('datos_basicos'));
-          }
-        }
-      }
-
+      this.validateCoverage();
+      this.validateRiskTypes();
+      
       if (this.claimData.length > 0 && !(<FormGroup>this.claimData.controls[0]).contains('code')){
         (<FormGroup>this.claimData.controls[0]).addControl('code', this.fb.control('datos_basicos'));
       }
-
-      if (this.modificationTypes.length > 0) {
-        for (const modificationType of this.modificationTypes.controls) {
-          let modificationTypes: any = (<FormArray>modificationType.get('visibleNonModificableData'));
-          if (modificationTypes.length > 0 && !(<FormGroup>modificationTypes.controls[0]).contains('code')) {
-            (<FormGroup>modificationTypes.controls[0]).addControl('code', this.fb.control('datos_basicos'));
-          }
-        }
-      }
-
-       if (!this.mdfctnPrcss.contains('mdfcblDt')) {
-        this.mdfctnPrcss.addControl( 'mdfcblDt',this.fb.group ({ 
-          plcyDtGrp:this.fb.array([]),
-          rskTyp:this.fb.array([]),
-          cls:this.fb.array([])
-        }))
-       
-        this.addRisk();
-      }  
-
-      if (!this.prvwDt.contains('plcyDtGrp')) {
-        this.prvwDt.addControl('plcyCntxtGrp',this.fb.array ([]));
-        this.prvwDt.addControl('plcyDtGrp',this.fb.array ([]));
-        this.prvwDt.addControl('rskTyp',this.fb.array ([]));
-        this.prvwDt.addControl('cvrg',this.fb.array ([]));
-      }
+      this.validatemModificationTypes(product);
+      this.validateMdfctnPrcss();
+      this.validatePrvwDt();
      
-      if (!this.mdfctnPrcss.contains('mdfctnTchnclCntrl')) {
-        this.mdfctnPrcss.addControl( 'mdfctnTchnclCntrl', this.fb.array([]));
-      }
       
-      if((<FormArray>( this.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))).length ===0)
-      {
-        this.addRisk();
-      }
-
-      this.modificationTypes = product.modificationTypes ? this.setFields('modificationTypes', product.modificationTypes) : new FormArray<any>([]);
       this.isEnabledSave = false;
       //autosave enabled
       this.autoSaveProduct();
@@ -631,6 +503,157 @@ export class ProductService {
     //});
   }
 
+  getProductOld(product:any){
+    this.initialParameters = product.initialParameters ? this.setFields('initialParameters', product.initialParameters) : new FormGroup({});
+    this.policyData = product.policyData ? this.setFields('policyData', product.policyData) : new FormArray<any>([]);
+    this.coverages = product.coverages ? this.setFields('coverages', product.coverages) : new FormArray<any>([]);
+    this.servicePlans = product.servicePlans ? this.setFields('servicePlans', product.servicePlans) : new FormArray<any>([]);
+    this.riskTypes = product.riskTypes ? this.setFields('riskTypes', product.riskTypes) : new FormArray<any>([]);
+    this.taxesCategories = product.taxesCategories ? this.setFields('taxesCategories', product.taxesCategories) : new FormArray<any>([]);
+    this.technicalControls = product.technicalControls ? this.setFields('technicalControls', product.technicalControls) : new FormArray<any>([]);
+    this.modificationTechnicalControls = product.modificationTechnicalControls ? this.setFields('modmodificationTechnicalControls', product.modificationTechnicalControls) : new FormArray<any>([]);
+    this.clauses = product.clauses ? this.setFields('clauses', product.clauses) : new FormArray<any>([]);
+    this.accumulation = product.accumulation ? this.setFields('accumulation', product.accumulation) : new FormGroup({});
+    this.conceptReservation = product.conceptReservation ? this.setFields('conceptReservation', product.conceptReservation) : new FormArray<any>([]);
+    this.claimData = product.claimData ? (this.setFields('claimData', product.claimData)) : new FormArray<any>([]);
+    this.claimTechnicalControls = product.claimTechnicalControls ? (this.setFields('claimTechnicalControls', product.claimTechnicalControls)) : new FormArray<any>([]);
+    this.modificationTypes = product.modificationTypes ? (this.setFields('modificationTypes', product.modificationTypes)) : new FormArray<any>([]);
+  }
+  getProductCanonical(product:any){
+    this.mdfctnPrcss = product.mdfctnPrcss ? this.setFields('mdfctnPrcss', product.mdfctnPrcss) : new FormGroup({
+      enabled: new FormControl(false),
+    });
+   this.cnclltnPrcss = product.cnclltnPrcss ? this.setFields('cnclltnPrcss', product.cnclltnPrcss) : new FormGroup({
+     enabled: new FormControl(false),
+     cnclltnCsCd: new FormControl([]),
+     clcltnRl: new FormControl([]),
+     isCncllblIncptnDt: new FormControl(false)
+   });
+   this.rnsttmntPrcss = product.rnsttmntPrcss ? this.setFields('rnsttmntPrcss', product.rnsttmntPrcss) : new FormGroup({
+     enabled: new FormControl(false),
+     rnsttmntCsCd: new FormControl([]),
+     clcltnRl: new FormControl([]),
+     isNwIssPlcy: new FormControl(false)
+   });
+   this.rnwlPrcss = product.rnwlPrcss ? this.setFields('renewal', product.rnwlPrcss) : new FormGroup({
+     enabled: new FormControl(false),
+     rnwlCsCd: new FormControl([]),
+     clcltnRl: new FormControl([]),
+     isNwIssPlcy: new FormControl(false),
+     rnwlTchnclCntrl: new FormArray([])
+   });
+
+   if (!this.rnwlPrcss.contains('rnwlTchnclCntrl')) {
+    this.addControlField(this.rnwlPrcss,'rnwlTchnclCntrl');     
+   }
+
+   this.prdctDpndncy = product.prdctDpndncy ? this.setFields('prdctDpndncy', product.prdctDpndncy) : new FormGroup({
+     insrncLn: new FormArray([]),
+     cs: new FormArray([]),
+     rl: new FormArray([])
+   });
+   if (!this.rnsttmntPrcss.contains('rnsttmntCsCd')) {
+    this.addControlField(this.rnsttmntPrcss,'rnsttmntCsCd');     
+   }
+   if (!this.rnsttmntPrcss.contains('clcltnRl')) {
+    this.addControlField(this.rnsttmntPrcss,'clcltnRl');    
+   }
+   if (!this.rnsttmntPrcss.contains('isNwIssPlcy')) {
+    this.addControlField(this.rnsttmntPrcss,'isNwIssPlcy');
+   }
+   this.prvwDt = product.prvwDt ? this.setFields('prvwDt', product.prvwDt) : new FormGroup({
+     plcyCntxtGrp:new FormArray([]),
+     plcyDtGrp:new FormArray([]),
+     rskTyp:new FormArray([]),
+     cvrg:new FormArray([]),
+   });
+  }
+addControlField(form:any,control:string){
+  form.addControl(control, this.fb.control([]));
+}
+  validateCoverage(){
+    if (this.coverages.length > 0) {
+      for (const coverage of this.coverages.controls) {
+        let complementaryData: any = (<FormArray>coverage.get('complementaryData'));
+        let payRollData: any = (<FormArray>coverage.get('payRollData'));
+        this.addControlsCoverages(coverage,payRollData,complementaryData);
+      }
+    }
+  }
+  addControlsCoverages(coverage:any,payRollData:any,complementaryData:any){
+    if (complementaryData.length > 0 && !(<FormGroup>complementaryData.controls[0]).contains('code')){
+      (<FormGroup>complementaryData.controls[0]).addControl('code', this.fb.control('datos_basicos'));
+    }
+    if (payRollData.length > 0 && !(<FormGroup>payRollData.controls[0]).contains('code')){
+      (<FormGroup>payRollData.controls[0]).addControl('code', this.fb.control('datos_basicos'));
+    }
+    if (!(<FormGroup>coverage).contains('waitingTime')){
+      (<FormGroup>coverage).addControl('waitingTime',this.fb.group({
+        waitingTime: this.fb.control(false),
+        quantity: this.fb.control(1,[Validators.required]),
+        period: this.fb.control('',[Validators.required])
+      }));
+    }
+    if (!(<FormGroup>coverage).contains('events')){
+      (<FormGroup>coverage).addControl('events',this.fb.group({
+        events: this.fb.control(false),
+        quantityEvents: this.fb.control(1,[Validators.required, Validators.min(1), Validators.max(999)]),
+        periodEvents: this.fb.control('',[Validators.required])
+      }));
+    }
+  }
+  validateRiskTypes(){
+    if (this.riskTypes.length > 0) {
+      for (const riskType of this.riskTypes.controls) {
+        let riskTypes: any = (<FormArray>riskType.get('complementaryData'));
+        if (riskTypes.length > 0 && !(<FormGroup>riskTypes.controls[0]).contains('code')){
+          (<FormGroup>riskTypes.controls[0]).addControl('code', this.fb.control('datos_basicos'));
+        }
+      }
+    }
+  }
+
+  validatemModificationTypes(product:any){
+    if (this.modificationTypes.length > 0) {
+      for (const modificationType of this.modificationTypes.controls) {
+        let modificationTypes: any = (<FormArray>modificationType.get('visibleNonModificableData'));
+        if (modificationTypes.length > 0 && !(<FormGroup>modificationTypes.controls[0]).contains('code')) {
+          (<FormGroup>modificationTypes.controls[0]).addControl('code', this.fb.control('datos_basicos'));
+        }
+      }
+    }
+    this.modificationTypes = product.modificationTypes ? this.setFields('modificationTypes', product.modificationTypes) : new FormArray<any>([]);
+
+  }
+  validateMdfctnPrcss(){
+    if (!this.mdfctnPrcss.contains('mdfcblDt')) {
+      this.mdfctnPrcss.addControl( 'mdfcblDt',this.fb.group ({ 
+        plcyDtGrp:this.fb.array([]),
+        rskTyp:this.fb.array([]),
+        cls:this.fb.array([])
+      }))
+     
+      this.addRisk();
+    }  
+
+    if (!this.mdfctnPrcss.contains('mdfctnTchnclCntrl')) {
+      this.mdfctnPrcss.addControl( 'mdfctnTchnclCntrl', this.fb.array([]));
+    }
+    
+    if((<FormArray>( this.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp'))).length ===0)
+    {
+      this.addRisk();
+    }
+  }
+
+  validatePrvwDt(){
+    if (!this.prvwDt.contains('plcyDtGrp')) {
+      this.prvwDt.addControl('plcyCntxtGrp',this.fb.array ([]));
+      this.prvwDt.addControl('plcyDtGrp',this.fb.array ([]));
+      this.prvwDt.addControl('rskTyp',this.fb.array ([]));
+      this.prvwDt.addControl('cvrg',this.fb.array ([]));
+    }
+  }
   addRisk(){
 
     for(const risk of this.riskTypes.value){
@@ -676,42 +699,50 @@ export class ProductService {
     let retorno = null;
 
     if (this.isArray(obj)) {
+     
       if (this.defaultArrays.find(x => x === fieldKey)) {
         retorno = this.fb.control(obj, this.setFieldValidators(fieldKey));
       } else {
         retorno = this.fb.array([], this.setFieldValidators(fieldKey));
-        obj.forEach((element: any) => {
-        let formGroup = this.fb.group({});
-        if (this.isObject(element)) {
-          Object.keys(element).forEach(key => {
-            if (key === 'athrzdOprtn') {
-              formGroup.addControl(key,this.fb.array(element[key]));
-            }else{
-              formGroup.addControl(
-                key,
-                this.setFormArrayValue(key, element[key])
-              );
-            }
-          });
-          retorno.push(formGroup);
-        }
-        });
+        this.searchField(retorno,obj);
       }
     } else {
-      if (this.isObject(obj) && !this.defaultControls.find(x => x === fieldKey) && Object.keys(obj).length > 1) {
-        let formAux = this.fb.group({});
-        Object.keys(obj).forEach(key => {
-          formAux.addControl(key, this.setFormArrayValue(key, obj[key]));
-        });
-        retorno = formAux;
-      } else {
-        retorno = this.fb.control(obj, this.setFieldValidators(fieldKey));
-      }
+      retorno=this.setFormAux(obj,fieldKey);
     }
-
     return retorno;
   }
 
+  setFormAux(obj:any,fieldKey:any){
+    let retorno;
+    if (this.isObject(obj) && !this.defaultControls.find(x => x === fieldKey) && Object.keys(obj).length > 1) {
+      let formAux = this.fb.group({});
+      Object.keys(obj).forEach(key => {
+        formAux.addControl(key, this.setFormArrayValue(key, obj[key]));
+      });
+      return formAux;
+    } else {
+      retorno = this.fb.control(obj, this.setFieldValidators(fieldKey));
+      return retorno;
+    }
+}
+  searchField(retorno:any,obj:any){
+    obj.forEach((element: any) => {
+      let formGroup = this.fb.group({});
+      if (this.isObject(element)) {
+        Object.keys(element).forEach(key => {
+          if (key === 'athrzdOprtn') {
+            formGroup.addControl(key,this.fb.array(element[key]));
+          }else{
+            formGroup.addControl(
+              key,
+              this.setFormArrayValue(key, element[key])
+            );
+          }
+        });
+        retorno.push(formGroup);
+      }
+      });
+  }
   /**
    * Recursive function that sets forms, controls, values and validators for all product data
    * @param fieldKey control name

@@ -9,9 +9,13 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of } from 'rxjs';
 import { ProductService } from '../../services/product.service';
+import { ComplementaryDataComponent } from '../../shared/complementary-data/complementary-data.component';
 describe('CoveragesComponent', () => {
   let component: CoveragesComponent;
   let fixture: ComponentFixture<CoveragesComponent>;
+  let matDialog:MatDialog;
+  let matSnackBar:MatSnackBar;
+  let productService:ProductService;
   class dialogMock {
     open() {
       return {
@@ -89,11 +93,22 @@ describe('CoveragesComponent', () => {
     component.ngOnInit();
     expect(component).toBeDefined();
   });
-
+it('changeCoverage',()=>{
+  let selectedCoverage= new FormGroup({
+    claimReservation: new FormArray([
+      new FormGroup({id: new FormControl(1)})
+    ])
+  })
+  let fb=new FormBuilder();
+  component.complementaryDataComponent=new ComplementaryDataComponent(matDialog,fb,matSnackBar,productService);
+  component.payRollDataComponent= new ComplementaryDataComponent(matDialog,fb,matSnackBar,productService); 
+  component.changeCoverage(selectedCoverage);
+})
   it('openToAdd coverages empty', () => {
     component.productService.coverages = new FormArray([]); 
     expect(component.openToAdd()).toBeUndefined();
   });
+
   it('openToAdd', () => {
     component.productService.coverages = new FormArray([]);
     (component.productService.coverages).push(new FormGroup({
@@ -102,5 +117,6 @@ describe('CoveragesComponent', () => {
     })); 
     expect(component.openToAdd()).toBeUndefined();
   });
+
  
 });

@@ -57,8 +57,68 @@ describe('ServicePlansComponent', () => {
   });
 
   it('openToAdd', () => {
+    component.productService.servicePlans= new FormArray([
+      new FormGroup({
+        id: new FormControl(1)
+      })
+    ])
+    jest.spyOn(component,'addServicePlan').mockImplementation();
+    jest.spyOn(component,'getInitialParameter').mockReturnValue('')
     expect(component.openToAdd()).toBeUndefined();
   });
+
+    it('openToAdd when is null', () => {
+      component.productService.servicePlans= new FormArray([ ]);
+      jest.spyOn(component,'addServicePlan').mockImplementation();
+    jest.spyOn(component,'getInitialParameter').mockReturnValue(null)
+    expect(component.openToAdd()).toBeUndefined();
+  });
+  it('addServicePlan ',()=>{
+    jest.spyOn(component,'updateTree').mockImplementation();
+    component.addServicePlan([{id:1,name:'test',description:'test'}])
+  })
+
+  it('getInitialParameter',()=>{
+    component.productService.initialParameters= new FormGroup({
+      insuranceLine: new FormControl("23")
+    })
+    expect(component.getInitialParameter()).toBeDefined();
+  })
+
+  it('removeServicePlan',()=>{
+    let node={name:'test',id:1};
+    component.flatNodeMap.set(node,node);
+    component.productService.servicePlans= new FormArray([
+      new FormGroup({
+        id: new FormControl(1)
+      })
+    ])
+    component.selectedServicePlan= new FormGroup({
+      id: new FormControl(1)
+    });
+    jest.spyOn(component,'findIndexServicePlan').mockReturnValue(0);
+    jest.spyOn(component,'removeServicePlanCascade').mockImplementation();
+    jest.spyOn(component,'updateTree').mockImplementation();
+    expect(component.removeServicePlan ({expandable:true,name:'test',level:1})).toBeUndefined();
+  });
+  
+  it('getInitialParameter',()=>{
+    component.productService.initialParameters= new FormGroup({})
+    expect(component.getInitialParameter()).toBeUndefined();
+  })
+
+  it('removeServicePlanCycle',()=>{
+   let data= new FormArray([
+      new FormGroup({
+        servicePlans: new FormArray([
+          new FormGroup({
+          id: new FormControl(1)
+          })
+        ])
+      })
+    ])
+    component.removeServicePlanCycle(1,data);
+  })
   it('removeServicePlan', () => {
     let node = {expandable: false, name: 'Plan básico', level: 1};
     component.productService.servicePlans = new FormArray([]);

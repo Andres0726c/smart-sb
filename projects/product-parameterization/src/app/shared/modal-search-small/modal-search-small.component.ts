@@ -7,8 +7,6 @@ import { SearchModal, search, tableColumns } from '../../core/model/SearchModal.
 import { InitialParametersService } from '../../../app/containers/initial-parameters/services/initial-parameters.service';
 import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
 import { lastValueFrom } from 'rxjs';
-import { Sort } from '@angular/material/sort';
-import { I } from '@angular/cdk/keycodes';
 import { ProductService } from '../../services/product.service';
 
 export interface SearchParameters {
@@ -503,7 +501,6 @@ export class ModalSearchSmallComponent implements OnInit {
 
       data.sort((a:any, b:any) => {
         return sort.direction === 'asc' ? (a[obj.name] || '').toLowerCase().localeCompare((b[obj.name] || '').toLowerCase()) : (b[obj.name] || '').toLowerCase().localeCompare((a[obj.name] || '').toLowerCase());
-       // return this.compare(a[obj.name].toLowerCase(), b[obj.name].toLowerCase(),  sort.direction === 'asc');
       });
 
       this.dataSource.data = data;

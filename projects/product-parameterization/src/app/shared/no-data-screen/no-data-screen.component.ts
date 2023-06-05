@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
 import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
 

@@ -37,7 +37,7 @@ export class PreviewDataPolicyComponent implements OnInit {
   get policyPreviewControls(): FormArray {
   return (<FormArray>(
       this.productService.prvwDt?.get('plcyDtGrp')
-    )) as FormArray;
+    ));
   }
 
   clearGroup() {
@@ -172,33 +172,12 @@ loadContextData() {
         
       if (!nameGruop) {
        
-        nameGruop = {
-              id: 0,
-              code: 'datos_contexto',
-              name: 'Datos de contexto',
-              fields: this.fb.array([], Validators.required),
-              isEditing: false,
-            };
+       const groupContext = this.createGroupContext();
+        nameGruop = groupContext;
       }
-        
-        if ( this.policyPreviewControls.value.findIndex(
-              (x: { id: any }) => x.id === nameGruop.id
-            ) === -1
-          ) {
-            this.policyPreviewControls.push(
-              new FormGroup({
-                id: this.fb.control(nameGruop.id),
-                code: this.fb.control(nameGruop.code),
-                name: this.fb.control(nameGruop.name),
-                fields: this.fb.array([], Validators.required),
-                isEditing: this.fb.control(nameGruop.isEditing),
-              })
-            );
-
-          //  this.addCanonic()
-          }
+         this.addDataGroup(nameGruop);
          
-          this.addGroupArrayById(object,nameGruop);
+        this.addGroupArrayById(object,nameGruop);
       }
 
       
@@ -226,6 +205,36 @@ getNameGroup(name: any) {
   return objGruop;
 }
 
+createGroupContext(){
+ return   ({
+    id: 0,
+    code: 'datos_contexto',
+    name: 'Datos de contexto',
+    fields: this.fb.array([], Validators.required),
+    isEditing: false,
+  });
+}
+
+addDataGroup(nameGruop:any){
+
+  if ( this.policyPreviewControls.value.findIndex(
+    (x: { id: any }) => x.id === nameGruop.id
+  ) === -1
+) {
+  this.policyPreviewControls.push(
+    new FormGroup({
+      id: this.fb.control(nameGruop.id),
+      code: this.fb.control(nameGruop.code),
+      name: this.fb.control(nameGruop.name),
+      fields: this.fb.array([], Validators.required),
+      isEditing: this.fb.control(nameGruop.isEditing),
+    })
+  );
+   }
+}
+
+
+
 getGroupArrayById(id: any) {
   return <FormArray>(
     this.policyPreviewControls.controls
@@ -236,10 +245,6 @@ getGroupArrayById(id: any) {
 }
 
 addGroupArrayById(object:any,nameGruop:any){
-
-  const index = this.policyPreviewControls.value.findIndex(
-    (x: { id: any }) => x.id === nameGruop.id
-  );
 
 
   this.getGroupArrayById(nameGruop.id).push(

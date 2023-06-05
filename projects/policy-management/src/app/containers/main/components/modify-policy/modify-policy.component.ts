@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ResponseDTO, ResponseErrorDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
+import { ResponseDTO } from 'projects/policy-management/src/app/core/interfaces/commun/response';
 import { ComplementaryData } from 'projects/policy-management/src/app/core/interfaces/product/complementaryData';
 import { Product } from 'projects/policy-management/src/app/core/interfaces/product/product';
 import { ProductService } from 'projects/policy-management/src/app/core/services/product/product.service';
-import { ModalResponseRulesComponent } from 'projects/policy-management/src/app/shared/components/modal-response-rules/modal-response-rules.component';
-import { lastValueFrom } from 'rxjs';
-import { resourceLimits } from 'worker_threads';
 import { Identification } from '../consult-policy/interfaces/identification';
 import { ConsultPolicyService } from '../consult-policy/services/consult-policy.service';
 
@@ -133,7 +130,7 @@ export class ModifyPolicyComponent {
       flag= this.activeButtonPol(policyData,policyDataControls,i);
       if (!flag) { return flag; }
     }
-    flag? flag = this.validateSaveButtonRisk(riskData, riskTypesControls) : flag = false;
+    if(flag) {flag = this.validateSaveButtonRisk(riskData, riskTypesControls)} else{ flag = !flag;}
     return flag;
   }
   activeButtonPol(policyData: any, policyDataControls: any, i:any){
@@ -242,22 +239,20 @@ export class ModifyPolicyComponent {
     return arrayData;
   }
 
+  async setFormsControls() {
+    this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
+    this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false, false));
+    this.formPolicy.setControl('policyData', await this.fillGroupData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.plcyDtGrp, this.policyData, true));
+    this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.rskTyp, true, true));
+    this.isLoading = false;
+  }
+
   getProduct(code: string) {
-    this.productService.getProductByCode(code).subscribe( async(res: ResponseDTO<Product>) => {
+    this.productService.getProductByCode(code).subscribe( (res: ResponseDTO<Product>) => {
       if (res.dataHeader.code && res.dataHeader.code == 200 && res.body.nmDefinition.prdct.mdfctnPrcss) {
         this.product = res.body;
         this.productDeps = this.product.nmDefinition.prdctDpndncy;
-
-        /* datos a previsualizar */
-        this.formPolicy.setControl('policyDataPreview',  await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
-        this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false, false));
-        /* fin datos a previsualizar */
-
-        this.formPolicy.setControl('policyData', await this.fillGroupData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.plcyDtGrp, this.policyData, true));
-        this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.rskTyp, true, true));
-
-        this.isLoading = false;
-
+        this.setFormsControls().then(() => {}).catch((error) => { console.error(error); });
       } else {
         this.errorFlag = true;
         this.errorMsg = 'El producto no presenta configuración para el proceso de modificación de pólizas';
@@ -334,55 +329,63 @@ export class ModifyPolicyComponent {
 
     return formArrayData;
   }
-  addValue(field:any, valueObj:any, canonical: boolean){
+  addValue(field: any, valueObj: any, canonical: boolean){
+    let fieldFG = this.fb.group({});
+    fieldFG = canonical ? this.addValueCanonical(field, valueObj) : this.addValueNonCanonical(field, valueObj);
+    return fieldFG;
+  }
 
+  addValueNonCanonical(field: any, valueObj: any) {
     let fieldFG = this.fb.group({});
 
-    if (canonical) {
-      /* buscamos la dependencia del campo */
-      field.dt = this.productService.findDependencyByKeyCode(this.productDeps, 'dt', field.dtCd);
-      
-      /* */
+    Object.keys(field).forEach(key => {
+      fieldFG.addControl(key, this.fb.control(field[key]));
+    });
 
-      /* buscamos la dependencia de datatype y la insertamos en el campo */
-      field.dt.dtTyp = this.productService.findDependencyByKeyCode(this.productDeps, 'dtTyp', field.dt.dtTypCd);
-      /* */
+    fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
 
-      /* vinculamos lista de dominio al campo Tipo de identificación del titular del débito */
-      if (field.dtCd === 'TPO_ID_TDB') {
-        field.dt.dmnLstCd = 'LDM_TPI'
-      }
-      /* */
-
-      /* buscamos la dependencia de domainList y la insertamos en el campo */
-        field.dt.dmnLst = this.productService.findDependencyByKeyCode(this.productDeps, 'dmnLst', field.dt.dmnLstCd);
-      /* */
-
-      Object.keys(field).forEach(key => {
-        fieldFG.addControl(key, this.fb.control(field[key]));
-      });
-
-      fieldFG.addControl('value', this.fb.control(field.dt.dtTyp.guiCmpnntItm === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
-
-      if (field.dt.dtTyp.guiCmpnntItm === 'List box') {
-        let options: any = [], domainList = field.dt.dmnLst?.vlLst;
-        field.dt.dmnLst ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
-        fieldFG.addControl('options', this.fb.control(options));
-      }
-    } else {
-      Object.keys(field).forEach(key => {
-        fieldFG.addControl(key, this.fb.control(field[key]));
-      });
-
-      fieldFG.addControl('value', this.fb.control(field.dataType.guiComponent === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
-
-      if (field.dataType.guiComponent === 'List box') {
-        let options: any = [], domainList = field.domainList.valueList;
-        field.domainList ? options = this.showDomainList(domainList, valueObj) : options = [{ id: valueObj.value, name: valueObj.value }];
-        fieldFG.addControl('options', this.fb.control(options));
-      }
+    if (field.dataType.guiComponent === 'List box') {
+      let options = [{ id: valueObj.value, name: valueObj.value }], domainList = field.domainList.valueList;
+      if(field.domainList){ options = this.showDomainList(domainList, valueObj);}
+      fieldFG.addControl('options', this.fb.control(options));
     }
-    
+
+    return fieldFG;
+  }
+
+  addValueCanonical(field: any, valueObj: any) {
+    let fieldFG = this.fb.group({});
+
+    /* buscamos la dependencia del campo */
+    field.dt = this.productService.findDependencyByKeyCode(this.productDeps, 'dt', field.dtCd);
+    /* */
+
+    /* buscamos la dependencia de datatype y la insertamos en el campo */
+    field.dt.dtTyp = this.productService.findDependencyByKeyCode(this.productDeps, 'dtTyp', field.dt.dtTypCd);
+    /* */
+
+    /* vinculamos lista de dominio al campo Tipo de identificación del titular del débito */
+    if (field.dtCd === 'TPO_ID_TDB') {
+      field.dt.dmnLstCd = 'LDM_TPI'
+    }
+    /* */
+
+    /* buscamos la dependencia de domainList y la insertamos en el campo */
+      field.dt.dmnLst = this.productService.findDependencyByKeyCode(this.productDeps, 'dmnLst', field.dt.dmnLstCd);
+    /* */
+
+    Object.keys(field).forEach(key => {
+      fieldFG.addControl(key, this.fb.control(field[key]));
+    });
+
+    fieldFG.addControl('value', this.fb.control(field.dt.dtTyp.guiCmpnntItm === 'Calendar' ? new Date(valueObj.value) : valueObj.value, field?.required?[Validators.required]:[Validators.nullValidator]));
+
+    if (field.dt.dtTyp.guiCmpnntItm === 'List box') {
+      let options=[{ id: valueObj.value, name: valueObj.value }], domainList = field.dt.dmnLst?.vlLst;
+      if(field.dt.dmnLst ) {options = this.showDomainList(domainList, valueObj)};
+      fieldFG.addControl('options', this.fb.control(options));
+    }
+
     return fieldFG;
   }
 
@@ -533,6 +536,11 @@ export class ModifyPolicyComponent {
    
   }
 
+  async delayAndNavigate() {   
+    await new Promise((resolve) => setTimeout(resolve, 2000));   
+    await this.router.navigate([`/polizas/consulta`]);
+  }
+
   savePolicyModify() {
     this.isSaving = true
 
@@ -548,7 +556,7 @@ export class ModifyPolicyComponent {
       next: (resp: any) => {
         if (resp.dataHeader.code != 500) {
           this.showSuccess('success', 'Modificación exitosa', 'La póliza ha sido modificada');
-          setTimeout(() => { this.router.navigate([`/polizas/consulta`]).then().catch(); }, 2000);
+          this.delayAndNavigate().then(() => {}).catch((error) => { console.error(error); });
         } else {
           this.showSuccess('error', 'Error al Modificar', resp.dataHeader.status);
         }

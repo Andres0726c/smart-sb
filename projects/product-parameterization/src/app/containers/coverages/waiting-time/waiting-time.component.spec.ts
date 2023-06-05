@@ -9,6 +9,7 @@ import { of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductService } from '../../../services/product.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 class dialogMock {
   open() {
@@ -29,9 +30,10 @@ describe('WaitingTimeComponent', () => {
   let component: WaitingTimeComponent;
   let fixture: ComponentFixture<WaitingTimeComponent>;
 
+  let http: WaitingTimeService;
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule,HttpClientModule],
       declarations: [],
       providers: [WaitingTimeService,
       WaitingTimeComponent,
@@ -60,6 +62,7 @@ describe('WaitingTimeComponent', () => {
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     });
     component = TestBed.inject(WaitingTimeComponent);
+    http= TestBed.inject(WaitingTimeService);
   });
 
   it('should create', () => {
@@ -75,6 +78,53 @@ describe('WaitingTimeComponent', () => {
     expect(component.ngOnInit()).toBeUndefined();
     
   });
+
+  it('ngOnInit when quantity is diferent 0', () => {
+    component.formWaitingTime =  new FormGroup({
+        quantity: new FormControl(1)
+      });
+      jest.spyOn(component,'getWaitingTime').mockImplementation();
+      jest.spyOn(component,'getEvents').mockImplementation();
+      jest.spyOn(component,'changeInputNumber').mockImplementation();  
+    expect(component.ngOnInit()).toBeUndefined();
+    
+  });
+
+  it('getWaitingTime',()=>{
+    let res={body:{nmValueList:''},header:{}}
+    jest.spyOn(http,'getWaitingTime').mockReturnValue(of(res));
+    expect(component.getWaitingTime()).toBeUndefined();
+  })
+
+  it('getEvents',()=>{
+    let res={body:{nmValueList:''},header:{}}
+    jest.spyOn(http,'getWaitingTime').mockReturnValue(of(res));
+    expect(component.getEvents()).toBeUndefined();
+  })
+
+  it('changeInputNumber when period is dia',()=>{
+    let group= new FormGroup({
+      quantity: new FormControl("a1b2c3"),
+      period: new FormControl('dia')
+    })
+    expect(component.changeInputNumber(group,'quantity')).toBeUndefined();
+  })
+
+  it('changeInputNumber when period is anio',()=>{
+    let group= new FormGroup({
+      quantity: new FormControl("a1b2c3"),
+      period: new FormControl('anio')
+    })
+    expect(component.changeInputNumber(group,'quantity')).toBeUndefined();
+  })
+
+  it('changeInputNumber when period is mes',()=>{
+    let group= new FormGroup({
+      quantity: new FormControl("a1b2c3"),
+      period: new FormControl('mes')
+    })
+    expect(component.changeInputNumber(group,'quantity')).toBeUndefined();
+  })
 
   it('ngOnChanges Ok', () => {
     expect(component.ngOnChanges()).toBeUndefined();
