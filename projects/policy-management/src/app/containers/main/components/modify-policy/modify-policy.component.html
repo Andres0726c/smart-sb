@@ -56,10 +56,14 @@
         <span class="text-primary font-bold text-2xl ml-10 mr-2 mt-2">Nº externo:</span><span class="text-2xl mt-2">{{ externalPolicyNumberText }}</span>
     </div>
   </div>
-  <div *ngIf="isLoading" class="bg-white rounded-xl p-3">
-      <span>Cargando...</span>
+  <div *ngIf="isLoading || errorFlag" class="text-center bg-white rounded-xl p-3">
+    <smartcore-loading-spinner *ngIf="isLoading" [circleSize]="50" [progressThickness]="6" [animationDuration]=".5"></smartcore-loading-spinner>
+    <div class="container-alert text-center" *ngIf="errorFlag">
+        <em class="pi pi-info-circle mr-1"></em>
+        {{ errorMsg }}
+    </div>
   </div>
-  <form *ngIf="!isLoading" [formGroup]="formPolicy" (ngSubmit)="saveModification()" class="bg-white rounded-xl p-3">
+  <form *ngIf="!isLoading && !errorFlag" [formGroup]="formPolicy" (ngSubmit)="saveModification()" class="bg-white rounded-xl p-3">
    
     <p-divider align="left" type="dashed" styleClass="my-2">
       <div class="inline-flex items-center">

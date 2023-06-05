@@ -52,6 +52,7 @@ export class ModifyPolicyComponent {
 
   isLoading: boolean = false;
   errorFlag: boolean = false;
+  errorMsg = '';
 
   policy: any;
   policyNumberText: string = "";
@@ -237,26 +238,25 @@ export class ModifyPolicyComponent {
     }
     return arrayData;
   }
+
   async setFormsControls() {
-
     this.formPolicy.setControl('policyDataPreview', await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
-
     this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false, false));
-
     this.formPolicy.setControl('policyData', await this.fillGroupData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.plcyDtGrp, this.policyData, true));
-
     this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.rskTyp, true, true));
-
     this.isLoading = false;
-
   }
 
   getProduct(code: string) {
     this.productService.getProductByCode(code).subscribe( (res: ResponseDTO<Product>) => {
-      if (res.dataHeader.code && res.dataHeader.code == 200) {
+      if (res.dataHeader.code && res.dataHeader.code == 200 && res.body.nmDefinition.prdct.mdfctnPrcss) {
         this.product = res.body;
         this.productDeps = this.product.nmDefinition.prdctDpndncy;
         this.setFormsControls().then(() => {}).catch((error) => { console.error(error); });
+      } else {
+        this.errorFlag = true;
+        this.errorMsg = 'El producto no presenta configuración para el proceso de modificación de pólizas';
+        this.isLoading = false;
       }
     });
   }
