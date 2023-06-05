@@ -55,6 +55,7 @@ export class ModifyPolicyComponent {
 
   isLoading: boolean = false;
   errorFlag: boolean = false;
+  errorMsg = '';
 
   policy: any;
   policyNumberText: string = "";
@@ -243,22 +244,24 @@ export class ModifyPolicyComponent {
 
   getProduct(code: string) {
     this.productService.getProductByCode(code).subscribe( async(res: ResponseDTO<Product>) => {
-      if (res.dataHeader.code && res.dataHeader.code == 200) {
+      if (res.dataHeader.code && res.dataHeader.code == 200 && res.body.nmDefinition.prdct.mdfctnPrcss) {
         this.product = res.body;
         this.productDeps = this.product.nmDefinition.prdctDpndncy;
 
         /* datos a previsualizar */
-        
         this.formPolicy.setControl('policyDataPreview',  await this.fillGroupData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.plcyDtGrp, this.policyDataPreview, false));
-        /* fin datos a previsualizar */
         this.formPolicy.setControl('riskDataPreview', await this.fillRiskData(this.product.nmContent?.mdfctnPrcss.chngActvtyTyp[0].prvwDt.rskTyp, false, false));
+        /* fin datos a previsualizar */
 
         this.formPolicy.setControl('policyData', await this.fillGroupData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.plcyDtGrp, this.policyData, true));
         this.formPolicy.setControl('riskData', await this.fillRiskData(this.product.nmDefinition?.prdct.mdfctnPrcss.mdfcblDt.rskTyp, true, true));
 
-
         this.isLoading = false;
 
+      } else {
+        this.errorFlag = true;
+        this.errorMsg = 'El producto no presenta configuración para el proceso de modificación de pólizas';
+        this.isLoading = false;
       }
     });
   }
