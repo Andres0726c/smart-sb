@@ -151,7 +151,7 @@ export class ModalSearchComponent implements OnInit {
    * @param sortDirection Dirección del ordenamiento (Ascendente/Descendente)
    * @param modificationType Tipo de modificación
    */
-  getData(
+  async getData(
     search: string,
     page: number,
     pageSize: number,
@@ -184,7 +184,7 @@ export class ModalSearchComponent implements OnInit {
       // Se cargan datos locales presentes en el service transversal
       res = { body: this.data.data };
       this.isLoading = false;
-      this.setData(res);
+      await this.setData(res).then();
       this.flagServiceError = false;
     }
     
@@ -193,7 +193,7 @@ export class ModalSearchComponent implements OnInit {
   getApiData(requestParams: any, search: string) {
     this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false && res.body) {
-        this.setData(res);
+        this.setData(res).then();
         this.flagServiceError = false;
       } else {
         this.flagServiceError = true;
