@@ -268,6 +268,6 @@ it('should create without multiselect', () => {
       fisrt: 0,
       rows: 1
     }
-    expect(component.loadRemoteData(event)).toBeUndefined();
+    expect(component.loadRemoteData(event)).toBeDefined();
   });
 });

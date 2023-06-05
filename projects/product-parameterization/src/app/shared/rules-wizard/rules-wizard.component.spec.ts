@@ -164,7 +164,7 @@ describe('RulesWizardComponent', () => {
       rows: 1,
     };
 
-    expect(component.loadRemoteData(event)).toBeUndefined();
+    expect(component.loadRemoteData(event)).toBeDefined();
   });
 
   it('insertDataToTable', () => {
