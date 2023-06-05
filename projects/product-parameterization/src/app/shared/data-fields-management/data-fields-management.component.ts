@@ -361,16 +361,12 @@ export class DataFieldsManagementComponent implements OnInit {
           (x: { id: number }) => x.id === object.id
         );
 
-        if (this.modifyData) {
-          if (index === -1) {
-            this.buildBasicFormGroup(group, object);
-          }
+        if (this.modifyData && index === -1) {
+          this.buildBasicFormGroup(group, object);
+        } else if(index === -1){
+          this.buildFormGroupExtended(group, object);
         } else {
-          if (index === -1) {
-            this.buildFormGroupExtended(group, object);
-          } else {
-            this.addControl(group, index, object);
-          }
+          this.addControl(group, index, object);
         }
       }
 
