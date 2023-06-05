@@ -5,6 +5,7 @@
 /deploy
 /tmp
 /out-tsc
+.scannerwork
 NX
 
 # dependencies
