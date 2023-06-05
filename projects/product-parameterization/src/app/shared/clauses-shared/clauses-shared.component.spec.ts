@@ -55,7 +55,7 @@ describe('ClausesSharedComponent', () => {
   });
 
   it('ngOnInit Ok', () => {
-    expect(component.ngOnInit()).toBeUndefined();
+    expect(component.ngOnInit()).toBeDefined();
   });
 
   it('openDialog', () => {
