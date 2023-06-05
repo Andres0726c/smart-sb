@@ -253,7 +253,6 @@ export class RulesWizardComponent implements OnInit {
    * @param res variable with the data
    */
   setData(res: any) {
-    // Luis, quedamos en este punto para revisar las funciones y la paginación
     if (Array.isArray(res.body)) {
       this.addToElementData(res.body);
     } else {

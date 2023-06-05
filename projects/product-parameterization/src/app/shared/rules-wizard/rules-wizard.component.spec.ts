@@ -217,10 +217,9 @@ describe('RulesWizardComponent', () => {
 
     expect(component.onRowSelect(event)).toBeUndefined();
   });
-});
-  it('setData',()=>{
 
-    component.setData({dataHeader:{totalRecords:{}}});
+  it('setData',()=>{
+    component.setData({body: [{id: 1, name: 'test'}],dataHeader:{totalRecords:{}}});
   });
 
 
@@ -301,8 +300,6 @@ describe('RulesWizardComponent', () => {
   });
 
   it('insertDataToTable',()=>{
-
-    component.modal={};
     component.arrayData=[{id:1}];
     component.data={list:[{id:1, name:'test'}], code:'', columns:[{name:'',displayValue:[]}]};
     component.insertDataToTable()
