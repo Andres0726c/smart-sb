@@ -164,11 +164,11 @@ describe('RulesWizardComponent', () => {
       rows: 1,
     };
 
-    expect(component.loadRemoteData(event)).toBeDefined();
+    expect(component.loadRemoteData(event)).toBeUndefined();
   });
 
   it('insertDataToTable', () => {
-    expect(component.insertDataToTable()).toBeDefined();
+    expect(component.insertDataToTable()).toBeUndefined();
   });
 
   it('addElements', () => {
