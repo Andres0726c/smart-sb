@@ -104,8 +104,37 @@ describe('CoveragesRatesComponent', () => {
   });
 
   it('remove',()=>{
+    jest.spyOn(component,'getIndex').mockImplementation();
     expect(component.remove('remove')).toBeUndefined();
   });
+
+  it('remove when index is zero',()=>{
+    component.coverageRates= new FormArray([
+      new FormGroup({
+        id: new FormControl(1),
+        calculationRule: new FormArray([
+          new FormGroup({
+            id: new FormControl("1")
+          })
+        ])
+      })
+    ])
+    jest.spyOn(component,'getIndex').mockReturnValue(0);
+    expect(component.remove('1')).toBeUndefined();
+  });
+  it('getIndex',()=>{
+    component.coverageRates= new FormArray([
+      new FormGroup({
+        id: new FormControl(1),
+        calculationRule: new FormArray([
+          new FormGroup({
+            id: new FormControl("1")
+          })
+        ])
+      })
+    ])
+    component.getIndex('id');
+  })
 
   it('reset Ok', () => {
     expect(component.reset()).toBeUndefined();
@@ -115,7 +144,46 @@ describe('CoveragesRatesComponent', () => {
     expect(component.removeCalculationRule()).toBeUndefined();
   });
 
+
+  it('addChip ',()=>{
+    component.selectedField = new FormArray([new FormGroup({
+      calculationRule: new FormArray([]),
+
+    })]);
+
+    jest.spyOn(component,'removeChipList').mockImplementation();
+    component.addChip([{id:1,name:'test',description:'test'}])
+  })
+
+
+  it('getSuccessStatus ',()=>{
+    component.getSuccessStatus('hola','mundo');
+  })
+
+  it('removeCalculationRule ',()=>{
+    component.selectedField= 
+      new FormGroup({
+        calculationRule: new FormArray([
+          new FormGroup({
+            id: new FormControl(1)
+          })
+        ])
+      });
+    component.removeCalculationRule();
+  })
+
+
   it('openDialogWizard', () => {
+    component.coverageRates= new FormArray([
+      new FormGroup({
+        id: new FormControl(1),
+        calculationRule: new FormArray([
+          new FormGroup({
+            id: new FormControl("1")
+          })
+        ])
+      })
+    ])
     expect(component.openModalCalculationRule()).toBeUndefined();
   });
 

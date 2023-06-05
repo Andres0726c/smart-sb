@@ -169,7 +169,7 @@ describe('ReactiveGroupFieldsComponent', () => {
       const spy3 = jest.spyOn(component, 'addControls').mockImplementation();
       const spy2 = jest.spyOn(component, 'getRule').mockImplementation();
       const spy = component.executeRule(field, groupName, show);
-      console.log(spy3);
+
       //expect(spy1).toBeCalled();
       //expect(spy2).toBeCalled();
       expect(spy).toBeDefined();
@@ -184,7 +184,6 @@ describe('ReactiveGroupFieldsComponent', () => {
       const spy3 = jest.spyOn(component, 'addControls').mockImplementation();
       const spy2 = jest.spyOn(component, 'getRule').mockImplementation();
       const spy = component.executeRule(field, groupName, show);
-      console.log(spy3);
       //expect(spy1).toBeCalled();
       //expect(spy2).toBeCalled();
       expect(spy).toBeDefined();

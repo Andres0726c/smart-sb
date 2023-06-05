@@ -48,7 +48,7 @@
                     (click)="
                       changeCheck(menu, menu.formControlName);
                       $event.stopImmediatePropagation();
-                      clearData(menu.formControlName)
+                      clearData(menu.formControlName,menu)
                     "
                     formControlName="enabled"
                   ></mat-checkbox>

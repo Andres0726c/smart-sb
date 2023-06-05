@@ -97,7 +97,7 @@ export class ProductService {
   }
 
   saveModify( data: any): Observable<any>{
-    console.log(data,"data a viajar");
+
 
     return this.httpClient.post<any>(`${this.apiUrl}policy/saveModifyPolicy`, data, {headers: this.headers});
   }
@@ -108,5 +108,6 @@ export class ProductService {
 
   findDependencyByKeyCode(deps: any, key: string, code: string) {
     return deps[key].find((x: any) => x.cd === code);
+
   }
 }

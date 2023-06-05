@@ -10,9 +10,8 @@ import { ProductService } from 'projects/product-parameterization/src/app/servic
 import {
   FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
-  Validators,
+
 } from '@angular/forms';
 
 interface OptionsCommercialP {
@@ -69,7 +68,7 @@ export class ModificationTypesRiskComponent implements OnInit, OnChanges {
   get policyDataControls(): FormArray {
     return (<FormArray>(
       this.productService.mdfctnPrcss?.get('mdfcblDt')?.get('rskTyp')
-    )) as FormArray;
+    )) ;
   }
 
   getcmmrclPln(name: string) {
@@ -77,20 +76,19 @@ export class ModificationTypesRiskComponent implements OnInit, OnChanges {
       this.policyDataControls.controls
         .find((x: { value: { name: string } }) => x.value.name === name)
         ?.get('cmmrclPln')
-    )) as FormArray;
+    )) ;
   }
 
   getAthrzdOprtn(code: string) {
     return (<FormArray>this.getcmmrclPln(this.titleRisk)
       .controls.find((x: { value: { code: string } }) => x.value.code === code)
-      ?.get('athrzdOprtn')) as FormArray;
+      ?.get('athrzdOprtn'));
   }
 
   changeCheck(data: any, event: any) {
     this.addBranch.emit(this.tableData);
 
     this.addData(event, data);
-    //let control=this.getAthrzdOprtn(data.code);
   }
 
   addData(event: any, data: any) {

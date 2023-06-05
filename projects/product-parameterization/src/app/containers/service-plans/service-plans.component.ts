@@ -4,12 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProductService } from '../../services/product.service';
 import { ModalSearchSmallComponent } from '../../shared/modal-search-small/modal-search-small.component';
-import { STATES, ToastMessageComponent } from '../../shared/toast-message/toast-message.component';
+import { STATES, ToastMessageComponent,DataToast } from '../../shared/toast-message/toast-message.component';
 import { ModalConfirmDeleteComponent } from '../../shared/modal-confirm-delete/modal-confirm-delete.component';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { ClausesComponent } from '../../shared/clauses/clauses.component';
-import { DataToast } from '../../shared/toast-message/toast-message.component';
 import { ElementTableSearch } from '../../core/model/ElementTableSearch.model';
 
 interface ExampleFlatNode {
@@ -82,6 +81,9 @@ export class ServicePlansComponent implements OnInit {
   get servicePlanGroup(): FormGroup {
     return this.productService.servicePlans.controls[this.index] as FormGroup;
   }
+  getInitialParameter(){
+    return(this.productService.initialParameters?.get('insuranceLine')?.value);
+  }
 
   openToAdd(): void {
 
@@ -92,8 +94,8 @@ export class ServicePlansComponent implements OnInit {
     ];
 
     let parameter =
-      this.productService.initialParameters?.get('insuranceLine')?.value !== null
-        ? this.productService.initialParameters?.get('insuranceLine')?.value + ''
+    this.getInitialParameter() !== null
+        ? this.getInitialParameter()+ ''
         : '0';
     const dialogRef = this.dialog.open(ModalSearchSmallComponent, {
       data: {

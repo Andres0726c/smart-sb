@@ -40,18 +40,30 @@ describe('ModifyDataComponent', () => {
   it('dataTypeControls',()=>{
 
     let risk: any = component.fb.array([]);
-    component.test;
     component.getFieldsControls(risk);
     component.dataTypeControls;
 
   });
 
-  xit('dataTypeControlsIfPolicyData',()=>{
-
-    //component.modifyData.setControl(Validators.required);
+  it('dataTypeControlsIfPolicyData',()=>{
     component.dataType='policyData';
+    component.modifyData= component.fb.group({
+      policyData: component.fb.array([])
+    })
     component.dataTypeControls;
 
   });
+  it('riskData',()=>{
+    component.dataType='riskData';
+    component.modifyData= component.fb.group({
+      riskData: component.fb.array([
+        component.fb.group({
+          complementaryData: component.fb.array([])
+        })
+      ])
+    })
+    component.dataTypeControls;
+  })
+
 });
 

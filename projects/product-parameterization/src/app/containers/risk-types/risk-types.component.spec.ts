@@ -8,6 +8,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalSearchSmallComponent } from '../../shared/modal-search-small/modal-search-small.component';
 import { ProductService } from '../../services/product.service';
+import { ComplementaryDataComponent } from '../../shared/complementary-data/complementary-data.component';
+import { CommercialPlanComponent } from './commercial-plan/commercial-plan.component';
 
 
 class dialogMock {
@@ -32,10 +34,17 @@ class toastMock {
 describe('RiskTypesComponent', () => {
   let component: RiskTypesComponent;
   let fixture: ComponentFixture<RiskTypesComponent>;
+  let complementaryDataComponent:ComplementaryDataComponent;
+  let productService:ProductService;
+  let matDialog:MatDialog;
+  let matSnackBar:MatSnackBar;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [],
+      declarations: [
+        ComplementaryDataComponent,
+        // Otros componentes declarados aquí
+      ],
       providers: [RiskTypesComponent,
         {
           provide: MatDialog,
@@ -96,7 +105,8 @@ describe('RiskTypesComponent', () => {
             riskTypes: new FormArray([
               new FormGroup({
                 id: new FormControl(1),
-                name: new FormControl('test1')
+                name: new FormControl('test1'),
+
               })
             ]),
             mdfctnPrcss: new FormGroup({
@@ -217,9 +227,13 @@ describe('RiskTypesComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
     });
-    component = TestBed.inject(RiskTypesComponent);
-   
- 
+
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(RiskTypesComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('Componente inicializado', () => {
@@ -259,6 +273,7 @@ describe('RiskTypesComponent', () => {
       ],
     });
 
+    
     component.productService.riskTypes.push(
       component.fb.group({
         id: component.fb.control(1, Validators.required),
@@ -280,6 +295,54 @@ describe('RiskTypesComponent', () => {
     expect(component.removeRiskType(node)).toBeUndefined();
   });
 
+  it('riskTypeControls when is not null',()=>{
+    expect(component.riskTypeControls).toBeDefined();
+  })
+  
+  it('riskTypeControls when is null',()=>{
+  component.productService.mdfctnPrcss= new FormGroup({});
+  expect(component.riskTypeControls).toBeUndefined();
+  });
+
+  it('riskTypeControls when mdfcblDt is present',()=>{
+    component.productService.mdfctnPrcss= new FormGroup({
+      mdfcblDt: new FormGroup({})
+    });
+    expect(component.riskTypeControls).toBeDefined();
+    });
+
+    it('removeRiskType',()=>{
+      
+      //complementaryDataComponent= TestBed.inject(ComplementaryDataComponent);
+      let node={
+        expandable: true,
+        name: "test",
+        level: 1
+      };
+      let dataNode={  
+        name: "test1",
+        id: 1}
+        let fb=new FormBuilder();
+      component.dataSource.data.push(dataNode);
+      component.complementaryDataComponent=new ComplementaryDataComponent(matDialog,fb,matSnackBar,productService);
+      component.commercialPlanComponent= new CommercialPlanComponent(matDialog,productService,fb,matSnackBar);
+      fixture.detectChanges();
+      component.complementaryDataComponent.complementaryDataControls;
+       jest.spyOn(component,'updateTree').mockImplementation();
+      jest.spyOn(component,'findIndexRiskType').mockReturnValue(0);
+      jest.spyOn(component,'deleteRiskMdfctPrcss').mockImplementation();
+      component.removeRiskType(node);
+    })
+
+    it('validateRisk',()=>{
+      let res={}
+      component.productService.riskTypes= new FormGroup({
+        id: new FormControl(1),
+        name: new FormControl('test1')
+      });
+      jest.spyOn(component,'addRiskType').mockImplementation();
+      component.validateRisk(res);
+    })
   it('openwizzard', () => {
     expect(component.openwizzard("")).toBeUndefined();
   });
@@ -299,4 +362,37 @@ describe('RiskTypesComponent', () => {
     let node = {expandable: false, name: 'Mascota', level: 1};
     expect(component.deleteRiskMdfctPrcss(node)).toBeUndefined();
   });
+  it('viewRiskType ',()=>{
+    let node = {expandable: false, name: 'test name', level: 1};
+    let fb=new FormBuilder();
+    component.complementaryDataComponent=new ComplementaryDataComponent(matDialog,fb,matSnackBar,productService);
+    component.viewRiskType(node);
+  });
+
+  it('quantityItem swhen node.name is not "Datos del riesgo" ',()=>{
+    let node = {expandable: false, name: 'test name', level: 1};
+
+    component.treeControl.dataNodes=[{expandable: false, name: 'test name', level: 1}]
+    component.subItemsRiskTypes=[{  name: "test name", formArray: "name", distance: -1}]
+    component.flatNodeMap.set(node,node);
+    let res = [{fields:[{id:1}]}]
+    jest.spyOn(component,'findIndexRiskType').mockReturnValue(0);
+    jest.spyOn(component,'getRiskType').mockReturnValue(res);
+    component.quantityItems(node);
+  })
+
+  it('quantityItems when node.name and product service is "Datos del riesgo"',()=>{
+    let node = {expandable: false, name: 'Datos del riesgo', level: 1};
+    component.treeControl.dataNodes=[{expandable: false, name: 'Datos del riesgo', level: 1}]
+    component.subItemsRiskTypes=[{  name: "Datos del riesgo", formArray: "name", distance: -1}]
+    component.flatNodeMap.set(node,node);
+    let res = [{fields:[{id:1}]}]
+    jest.spyOn(component,'findIndexRiskType').mockReturnValue(0);
+    jest.spyOn(component,'getRiskType').mockReturnValue(res);
+
+    component.quantityItems(node);
+  })
+  it('getRiskType',()=>{
+  component.getRiskType(0,{  name: "Datos del riesgo", formArray: "name", distance: -1});
+  })
 });

@@ -63,7 +63,7 @@ export interface DomainList {
   code: string;
   name: string;
   description: string;
-  valueList:String;
+  valueList:string;
 }
 export interface SearchModal {
   code: string;
