@@ -360,17 +360,28 @@ export class ModalSearchComponent implements OnInit {
       search = '0';
     }
 
+    this.setRequestParams(event, selectedIds, search);
+  }
+
+  setRequestParams(event: any, selectedIds: any, search: any){
+    let requestParams: any = '';
+    let doReq = true;
+    const pageNumer = (event.first ?? 0) / (event.rows ?? 1);
+    const sortDirections: any = {
+      '0': '0',
+      '1': 'asc',
+      '-1': 'desc'
+    }
     if (this.data.parameter) {
       requestParams = this.data.parameter + `/${pageNumer}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
     } else {
       requestParams = `${pageNumer}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
     }
 
-    if (this.prevReqParams === requestParams && this.prevSearch === search) {
+    if (this.prevReqParams === requestParams) {
       doReq = false;
     } else {
       this.prevReqParams = requestParams;
-      this.prevSearch = search;
     }
 
     if (doReq) {
@@ -378,5 +389,4 @@ export class ModalSearchComponent implements OnInit {
       this.getApiData(requestParams, search);
     }
   }
-
 }
