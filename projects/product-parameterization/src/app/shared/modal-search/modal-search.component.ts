@@ -77,7 +77,7 @@ export class ModalSearchComponent implements OnInit {
   /**
    * Función que permite cargar la configuración para el tipo de elemento que se va a mostrar en la modal
    */
-  loadModalData() {
+  async loadModalData() {
     try {
       this.data = this.dataSourceModal.data;
       this.modal = search.filter(
@@ -129,13 +129,13 @@ export class ModalSearchComponent implements OnInit {
       );
 
       if(!this.modal.remotePaginator) {
-        this.getData(
+       await this.getData(
           '0',
           this.currentPage,
           this.pageSize,
           this.sortColumn,
           this.sortDirection
-        );
+        ).then();
       }
     } catch (error) {
       this.flagServiceError = true;
@@ -179,7 +179,7 @@ export class ModalSearchComponent implements OnInit {
           requestParams = `${page}/${pageSize}/${selectedIds}/${sortColumn}/${sortDirection}`;
         }
       }
-      this.getApiData(requestParams, search);
+      await this.getApiData(requestParams, search).then();
     } else {
       // Se cargan datos locales presentes en el service transversal
       res = { body: this.data.data };
@@ -190,8 +190,8 @@ export class ModalSearchComponent implements OnInit {
     
   }
 
-  getApiData(requestParams: any, search: string) {
-    this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
+  async getApiData(requestParams: any, search: string) {
+    await this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false && res.body) {
         this.setData(res).then();
         this.flagServiceError = false;
@@ -336,7 +336,7 @@ export class ModalSearchComponent implements OnInit {
     return this.data.columns?.filter((x: any) => x.header);
   }
 
-  loadRemoteData(event: LazyLoadEvent) {
+  async loadRemoteData(event: LazyLoadEvent) {
     let requestParams: any = '';
     let search = '0';
     let selectedIds = '0';
@@ -375,7 +375,7 @@ export class ModalSearchComponent implements OnInit {
 
     if (doReq) {
       this.isLoading = true;
-      this.getApiData(requestParams, search);
+      await this.getApiData(requestParams, search).then;
     }
   }
 

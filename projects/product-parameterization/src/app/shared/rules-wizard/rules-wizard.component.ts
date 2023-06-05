@@ -236,8 +236,8 @@ export class RulesWizardComponent implements OnInit {
     return this.data.columns.filter((x: any) => x.header);
   }
 
-  getApiData(requestParams: any, search: string) {
-    this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
+  async getApiData(requestParams: any, search: string) {
+    await this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
       if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false && res.body) {
         this.setData(res).then();
         this.flagServiceError = false;
@@ -349,7 +349,7 @@ export class RulesWizardComponent implements OnInit {
     }
   }
 
-  loadRemoteData(event: LazyLoadEvent) {
+  async loadRemoteData(event: LazyLoadEvent) {
     let requestParams: any = '';
     let search ;
     let selectedIds = '0';
@@ -387,7 +387,7 @@ export class RulesWizardComponent implements OnInit {
 
     if (doReq) {
       this.isLoading = true;
-      this.getApiData(requestParams, search);
+      await this.getApiData(requestParams, search).then();
     }
   }
 
