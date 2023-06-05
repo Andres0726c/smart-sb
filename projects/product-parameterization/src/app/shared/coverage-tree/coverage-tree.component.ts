@@ -2,8 +2,10 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -41,6 +43,8 @@ export class CoverageTreeComponent implements OnInit {
 
   selectedFile!: TreeNode;
 
+  @Input() coverages: any = new FormGroup({});
+  @Output() eventCoverages: EventEmitter<any> = new EventEmitter<any>();
   /**
    * initialize the tree structure
    * @param dialogService
@@ -84,109 +88,10 @@ export class CoverageTreeComponent implements OnInit {
    * method that opens the coverages modal
    */
   openToAdd(): void {
-    const columns = [
-      {
-        field: 'name',
-        header: 'Nombre',
-        displayValue: ['nmName'],
-        dbColumnName: ['nmname'],
-      },
-      {
-        field: 'description',
-        header: 'Descripción',
-        displayValue: ['dsDescription'],
-        dbColumnName: ['dsdescription'],
-      },
-    ];
-
-    let parameter =
-      this.productService.initialParameters?.get('insuranceLine')?.value !==
-      null
-        ? this.productService.initialParameters?.get('insuranceLine')?.value +
-          ''
-        : '0';
-    const dialogRef = this.dialogService.open(ModalSearchComponent, {
-      data: {
-        code: 'coverageDataControls',
-        list: this.productService.coverages?.value,
-        columns: columns,
-        parameter,
-      },
-      showHeader: false,
-      width: '550px',
-    });
-    dialogRef.onClose.subscribe((res) => {
-      if (this.productService.coverages.length == 0) {
-        this.addCoverage(res);
-        this.index = 0;
-        this.selectedCoverage = this.coverageGroup;
-        this.emitSelectedCoverage.emit(this.coverageGroup);
-      } else {
-        this.addCoverage(res);
-      }
-    });
+    
+    this.eventCoverages.emit(true);
+    
   }
-
-  /**
-   * method that according to the response of the modal adds elements to tree
-   * @param coverages 
-   */
-  addCoverage = (coverages: ElementTableSearch[]): void => {
-    if (coverages) {
-      for (let coverage of coverages) {
-        this.productService.coverages.push(
-          this.fb.group({
-            id: this.fb.control(coverage.id, Validators.required),
-            name: this.fb.control(coverage.name, Validators.required),
-            description: this.fb.control(
-              coverage.description,
-              Validators.required
-            ),
-            waitingTime: this.fb.group({
-              waitingTime: this.fb.control(false),
-              quantity: this.fb.control({ value: 0, disabled: true }, [
-                Validators.required,
-              ]),
-              period: this.fb.control({ value: '', disabled: true }, [
-                Validators.required,
-              ]),
-            }),
-            events: this.fb.group({
-              events: this.fb.control(false),
-              quantityEvents: this.fb.control({ value: 0, disabled: true }, [
-                Validators.required,
-                Validators.min(1),
-                Validators.max(999),
-              ]),
-              periodEvents: this.fb.control({ value: '', disabled: true }, [
-                Validators.required,
-              ]),
-            }),
-            clauses: this.fb.array([], Validators.required),
-            businessRules: this.fb.group({
-              selectionRule: this.fb.array([]),
-              initializeRule: this.fb.array([]),
-              validateRule: this.fb.array([]),
-            }),
-            complementaryData: this.fb.array([], Validators.required),
-            deductibles: this.fb.array([], Validators.required),
-            rates: this.fb.array([], Validators.required),
-            payRollData: this.fb.array([], Validators.required),
-            claimReservation: this.fb.array([]),
-          })
-        );
-      }
-      this.updateTree();
-      let dataToast: DataToast = {
-        status: STATES.success,
-        title: 'Asociación exitosa',
-        msg: 'Las coberturas fueron asociadas correctamente',
-      };
-      this.toastMessage.openFromComponent(ToastMessageComponent, {
-        data: dataToast,
-      });
-    }
-  };
 
   /**
    * update tree with the coverages data
@@ -208,7 +113,7 @@ export class CoverageTreeComponent implements OnInit {
 
   /**
    * allows view the data of coverage selected
-   * @param node 
+   * @param node
    */
   viewCoverage = (node: TreeNode<Coverage>): void => {
     console.log('node', node);
@@ -220,7 +125,7 @@ export class CoverageTreeComponent implements OnInit {
 
   /**
    * method that removes coverage selected
-   * @param node 
+   * @param node
    */
   removeCoverage = (node: TreeNode<Coverage>): void => {
     let dialogRef = this.dialogService.open(ModalDeleteComponent, {
@@ -247,7 +152,7 @@ export class CoverageTreeComponent implements OnInit {
       const id = this.productService.coverages.at(index)!.value.id;
       this.productService.coverages?.removeAt(index);
       this.updateTree();
-      if (id == this.selectedCoverage.value.id) {
+      if (id == this.selectedCoverage?.value.id) {
         this.index = 0;
         this.selectedCoverage = this.coverageGroup;
       }
@@ -256,8 +161,8 @@ export class CoverageTreeComponent implements OnInit {
 
   /**
    * returns the coverage in the product according the id
-   * @param node 
-   * @returns 
+   * @param node
+   * @returns
    */
   findIndexCoverage(node: TreeNode): number {
     return (

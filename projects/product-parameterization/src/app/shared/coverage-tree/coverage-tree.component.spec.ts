@@ -75,17 +75,7 @@ describe('CoverageTreeComponent', () => {
     expect(component.openToAdd()).toBeUndefined();
   });
 
-  it('addCoverage ', () => {
-    let coverage = [
-      {
-        id: 1,
-        name: 'test',
-        description: 'test',
-      },
-    ];
-
-    expect(component.addCoverage(coverage)).toBeUndefined();
-  });
+  
 
   it('viewCoverage  ', () => {
     let node:TreeNode = {

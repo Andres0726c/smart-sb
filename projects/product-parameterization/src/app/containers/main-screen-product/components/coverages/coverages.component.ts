@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ElementTableSearch } from 'projects/product-parameterization/src/app/core/model/ElementTableSearch.model';
 import { ModalSearchComponent } from 'projects/product-parameterization/src/app/shared/modal-search/modal-search.component';
 import { ProductService } from '../../../../services/product.service';
+import { CoverageTreeComponent } from 'projects/product-parameterization/src/app/shared/coverage-tree/coverage-tree.component';
 
 @Component({
   selector: 'refactoring-smartcore-mf-coverages',
@@ -18,6 +19,7 @@ export class CoveragesComponent implements OnInit {
   selectedCoverage: any = new FormGroup({});
   index: number = 0;
 
+  @ViewChild('coverageTree') coverageTree!: CoverageTreeComponent;
   /**
    * Contructor empty
    * @param productService
@@ -152,6 +154,7 @@ export class CoveragesComponent implements OnInit {
           })
         );
       }
+      this.coverageTree?.updateTree();
     }
   };
 }
