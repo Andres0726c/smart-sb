@@ -75,6 +75,7 @@ export class ProductService {
     'conceptReserv',
     'cnclltnCsCd',
     'rnsttmntCsCd',
+    'selectionRule',
   ];
 
   defaultControls = [
