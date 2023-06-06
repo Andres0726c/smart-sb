@@ -643,7 +643,7 @@ export class DataFieldsManagementComponent implements OnInit {
       description: objRule.rule.description,
       cdRuleType: objRule.rule.cdRuleType,
       endPoint: objRule.rule.endPoint,
-      rlEngnCd: objRule.rule.rlEngnCd,
+      rlEngnCd: objRule.rule.rlEngnCd || null,
       argmntLst: objRule.parameters,
     };
 
