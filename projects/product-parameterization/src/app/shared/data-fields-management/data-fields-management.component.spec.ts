@@ -319,14 +319,58 @@ describe('DataFieldsManagementComponent', () => {
     expect(component.isAvailableName('test1')).toBeTruthy();
   });
 
+  // it('removeGroup', () => {
+  //   const group = new FormGroup({
+  //     id: new FormControl(1),
+  //     name: new FormControl('test'),
+  //     fields: new FormArray([], Validators.required),
+  //   });
+
+  //   expect(component.removeGroup(group)).toBeUndefined();
+  // });
+
+  
+
   it('removeGroup', () => {
     const group = new FormGroup({
       id: new FormControl(1),
       name: new FormControl('test'),
-      fields: new FormArray([], Validators.required),
+      fields: new FormArray(
+        [
+          new FormGroup({
+            id: new FormControl(24),
+          }),
+        ],
+        Validators.required
+      ),
     });
 
+    let res: any = new FormArray([]);
+    jest.spyOn(component, 'getGroupArrayById').mockReturnValue(res);
     expect(component.removeGroup(group)).toBeUndefined();
+  });
+
+  it('confirmationRemoveGroup', () => {
+        component.groups = new FormArray(
+      [
+        new FormGroup({
+          id: new FormControl(1),
+          name: new FormControl('test'),
+          fields: new FormArray(
+            [
+              new FormGroup({
+                id: new FormControl(25),
+                name: new FormControl('test'),
+                dependency: new FormControl(24),
+              }),
+            ],
+            Validators.required
+          ),
+        }),
+      ],
+      Validators.required
+    );
+    expect(component.confirmationRemovegroup(true, 1, component.groups))
   });
 
   it('finishGroupEdit', () => {
