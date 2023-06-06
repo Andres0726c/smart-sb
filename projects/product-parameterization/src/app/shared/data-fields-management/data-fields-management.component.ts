@@ -578,30 +578,6 @@ export class DataFieldsManagementComponent implements OnInit {
    * Function to open the query modal and multiple selection
    */
   openRuleWizard(code: string, field: string) {
-    const columns = [
-      {
-        field: 'name',
-        header: 'Nombre',
-        displayValue: ['nmName'],
-        dbColumnName: ['nmname'],
-      },
-      {
-        field: 'description',
-        header: 'Descripción',
-        displayValue: ['dsDescription'],
-        dbColumnName: ['dsdescription'],
-      },
-      {
-        field: 'cdRuleType',
-        displayValue: ['cdRuleType'],
-        dbColumnName: ['cdRuleType'],
-      },
-      { field: 'endPoint', displayValue: ['endPoint'] },
-      { field: 'nmParameterList', displayValue: ['nmParameterList'] },
-      { field: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { field: 'urlBs', displayValue: ['urlBs'] },
-    ];
-
     const parameter =
       this.productService.initialParameters?.get('insuranceLine')?.value !==
       null
@@ -613,7 +589,6 @@ export class DataFieldsManagementComponent implements OnInit {
       data: {
         code: code,
         list: this.selectedField?.get(field)?.value,
-        columns: columns,
         paramValues: this.getParamValuesList(),
       },
       showHeader: false,

@@ -95,35 +95,10 @@ export class RatesComponent implements OnInit, OnChanges {
    * method that opens the rules modal
    */
   openModalCalculationRule() {
-    const columns = [
-      {
-        field: 'name',
-        header: 'Nombre',
-        displayValue: ['nmName'],
-        dbColumnName: ['nmname'],
-      },
-      {
-        field: 'description',
-        header: 'Descripción',
-        displayValue: ['dsDescription'],
-        dbColumnName: ['dsdescription'],
-      },
-      {
-        field: 'cdRuleType',
-        displayValue: ['cdRuleType'],
-        dbColumnName: ['cdRuleType'],
-      },
-      { field: 'endPoint', displayValue: ['endPoint'] },
-      { field: 'nmParameterList', displayValue: ['nmParameterList'] },
-      { field: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { field: 'urlBs', displayValue: ['urlBs'] },
-    ];
-
     const dialogRef = this.dialogService.open(RulesWizardComponent, {
       data: {
         code: 'ruleCalculationControls',
         list: this.selectedField.get('calculationRule')?.value,
-        columns: columns,
         paramValues: this.getParamValuesList(),
       },
       showHeader: false,

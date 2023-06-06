@@ -70,39 +70,10 @@ export class RehabilitationDataComponent implements OnInit {
    * Funcion para realizar la apertura de la modal de consulta y seleccion multiple
    */
   openRuleWizard(code: string, field: string) {
-    const columns = [
-      {
-        field: 'name',
-        header: 'Nombre',
-        displayValue: ['nmName'],
-        dbColumnName: ['nmname'],
-      },
-      {
-        field: 'description',
-        header: 'Descripción',
-        displayValue: ['dsDescription'],
-        dbColumnName: ['dsdescription'],
-      },
-      {
-        field: 'cdRuleType',
-        displayValue: ['cdRuleType'],
-        dbColumnName: ['cdRuleType'],
-      },
-      { field: 'endPoint', displayValue: ['endPoint'] },
-      { field: 'nmParameterList', displayValue: ['nmParameterList'] },
-      { field: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
-      { field: 'urlBs', displayValue: ['urlBs'] },
-      { field: 'rlEngnCd', displayValue: ['rlEngnCd'] },
-      { field: 'aplctnLvlItm', displayValue: ['applicationLevel']},
-      { field: 'vrsn', displayValue: ['nmVersion']},
-      { field: 'rtrnLst', displayValue: ['nmReturnList']},
-    ];
-
     const dialogRef = this.dialogService.open(RulesWizardComponent, {
       data: {
         code: code,
         list: this.getRulesDp(),
-        columns: columns,
         paramValues: this.getParamValuesList(),
       },
       showHeader: false,

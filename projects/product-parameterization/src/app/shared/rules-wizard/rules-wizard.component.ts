@@ -45,6 +45,21 @@ export class RulesWizardComponent implements OnInit {
 
   parametersForm: FormGroup;
 
+  rulesWizardCols = [
+    { field: 'name', header: 'Nombre', displayValue: ['nmName'], dbColumnName:['nmame']  },
+    { field: 'description', header: 'Descripción', displayValue: ['dsDescription'], dbColumnName:['dsdescription']  },
+    { field: 'cdRuleType', displayValue: ['cdRuleType'], dbColumnName:['cdRuleType']  },
+    { field: 'endPoint', displayValue: ['endPoint'] },
+    { field: 'nmVersion', displayValue: ['nmVersion'] },
+    { field: 'nmParameterList', displayValue: ['nmParameterList'] },
+    { field: 'nmReturnList', displayValue: ['nmReturnList'] },
+    { field: 'applicationLevel', displayValue: ['applicationLevel'] },
+    { field: 'rlEngnCd', displayValue: ['rlEngnCd'] },
+    { field: 'cdBusinessCode', displayValue: ['cdBusinessCode'] },
+    { field: 'urlBs', displayValue: ['urlBs'] },
+    { field: 'id', displayValue: ['id'] }
+  ];
+
   constructor(
     public productService: ProductService,
     public ref: DynamicDialogRef,
@@ -174,22 +189,6 @@ export class RulesWizardComponent implements OnInit {
         (item: SearchModal) => item.code === this.data.code
       )[0];
 
-      // seteamos columnas por default
-      this.modal.columns = [
-        { field: 'name', header: 'Nombre', displayValue: [''] },
-        { field: 'description', header: 'Descripción', displayValue: [''] },
-      ];
-
-      //seteamos las columnas que llegan como parámetro
-      if (this.data.columns) {
-        this.modal.columns = this.data.columns;
-      }
-
-      this.displayedColumns = ['select'];
-      for (let element of this.modal.columns) {
-        if (element.header) this.displayedColumns.push(element.field);
-      }
-
       // seteamos el título
       if (this.data.title) {
         this.modal.title = this.data.title;
@@ -198,11 +197,6 @@ export class RulesWizardComponent implements OnInit {
       // seteamos el subtítulo
       if (this.data.subtitle) {
         this.modal.subtitle = this.data.subtitle;
-      }
-
-      // seteamos las columnas
-      if (this.data.columns) {
-        this.modal.columns = this.data.columns;
       }
 
       // seteamos el multiselect
@@ -234,7 +228,7 @@ export class RulesWizardComponent implements OnInit {
   }
 
   showedColumns() {
-    return this.data.columns.filter((x: any) => x.header);
+    return this.rulesWizardCols.filter((x: any) => x.header);
   }
 
   getApiData(requestParams: any, search: string) {
@@ -280,7 +274,7 @@ export class RulesWizardComponent implements OnInit {
     res.forEach((element: any) => {
       let obj: any = { id: element.id };
 
-      this.modal.columns?.forEach((col: any) => {
+      this.rulesWizardCols?.forEach((col: any) => {
         obj[col.field] = this.setFieldValue(element, col.displayValue);
       });
 
