@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { CommonsLibModule } from 'commons-lib';
-import { RulesWizardService } from 'projects/product-parameterization/src/app/shared/rules-wizard/services/rules-wizard.service';
 
 const routes: Route[] = [
   {
@@ -36,6 +35,6 @@ const routes: Route[] = [
     CommonsLibModule
   ],
   exports: [RehabilitationDataComponent],
-  providers: [RulesWizardService, DialogService],
+  providers: [DialogService],
 })
 export class RehabilitationDataModule {}
