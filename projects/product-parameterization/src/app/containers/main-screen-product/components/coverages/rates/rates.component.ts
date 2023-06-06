@@ -41,22 +41,24 @@ export class RatesComponent implements OnInit, OnChanges {
    * @param changes 
    */
   ngOnChanges(changes: SimpleChanges) {
+    
     if(changes) {
       if (this.coverageRates.controls.length === 0) {
         this.coverageRates.push(this.fb.group({calculationRule: this.fb.array([])}));
       }
     }
+    this.selectedField = new FormGroup({
+      calculationRule: new FormControl(
+        this.coverageRates.controls[0]?.get('calculationRule')!.value
+      ),
+    });
   }
 
   /**
    * method to give a structure to the "selectedField" array that is used for the view in html
    */
   async ngOnInit() {
-    this.selectedField = new FormGroup({
-      calculationRule: new FormControl(
-        this.coverageRates.controls[0]?.get('calculationRule')!.value
-      ),
-    });
+    
     await this.loadContextData().then();
   }
 
@@ -161,6 +163,7 @@ export class RatesComponent implements OnInit, OnChanges {
     (<FormArray>this.coverageRates.controls[0]?.get('calculationRule'))?.push(
       this.fb.control(element)
     );
+    console.log('coberturas', this.productService);
   }
 
   /**

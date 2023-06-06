@@ -43,7 +43,6 @@ export class CoverageTreeComponent implements OnInit {
 
   selectedFile!: TreeNode;
 
-  @Input() coverages: any = new FormGroup({});
   @Output() eventCoverages: EventEmitter<any> = new EventEmitter<any>();
   /**
    * initialize the tree structure
