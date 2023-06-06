@@ -877,9 +877,6 @@ export class DataFieldsManagementComponent implements OnInit {
   }
 
   confirmationRemovegroup(res: any, index: any, group: any){
-    console.log('resremove', res);
-    console.log('indexremove', index);
-    
     if (res) {
 
       if (index >= 0) {
