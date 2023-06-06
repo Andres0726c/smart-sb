@@ -111,7 +111,7 @@
             styleClass="p-button-warn"
             class="h-[37px]"
             [disabled]="!productService.rnsttmntPrcss.value.enabled"
-            (click)="openRuleWizard('ruleCalculationControls', 'clcltnRl')"
+            (click)="rulesService.openRuleWizard('ruleCalculationControls', 'clcltnRl', rulePrevValue, 'rhClcltnRl')"
           ></button>
         </div>
       </div>
