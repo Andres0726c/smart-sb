@@ -38,6 +38,7 @@ export class RulesWizardComponent implements OnInit {
 
   dataSource: any[] = [];
   prevReqParams: any;
+  prevSearch: string = '0';
 
   items: any[]=[];
   activeIndex = 0;
@@ -350,10 +351,11 @@ export class RulesWizardComponent implements OnInit {
   }
 
   loadRemoteData(event: LazyLoadEvent) {
-    
-    let search ;
+    let requestParams: any = '';
+    let search = '0';
     let selectedIds = '0';
-    
+    const pageNumber = (event.first ?? 0) / (event.rows ?? 1);
+
     if (this.data.list.length > 0) {
       for (let sel of this.data.list) {
         selectedIds += `,${sel.id}`;
@@ -362,34 +364,41 @@ export class RulesWizardComponent implements OnInit {
 
     if(event.globalFilter && event.globalFilter.length >= 3) {
       search = event.globalFilter
-    }else{
-      search='0';
+    } else {
+      search = '0';
     }
 
-    this.setRequestParams(event, selectedIds, search);
+    requestParams = this.defineParameters(event, pageNumber, selectedIds);
+    this.doReq(requestParams, search);
+
   }
 
-  setRequestParams(event: any, selectedIds: any, search: any){
+  defineParameters(event: any, pageNumber: any, selectedIds: any) {
     let requestParams: any = '';
-    let doReq = true;
-    const pageNumer = (event.first ?? 0) / (event.rows ?? 1);
     const sortDirections: any = {
       '0': '0',
       '1': 'asc',
       '-1': 'desc'
     }
+
     if (this.data.parameter) {
-      requestParams = this.data.parameter + `/${pageNumer}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
+      requestParams = this.data.parameter + `/${pageNumber}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
     } else {
-      requestParams = `${pageNumer}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
+      requestParams = `${pageNumber}/${event.rows}/${selectedIds}/${event.sortField ?? '0'}/${sortDirections[event.sortOrder ?? '0']}`;
     }
 
-    if (this.prevReqParams === requestParams) {
+    return requestParams;
+  }
+
+  doReq(requestParams: any, search: any) {
+    let doReq = true;
+    if (this.prevReqParams === requestParams && this.prevSearch === search) {
       doReq = false;
     } else {
       this.prevReqParams = requestParams;
+      this.prevSearch = search;
     }
-
+    
     if (doReq) {
       this.isLoading = true;
       this.getApiData(requestParams, search);

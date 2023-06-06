@@ -94,9 +94,9 @@ export class ServicePlansComponent implements OnInit {
     ];
 
     let parameter =
-    this.getInitialParameter() !== null
-        ? this.getInitialParameter()+ ''
-        : '0';
+    this.productService.initialParameters?.get('insuranceLine')?.value !== null
+      ? this.productService.initialParameters?.get('insuranceLine')?.value + ''
+      : '0';
     const dialogRef = this.dialog.open(ModalSearchSmallComponent, {
       data: {
         code: 'servicePlansDataControls',

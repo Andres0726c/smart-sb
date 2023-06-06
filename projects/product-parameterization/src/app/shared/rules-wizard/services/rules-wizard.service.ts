@@ -9,7 +9,7 @@ import { ElementTableSearch } from '../../../core/model/ElementTableSearch.model
   providedIn: 'root'
 })
 export class RulesWizardService {
-  contextData: any;
+  contextData: any = [];
 
   constructor(
     public productService: ProductService,
@@ -23,14 +23,16 @@ export class RulesWizardService {
         this.productService.getApiData(`domainList/DATOS_CONTEXTO`)
       );
 
-      this.contextData = res.body.nmValueList;
+      if (res.body) {
+        this.contextData = res.body.nmValueList;
 
-      //se filtra los datos de contexto dependiendo del nivel de aplicación
-      this.contextData = this.contextData.filter(
-        (data: any) =>
-          data.applctnLvl.includes(applicationLevel) ||
-          data.applctnLvl.includes('*')
-      );
+        //se filtra los datos de contexto dependiendo del nivel de aplicación
+        this.contextData = this.contextData.filter(
+          (data: any) =>
+            data.applctnLvl.includes(applicationLevel) ||
+            data.applctnLvl.includes('*')
+        );
+      }
 
       return this.contextData;
     } catch (error) {
@@ -125,7 +127,7 @@ export class RulesWizardService {
     };
 
     this.productService.setProductDependency('rl', elementDp);
-    this.productService.setDependencyRef('rl', elementDp.cd, 'rhClcltnRl');
+    this.productService.setDependencyRef('rl', elementDp.cd, ruleAttr);
     arr.push(element);
     this.productService.rnsttmntPrcss.get(field)?.setValue(arr);
     rulePrevValue = element;
