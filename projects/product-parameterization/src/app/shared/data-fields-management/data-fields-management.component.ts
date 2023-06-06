@@ -313,7 +313,7 @@ export class DataFieldsManagementComponent implements OnInit {
    * Function to select a complementary data
    */
   selectComplementaryData(itemParam: any) {
-    
+
     this.selectedField = itemParam;
     this.dependsArray = [];
 
@@ -362,94 +362,12 @@ export class DataFieldsManagementComponent implements OnInit {
           (x: { id: number }) => x.id === object.id
         );
 
-        if (this.modifyData) {
-          if (index === -1) {
-            this.getGroupArrayById(group).push(
-              new FormGroup({
-                id: this.fb.control(object.id, [Validators.required]),
-                name: this.fb.control(object.name, [Validators.required]),
-                label: this.fb.control(
-                  object.element.nmLabel
-                    ? object.element.nmLabel
-                    : object.element.label,
-                  [Validators.required]
-                ),
-                dataType: this.fb.control(object.element.dataType),
-                shouldDelete: this.fb.control(object.shouldDelete, [
-                  Validators.required,
-                ]),
-                businessCode: this.fb.control(object.element.businessCode),
-                domainList: this.fb.control(object.element.domainList),
-              })
-            );
-
-            if (
-              this.getGroupArrayById(1).length > 0 &&
-              this.getGroupArrayById(1).controls.length === 1
-            ) {
-              this.selectComplementaryData(
-                <FormGroup>this.getGroupArrayById(1).controls[0]
-              );
-            }
-          }
+        if (this.modifyData && index === -1) {
+          this.buildBasicFormGroup(group, object);
+        } else if(index === -1){
+          this.buildFormGroupExtended(group, object);
         } else {
-          if (index === -1) {
-            this.getGroupArrayById(group).push(
-              new FormGroup({
-                id: this.fb.control(object.id, [Validators.required]),
-                name: this.fb.control(object.name, [Validators.required]),
-                label: this.fb.control(
-                  object.element.nmLabel
-                    ? object.element.nmLabel
-                    : object.element.label,
-                  [Validators.required]
-                ),
-                dataType: this.fb.control(object.element.dataType),
-                initializeRule: this.fb.control([], []),
-                validateRule: this.fb.control([], []),
-                dependency: this.fb.control(null, []),
-                requiredEssential: this.fb.control(
-                  object.element.flIsMandatory === 'S' ? true : false,
-                  [Validators.required]
-                ),
-                required: this.fb.control(
-                  object.element.flIsMandatory === 'S' ? true : false,
-                  [Validators.required]
-                ),
-                editable: this.fb.control(true, [Validators.required]),
-                visible: this.fb.control(true, [Validators.required]),
-                fieldGroup: this.fb.control(1, []),
-                shouldDelete: this.fb.control(object.shouldDelete, [
-                  Validators.required,
-                ]),
-                businessCode: this.fb.control(object.element.businessCode),
-                domainList: this.fb.control(object.element.domainList),
-              })
-            );
-          } else {
-            const field = this.getGroupArrayById(group).controls[index];
-
-            if (field && !(<FormGroup>field).contains('fieldGroup')) {
-              (<FormGroup>field).addControl('fieldGroup', this.fb.control(1));
-            }
-
-            if (field && !(<FormGroup>field).contains('requiredEssential')) {
-              const valueRequiredEssential =
-                object.element.flIsMandatory === 'S' ? true : false;
-              (<FormGroup>field).addControl(
-                'requiredEssential',
-                this.fb.control(valueRequiredEssential)
-              );
-              (<FormGroup>field)
-                .get('required')
-                ?.setValue(valueRequiredEssential);
-              if (valueRequiredEssential) {
-                (<FormGroup>field).get('required')?.disable();
-              } else {
-                (<FormGroup>field).get('required')?.enable();
-              }
-            }
-          }
+          this.addControl(group, index, object);
         }
       }
 
@@ -472,6 +390,96 @@ export class DataFieldsManagementComponent implements OnInit {
       }
     }
   };
+
+  buildBasicFormGroup(group: any, object: any){
+    this.getGroupArrayById(group).push(
+      new FormGroup({
+        id: this.fb.control(object.id, [Validators.required]),
+        name: this.fb.control(object.name, [Validators.required]),
+        label: this.fb.control(
+          object.element.nmLabel
+            ? object.element.nmLabel
+            : object.element.label,
+          [Validators.required]
+        ),
+        dataType: this.fb.control(object.element.dataType),
+        shouldDelete: this.fb.control(object.shouldDelete, [
+          Validators.required,
+        ]),
+        businessCode: this.fb.control(object.element.businessCode),
+        domainList: this.fb.control(object.element.domainList),
+      })
+    );
+
+    if (
+      this.getGroupArrayById(1).length > 0 &&
+      this.getGroupArrayById(1).controls.length === 1
+    ) {
+      this.selectComplementaryData(
+        <FormGroup>this.getGroupArrayById(1).controls[0]
+      );
+    }
+  }
+
+  buildFormGroupExtended(group: any, object: any){
+    this.getGroupArrayById(group).push(
+      new FormGroup({
+        id: this.fb.control(object.id, [Validators.required]),
+        name: this.fb.control(object.name, [Validators.required]),
+        label: this.fb.control(
+          object.element.nmLabel
+            ? object.element.nmLabel
+            : object.element.label,
+          [Validators.required]
+        ),
+        dataType: this.fb.control(object.element.dataType),
+        initializeRule: this.fb.control([], []),
+        validateRule: this.fb.control([], []),
+        dependency: this.fb.control(null, []),
+        requiredEssential: this.fb.control(
+          object.element.flIsMandatory === 'S' ? true : false,
+          [Validators.required]
+        ),
+        required: this.fb.control(
+          object.element.flIsMandatory === 'S' ? true : false,
+          [Validators.required]
+        ),
+        editable: this.fb.control(true, [Validators.required]),
+        visible: this.fb.control(true, [Validators.required]),
+        fieldGroup: this.fb.control(1, []),
+        shouldDelete: this.fb.control(object.shouldDelete, [
+          Validators.required,
+        ]),
+        businessCode: this.fb.control(object.element.businessCode),
+        domainList: this.fb.control(object.element.domainList),
+      })
+    );
+  }
+
+  addControl(group: any, index: any, object: any){
+    const field = this.getGroupArrayById(group).controls[index];
+
+    if (field && !(<FormGroup>field).contains('fieldGroup')) {
+      (<FormGroup>field).addControl('fieldGroup', this.fb.control(1));
+    }
+
+    if (field && !(<FormGroup>field).contains('requiredEssential')) {
+      const valueRequiredEssential =
+        object.element.flIsMandatory === 'S' ? true : false;
+      (<FormGroup>field).addControl(
+        'requiredEssential',
+        this.fb.control(valueRequiredEssential)
+      );
+      (<FormGroup>field)
+        .get('required')
+        ?.setValue(valueRequiredEssential);
+      if (valueRequiredEssential) {
+        (<FormGroup>field).get('required')?.disable();
+      } else {
+        (<FormGroup>field).get('required')?.enable();
+      }
+    }
+  }
 
   /**
    *
