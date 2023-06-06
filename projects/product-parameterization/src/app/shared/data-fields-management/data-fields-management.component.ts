@@ -1022,11 +1022,10 @@ export class DataFieldsManagementComponent implements OnInit {
       x < this.productService.modificationTypes.length;
       x++
     ) {
-      for (const obj of this.productService.modificationTypes?.value[
-        x
-      ].visibleNonModificableData[0]?.fields.filter(
+      let mdfTp = this.productService.modificationTypes?.value[x].visibleNonModificableData[0]?.fields?.filter(
         (x: { id: number }) => x.id === this.selectedField.value.id
-      )) {
+      );
+      for (const obj of mdfTp) {
         let index =
           this.productService.modificationTypes.value[
             x
