@@ -313,6 +313,7 @@ export class DataFieldsManagementComponent implements OnInit {
    * Function to select a complementary data
    */
   selectComplementaryData(itemParam: any) {
+    
     this.selectedField = itemParam;
     this.dependsArray = [];
 
