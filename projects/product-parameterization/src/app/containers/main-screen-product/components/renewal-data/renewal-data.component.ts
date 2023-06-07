@@ -110,12 +110,12 @@ export class RenewalDataComponent implements OnInit {
       id: objRule.rule.id,
       cd: objRule.rule.cdBusinessCode,
       nm: objRule.rule.name,
-      vrsn: objRule.rule.nmVersion,
+      vrsn: objRule.rule.vrsn || null,
       dscrptn: objRule.rule.description,
       prmtrLst: objRule.rule.nmParameterList,
-      rtrnLst: objRule.rule.nmReturnList,
+      rtrnLst: objRule.rule.rtrnLst || null,
       rlTypItm: objRule.rule.cdRuleType,
-      aplctnLvlItm: objRule.rule.applicationLevel,
+      aplctnLvlItm: objRule.rule.aplctnLvlItm || null,
       endPnt: {
         url: objRule.rule.endPoint,
         rlEngnCd: objRule.rule.rlEngnCd
