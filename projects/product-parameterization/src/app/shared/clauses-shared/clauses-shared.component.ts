@@ -100,7 +100,7 @@ export class ClausesSharedComponent implements OnInit {
         field: 'name',
         header: 'Nombre',
         displayValue: ['nmName'],
-        dbColumnName: ['nmName'],
+        dbColumnName: ['nmname'],
       },
       {
         field: 'description',

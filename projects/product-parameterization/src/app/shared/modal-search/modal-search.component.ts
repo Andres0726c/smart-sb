@@ -338,13 +338,6 @@ export class ModalSearchComponent implements OnInit {
     } else {
       this.modalSearchTable.filterGlobal('', filterType);
     }
-
-    console.log('this.modalSearchTable', this.modalSearchTable);
-    
-    console.log('this.datasource',this.dataSource);
-    console.log('flag', this.flagServiceError);
-    
-    
   }
 
   showedColumns() {
@@ -419,8 +412,6 @@ export class ModalSearchComponent implements OnInit {
   }
 
   doReq(requestParams: any, search: any) {
-    console.log('aqui');
-    
     let doReq = true;
     if (this.prevReqParams === requestParams && this.prevSearch === search) {
       doReq = false;
