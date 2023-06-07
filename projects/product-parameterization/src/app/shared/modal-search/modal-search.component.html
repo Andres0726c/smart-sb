@@ -60,16 +60,6 @@
       </p-table>
     </div>
 
-    <!-- <div
-      class="flex justify-center"
-      *ngIf="
-        !isLoading &&
-        ((dataSource == undefined && flagServiceError === false) ||
-          (dataSource && dataSource.length === 0 && flagServiceError === false))
-      "
-    >
-      No hay elementos disponibles para asociar
-    </div> -->
     <div
       class="flex justify-center"
       *ngIf="
@@ -82,14 +72,6 @@
       Se ha presentado un error, favor comunicarse con el administrador del
       sistema
     </div>
-
-    <!-- <p-paginator
-      #paginator
-      [first]="currentPage"
-      [rows]="pageSize"
-      [totalRecords]="totalSize"
-      (onPageChange)="pageChanged($event)"
-    ></p-paginator> -->
 
     <div class="flex justify-center">
       <p-button
