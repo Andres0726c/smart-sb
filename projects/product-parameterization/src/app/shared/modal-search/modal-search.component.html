@@ -28,7 +28,8 @@
         [tableStyle]="{ 'min-width': '30rem' }"
         [loading]="isLoading"
         tableStyleClass="w-full"
-        [paginator]="true" [rows]="5"
+        [paginator]="flagDataEmpty ? false : true" 
+        [rows]="5"
         [showCurrentPageReport]="true"
         currentPageReportTemplate="{first} - {last} de {totalRecords}"
         [lazy]="this.modal.remotePaginator" 
@@ -59,12 +60,20 @@
       </p-table>
     </div>
 
-    <div
+    <!-- <div
       class="flex justify-center"
       *ngIf="
         !isLoading &&
         ((dataSource == undefined && flagServiceError === false) ||
           (dataSource && dataSource.length === 0 && flagServiceError === false))
+      "
+    >
+      No hay elementos disponibles para asociar
+    </div> -->
+    <div
+      class="flex justify-center"
+      *ngIf="
+        !isLoading && flagDataEmpty
       "
     >
       No hay elementos disponibles para asociar

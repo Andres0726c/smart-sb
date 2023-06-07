@@ -59,6 +59,8 @@ export class ModalSearchComponent implements OnInit {
   prevReqParams: any;
   prevSearch: string = '0';
 
+  flagDataEmpty = false;
+  
   constructor(
     public productService: ProductService,
     public ref: DynamicDialogRef,
@@ -192,9 +194,15 @@ export class ModalSearchComponent implements OnInit {
 
   getApiData(requestParams: any, search: string) {
     this.productService.getApiData(this.modal.service, requestParams, search).subscribe((res: any) => {
-      if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false && res.body) {
-        this.setData(res);
-        this.flagServiceError = false;
+      if (res.dataHeader.code && res.dataHeader.code == 200 && res.dataHeader.hasErrors === false) {
+        if (res.body !== null) {
+          this.flagDataEmpty = false;
+          this.setData(res);
+          this.flagServiceError = false;
+        }else{
+          this.flagDataEmpty = true;
+          this.dataSource = [];
+        }
       } else {
         this.flagServiceError = true;
       }
@@ -330,6 +338,13 @@ export class ModalSearchComponent implements OnInit {
     } else {
       this.modalSearchTable.filterGlobal('', filterType);
     }
+
+    console.log('this.modalSearchTable', this.modalSearchTable);
+    
+    console.log('this.datasource',this.dataSource);
+    console.log('flag', this.flagServiceError);
+    
+    
   }
 
   showedColumns() {
@@ -404,6 +419,8 @@ export class ModalSearchComponent implements OnInit {
   }
 
   doReq(requestParams: any, search: any) {
+    console.log('aqui');
+    
     let doReq = true;
     if (this.prevReqParams === requestParams && this.prevSearch === search) {
       doReq = false;
