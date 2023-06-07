@@ -193,7 +193,6 @@ export class BusinessRulesComponent implements OnInit {
     }
 
     list = list.sort((a: any, b: any) => (a.name < b.name ? -1 : 1));
-    console.log('valores: ', list);
 
     return list;
   }

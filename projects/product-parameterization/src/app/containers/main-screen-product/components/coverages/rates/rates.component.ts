@@ -138,7 +138,6 @@ export class RatesComponent implements OnInit, OnChanges {
     (<FormArray>this.coverageRates.controls[0]?.get('calculationRule'))?.push(
       this.fb.control(element)
     );
-    console.log('coberturas', this.productService);
   }
 
   /**
